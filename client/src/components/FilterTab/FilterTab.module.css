@@ -4,11 +4,12 @@
 
 .filterList {
   display: flex;
+
   gap: 5rem;
 }
 
 .filterItem {
-  cursor: pointer;
-
   font-size: 20px;
+
+  cursor: pointer;
 }

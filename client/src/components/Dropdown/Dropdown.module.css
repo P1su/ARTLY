@@ -1,0 +1,24 @@
+.layout {
+  display: flex;
+}
+
+.dropdownList {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 2px;
+  box-shadow: 0 0 2px;
+}
+
+.dropdownList li {
+  width: 10rem;
+  padding: 0.5rem;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.dropdownList li:hover {
+  background: #efefef;
+}
