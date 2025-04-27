@@ -1,12 +1,14 @@
 .layout {
-  width: 10rem;
   display: flex;
 }
 
 .filterList {
   display: flex;
+  gap: 5rem;
 }
 
 .filterItem {
-  width: 100%;
+  cursor: pointer;
+
+  font-size: 20px;
 }
