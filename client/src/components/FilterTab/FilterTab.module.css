@@ -1,0 +1,12 @@
+.layout {
+  width: 10rem;
+  display: flex;
+}
+
+.filterList {
+  display: flex;
+}
+
+.filterItem {
+  width: 100%;
+}
