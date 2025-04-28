@@ -10,7 +10,6 @@ export default function Main() {
       <h1>아뜰리</h1>
       메인페이지입니다.
       <FilterTab filterList={filterList} />
-      <Dropdown />
     </div>
   );
 }

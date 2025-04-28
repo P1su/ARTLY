@@ -1,10 +1,9 @@
-.layout {
-  display: flex;
-}
-
 .dropdownList {
   display: flex;
   flex-direction: column;
+
+  position: absolute;
+  top: 2.7rem;
 
   border-radius: 2px;
   box-shadow: 0 0 2px;

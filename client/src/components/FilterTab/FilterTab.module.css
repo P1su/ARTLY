@@ -5,10 +5,16 @@
 .filterList {
   display: flex;
 
+  position: relative;
+
   gap: 5rem;
 }
 
-.filterItem {
+.filterList div {
+  display: flex;
+}
+
+.filterList li {
   font-size: 20px;
 
   cursor: pointer;
