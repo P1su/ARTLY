@@ -24,16 +24,13 @@ const Header = ({ isLoggedIn, nickname, onLogin, onLogout }: HeaderProps) => {
       color: 'white',
       position: 'relative'
     }}>
-      {/* 왼쪽 로고 */}
       <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
         Artly
       </div>
 
-      {/* 오른쪽 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative' }}>
         {isLoggedIn ? (
           <>
-            {/* 닉네임 + 드롭다운 */}
             <div
               onClick={toggleMenu}
               style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
@@ -42,7 +39,6 @@ const Header = ({ isLoggedIn, nickname, onLogin, onLogout }: HeaderProps) => {
               <span>▼</span>
             </div>
 
-            {/* 마이페이지 버튼 */}
             <button style={{
               background: 'none',
               border: 'none',
@@ -53,7 +49,6 @@ const Header = ({ isLoggedIn, nickname, onLogin, onLogout }: HeaderProps) => {
               마이페이지
             </button>
 
-            {/* 닉네임 클릭시 드롭다운 */}
             {menuOpen && (
               <div style={{
                 position: 'absolute',
@@ -84,7 +79,6 @@ const Header = ({ isLoggedIn, nickname, onLogin, onLogout }: HeaderProps) => {
           </>
         ) : (
           <>
-            {/* 로그인 전 */}
             <button
               onClick={onLogin}
               style={{

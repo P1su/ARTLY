@@ -12,24 +12,24 @@ const Navbar = () => {
 
   return (
     <nav style={{ 
-      width: '100%',            // ✅ 가로 전체
-      height: '60px',           // ✅ 높이 고정
+      width: '100%',            
+      height: '60px',        
       backgroundColor: '#ffffff',
       display: 'flex',
       alignItems: 'center',
       padding: '0 20px',
       boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      position: 'relative',     // ✅ 포지션도 설정
+      position: 'relative',     
       zIndex: 1
     }}>
       <ul style={{ 
         listStyle: 'none', 
         display: 'flex', 
-        alignItems: 'center',    // ✅ ul 안 요소들도 수직정렬
+        alignItems: 'center',    
         gap: '30px', 
         padding: 0, 
         margin: 0,
-        height: '100%'           // ✅ ul이 nav 전체 높이에 맞추기
+        height: '100%'           
       }}>
         {menuItems.map((item) => (
           <li key={item.path}>
