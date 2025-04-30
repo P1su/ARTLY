@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom'; 
-import Header from './components/Header';  
-import Navbar from './components/NavBar';
+import { BrowserRouter } from 'react-router-dom';
+import Header from './components/Header/Header';
+import NavBar from './components/NavBar/NavBar';
 
-const App = () => {
+
+export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [nickname, setNickname] = useState('');
 
@@ -19,21 +20,35 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div style={{ backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
-        <Header 
-          isLoggedIn={isLoggedIn}
-          nickname={nickname}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-        />
-        <Navbar />
-
-        <div style={{ marginTop: '40px', padding: '20px' }}>
-          <h2>메인 페이지입니다!</h2>
-        </div>
+      <div
+        style={{
+          backgroundColor: '#f9f9f9',
+          minHeight: '100vh'
+        }}
+      >
+        <section
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 2rem',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <Header
+            isLoggedIn={isLoggedIn}
+            nickname={nickname}
+            onLogin={handleLogin}
+            onLogout={handleLogout}
+          />
+          <NavBar />
+          <main>
+            <h2 style={{ marginTop: '15rem', textAlign: 'center' }}>
+              메인 페이지입니다!
+            </h2>
+          </main>
+        </section>
       </div>
     </BrowserRouter>
   );
-};
-
-export default App;
+}
