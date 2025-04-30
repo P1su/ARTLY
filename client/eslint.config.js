@@ -28,6 +28,7 @@ export default defineConfig([
       'react/jsx-no-useless-fragment': 'warn', // 불필요한 Fragment 사용 제한
       'react/jsx-no-duplicate-props': 'warn', // JSX에서 중복 props 방지
       'react/jsx-boolean-value': ['warn', 'never'], // 불필요한 `={true}` 생략 권장
+      'react/prop-types': 'off',
 
       'no-var': 'error', // var 변수 선언 금지
       'no-unused-vars': 'warn', // 선언한 변수 사용 권장
