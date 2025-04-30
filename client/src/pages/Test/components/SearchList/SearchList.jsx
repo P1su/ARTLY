@@ -13,8 +13,8 @@ export default function SearchList() {
       <section className={styles.filterSection}>
         {filterList.map((category) => (
           <FilterTab
-            key={category[0]}
-            filterCategory={category}
+            key={category[0].label}
+            filterCategories={category}
             setResult={setResult}
           />
         ))}
@@ -26,15 +26,15 @@ export default function SearchList() {
   );
 }
 
-function FilterTab({ filterCategory, setResult }) {
-  const [categoryItem, setCategoryItem] = useState(filterCategory[0]);
+function FilterTab({ filterCategories, setResult }) {
+  const [categoryItem, setCategoryItem] = useState(filterCategories[0].label);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCategory = (category) => {
-    setCategoryItem(category);
+    setCategoryItem(category.label);
 
     //api 연결
-    setResult(category);
+    setResult(category.label);
     setIsOpen(false);
   };
 
@@ -48,17 +48,17 @@ function FilterTab({ filterCategory, setResult }) {
         setIsOpen(false);
       }}
     >
-      <div className={styles.filterLabel}>{categoryItem}</div>
+      <span className={styles.filterLabelSpan}>{categoryItem}</span>
       <ul className={styles.dropdownList}>
         {isOpen &&
-          filterCategory.map((item) => (
+          filterCategories.map((item) => (
             <li
-              key={item}
+              key={item.value}
               onClick={() => {
                 handleCategory(item);
               }}
             >
-              {item}
+              {item.label}
             </li>
           ))}
       </ul>
