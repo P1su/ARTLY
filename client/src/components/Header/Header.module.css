@@ -1,0 +1,90 @@
+.headerLayout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    position: relative;
+  
+    width: 100%;
+    padding: 0.8rem 1.6rem; 
+  
+    background-color: #5a4fcf;
+    color: white;
+  }
+  
+  .logoBox {
+    font-size: 1.8rem; 
+    font-weight: 700;
+  }
+
+  
+  .logoBox a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .userContainer {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem; 
+    position: relative;
+  }
+  
+  .nicknameWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+  }
+  
+  .nicknameSpan {
+    font-weight: 600;
+    font-size: 1.3rem; 
+  }
+  
+  .dropdownSpan {
+    font-size: 1rem; 
+  }
+  
+  .pageButton,
+  .authButton,
+  .logoutButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem; 
+  }
+  
+  .pageButton,
+  .authButton {
+    color: white;
+  }
+  
+  .logoutButton {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .dropdownBox {
+    position: absolute;
+    top: 3.2rem;  
+    right: 4rem;
+    background: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+    padding: 0.8rem;
+    z-index: 100;
+    width: 9rem;
+    text-align: center;
+  }
+  
+  .nicknameText {
+    font-weight: bold;
+  }
+  
+  .nicknameSuffix {
+    font-weight: normal;
+  }
+  
