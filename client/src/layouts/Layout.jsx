@@ -7,10 +7,10 @@ export default function Layout() {
   useMobile();
 
   return (
-    <div style={{ position: 'relative' }}>
+    <>
       <Header />
       <Outlet />
       <ChatbotWidget />
-    </div>
+    </>
   );
 }
