@@ -37,7 +37,7 @@ export default function ChatbotWidget() {
   return (
     <div className={styles.chatbotContainer}>
       <div className={styles.iconWrapper} onClick={handleToggleChat}>
-        <img src={chatbotIcon} alt="챗봇 아이콘" />
+        <img src={chatbotIcon} alt='챗봇 아이콘' />
       </div>
 
       {isOpen && (
@@ -50,9 +50,9 @@ export default function ChatbotWidget() {
           </div>
 
           <div className={styles.chatContainer}>
-            {messages.map((msg, i) => (
+            {messages.map((msg) => (
               <div
-                key={i}
+                key={msg.id}
                 className={
                   msg.sender === 'bot'
                     ? styles.botMessageContainer
@@ -63,7 +63,7 @@ export default function ChatbotWidget() {
                   <>
                     <img
                       src={chatbotProfile}
-                      alt="챗봇 프로필"
+                      alt='챗봇 프로필'
                       className={styles.botProfile}
                     />
                     <div className={styles.botContent}>
@@ -74,8 +74,10 @@ export default function ChatbotWidget() {
                     </div>
                   </>
                 ) : (
-                  <div className={styles.userBubble}>
-                    <p>{msg.text}</p>
+                  <div className={styles.userMessageContainer}>
+                    <div className={styles.userBubble}>
+                      <p>{msg.text}</p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -85,10 +87,10 @@ export default function ChatbotWidget() {
           <div className={styles.inputContainer}>
             <input
               className={styles.input}
-              type="text"
+              type='text'
               value={inputValue}
               onChange={handleInputChange}
-              placeholder="챗봇에게 물어보세요."
+              placeholder='챗봇에게 물어보세요.'
             />
             <button className={styles.sendButton} onClick={handleSendMessage}>
               전송

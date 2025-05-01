@@ -2,35 +2,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40rem;
+  width: 64rem;
   margin: 0 auto;
-  padding: 0.3rem 0.5rem;
-  border: 0.1rem solid #e0e0e0;
-  border-radius: 1.5rem;
-  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0.8rem;
+  border: 0.2rem solid #e0e0e0;
+  border-radius: 2.4rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
   background-color: white;
 }
 
 .searchInput {
   flex: 1;
-  margin-left: 0.3rem;
-  padding: 0.6rem;
+  margin-left: 0.5rem;
+  padding: 1rem;
   border: none;
-  border-radius: 1.5rem;
-  color: #999;
-  font-size: 1rem;
+  border-radius: 2.4rem;
+  font-size: 1.6rem;
   outline: none;
 }
 
 .searchButton {
-  margin-left: 0.3rem;
-  padding: 0.6rem 1rem;
+  margin-left: 0.5rem;
+  padding: 1rem 1.6rem;
   border: none;
-  border-radius: 1.5rem;
+  border-radius: 2.4rem;
   background: #999;
   color: white;
 }
 
 .searchIcon {
-  font-size: 1.2rem;
+  font-size: 1.9rem;
 }
