@@ -1,7 +1,7 @@
 .chatbotContainer {
-  position: fixed;
-  right: 4.8rem;
-  bottom: 4.8rem;
+  position: absolute;
+  right: 2.4rem;
+  bottom: 2.4rem;
   z-index: 1000;
 }
 
