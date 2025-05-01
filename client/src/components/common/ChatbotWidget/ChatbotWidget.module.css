@@ -1,0 +1,125 @@
+.chatbotContainer {
+  position: fixed;
+  right: 3rem;
+  bottom: 3rem;
+  z-index: 1000;
+}
+
+.iconWrapper img {
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+}
+
+.popupContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  bottom: 4rem;
+  width: 23rem;
+  height: 33rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.1);
+  background-color: #f0f5ff;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  background-color: #021c9d;
+  color: white;
+}
+
+.closeButton {
+  border: none;
+  background: none;
+  color: white;
+  font-size: 1rem;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0.6rem;
+}
+
+.botMessageContainer {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+  gap: 0.5rem;
+}
+
+.userMessageContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.6rem;
+}
+
+.botContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.botName {
+  margin-bottom: 0.1rem;
+  margin-left: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.botProfile {
+  align-self: flex-end;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+}
+
+.botBubble,
+.userBubble {
+  max-width: 70%;
+  padding: 0.6rem;
+  border: 0.05rem solid #b0b0b0;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.botBubble {
+  background-color: #bfd8ff;
+}
+
+.userBubble {
+  background-color: #ffffff;
+}
+
+.inputContainer {
+  display: flex;
+  padding: 0.5rem;
+  border-top: 0.1rem solid #ccc;
+  background-color: #fff;
+}
+
+.input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.sendButton {
+  padding: 0 1rem;
+  margin-left: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #2f55ff;
+  color: white;
+}
