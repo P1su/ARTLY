@@ -8,7 +8,7 @@ export default function NavBar() {
     { label: '갤러리', path: '/galleries' },
     { label: '작가', path: '/artists' },
     { label: '주변 갤러리', path: '/nearby-galleries' },
-    { label: '공고', path: '/notices' }
+    { label: '공고', path: '/notices' },
   ];
 
   return (
