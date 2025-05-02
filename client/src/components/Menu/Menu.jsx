@@ -1,16 +1,22 @@
 import styles from './Menu.module.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { menuList } from '../../utils/menu.js';
 
-export default function Menu() {
+export default function Menu({ onOpen }) {
   const nickname = '필수';
+  const navigate = useNavigate();
 
   // localStorage 로그인 토큰 여부로 변경 예정
   const [isLogin, setIsLogin] = useState(false);
 
   const handleLogin = () => {
     setIsLogin(!isLogin);
+  };
+
+  const handleNavigate = (path) => {
+    onOpen();
+    navigate(path);
   };
 
   return (
@@ -26,7 +32,13 @@ export default function Menu() {
         <nav>
           <ul>
             {menuList.map(({ name, label, path }) => (
-              <MenuItem key={name} label={label} path={path} />
+              <MenuItem
+                key={name}
+                label={label}
+                onNavigate={() => {
+                  handleNavigate(path);
+                }}
+              />
             ))}
           </ul>
         </nav>
@@ -36,9 +48,9 @@ export default function Menu() {
           <span onClick={handleLogin}>로그아웃</span>
         ) : (
           <>
-            <Link to='/login'>로그인</Link>
+            <span onClick={() => handleNavigate('/login')}>로그인</span>
             <span className={styles.mutedSpan}> | </span>
-            <Link to='/register'>회원가입</Link>
+            <span onClick={() => handleNavigate('/register')}>회원가입</span>
           </>
         )}
       </footer>
@@ -46,11 +58,11 @@ export default function Menu() {
   );
 }
 
-function MenuItem({ label, path }) {
+function MenuItem({ label, onNavigate }) {
   return (
-    <div className={styles.menuItemLayout}>
+    <div className={styles.menuItemLayout} onClick={onNavigate}>
       <span>{label}</span>
-      <Link to={path}>&gt;</Link>
+      <span>&gt;</span>
     </div>
   );
 }
