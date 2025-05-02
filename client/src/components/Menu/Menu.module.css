@@ -1,13 +1,14 @@
 .menuLayout {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   position: absolute;
   top: 4rem;
   right: 0;
 
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 4rem);
 
   background-color: #ffffff;
 
