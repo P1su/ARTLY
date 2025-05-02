@@ -2,15 +2,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px; 
-  margin: 0 auto;     
-  padding: 0.5rem 1.6rem; 
+  padding: 0.5rem 1.6rem;
   background-color: #5a4fcf;
   color: white;
 }
 
 .logoBox {
-  font-size: 2rem; 
+  font-size: 2rem;
   font-weight: 700;
 }
 
@@ -22,7 +20,7 @@
 .userContainer {
   display: flex;
   align-items: center;
-  gap: 1.2rem; 
+  gap: 1.2rem;
   position: relative;
 }
 
@@ -35,11 +33,11 @@
 
 .nicknameSpan {
   font-weight: 600;
-  font-size: 1.3rem; 
+  font-size: 1.3rem;
 }
 
 .dropdownSpan {
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 
 .pageButton,
@@ -48,7 +46,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 
 .pageButton,
@@ -63,7 +61,7 @@
 
 .dropdownBox {
   position: absolute;
-  top: 3.2rem;  
+  top: 3.2rem;
   right: 7rem;
   background: white;
   color: black;
