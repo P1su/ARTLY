@@ -17,7 +17,7 @@ export default function Header() {
           Artly
         </Link>
       </h1>
-      <button onClick={handleOpen}>메뉴</button>
+      <button onClick={handleOpen}>{isOpen ? '닫기' : '메뉴'}</button>
       {isOpen && <Menu />}
     </header>
   );
