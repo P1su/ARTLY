@@ -1,0 +1,43 @@
+.filterSection {
+  display: flex;
+
+  gap: 5rem;
+}
+
+.filterLayout {
+  display: flex;
+
+  position: relative;
+}
+
+.filterLabelSpan {
+  font-size: 2rem;
+
+  cursor: pointer;
+}
+
+.dropdownList {
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  top: 2.7rem;
+
+  border-radius: 2px;
+  box-shadow: 0 0 2px;
+
+  background-color: #ffffff;
+}
+
+.dropdownList li {
+  width: 10rem;
+  padding: 0.5rem;
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+}
+
+.dropdownList li:hover {
+  background: #efefef;
+}
