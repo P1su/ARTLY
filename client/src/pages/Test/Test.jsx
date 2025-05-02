@@ -8,7 +8,6 @@ export default function Test() {
       <h1>아뜰리</h1>
       테스트페이지입니다.
       <SearchList />
-      <Menu />
     </div>
   );
 }

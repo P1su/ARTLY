@@ -17,9 +17,7 @@ export default function Menu() {
     <div className={styles.menuLayout}>
       <section className={styles.menuSection}>
         {isLogin ? (
-          <span
-            className={styles.userInfoSpan}
-          >{`${nickname}님 안녕하세요`}</span>
+          <span>{`${nickname}님 안녕하세요`}</span>
         ) : (
           <span className={styles.mutedSpan} onClick={handleLogin}>
             로그인 해주세요

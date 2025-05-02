@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import Menu from '../Menu/Menu';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function Header() {
         </Link>
       </h1>
       <button onClick={handleOpen}>메뉴</button>
-      {isOpen && <div>하...</div>}
+      {isOpen && <Menu />}
     </header>
   );
 }
