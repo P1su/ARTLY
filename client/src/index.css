@@ -9,12 +9,19 @@ body {
   padding: 0;
 }
 
+a {
+  color: #020202;
+  text-decoration: none;
+}
+
 ul,
 li {
   list-style-type: none;
 }
 
 button {
+  border: none;
+  background: transparent;
   cursor: pointer;
 }
 
