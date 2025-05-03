@@ -34,8 +34,16 @@
   gap: 1rem;
 }
 
+.boldSpan {
+  font-weight: 500;
+}
+
 .mutedSpan {
   color: #c1c1c1;
+}
+
+.logoutSpan {
+  color: #ee0101;
 }
 
 .menuFooter {

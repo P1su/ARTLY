@@ -23,7 +23,9 @@ export default function Menu({ onOpen }) {
     <div className={styles.menuLayout}>
       <section className={styles.menuSection}>
         {isLogin ? (
-          <span>{`${nickname}님 안녕하세요`}</span>
+          <div>
+            <span className={styles.boldSpan}>{nickname}</span>님 안녕하세요
+          </div>
         ) : (
           <span className={styles.mutedSpan} onClick={handleLogin}>
             로그인 해주세요
@@ -45,7 +47,9 @@ export default function Menu({ onOpen }) {
       </section>
       <footer className={styles.menuFooter}>
         {isLogin ? (
-          <span onClick={handleLogin}>로그아웃</span>
+          <span className={styles.logoutSpan} onClick={handleLogin}>
+            로그아웃
+          </span>
         ) : (
           <>
             <span onClick={() => handleNavigate('/login')}>로그인</span>
