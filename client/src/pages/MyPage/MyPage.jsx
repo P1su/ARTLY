@@ -5,7 +5,7 @@ import TabNav from './components/TabNav/TabNav';
 import TabContent from './components/TabContent/TabContent';
 
 export default function MyPage() {
-  const [selectedTab, setSelectedTab] = useState('MyArtly');
+  const [selectedTab, setSelectedTab] = useState('My Artly');
   return (
     <div className={styles.layout}>
       <ProfileCard />
