@@ -5,6 +5,7 @@ import LayoutWithSearchbar from '../layouts/LayoutWithSearchbar';
 import Main from '../pages/Main/Main';
 import Test from '../pages/Test/Test';
 import Mypage from '../pages/MyPage/MyPage';
+import EditProfile from '../pages/EditProfile/EditProfile';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <Mypage />,
+      },
+      {
+        path: '/mypage/edit',
+        element: <EditProfile />,
       },
     ],
   },

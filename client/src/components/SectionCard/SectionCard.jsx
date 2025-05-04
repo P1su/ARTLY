@@ -1,9 +1,15 @@
 import React from 'react';
 import styles from './SectionCard.module.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function SectionCard({ item, type }) {
   const { imageUrl, title, location, date, status } = item;
-  console.log(type);
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/reservation/complete');
+  };
+
   return (
     <div className={styles.cardContainer}>
       <img src={imageUrl} alt={title} className={styles.image} />
@@ -24,7 +30,10 @@ export default function SectionCard({ item, type }) {
         </div>
 
         {type === 'reservation' ? (
-          <button className={`${styles.btn} ${styles.confirmBtn}`}>
+          <button
+            onClick={handleNavigate}
+            className={`${styles.btn} ${styles.confirmBtn}`}
+          >
             예매 확인
           </button>
         ) : (

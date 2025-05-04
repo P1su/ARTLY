@@ -1,8 +1,15 @@
 import React from 'react';
 import styles from './ProfileCard.module.css';
+import { useNavigate } from 'react-router-dom';
 import userProfile from '../../../../assets/images/userProfile.png';
 
 export default function ProfileCard() {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/mypage/edit');
+  };
+
   return (
     <div className={styles.layout}>
       <div className={styles.imgBox}>
@@ -16,7 +23,7 @@ export default function ProfileCard() {
         <p>010-1111-2222</p>
       </div>
       <div className={styles.btnBox}>
-        <button>프로필 수정</button>
+        <button onClick={handleNavigate}>프로필 수정</button>
       </div>
     </div>
   );

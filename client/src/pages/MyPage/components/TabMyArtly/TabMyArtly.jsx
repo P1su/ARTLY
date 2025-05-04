@@ -56,7 +56,7 @@ export default function TabMyArtly() {
     <div className={styles.layout}>
       <SectionReservation items={dummyReservations} />
       <SectionViewed items={dummyViewed} />
-      <SectionCalendar />
+      <SectionCalendar items={dummyReservations} />
     </div>
   );
 }
