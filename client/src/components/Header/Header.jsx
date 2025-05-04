@@ -7,7 +7,13 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    document.body.style.overflow = 'unset';
   };
 
   return (
@@ -17,7 +23,9 @@ export default function Header() {
           Artly
         </Link>
       </h1>
-      <button onClick={handleOpen}>{isOpen ? '닫기' : '메뉴'}</button>
+      <button onClick={isOpen ? handleClose : handleOpen}>
+        {isOpen ? '닫기' : '메뉴'}
+      </button>
       {isOpen && <Menu onOpen={handleOpen} />}
     </header>
   );
