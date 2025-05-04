@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
 import LayoutWithSearchbar from '../layouts/LayoutWithSearchbar';
 import Main from '../pages/Main/Main';
+import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import Test from '../pages/Test/Test';
 
 const router = createBrowserRouter([
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
           },
           {
             path: '/exhibitions',
-            element: <div>전시회 페이지</div>,
+            element: <Exhibitions />,
           },
           {
             path: '/galleries',
