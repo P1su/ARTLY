@@ -1,0 +1,21 @@
+.tabNav {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 16px;
+}
+
+.tabButton {
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: grey;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+}
+
+.tabButton:hover,
+.tabButton.active {
+  color: black; /* 포인트 컬러 */
+  border-bottom: 2px solid black;
+}
