@@ -1,0 +1,82 @@
+.cardContainer {
+  display: flex;
+  align-items: flex-start;
+  background-color: #fff;
+  box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.1);
+  padding: 1.2rem;
+  gap: 1rem;
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #222;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.location {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.4rem;
+  margin-top: 0.4rem;
+  width: fit-content;
+}
+.confirmBtn {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.7rem 1rem;
+  color: white;
+  border: px solid #000000;
+  background-color: #6c6c6c;
+}
+
+.upcoming {
+  color: #b19900;
+  border: 1px solid #b19900;
+  background-color: #fff8e1;
+}
+
+.ongoing {
+  color: #1554b2;
+  border: 1px solid #1554b2;
+  background-color: #eef3fc;
+}
+
+.closed {
+  color: #444;
+  border: 0.1rem solid #aaa;
+  background-color: #f0f0f0;
+}
