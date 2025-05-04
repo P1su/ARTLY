@@ -26,7 +26,7 @@ export default function Header() {
       <button onClick={isOpen ? handleClose : handleOpen}>
         {isOpen ? '닫기' : '메뉴'}
       </button>
-      {isOpen && <Menu onOpen={handleOpen} />}
+      {isOpen && <Menu onOpen={handleClose} />}
     </header>
   );
 }

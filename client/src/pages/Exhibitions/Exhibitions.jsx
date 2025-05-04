@@ -1,12 +1,24 @@
 import styles from './Exhibitions.module.css';
 import { mockExhibitionList } from './mock/mockExhibitionList.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function Exhibitions() {
+  const navigate = useNavigate();
+
+  const handleNavigate = (exhibitionId) => {
+    navigate(`/exhibitions/${exhibitionId}`);
+  };
   return (
     <div className={styles.layout}>
       <section className={styles.exhibitionListSection}>
         {mockExhibitionList.map(({ id, image, name, gallery, date }) => (
-          <div className={styles.exhibitionItemContainer} key={id}>
+          <div
+            className={styles.exhibitionItemContainer}
+            key={id}
+            onClick={() => {
+              handleNavigate(id);
+            }}
+          >
             <img
               className={styles.exhibitionImage}
               src={image}
