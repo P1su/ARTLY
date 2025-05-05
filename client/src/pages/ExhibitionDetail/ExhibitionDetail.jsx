@@ -1,6 +1,7 @@
 import styles from './ExhibitionDetail.module.css';
 import { useParams } from 'react-router-dom';
 import { mockData } from './mock/exhibitionDetail.js';
+import BtnFavorite from './components/BtnFavorite/BtnFavorite';
 
 export default function ExhibitionDetail() {
   const { exhibitionId } = useParams();
@@ -55,6 +56,10 @@ export default function ExhibitionDetail() {
         <span className={styles.titleSpan}>전시회 소개</span>
         <hr className={styles.divider} />
         <p className={styles.contentParagraph}> {mockData.content}</p>
+      </section>
+
+      <section className={styles.buttonSection}>
+        <BtnFavorite />
       </section>
 
       <footer className={styles.footer}>

@@ -84,6 +84,10 @@
   white-space: pre-wrap;
 }
 
+.buttonSection {
+  display: flex;
+}
+
 .footer {
   display: flex;
   flex-direction: column;
