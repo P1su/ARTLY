@@ -53,7 +53,7 @@ const dummyViewed = [
 
 export default function TabMyArtly() {
   return (
-    <div className={styles.layout}>
+    <div>
       <SectionReservation items={dummyReservations} />
       <SectionViewed items={dummyViewed} />
       <SectionCalendar items={dummyReservations} />

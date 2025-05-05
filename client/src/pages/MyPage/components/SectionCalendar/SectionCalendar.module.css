@@ -8,22 +8,22 @@
   padding: 0 1.6rem;
 }
 .calendar {
-  border: 1px solid #ccc;
   padding: 1rem;
-  border-radius: 0.5rem;
   margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
 }
 
 .scheduleList {
-  margin-bottom: 1rem;
   padding: 1rem;
+  margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   background-color: #f9f9f9;
 }
 
 .scheduledItem {
-  font-size: 0.9rem;
-  color: #333;
   margin-top: 1rem;
+  color: #333;
+  font-size: 0.9rem;
 }
