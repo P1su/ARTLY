@@ -2,6 +2,7 @@ import styles from './ExhibitionDetail.module.css';
 import { useParams } from 'react-router-dom';
 import { mockData } from './mock/exhibitionDetail.js';
 import BtnFavorite from './components/BtnFavorite/BtnFavorite';
+import BtnShare from './components/BtnShare/BtnShare';
 
 export default function ExhibitionDetail() {
   const { exhibitionId } = useParams();
@@ -60,6 +61,7 @@ export default function ExhibitionDetail() {
 
       <section className={styles.buttonSection}>
         <BtnFavorite />
+        <BtnShare />
       </section>
 
       <footer className={styles.footer}>

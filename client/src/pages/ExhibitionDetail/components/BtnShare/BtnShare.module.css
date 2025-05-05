@@ -1,0 +1,15 @@
+.buttonWrapper {
+  width: 10rem;
+  height: 3rem;
+
+  border: 0.2rem solid #bb830a;
+  border-radius: 0.8rem;
+
+  color: #bb830a;
+}
+
+.buttonWrapper:hover {
+  background-color: #bb830a;
+
+  color: #ffffff;
+}
