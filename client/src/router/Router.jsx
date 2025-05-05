@@ -4,6 +4,9 @@ import Layout from '../layouts/Layout';
 import LayoutWithSearchbar from '../layouts/LayoutWithSearchbar';
 import Main from '../pages/Main/Main';
 import Test from '../pages/Test/Test';
+import Login from '../pages/Login/Login';
+import Register from '../pages/Register/Register';
+
 
 const router = createBrowserRouter([
   {
@@ -36,6 +39,14 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/register',
+        element: <Register />,
+      },
+      {
         path: '/test',
         element: <Test />,
       },
@@ -45,26 +56,4 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: '/exhibitions',
-    element: <div>전시회 페이지</div>,
-  },
-  {
-    path: '/galleries',
-    element: <div>갤러리 페이지</div>,
-  },
-  {
-    path: '/artists',
-    element: <div>작가 페이지</div>,
-  },
-  {
-    path: '/nearby-galleries',
-    element: <div>주변 갤러리 페이지</div>,
-  },
-  {
-    path: '/notices',
-    element: <div>공고 페이지</div>,
-  }
 ]);
-
-export default router;
