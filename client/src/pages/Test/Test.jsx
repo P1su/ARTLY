@@ -1,5 +1,6 @@
 import styles from './Test.module.css';
 import SearchList from './components/SearchList/SearchList';
+import Menu from '../../components/Menu/Menu';
 
 export default function Test() {
   return (
