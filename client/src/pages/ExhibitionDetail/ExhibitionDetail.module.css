@@ -4,6 +4,8 @@
   align-items: center;
   gap: 2rem;
 
+  position: relative;
+
   min-height: calc(100vh - 9rem);
   padding: 2rem;
 

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { mockData } from './mock/exhibitionDetail.js';
 import BtnFavorite from './components/BtnFavorite/BtnFavorite';
 import BtnShare from './components/BtnShare/BtnShare';
+import StickyMenu from './components/StikcyMenu/StickyMenu';
 
 export default function ExhibitionDetail() {
   const { exhibitionId } = useParams();
@@ -11,6 +12,7 @@ export default function ExhibitionDetail() {
   const { galleryInfo } = mockData;
   return (
     <div className={styles.layout}>
+      <StickyMenu />
       <section className={styles.titleSection}>
         <img
           className={styles.exhibitionImage}
