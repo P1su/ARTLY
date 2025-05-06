@@ -13,7 +13,6 @@ export default function SectionCalendar({ items }) {
 
   return (
     <div className={styles.calendarLayout}>
-      <SectionTitle title='전시 캘린더' />
       <div className={styles.container}>
         <div className={styles.calendar}>
           {/* 캘린더 라이브러리 활용 예정*/}

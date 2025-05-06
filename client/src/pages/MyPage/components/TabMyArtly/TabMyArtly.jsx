@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './TabMyArtly.module.css';
-import SectionReservation from '../SectionReservation/SectionReservation';
-import SectionViewed from '../SectionViewed/SectionViewed';
+
 import SectionCalendar from '../SectionCalendar/SectionCalendar';
 import dummyImg from '../../../../assets/images/dummyImg.png';
+import SectionTitle from '../../../../components/SectionTitle/SectionTitle';
+import SectionCardList from '../../../../components/SectionCardList/SectionCardList';
 
 const dummyReservations = [
   {
@@ -54,9 +55,18 @@ const dummyViewed = [
 export default function TabMyArtly() {
   return (
     <div>
-      <SectionReservation items={dummyReservations} />
-      <SectionViewed items={dummyViewed} />
-      <SectionCalendar items={dummyReservations} />
+      <section>
+        <SectionTitle title='예약한 전시' />
+        <SectionCardList items={dummyReservations} type='reservation' />
+      </section>
+      <section>
+        <SectionTitle title='관람한 전시' />
+        <SectionCardList items={dummyViewed} type='viewed' />
+      </section>
+      <section>
+        <SectionTitle title='전시 캘린더' />
+        <SectionCalendar items={dummyReservations} />
+      </section>
     </div>
   );
 }
