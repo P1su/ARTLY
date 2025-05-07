@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
-  top: 50%;
+
+  position: absolute;
+  left: 2rem;
+  transition: 1s ease-out;
 
   width: 7rem;
   height: 10rem;
