@@ -1,7 +1,7 @@
 import styles from './ArtistDetail.module.css';
 import { mockArtistDetail } from './mock/mockArtistDetail.js';
 import BtnFavorite from '../ExhibitionDetail/components/BtnFavorite/BtnFavorite'; //추후 확장 및 수정 예정
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function ArtistDetail() {
@@ -87,9 +87,10 @@ export default function ArtistDetail() {
                   exhibitionAddress,
                   exhibitionDate,
                 }) => (
-                  <div
+                  <Link
                     className={styles.activityItemContainer}
                     key={exhibitionId}
+                    to={`/exhibitions/${exhibitionId}`}
                   >
                     <img
                       className={styles.activityImage}
@@ -98,7 +99,7 @@ export default function ArtistDetail() {
                     <span className={styles.titleSpan}>{exhibitionTitle}</span>
                     <span>{exhibitionAddress}</span>
                     <span>{exhibitionDate}</span>
-                  </div>
+                  </Link>
                 ),
               )}
         </ul>
