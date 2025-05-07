@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './SectionCatalog.module.css';
-import dummyImg from '../../../../assets/images/dummyImg.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function SectionCatalog({ items }) {

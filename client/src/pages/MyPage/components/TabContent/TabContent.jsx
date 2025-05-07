@@ -1,7 +1,7 @@
 import React from 'react';
-import TabMyArtly from '../TabMyArtly/TabMyArtly';
-import TabLike from '../TabLike/TabLike';
-import TabPurchased from '../TabPurchased/TabPurchased';
+import TabMyArtly from './TabMyArtly/TabMyArtly';
+import TabLike from './TabLike/TabLike';
+import TabPurchased from './TabPurchased/TabPurchased';
 
 export default function TabContent({ tab }) {
   switch (tab) {

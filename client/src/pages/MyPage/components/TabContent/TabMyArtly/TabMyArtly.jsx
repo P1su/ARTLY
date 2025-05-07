@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './TabMyArtly.module.css';
 
-import SectionCalendar from '../SectionCalendar/SectionCalendar';
-import dummyImg from '../../../../assets/images/dummyImg.png';
-import SectionTitle from '../SectionTitle/SectionTitle';
-import SectionCardList from '../SectionCardList/SectionCardList';
+import SectionCalendar from '../../Sections/SectionCalendar/SectionCalendar';
+import dummyImg from '../../../../../assets/images/dummyImg.png';
+import SectionTitle from '../../SectionTitle/SectionTitle';
+import SectionCardList from '../../SectionCardList/SectionCardList';
 
 const dummyReservations = [
   {

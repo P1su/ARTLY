@@ -1,7 +1,7 @@
 import React from 'react';
-import SectionTitle from '../SectionTitle/SectionTitle';
-import SectionCatalog from '../SectionCatalog/SectionCatalog';
-import dummyImg from '../../../../assets/images/dummyImg.png';
+import SectionTitle from '../../SectionTitle/SectionTitle';
+import dummyImg from '../../../../../assets/images/dummyImg.png';
+import SectionCatalog from '../../Sections/SectionCatalog/SectionCatalog';
 
 const dummyCatalogs = [
   {

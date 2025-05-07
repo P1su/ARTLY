@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './SectionCardList.module.css';
-import SectionCard from '../SectionCard/SectionCard';
+import SectionCard from '../Sections/SectionCard/SectionCard';
 
 export default function SectionCardList({ items, type }) {
   return (
