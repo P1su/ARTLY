@@ -3,6 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
 import LayoutWithSearchbar from '../layouts/LayoutWithSearchbar';
 import Main from '../pages/Main/Main';
+import Exhibitions from '../pages/Exhibitions/Exhibitions';
+import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
 import Test from '../pages/Test/Test';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
@@ -21,7 +23,11 @@ const router = createBrowserRouter([
           },
           {
             path: '/exhibitions',
-            element: <div>전시회 페이지</div>,
+            element: <Exhibitions />,
+          },
+          {
+            path: '/exhibitions/:exhibitionId',
+            element: <ExhibitionDetail />,
           },
           {
             path: '/galleries',
