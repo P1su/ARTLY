@@ -6,6 +6,7 @@ import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
 import Artists from '../pages/Artists/Artists';
+import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
 import Test from '../pages/Test/Test';
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           {
             path: '/artists',
             element: <Artists />,
+          },
+          {
+            path: '/artists/:artistId',
+            element: <ArtistDetail />,
           },
           {
             path: '/notices',
