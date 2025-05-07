@@ -1,9 +1,8 @@
 import React from 'react';
-import SectionTitle from '../../../../components/SectionTitle/SectionTitle';
 import styles from './SectionCalendar.module.css';
 
 export default function SectionCalendar({ items }) {
-  // 캘린더에서 예약된 내용 사용
+  // 추후 캘린더에서 예약된 item 내용 사용
   const { title, location, date } = items;
 
   const schedules = [

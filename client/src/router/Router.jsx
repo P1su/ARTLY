@@ -53,6 +53,10 @@ const router = createBrowserRouter([
         path: '/mypage/edit',
         element: <EditProfile />,
       },
+      {
+        path: '/catalog',
+        element: <div>도록 페이지</div>,
+      },
     ],
   },
 ]);

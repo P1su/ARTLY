@@ -3,8 +3,8 @@ import styles from './TabMyArtly.module.css';
 
 import SectionCalendar from '../SectionCalendar/SectionCalendar';
 import dummyImg from '../../../../assets/images/dummyImg.png';
-import SectionTitle from '../../../../components/SectionTitle/SectionTitle';
-import SectionCardList from '../../../../components/SectionCardList/SectionCardList';
+import SectionTitle from '../SectionTitle/SectionTitle';
+import SectionCardList from '../SectionCardList/SectionCardList';
 
 const dummyReservations = [
   {
