@@ -1,6 +1,7 @@
 import styles from './Artists.module.css';
 import { useState } from 'react';
 import { mockArtistList } from './mock/mockArtistList.js';
+import { Link } from 'react-router-dom';
 
 export default function Artists() {
   const [isDisplay, setIsDisplay] = useState(false);
@@ -32,7 +33,11 @@ export default function Artists() {
       <section className={styles.artistListSection}>
         {mockArtistList.map(
           ({ artistId, artistName, artistImage, artistCategory }) => (
-            <div className={styles.artistItemContainer} key={artistId}>
+            <Link
+              className={styles.artistItemContainer}
+              key={artistId}
+              to={`/artists/${artistId}`}
+            >
               <img
                 className={styles.artistImage}
                 src={artistImage}
@@ -40,7 +45,7 @@ export default function Artists() {
               />
               <span className={styles.titleSpan}>{artistName}</span>
               <span className={styles.subSpan}>{artistCategory}</span>
-            </div>
+            </Link>
           ),
         )}
       </section>
