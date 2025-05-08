@@ -29,11 +29,7 @@ export default function EditProfile() {
         <div className={styles.inputContainer}>
           <div className={styles.inputRow}>
             <label>닉네임</label>
-            <input
-              type='text'
-              defaultValue='아뜰리'
-              className={styles.input}
-            />{' '}
+            <input type='text' defaultValue='아뜰리' className={styles.input} />
             님
           </div>
 
