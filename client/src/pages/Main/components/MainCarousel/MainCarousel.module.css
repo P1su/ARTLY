@@ -24,7 +24,7 @@
   width: 100%;  
   height: 15rem;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 0.8rem;
 }
 
 .dots {
@@ -34,11 +34,11 @@
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 1.2rem;
+  height: 1.2rem;
   border-radius: 50%;
   background: gray;
-  margin: 0 5px;
+  margin: 0 0.5rem;
   border: none;
   cursor: pointer;
   opacity: 0.5;
