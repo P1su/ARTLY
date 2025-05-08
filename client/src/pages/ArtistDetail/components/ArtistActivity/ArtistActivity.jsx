@@ -7,10 +7,8 @@ export default function ArtistActivity() {
   const [activity, setActivity] = useState('artworks');
   const { artworks, exhibitions } = mockArtistDetail;
 
-  const handleActivity = () => {
-    activity === 'artworks'
-      ? setActivity('exhibitions')
-      : setActivity('artworks');
+  const handleActivity = (activityType) => {
+    setActivity(activityType);
   };
 
   return (
@@ -22,7 +20,9 @@ export default function ArtistActivity() {
               ? styles.activedActivityTypeBox
               : styles.activityTypeBox
           }
-          onClick={handleActivity}
+          onClick={() => {
+            handleActivity('artworks');
+          }}
         >
           작품
         </div>
@@ -32,7 +32,9 @@ export default function ArtistActivity() {
               ? styles.activedActivityTypeBox
               : styles.activityTypeBox
           }
-          onClick={handleActivity}
+          onClick={() => {
+            handleActivity('exhibitions');
+          }}
         >
           전시
         </div>
