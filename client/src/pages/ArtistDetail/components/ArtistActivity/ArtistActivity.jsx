@@ -87,7 +87,11 @@ export default function ArtistActivity() {
 function ActivityDetail({ image, title, mainContent, subContent }) {
   return (
     <>
-      <img className={styles.activityImage} src={image} />
+      <img
+        className={styles.activityImage}
+        src={image}
+        alt='대표 활동 이미지'
+      />
       <span className={styles.titleSpan}>{title}</span>
       <span>{mainContent}</span>
       <span>{subContent}</span>
