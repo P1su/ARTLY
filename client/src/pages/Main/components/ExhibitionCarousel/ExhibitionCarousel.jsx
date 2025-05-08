@@ -27,7 +27,6 @@ export default function ExhibitionCarousel({ title, items }) {
   const slideTo = (index) => {
     if (isSliding) return;
     setIsSliding(true);
-
     const width = carouselRef.current.offsetWidth / slidesToShow;
     carouselRef.current.style.transition = 'transform 0.4s ease-in-out';
     carouselRef.current.style.transform = `translateX(-${width * index}px)`;
@@ -93,14 +92,18 @@ export default function ExhibitionCarousel({ title, items }) {
           {clonedItems.map((item, i) => (
             <div
               className={styles.carouselSlide}
-              key={i}
+              key={item.id ?? `clone-${i}`}
               style={{ width: `${100 / slidesToShow}%` }}
             >
-              <img src={item.image} alt={`poster-${i}`} className={styles.carouselImage} />
+              <img
+                src={item.image}
+                alt={item.name ? `${item.name} 포스터` : '전시 이미지'}
+                className={styles.carouselImage}
+              />
               <div className={styles.cardText}>
-                <strong>{item.name}</strong>
-                <div>{item.gallery}</div>
-                <div>{item.date}</div>
+                <h3>{item.name}</h3>
+                <p>{item.gallery}</p>
+                <p>{item.date}</p>
               </div>
             </div>
           ))}

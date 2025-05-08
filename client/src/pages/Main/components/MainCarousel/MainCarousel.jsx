@@ -27,16 +27,16 @@ export default function MainCarousel({ items }) {
           className={styles.slider}
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {items.map((item, i) => (
-            <div key={i} className={styles.carouselItem}>
+          {items.map((item) => (
+            <div key={item.id} className={styles.carouselItem}>
               <img
                 src={item.image}
-                alt={item.title || `poster-${i}`}
+                alt={item.title || `${item.name}`}
                 className={styles.carouselImage}
               />
               <div>
-                <h3>{item.title}</h3>
-                <p>{item.period}</p>
+                <h3>{item.title || item.name}</h3>
+                <p>{item.period || item.date}</p>
                 <p>{item.gallery}</p>
               </div>
             </div>
@@ -44,9 +44,9 @@ export default function MainCarousel({ items }) {
         </div>
       </div>
       <div className={styles.dots}>
-        {items.map((_, i) => (
+        {items.map((item, i) => (
           <button
-            key={i}
+            key={item.id}
             onClick={() => goToSlide(i)}
             className={`${styles.dot} ${i === currentIndex ? styles.active : ''}`}
           />
