@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import styles from './ChatbotWidget.module.css';
-import chatbotIcon from '../../../assets/images/chatbot.png';
-import chatbotProfile from '../../../assets/images/chatbotProfile.png';
+import chatbotIcon from '../../assets/images/chatbot.png';
+import chatbotProfile from '../../assets/images/chatbotProfile.png';
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
+      id: 0,
       sender: 'bot',
       text: '안녕하세요! 아뜰리입니다 :) 무엇을 도와드릴까요?',
     },
@@ -24,8 +25,9 @@ export default function ChatbotWidget() {
     if (inputValue.trim()) {
       setMessages([
         ...messages,
-        { sender: 'user', text: inputValue },
+        { id: 1, sender: 'user', text: inputValue },
         {
+          id: 2,
           sender: 'bot',
           text: '아뜰리에 대해 설명드리겠습니다. 잠시만 기다려 주세요.',
         },

@@ -8,7 +8,8 @@ import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
 import Test from '../pages/Test/Test';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
-
+import Mypage from '../pages/MyPage/MyPage';
+import EditProfile from '../pages/EditProfile/EditProfile';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,18 @@ const router = createBrowserRouter([
       {
         path: '/nearby-galleries',
         element: <div>주변 갤러리 페이지</div>,
+      },
+      {
+        path: '/mypage',
+        element: <Mypage />,
+      },
+      {
+        path: '/mypage/edit',
+        element: <EditProfile />,
+      },
+      {
+        path: '/catalog',
+        element: <div>도록 페이지</div>,
       },
     ],
   },
