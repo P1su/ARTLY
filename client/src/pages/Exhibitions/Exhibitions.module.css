@@ -1,0 +1,28 @@
+.layout {
+  min-height: calc(100vh - 9rem);
+  padding-bottom: 4rem;
+}
+
+.exhibitionListSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.exhibitionItemContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.exhibitionImage {
+  height: 20rem;
+  object-fit: fill;
+}
+
+.titleSpan {
+  font-weight: 500;
+}
+
+.subSpan {
+  color: #878787;
+}

@@ -32,7 +32,6 @@ html {
   margin: 0 auto;
   /* 버튼 클릭 시 색 제거 */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  overflow-x: hidden;
   color: black;
 
   /* 파이어폭스 스크롤바 숨김 */
