@@ -1,10 +1,11 @@
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Menu from '../Menu/Menu';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -16,12 +17,15 @@ export default function Header() {
     document.body.style.overflow = 'unset';
   };
 
+  const handleHome = () => {
+    handleClose();
+    navigate('/');
+  };
+
   return (
     <header className={styles.headerLayout}>
       <h1 className={styles.logoBox}>
-        <Link to='/' className={styles.logoLink}>
-          Artly
-        </Link>
+        <span onClick={handleHome}>Artly</span>
       </h1>
       <button onClick={isOpen ? handleClose : handleOpen}>
         {isOpen ? '닫기' : '메뉴'}
