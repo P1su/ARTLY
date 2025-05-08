@@ -1,0 +1,51 @@
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.sliderWrapper {
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.carouselItem {
+  min-width: 100%;
+  position: relative;
+}
+
+.carouselImage {
+  width: 100%;  
+  height: 15rem;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: gray;
+  margin: 0 5px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.dot.active {
+  opacity: 1;
+  background: black;
+}
