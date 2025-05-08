@@ -8,6 +8,8 @@ import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
 import Artists from '../pages/Artists/Artists';
 import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
 import Test from '../pages/Test/Test';
+import Login from '../pages/Login/Login';
+import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
 
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
             element: <div>공고 페이지</div>,
           },
         ],
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/register',
+        element: <Register />,
       },
       {
         path: '/test',
