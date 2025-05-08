@@ -1,0 +1,41 @@
+.activitySection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.activityTypeContainer {
+  display: flex;
+}
+
+.activedActivityTypeBox,
+.activityTypeBox {
+  width: 50%;
+  border-bottom: 0.2rem solid #eaeaea;
+
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.activedActivityTypeBox {
+  border-bottom: 0.2rem solid #020202;
+
+  font-weight: 500;
+}
+
+.activityItemList {
+  display: flex;
+  gap: 2rem;
+}
+
+.activityItemContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.activityImage {
+  width: 7rem;
+  height: 10rem;
+
+  object-fit: fill;
+}

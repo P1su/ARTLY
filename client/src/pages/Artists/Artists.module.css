@@ -1,0 +1,40 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  padding: 2rem;
+}
+
+.activedSpan {
+  color: #f54dfe;
+  font-weight: 500;
+}
+
+.artistListSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.artistItemContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artistImage {
+  width: 100%;
+  height: 20rem;
+
+  object-fit: fill;
+}
+
+.titleSpan {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.subSpan {
+  color: #878787;
+}
