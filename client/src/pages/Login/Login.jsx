@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../../components/Logo/Logo';
 import InputText from '../../components/InputText/InputText';
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
-import Footer from '../../components/common/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 import styles from './Login.module.css';
 
 export default function Login() {
