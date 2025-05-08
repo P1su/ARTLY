@@ -7,7 +7,7 @@ export default function Artists() {
   const [isDisplay, setIsDisplay] = useState(false);
 
   const handleIsDisplay = () => {
-    setIsDisplay(!isDisplay);
+    setIsDisplay((prev) => !prev);
 
     //isDisplay 값에 따라 데이터 fetch
     console.log('API 연결');
