@@ -48,7 +48,11 @@ export default function GalleryExhibitions() {
             exhibitionAddress,
             exhibitionDate,
           }) => (
-            <Link className={styles.exhibitionItemContainer} key={exhibitionId}>
+            <Link
+              className={styles.exhibitionItemContainer}
+              key={exhibitionId}
+              to={`/exhibitions/${exhibitionId}`}
+            >
               <img
                 className={styles.exhibitionImage}
                 src={exhibitionImage}

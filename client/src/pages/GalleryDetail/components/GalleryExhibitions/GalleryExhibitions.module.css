@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  width: 100%;
 }
 .exhibitionTypeContainer {
   display: flex;
@@ -25,6 +27,8 @@
 .exhibitionItemList {
   display: flex;
   gap: 2rem;
+
+  overflow-x: scroll;
 }
 
 .exhibitionItemContainer {
