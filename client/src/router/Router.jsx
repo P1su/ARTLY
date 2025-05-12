@@ -14,6 +14,7 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
+import Reservation from '../pages/Reservation/Reservation';
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
         path: '/catalog',
         element: <div>도록 페이지</div>,
       },
+      { path: '/reservation/:exhibitionId', element: <Reservation /> },
     ],
   },
 ]);
