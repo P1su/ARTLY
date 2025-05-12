@@ -21,7 +21,7 @@ export default function Galleries() {
             <img
               className={styles.galleryItemImage}
               src={galleryImage}
-              alt='갤러리 대표 이미지지'
+              alt='갤러리 대표 이미지'
             />
             <div className={styles.galleryInfoContainer}>
               <span className={styles.titleSpan}>{galleryName}</span>
