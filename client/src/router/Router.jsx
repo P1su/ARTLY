@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
-import LayoutWithSearchbar from '../layouts/LayoutWithSearchbarFooter';
 import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
@@ -14,7 +13,6 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
-import LayoutWithHeaderChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
@@ -31,7 +29,7 @@ const router = createBrowserRouter([
             element: <LayoutWithChatbot />,
             children: [
               {
-                element: <LayoutWithSearchbarFooter />, // 서치바 + 푸터 포함
+                element: <LayoutWithSearchbarFooter />,
                 children: [
                   { path: '/', element: <Main /> },
                   { path: '/exhibitions', element: <Exhibitions /> },
