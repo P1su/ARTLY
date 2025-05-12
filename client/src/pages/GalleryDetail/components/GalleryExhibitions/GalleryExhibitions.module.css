@@ -1,0 +1,49 @@
+.exhibitionSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  width: 100%;
+}
+.exhibitionTypeContainer {
+  display: flex;
+}
+
+.activedExhibitionTypeButton,
+.exhibitionTypeButton {
+  width: 50%;
+  border-bottom: 0.2rem solid #eaeaea;
+
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.activedExhibitionTypeButton {
+  border-bottom: 0.2rem solid #020202;
+
+  font-weight: 500;
+}
+
+.exhibitionItemList {
+  display: flex;
+  gap: 2rem;
+
+  overflow-x: scroll;
+}
+
+.exhibitionItemContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.exhibitionImage {
+  width: 7rem;
+  height: 10rem;
+
+  object-fit: fill;
+}
+
+.titleSpan {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
