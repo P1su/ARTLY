@@ -1,0 +1,33 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+}
+
+.galleryItemContainer {
+  display: flex;
+  gap: 2rem;
+
+  padding: 1rem 0;
+
+  border-top: 1rem solid #eaeaea;
+}
+
+.galleryItemImage {
+  width: 15rem;
+  height: 10rem;
+
+  object-fit: fill;
+}
+
+.galleryInfoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.titleSpan {
+  font-size: 1.2rem;
+  font-weight: 500;
+}

@@ -7,6 +7,8 @@ import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
 import Artists from '../pages/Artists/Artists';
 import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
+import Galleries from '../pages/Galleries/Galleries';
+import GalleryDetail from '../pages/GalleryDetail/GalleryDetail';
 import Test from '../pages/Test/Test';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
@@ -35,7 +37,11 @@ const router = createBrowserRouter([
           },
           {
             path: '/galleries',
-            element: <div>갤러리 페이지</div>,
+            element: <Galleries />,
+          },
+          {
+            path: '/galleries/:galleryId',
+            element: <GalleryDetail />,
           },
           {
             path: '/artists',
@@ -53,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <Login />
+        element: <Login />,
       },
       {
         path: '/register',
