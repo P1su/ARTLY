@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ProfileCard.module.css';
 import { Link } from 'react-router-dom';
-import userProfile from '../../../../assets/images/userProfile.png';
+import userProfile from '../../mock/userProfile.png';
 
 export default function ProfileCard() {
   return (

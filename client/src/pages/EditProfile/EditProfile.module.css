@@ -104,6 +104,7 @@
 }
 
 .submitBtn {
+  text-align: center;
   width: 10rem;
   padding: 0.8rem 2rem;
   border: 0.2rem solid #3f3f9f;

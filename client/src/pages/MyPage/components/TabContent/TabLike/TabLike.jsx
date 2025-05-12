@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TabLike.module.css';
-import dummyImg from '../../../../../assets/images/dummyImg.png';
+import dummyImg from '../../../mock/dummyImg.png';
 import SectionTitle from '../../SectionTitle/SectionTitle';
 import SectionCardList from '../../SectionCardList/SectionCardList';
 import SectionArtistCardList from '../../SectionArtistCardList/SectionArtistCardList';
