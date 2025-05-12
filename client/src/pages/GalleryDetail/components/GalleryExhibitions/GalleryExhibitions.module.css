@@ -9,8 +9,8 @@
   display: flex;
 }
 
-.activedExhibitionTypeBox,
-.exhibitionTypeBox {
+.activedExhibitionTypeButton,
+.exhibitionTypeButton {
   width: 50%;
   border-bottom: 0.2rem solid #eaeaea;
 
@@ -18,7 +18,7 @@
   text-align: center;
 }
 
-.activedExhibitionTypeBox {
+.activedExhibitionTypeButton {
   border-bottom: 0.2rem solid #020202;
 
   font-weight: 500;

@@ -14,30 +14,30 @@ export default function GalleryExhibitions() {
   return (
     <section className={styles.exhibitionSection}>
       <div className={styles.exhibitionTypeContainer}>
-        <div
+        <button
           className={
             type === 'operating'
-              ? styles.activedExhibitionTypeBox
-              : styles.exhibitionTypeBox
+              ? styles.activedExhibitionTypeButton
+              : styles.exhibitionTypeButton
           }
           onClick={() => {
             handleType('operating');
           }}
         >
           진행 중인 전시
-        </div>
-        <div
+        </button>
+        <button
           className={
             type === 'scheduled'
-              ? styles.activedExhibitionTypeBox
-              : styles.exhibitionTypeBox
+              ? styles.activedExhibitionTypeButton
+              : styles.exhibitionTypeButton
           }
           onClick={() => {
             handleType('scheduled');
           }}
         >
           예정 전시
-        </div>
+        </button>
       </div>
       <ul className={styles.exhibitionItemList}>
         {exhibitions[type].map(
