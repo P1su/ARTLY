@@ -14,6 +14,7 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
+import Search from '../pages/Search/Search';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
           {
             path: '/notices',
             element: <div>공고 페이지</div>,
+          },
+          {
+            path: '/serach',
+            element: <Search />,
           },
         ],
       },
