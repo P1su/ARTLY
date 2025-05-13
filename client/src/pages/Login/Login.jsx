@@ -11,12 +11,11 @@ export default function Login() {
       <div className={styles.contentContainer}>
         <Logo />
         <form className={styles.form}>
-          <InputText placeholder="아이디" />
-          <InputText placeholder="비밀번호" />
-          <BtnPrimary label="Login" />
+          <InputText placeholder='아이디' />
+          <InputText placeholder='비밀번호' />
+          <BtnPrimary label='Login' />
         </form>
       </div>
-      <Footer />
     </div>
   );
 }
