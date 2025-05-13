@@ -2,6 +2,21 @@
   overflow: auto;
   margin: 2rem;
 }
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.backBtn {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
 .exhibitionInfo {
   text-align: center;
   margin-bottom: 3.2rem;
@@ -15,7 +30,7 @@
 
 .exhibitionTitle {
   margin-top: 1.2rem;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
 }
 
@@ -32,34 +47,15 @@
   box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.05);
   background-color: #fff;
 }
-.formContainer h2 {
-  font-size: 1.5rem;
-}
-
-.label {
-  display: block;
-  margin-top: 2rem;
-  margin-bottom: 0.8rem;
-  font-size: 1.6rem;
-  font-weight: bold;
-}
-
-.input {
-  width: 100%;
-  padding: 1rem;
-  border: 0.1rem solid #ccc;
-  border-radius: 0.8rem;
-  font-size: 1.4rem;
-}
 
 .button {
   width: 100%;
-  margin-top: 3rem;
+  margin-top: 1rem;
   padding: 1.2rem;
   border: none;
   border-radius: 0.8rem;
   background-color: #3f51b5;
-  color: white;
+  color: #fff;
   font-size: 1.6rem;
   transition: background-color 0.2s ease;
 }
@@ -68,10 +64,18 @@
   background-color: #303f9f;
 }
 
+.totalSection {
+  padding: 1.5rem;
+  background-color: #e5e5e5;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+}
+
 .tabContainer {
   display: flex;
   justify-content: space-around;
-  margin: 0 0 2rem;
+  margin-bottom: 2rem;
 }
 
 .tab {
@@ -94,4 +98,60 @@
   border: 0.1rem solid #ddd;
   border-radius: 0.8rem;
   background-color: #fff;
+}
+
+.selectorSection {
+  margin-bottom: 3rem;
+  font-size: 1.2rem;
+}
+
+.selectorSection h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.timeButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.timeBtn {
+  flex: 1;
+  min-width: 5rem;
+  padding: 1rem 1.4rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.active {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.counterRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.counterRow button {
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.8rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.count {
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
 }

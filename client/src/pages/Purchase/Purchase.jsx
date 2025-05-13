@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
 import styles from './Purchase.module.css';
+import { useLocation } from 'react-router-dom';
 
 export default function Purchase() {
+  const { state } = useLocation();
   const [selectedPayment, setSelectedPayment] = useState('');
+
+  const {
+    exhibition = {},
+    date = '',
+    people = 0,
+    email = 'test@test.com',
+    phone = '010-1234-5678',
+    name = '아뜰리',
+  } = state || {};
+  console.log('state:', state);
 
   const handlePayment = () => {
     if (!selectedPayment) {
@@ -16,24 +28,22 @@ export default function Purchase() {
     <div className={styles.container}>
       <h2 className={styles.title}>주문서</h2>
       <div className={styles.orderSection}>
-        <p className={styles.userInfo}>
-          아뜰리 님<br />
-          <a href='mailto:test@email.com'>test@email.com</a>
-          <br />
-          010-1234-5678
-        </p>
+        <div className={styles.userInfo}>
+          <p>{name} 님</p>
+          <p>{email}</p>
+          <p>{phone}</p>
+        </div>
 
         <div className={styles.productBox}>
           <img
-            src='/exhibitionImg.png'
+            src={exhibition.imageUrl}
             alt='전시 이미지'
             className={styles.productImage}
           />
           <div>
-            <h3>어둠 속의 대화</h3>
-            <p>2025.04.16 10:00 ~ 11:40</p>
-            <p>일반, 성인: 33,000 X 2</p>
-            <p>일반, 청소년: 22,000 X 1</p>
+            <h3>{exhibition.title}</h3>
+            <p>일시 :{date}</p>
+            <p>가격 : 33,000 X {people}</p>
           </div>
         </div>
       </div>
