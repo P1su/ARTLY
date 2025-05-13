@@ -1,42 +1,57 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Reservation.module.css';
 import exhibitionImg from './mock/exhibitionImg.png';
 
+// mock data
+const price = { adult: 5000, teen: 3000, child: 0 };
+const times = ['11:00', '13:00', '15:00', '17:00'];
+const dummyExhibitions = [
+  {
+    id: '0',
+    title: '어둠 속의 대화',
+    imageUrl: exhibitionImg,
+    location: '북촌 어둠속의 대화',
+    dateRange: '2025.03.15 ~ 2025.06.21',
+    duration: '100분',
+  },
+];
+
 export default function Reservation() {
   const navigate = useNavigate();
+
   const { exhibitionId } = useParams();
-
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-  const [adults, setAdults] = useState(0);
-  const [teens, setTeens] = useState(0);
-  const [children, setChildren] = useState(0);
-  const [activeTab, setActiveTab] = useState('상세정보');
-
-  const price = { adult: 5000, teen: 3000, child: 0 };
-  const total =
-    adults * price.adult + teens * price.teen + children * price.child;
-
-  const dummyExhibitions = [
-    {
-      id: '0',
-      title: '어둠 속의 대화',
-      imageUrl: exhibitionImg,
-      location: '북촌 어둠속의 대화',
-      dateRange: '2025.03.15 ~ 2025.06.21',
-      duration: '100분',
-    },
-  ];
-
   const exhibition = dummyExhibitions.find((ex) => ex.id === exhibitionId);
 
+  const [activeTab, setActiveTab] = useState('상세정보');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [people, setPeople] = useState({
+    adults: 0,
+    teens: 0,
+    children: 0,
+  });
+
+  const total =
+    people.adults * price.adult +
+    people.teens * price.teen +
+    people.children * price.child;
+
   const handleReservation = () => {
+    if (
+      !selectedDate ||
+      !selectedTime ||
+      people.adults + people.teens + people.children === 0
+    ) {
+      alert('예매 정보를 모두 선택해주세요.');
+      return;
+    }
     const reservationData = {
       exhibition,
       date: selectedDate,
       time: selectedTime,
-      people: { adults, teens, children },
+      people,
+      total,
     };
     const dummyReservationId = Date.now();
     navigate(`/purchase/${dummyReservationId}`, { state: reservationData });
@@ -59,15 +74,23 @@ export default function Reservation() {
     }
   };
 
-  const renderCounter = (label, count, setCount) => (
+  const renderCounter = (label, i) => (
     <div className={styles.counterRow} key={label}>
       <span>{label}</span>
       <div>
-        <button onClick={() => setCount((prev) => Math.max(0, prev - 1))}>
+        <button
+          onClick={() =>
+            setPeople((prev) => ({ ...prev, [i]: Math.max(0, prev[i] - 1) }))
+          }
+        >
           -
         </button>
-        <span className={styles.count}>{count}</span>
-        <button onClick={() => setCount((prev) => prev + 1)}>+</button>
+        <span className={styles.count}>{people[i]}</span>
+        <button
+          onClick={() => setPeople((prev) => ({ ...prev, [i]: prev[i] + 1 }))}
+        >
+          +
+        </button>
       </div>
     </div>
   );
@@ -78,7 +101,7 @@ export default function Reservation() {
         <button className={styles.backBtn} onClick={handleBack}>
           &larr;
         </button>
-        <p className={styles.title}>예매</p>
+        <span className={styles.title}>전시회 예매</span>
       </header>
 
       {exhibition ? (
@@ -113,7 +136,7 @@ export default function Reservation() {
         <section className={styles.selectorSection}>
           <h3>회차 선택</h3>
           <div className={styles.timeButtonContainer}>
-            {['11:00', '13:00', '15:00', '17:00'].map((time) => (
+            {times.map((time) => (
               <button
                 key={time}
                 className={`${styles.timeBtn} ${selectedTime === time ? styles.active : ''}`}
@@ -128,24 +151,10 @@ export default function Reservation() {
         <section className={styles.selectorSection}>
           <h3>인원 선택</h3>
           {[
-            {
-              label: `- 성인 : ${price.adult}원`,
-              count: adults,
-              setCount: setAdults,
-            },
-            {
-              label: `- 청소년 : ${price.teen}원`,
-              count: teens,
-              setCount: setTeens,
-            },
-            {
-              label: `- 유아 : ${price.child}원`,
-              count: children,
-              setCount: setChildren,
-            },
-          ].map(({ label, count, setCount }) =>
-            renderCounter(label, count, setCount),
-          )}
+            { label: `- 성인 : ${price.adult}원`, i: 'adults' },
+            { label: `- 청소년 : ${price.teen}원`, i: 'teens' },
+            { label: `- 유아 : ${price.child}원`, i: 'children' },
+          ].map(({ label, i }) => renderCounter(label, i))}
         </section>
 
         <button onClick={handleReservation} className={styles.button}>
@@ -156,7 +165,7 @@ export default function Reservation() {
       <section className={styles.totalSection}>
         <h4>요금 정보</h4>
         <br />
-        <h3>- 총 합계: {total.toLocaleString()}원</h3>
+        <h3>- 총 금액: {total.toLocaleString()}원</h3>
       </section>
 
       <div className={styles.tabContainer}>
