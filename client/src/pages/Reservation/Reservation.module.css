@@ -6,10 +6,10 @@
 .header {
   display: flex;
   align-items: flex-end;
+  margin-bottom: 2rem;
   gap: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 2rem;
 }
 
 .backBtn {
@@ -40,7 +40,7 @@
 }
 
 .formContainer {
-  margin: 4rem auto;
+  margin: 3rem auto;
   padding: 2.4rem;
   border: 0.1rem solid #ddd;
   border-radius: 1.2rem;
@@ -65,10 +65,10 @@
 }
 
 .totalSection {
-  padding: 1.5rem;
-  background-color: #e5e5e5;
-  border-radius: 1rem;
   margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: #e5e5e5;
   font-size: 1.2rem;
 }
 
@@ -106,8 +106,8 @@
 }
 
 .selectorSection h3 {
-  font-size: 1.5rem;
   margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 .timeButtonContainer {
@@ -121,10 +121,9 @@
   flex: 1;
   min-width: 5rem;
   padding: 1rem 1.4rem;
-  background-color: #eee;
   border: none;
   border-radius: 0.8rem;
-  cursor: pointer;
+  background-color: #eee;
   font-weight: 500;
 }
 
@@ -143,15 +142,14 @@
 .counterRow button {
   width: 3.2rem;
   height: 3.2rem;
-  font-size: 1.8rem;
-  background-color: #eee;
   border: none;
   border-radius: 0.4rem;
-  cursor: pointer;
+  background-color: #eee;
+  font-size: 1.8rem;
 }
 
 .count {
   display: inline-block;
-  width: 3rem;
   text-align: center;
+  width: 3rem;
 }

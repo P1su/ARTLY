@@ -63,9 +63,11 @@ export default function Reservation() {
     <div className={styles.counterRow} key={label}>
       <span>{label}</span>
       <div>
-        <button onClick={() => setCount(Math.max(0, count - 1))}>-</button>
+        <button onClick={() => setCount((prev) => Math.max(0, prev - 1))}>
+          -
+        </button>
         <span className={styles.count}>{count}</span>
-        <button onClick={() => setCount(count + 1)}>+</button>
+        <button onClick={() => setCount((prev) => prev + 1)}>+</button>
       </div>
     </div>
   );
@@ -152,8 +154,9 @@ export default function Reservation() {
       </div>
 
       <section className={styles.totalSection}>
-        <h3>요금 정보</h3>
-        <p>총 합계: {total.toLocaleString()}원</p>
+        <h4>요금 정보</h4>
+        <br />
+        <h3>- 총 합계: {total.toLocaleString()}원</h3>
       </section>
 
       <div className={styles.tabContainer}>
