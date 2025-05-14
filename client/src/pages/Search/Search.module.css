@@ -1,3 +1,28 @@
 .layout {
   display: flex;
+  flex-direction: column;
+}
+
+.summaryTitle {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.queryStringSpan {
+  color: #5a4fcf;
+}
+
+.resultSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.categoryTitle {
+  font-size: 1.6rem;
+}
+
+.resultList {
+  display: flex;
+  gap: 2rem;
 }

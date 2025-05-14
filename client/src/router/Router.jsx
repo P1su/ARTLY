@@ -57,7 +57,7 @@ const router = createBrowserRouter([
             element: <div>공고 페이지</div>,
           },
           {
-            path: '/serach',
+            path: '/search',
             element: <Search />,
           },
         ],
