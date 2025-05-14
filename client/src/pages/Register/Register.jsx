@@ -11,15 +11,14 @@ export default function Register() {
       <div className={styles.contentContainer}>
         <Logo />
         <form className={styles.form}>
-          <InputText placeholder="이메일" />
-          <InputText placeholder="비밀번호" type="password" />
-          <InputText placeholder="비밀번호 확인" type="password" />
-          <InputText placeholder="이름" />
-          <InputText placeholder="휴대폰 번호" />
-          <BtnPrimary label="회원가입" />
+          <InputText placeholder='이메일' />
+          <InputText placeholder='비밀번호' type='password' />
+          <InputText placeholder='비밀번호 확인' type='password' />
+          <InputText placeholder='이름' />
+          <InputText placeholder='휴대폰 번호' />
+          <BtnPrimary label='회원가입' />
         </form>
       </div>
-      <Footer />
     </div>
   );
 }
