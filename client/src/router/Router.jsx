@@ -8,7 +8,6 @@ import Artists from '../pages/Artists/Artists';
 import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Galleries/Galleries';
 import GalleryDetail from '../pages/GalleryDetail/GalleryDetail';
-import Test from '../pages/Test/Test';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
