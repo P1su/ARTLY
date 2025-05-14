@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
-import LayoutWithSearchbar from '../layouts/LayoutWithSearchbar';
 import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
@@ -15,6 +14,9 @@ import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
+import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
+import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
+import LayoutWithHeader from '../layouts/LayoutWithHeader';
 
 const router = createBrowserRouter([
   {
@@ -22,73 +24,40 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        element: <LayoutWithSearchbar />,
+        element: <LayoutWithHeader />,
         children: [
           {
-            path: '/',
-            element: <Main />,
+            element: <LayoutWithChatbot />,
+            children: [
+              {
+                element: <LayoutWithSearchbarFooter />,
+                children: [
+                  { path: '/', element: <Main /> },
+                  { path: '/exhibitions', element: <Exhibitions /> },
+                  { path: '/galleries', element: <Galleries /> },
+                  { path: '/artists', element: <Artists /> },
+                  { path: '/search', element: <Search /> },
+                  { path: '/notices', element: <div>공고 페이지</div> },
+                ],
+              },
+              {
+                path: '/exhibitions/:exhibitionId',
+                element: <ExhibitionDetail />,
+              },
+              { path: '/galleries/:galleryId', element: <GalleryDetail /> },
+              { path: '/artists/:artistId', element: <ArtistDetail /> },
+              { path: '/catalog', element: <div>도록 페이지</div> },
+              {
+                path: '/nearby-galleries',
+                element: <div>주변 갤러리 페이지</div>,
+              },
+            ],
           },
-          {
-            path: '/exhibitions',
-            element: <Exhibitions />,
-          },
-          {
-            path: '/exhibitions/:exhibitionId',
-            element: <ExhibitionDetail />,
-          },
-          {
-            path: '/galleries',
-            element: <Galleries />,
-          },
-          {
-            path: '/galleries/:galleryId',
-            element: <GalleryDetail />,
-          },
-          {
-            path: '/artists',
-            element: <Artists />,
-          },
-          {
-            path: '/artists/:artistId',
-            element: <ArtistDetail />,
-          },
-          {
-            path: '/notices',
-            element: <div>공고 페이지</div>,
-          },
-          {
-            path: '/search',
-            element: <Search />,
-          },
+          { path: '/login', element: <Login /> },
+          { path: '/register', element: <Register /> },
+          { path: '/mypage', element: <Mypage /> },
+          { path: '/mypage/edit', element: <EditProfile /> },
         ],
-      },
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-      },
-      {
-        path: '/test',
-        element: <Test />,
-      },
-      {
-        path: '/nearby-galleries',
-        element: <div>주변 갤러리 페이지</div>,
-      },
-      {
-        path: '/mypage',
-        element: <Mypage />,
-      },
-      {
-        path: '/mypage/edit',
-        element: <EditProfile />,
-      },
-      {
-        path: '/catalog',
-        element: <div>도록 페이지</div>,
       },
     ],
   },
