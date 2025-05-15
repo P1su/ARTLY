@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './EditProfile.module.css';
-import defaultProfile from '../../assets/images/userProfile.png';
+import defaultProfile from '../MyPage/mock/userProfile.png';
 import SectionTitle from '../MyPage/components/SectionTitle/SectionTitle';
 import { Link } from 'react-router-dom';
 
