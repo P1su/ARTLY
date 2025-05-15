@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './ChatbotWidget.module.css';
-import chatbotIcon from '../../assets/images/chatbot.png';
-import chatbotProfile from '../../assets/images/chatbotProfile.png';
+import chatbotIcon from './mock/chatbot.png';
+import chatbotProfile from './mock/chatbotProfile.png';
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);

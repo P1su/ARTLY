@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionTitle from '../../SectionTitle/SectionTitle';
-import dummyImg from '../../../../../assets/images/dummyImg.png';
+import dummyImg from '../../../mock/dummyImg.png';
 import SectionCatalog from '../../Sections/SectionCatalog/SectionCatalog';
 
 const dummyCatalogs = [
