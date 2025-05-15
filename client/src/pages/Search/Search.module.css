@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+}
+
+.summaryTitle {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.queryStringSpan {
+  color: #5a4fcf;
+}
+
+.resultSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

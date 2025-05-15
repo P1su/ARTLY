@@ -8,15 +8,13 @@ import Artists from '../pages/Artists/Artists';
 import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Galleries/Galleries';
 import GalleryDetail from '../pages/GalleryDetail/GalleryDetail';
-import Test from '../pages/Test/Test';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
-
+import Search from '../pages/Search/Search';
 import Reservation from '../pages/Reservation/Reservation';
 import Purchase from '../pages/Purchase/Purchase';
-
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
@@ -41,16 +39,23 @@ const router = createBrowserRouter([
                   { path: '/exhibitions', element: <Exhibitions /> },
                   { path: '/galleries', element: <Galleries /> },
                   { path: '/artists', element: <Artists /> },
+                  { path: '/search', element: <Search /> },
+                  { path: '/notices', element: <div>공고 페이지</div> },
                   { path: '/notices', element: <Notice /> },
-                  { path: '/test', element: <Test /> },
                 ],
               },
-              { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
+              {
+                path: '/exhibitions/:exhibitionId',
+                element: <ExhibitionDetail />,
+              },
               { path: '/galleries/:galleryId', element: <GalleryDetail /> },
               { path: '/artists/:artistId', element: <ArtistDetail /> },
-              { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
+              { path: '/notices/:noticeId', element: <NoticeDetail /> },
               { path: '/catalog', element: <div>도록 페이지</div> },
-              { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
+              {
+                path: '/nearby-galleries',
+                element: <div>주변 갤러리 페이지</div>,
+              },
             ],
           },
           { path: '/login', element: <Login /> },
