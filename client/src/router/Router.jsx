@@ -13,6 +13,10 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
+
+import Reservation from '../pages/Reservation/Reservation';
+import Purchase from '../pages/Purchase/Purchase';
+
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
@@ -56,6 +60,8 @@ const router = createBrowserRouter([
           { path: '/register', element: <Register /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
+          { path: '/reservation/:exhibitionId', element: <Reservation /> },
+          { path: '/purchase/:reservationId', element: <Purchase /> },
         ],
       },
     ],
