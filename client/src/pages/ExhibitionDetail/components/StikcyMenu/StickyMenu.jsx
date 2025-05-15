@@ -1,28 +1,10 @@
 import styles from './StickyMenu.module.css';
 import { Link, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import useScroll from '../../hooks/useScroll';
 
 export default function StickyMenu() {
   const { exhibitionId } = useParams();
-
-  const initialBarPosition = 200;
-  const [barPosition, setBarPosition] = useState(initialBarPosition);
-
-  const handleScroll = () => {
-    const position =
-      1000 < initialBarPosition + window.scrollY
-        ? 1000
-        : initialBarPosition + window.scrollY;
-    setBarPosition(position);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const barPosition = useScroll();
 
   return (
     <div className={styles.layout} style={{ top: barPosition }}>
