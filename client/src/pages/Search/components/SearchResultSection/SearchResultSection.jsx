@@ -29,24 +29,24 @@ export default function SearchResultSection({ category, results }) {
     }
   };
 
+  const filterdList = results.filter((item) => item.type === category);
+
   return (
     <section className={styles.layout}>
       <h2 className={styles.categoryTitle}>{transCategory(category).label}</h2>
       <hr />
       <ul className={styles.resultList}>
-        {results.filter((item) => item.type === category).length === 0 ? (
+        {filterdList.length === 0 ? (
           <span>검색 결과가 없습니다</span>
         ) : (
-          results
-            .filter((item) => item.type === category)
-            .map(({ id, thumbnail, title }) => (
-              <SearchResultItem
-                key={id}
-                link={`/${transCategory(category).link}/${id}`}
-                thumbnail={thumbnail}
-                title={title}
-              />
-            ))
+          filterdList.map(({ id, thumbnail, title }) => (
+            <SearchResultItem
+              key={id}
+              link={`/${transCategory(category).link}/${id}`}
+              thumbnail={thumbnail}
+              title={title}
+            />
+          ))
         )}
       </ul>
     </section>
