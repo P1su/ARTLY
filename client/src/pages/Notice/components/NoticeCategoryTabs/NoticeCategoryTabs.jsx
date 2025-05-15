@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './NoticeCategoryTabs.module.css';
 
 export default function NoticeCategoryTabs({ activeTab, setActiveTab }) {

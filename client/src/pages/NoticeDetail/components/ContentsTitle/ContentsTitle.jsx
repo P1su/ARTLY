@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ContentsTitle.module.css';
 
 export default function ContentsTitle({ title }) {

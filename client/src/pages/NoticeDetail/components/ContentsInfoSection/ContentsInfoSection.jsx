@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ContentsInfoSection.module.css';
 
 export default function ContentsInfoSection({ period, host, contact, apply, attachment, site }) {

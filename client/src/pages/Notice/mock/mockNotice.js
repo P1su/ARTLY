@@ -1,5 +1,3 @@
-// src/pages/Notice/data/mockNotice.js
-
 export const mockNotice = [
   {
     id: 1,

@@ -1,15 +1,11 @@
-import React from 'react';
 import NoticeTableHeader from './NoticeTableHeader/NoticeTableHeader';
 import NoticeRow from './NoticeRow/NoticeRow';
-import { mockNotice } from '../../../mock/mockNotice';
 import styles from './NoticeListTable.module.css';
 
-export default function NoticeListTable({ activeTab, currentPage }) {
-  const itemsPerPage = 10;
-  const filtered = mockNotice.filter((item) => item.category === activeTab);
+export default function NoticeListTable({ data, currentPage, itemsPerPage }) {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const pageItems = filtered.slice(startIndex, startIndex + itemsPerPage);
+  const pageItems = data.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <table className={styles.table}>
