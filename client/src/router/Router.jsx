@@ -20,6 +20,8 @@ import Purchase from '../pages/Purchase/Purchase';
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
+import Notice from '../pages/Notice/Notice';
+import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 
 const router = createBrowserRouter([
   {
@@ -39,21 +41,16 @@ const router = createBrowserRouter([
                   { path: '/exhibitions', element: <Exhibitions /> },
                   { path: '/galleries', element: <Galleries /> },
                   { path: '/artists', element: <Artists /> },
-                  { path: '/notices', element: <div>공고 페이지</div> },
+                  { path: '/notices', element: <Notice /> },
                   { path: '/test', element: <Test /> },
                 ],
               },
-              {
-                path: '/exhibitions/:exhibitionId',
-                element: <ExhibitionDetail />,
-              },
+              { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
               { path: '/galleries/:galleryId', element: <GalleryDetail /> },
               { path: '/artists/:artistId', element: <ArtistDetail /> },
+              { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
               { path: '/catalog', element: <div>도록 페이지</div> },
-              {
-                path: '/nearby-galleries',
-                element: <div>주변 갤러리 페이지</div>,
-              },
+              { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
             ],
           },
           { path: '/login', element: <Login /> },
