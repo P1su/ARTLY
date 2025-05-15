@@ -40,7 +40,6 @@ const router = createBrowserRouter([
                   { path: '/galleries', element: <Galleries /> },
                   { path: '/artists', element: <Artists /> },
                   { path: '/search', element: <Search /> },
-                  { path: '/notices', element: <div>공고 페이지</div> },
                   { path: '/notices', element: <Notice /> },
                 ],
               },
