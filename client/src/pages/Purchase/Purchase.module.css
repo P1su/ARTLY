@@ -1,0 +1,114 @@
+.layout {
+  overflow: auto;
+  margin: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+p {
+  line-height: 1.6;
+}
+
+.backBtn {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.orderSection {
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  padding: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.userInfo {
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+
+.productBox {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.productImage {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 0.8rem;
+}
+
+.productInfo {
+  margin: auto;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.paymentInfo,
+.discountInfo,
+.paymentMethod {
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  padding: 1.6rem;
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+}
+h3 {
+  margin-bottom: 1rem;
+}
+
+.total {
+  font-weight: bold;
+  color: #3f51b5;
+  margin-top: 0.8rem;
+}
+
+.paymentMethod {
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  padding: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.paymentMethod label {
+  display: block;
+  font-size: 1.4rem;
+  line-height: 1.6;
+
+  cursor: pointer;
+}
+
+.kakao {
+  color: #ffbf00;
+}
+
+.naver {
+  color: #2db400;
+}
+.basic {
+  color: #000000;
+}
+
+.paymentButton {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 1.2rem;
+  font-size: 1.6rem;
+  background-color: #3f51b5;
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.paymentButton:hover {
+  background-color: #303f9f;
+}

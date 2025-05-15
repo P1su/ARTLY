@@ -13,9 +13,13 @@ import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
+import Reservation from '../pages/Reservation/Reservation';
+import Purchase from '../pages/Purchase/Purchase';
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
+import Notice from '../pages/Notice/Notice';
+import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +41,7 @@ const router = createBrowserRouter([
                   { path: '/artists', element: <Artists /> },
                   { path: '/search', element: <Search /> },
                   { path: '/notices', element: <div>공고 페이지</div> },
+                  { path: '/notices', element: <Notice /> },
                 ],
               },
               {
@@ -45,6 +50,7 @@ const router = createBrowserRouter([
               },
               { path: '/galleries/:galleryId', element: <GalleryDetail /> },
               { path: '/artists/:artistId', element: <ArtistDetail /> },
+              { path: '/notices/:noticeId', element: <NoticeDetail /> },
               { path: '/catalog', element: <div>도록 페이지</div> },
               {
                 path: '/nearby-galleries',
@@ -56,6 +62,8 @@ const router = createBrowserRouter([
           { path: '/register', element: <Register /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
+          { path: '/reservation/:exhibitionId', element: <Reservation /> },
+          { path: '/purchase/:reservationId', element: <Purchase /> },
         ],
       },
     ],
