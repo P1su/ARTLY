@@ -19,18 +19,13 @@ const dummyExhibitions = [
 
 export default function Reservation() {
   const navigate = useNavigate();
-
   const { exhibitionId } = useParams();
   const exhibition = dummyExhibitions.find((ex) => ex.id === exhibitionId);
 
   const [activeTab, setActiveTab] = useState('상세정보');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [people, setPeople] = useState({
-    adults: 0,
-    teens: 0,
-    children: 0,
-  });
+  const [people, setPeople] = useState({ adults: 0, teens: 0, children: 0 });
 
   const total =
     people.adults * price.adult +
@@ -38,14 +33,11 @@ export default function Reservation() {
     people.children * price.child;
 
   const handleReservation = () => {
-    if (
-      !selectedDate ||
-      !selectedTime ||
-      people.adults + people.teens + people.children === 0
-    ) {
+    if (!selectedDate || !selectedTime || total === 0) {
       alert('예매 정보를 모두 선택해주세요.');
       return;
     }
+
     const reservationData = {
       exhibition,
       date: selectedDate,
@@ -57,22 +49,54 @@ export default function Reservation() {
     navigate(`/purchase/${dummyReservationId}`, { state: reservationData });
   };
 
-  const handleBack = () => {
-    navigate(`/exhibitions/${exhibitionId}`);
-  };
+  const handleBack = () => navigate(`/exhibitions/${exhibitionId}`);
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case '상세정보':
-        return <p>상세정보 내용</p>;
-      case '주의사항':
-        return <p>주의사항 내용</p>;
-      case '판매정보':
-        return <p>판매정보 내용</p>;
-      default:
-        return null;
-    }
-  };
+  // 컴포넌트로 분리한 렌더링 함수들
+  const renderExhibitionInfo = () => (
+    <div className={styles.exhibitionInfo}>
+      <img
+        src={exhibition.imageUrl}
+        alt={exhibition.title}
+        className={styles.exhibitionImage}
+      />
+      <h2 className={styles.exhibitionTitle}>{exhibition.title}</h2>
+      <p className={styles.exhibitionDetail}>
+        장소: {exhibition.location}
+        <br />
+        일시: {exhibition.dateRange}
+        <br />
+        관람 시간: {exhibition.duration}
+      </p>
+    </div>
+  );
+
+  const renderDateSelector = () => (
+    <section className={styles.selectorSection}>
+      <h3>날짜 선택</h3>
+      <input
+        type='date'
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+      />
+    </section>
+  );
+
+  const renderTimeSelector = () => (
+    <section className={styles.selectorSection}>
+      <h3>회차 선택</h3>
+      <div className={styles.timeButtonContainer}>
+        {times.map((time) => (
+          <button
+            key={time}
+            className={`${styles.timeBtn} ${selectedTime === time ? styles.active : ''}`}
+            onClick={() => setSelectedTime(time)}
+          >
+            {time}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 
   const renderCounter = (label, i) => (
     <div className={styles.counterRow} key={label}>
@@ -95,6 +119,52 @@ export default function Reservation() {
     </div>
   );
 
+  const renderPeopleSelector = () => (
+    <section className={styles.selectorSection}>
+      <h3>인원 선택</h3>
+      {[
+        { label: `- 성인 : ${price.adult}원`, i: 'adults' },
+        { label: `- 청소년 : ${price.teen}원`, i: 'teens' },
+        { label: `- 유아 : ${price.child}원`, i: 'children' },
+      ].map(({ label, i }) => renderCounter(label, i))}
+    </section>
+  );
+
+  const renderTotalSection = () => (
+    <section className={styles.totalSection}>
+      <h4>요금 정보</h4>
+      <br />
+      <h3>- 총 금액: {total.toLocaleString()}원</h3>
+    </section>
+  );
+
+  const renderTabs = () => (
+    <div className={styles.tabContainer}>
+      {['상세정보', '주의사항', '판매정보'].map((tab) => (
+        <button
+          key={tab}
+          className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab(tab)}
+        >
+          {tab}
+        </button>
+      ))}
+    </div>
+  );
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case '상세정보':
+        return <p>상세정보 내용</p>;
+      case '주의사항':
+        return <p>주의사항 내용</p>;
+      case '판매정보':
+        return <p>판매정보 내용</p>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
@@ -105,81 +175,22 @@ export default function Reservation() {
       </header>
 
       {exhibition ? (
-        <div className={styles.exhibitionInfo}>
-          <img
-            src={exhibition.imageUrl}
-            alt={exhibition.title}
-            className={styles.exhibitionImage}
-          />
-          <h2 className={styles.exhibitionTitle}>{exhibition.title}</h2>
-          <p className={styles.exhibitionDetail}>
-            장소: {exhibition.location}
-            <br />
-            일시: {exhibition.dateRange}
-            <br />
-            관람 시간: {exhibition.duration}
-          </p>
-        </div>
+        renderExhibitionInfo()
       ) : (
         <p>전시 정보를 불러올 수 없습니다.</p>
       )}
 
       <div className={styles.formContainer}>
-        <section className={styles.selectorSection}>
-          <h3>날짜 선택</h3>
-          <input
-            type='date'
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-          />
-        </section>
-        <section className={styles.selectorSection}>
-          <h3>회차 선택</h3>
-          <div className={styles.timeButtonContainer}>
-            {times.map((time) => (
-              <button
-                key={time}
-                className={`${styles.timeBtn} ${selectedTime === time ? styles.active : ''}`}
-                onClick={() => setSelectedTime(time)}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.selectorSection}>
-          <h3>인원 선택</h3>
-          {[
-            { label: `- 성인 : ${price.adult}원`, i: 'adults' },
-            { label: `- 청소년 : ${price.teen}원`, i: 'teens' },
-            { label: `- 유아 : ${price.child}원`, i: 'children' },
-          ].map(({ label, i }) => renderCounter(label, i))}
-        </section>
-
+        {renderDateSelector()}
+        {renderTimeSelector()}
+        {renderPeopleSelector()}
         <button onClick={handleReservation} className={styles.button}>
           예매하기
         </button>
       </div>
 
-      <section className={styles.totalSection}>
-        <h4>요금 정보</h4>
-        <br />
-        <h3>- 총 금액: {total.toLocaleString()}원</h3>
-      </section>
-
-      <div className={styles.tabContainer}>
-        {['상세정보', '주의사항', '판매정보'].map((tab) => (
-          <button
-            key={tab}
-            className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
+      {renderTotalSection()}
+      {renderTabs()}
       <div className={styles.tabContent}>{renderTabContent()}</div>
     </div>
   );
