@@ -1,0 +1,11 @@
+.info {
+  max-width: 100%; 
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  line-height: 3;
+}
+
+.info a {
+  color: #2563eb;
+  text-decoration: underline;
+}
