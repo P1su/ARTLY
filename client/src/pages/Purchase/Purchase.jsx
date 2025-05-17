@@ -30,14 +30,7 @@ export default function Purchase() {
 
     const people = { adults, teens, children };
     const reservationData = {
-      exhibition,
-      date,
-      time,
-      people,
-      total,
-      email,
-      phone,
-      name,
+      ...state,
       payment: selectedPayment,
     };
     navigate(`/reservation/complete/${reservationId}`, {

@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 export default function SectionCard({ item, type }) {
   const { imageUrl, title, location, date, status } = item;
   const navigate = useNavigate();
+  const reservationId = 0;
 
   const handleNavigate = () => {
-    navigate('/reservation/complete');
+    navigate(`/reservation/detail/${reservationId}`, { state: item });
   };
 
   return (

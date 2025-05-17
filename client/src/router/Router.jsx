@@ -21,6 +21,7 @@ import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
+import ReservationDetail from '../pages/\bReservationDetail/ReservationDetail';
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
           {
             path: '/reservation/complete/:reservationId',
             element: <ReservationComplete />,
+          },
+          {
+            path: '/reservation/detail/:reservationId',
+            element: <ReservationDetail />,
           },
         ],
       },
