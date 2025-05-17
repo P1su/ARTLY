@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://artly.soundgram.co.kr',
+        target: import.meta.env.VITE_SERVER_URL,
         changeOrigin: true,
         secure: false,
         ws: true,

@@ -1,8 +1,8 @@
 import styles from './Exhibitions.module.css';
 import { mockExhibitionList } from './mock/mockExhibitionList.js';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect } from 'react';
+import { instance } from '../../apis/instance.js';
 
 export default function Exhibitions() {
   const navigate = useNavigate();
@@ -12,12 +12,7 @@ export default function Exhibitions() {
   };
 
   const getExhibitionList = async () => {
-    const response = await axios.get('/api/exhibitions', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    const response = await instance.get('/api/exhibitions');
     console.log(response);
   };
 
