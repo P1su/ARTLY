@@ -1,11 +1,7 @@
 .footerLayout {
-  position: relative;
-  overflow: hidden;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  padding: 3.2rem 1.6rem;
-  background-color: #f1f1f1;
+  padding: 2rem 1.6rem;
+  background-color: #e8e8e8;
   text-align: left;
 }
 
@@ -15,26 +11,48 @@
 
 .footerLinksContainer {
   display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
 }
 
 .footerLinksBox {
   display: flex;
-  white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 .footerLinksBox a {
   margin-right: 1.6rem;
+  margin-bottom: 0.8rem;
   color: #999;
   text-decoration: none;
 }
 
 .footerAppsBox {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.6rem;
-  white-space: nowrap;
+  margin-top: 1.6rem;
+}
+
+@media (min-width: 768px) {
+  .footerLinksContainer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footerLinksBox {
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+  }
+
+  .footerLinksBox a {
+    margin-bottom: 0;
+  }
+
+  .footerAppsBox {
+    flex-wrap: nowrap;
+    margin-top: 0;
+  }
 }

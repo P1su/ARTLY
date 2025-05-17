@@ -1,0 +1,59 @@
+.layout {
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.title {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.card {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 0.1rem solid #ddd;
+}
+
+.poster {
+  width: 12rem;
+  height: 16rem;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+
+.info {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.detailBox {
+  margin-bottom: 1.6rem;
+  padding: 1.6rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 1rem;
+  background-color: #fafafa;
+  font-size: 1.2rem;
+}
+
+.detailTitle {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.detailBox p {
+  font-size: 1.4rem;
+}
+
+.button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: #3f51b5;
+  color: #fff;
+  font-size: 1.6rem;
+}

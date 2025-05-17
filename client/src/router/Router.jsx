@@ -20,6 +20,8 @@ import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
+import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
+import ReservationDetail from '../pages/\bReservationDetail/ReservationDetail';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/reservation/:exhibitionId', element: <Reservation /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
+          {
+            path: '/reservation/complete/:reservationId',
+            element: <ReservationComplete />,
+          },
+          {
+            path: '/reservation/detail/:reservationId',
+            element: <ReservationDetail />,
+          },
         ],
       },
     ],
