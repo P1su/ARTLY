@@ -1,48 +1,65 @@
 import styles from './ExhibitionDetail.module.css';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { mockData } from './mock/exhibitionDetail.js';
 import BtnFavorite from './components/BtnFavorite/BtnFavorite';
 import BtnShare from './components/BtnShare/BtnShare';
 import StickyMenu from './components/StikcyMenu/StickyMenu';
 
 export default function ExhibitionDetail() {
-  const { exhibitionId } = useParams();
-  console.log(exhibitionId);
+  const location = useLocation();
+  const {
+    id,
+    exhibition_category: category,
+    exhibition_end_date: endDate,
+    exhibition_location: exhibitionLocation,
+    exhibition_poster: poster,
+    exhibition_price: price,
+    exhibition_start_date: startDate,
+    exhibition_tag: tag,
+    exhibition_title: title,
+    exhibition_start_time: startTime,
+    exhibition_end_time: endTime,
+    gallery_id: gallaryId,
+  } = location.state;
 
+  console.log(category);
+
+  console.log(location.state);
   const { galleryInfo } = mockData;
   return (
     <div className={styles.layout}>
-      <StickyMenu />
+      <StickyMenu id={id} />
       <section className={styles.titleSection}>
         <img
           className={styles.exhibitionImage}
-          src={mockData.image}
+          src={poster}
           alt='전시회 대표 이미지'
         />
-        <span className={styles.titleSpan}>{mockData.title}</span>
-        <span>{mockData.category}</span>
+        <span className={styles.titleSpan}>{title}</span>
+        <span>{category}</span>
+        <span>{tag}</span>
       </section>
 
       <section className={styles.infoSection}>
         <div className={styles.infoContainer}>
           <span>기간</span>
-          <span>{mockData.date}</span>
+          <span>
+            {startDate} - {endDate}
+          </span>
         </div>
         <div className={styles.infoContainer}>
           <span>시간</span>
-          <span>{mockData.time}</span>
-        </div>
-        <div className={styles.infoContainer}>
-          <span>장소</span>
-          <span>{mockData.place}</span>
+          <span>
+            {startTime} - {endTime}
+          </span>
         </div>
         <div className={styles.infoContainer}>
           <span>주소</span>
-          <span>{mockData.address}</span>
+          <span>{exhibitionLocation}</span>
         </div>
         <div className={styles.infoContainer}>
           <span>관람료</span>
-          <span>{mockData.price}</span>
+          <span>{price}원</span>
         </div>
         <span>작가</span>
         <ul className={styles.artistList}>
