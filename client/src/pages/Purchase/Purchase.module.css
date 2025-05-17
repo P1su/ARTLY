@@ -22,7 +22,7 @@ p {
 }
 
 .orderSection {
-  border: 1px solid #ddd;
+  border: 0.1rem solid #ddd;
   border-radius: 1rem;
   padding: 1.6rem;
   margin-bottom: 2rem;
@@ -39,8 +39,8 @@ p {
 }
 
 .productImage {
-  width: 100px;
-  height: 140px;
+  width: 10rem;
+  height: 14rem;
   object-fit: cover;
   border-radius: 0.8rem;
 }
@@ -71,7 +71,7 @@ h3 {
 }
 
 .paymentMethod {
-  border: 1px solid #ddd;
+  border: 0.1rem solid #ddd;
   border-radius: 1rem;
   padding: 1.6rem;
   margin-bottom: 2rem;

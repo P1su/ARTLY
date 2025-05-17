@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styles from './Purchase.module.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function Purchase() {
-  const navigate = useNavigate();
+  const { reservationId } = useParams();
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [selectedPayment, setSelectedPayment] = useState('');
 
   const {
@@ -19,12 +20,29 @@ export default function Purchase() {
   } = state || {};
 
   const handleBack = () => navigate(`/reservation/${exhibition.id}`);
+
   const handlePayment = () => {
     if (!selectedPayment) {
       alert('결제 수단을 선택해주세요.');
       return;
     }
     alert(`${selectedPayment}로 결제를 진행합니다.`);
+
+    const people = { adults, teens, children };
+    const reservationData = {
+      exhibition,
+      date,
+      time,
+      people,
+      total,
+      email,
+      phone,
+      name,
+      payment: selectedPayment,
+    };
+    navigate(`/reservation/complete/${reservationId}`, {
+      state: reservationData,
+    });
   };
 
   const renderUserInfo = () => (
@@ -80,6 +98,7 @@ export default function Purchase() {
       네이버페이: 'naver',
       '카드 결제': 'basic',
     };
+
     return (
       <div className={styles.paymentMethod}>
         <h3>결제 수단</h3>
