@@ -57,11 +57,6 @@
   background-color: #3f51b5;
   color: #fff;
   font-size: 1.6rem;
-  transition: background-color 0.2s ease;
-}
-
-.button:hover {
-  background-color: #303f9f;
 }
 
 .totalSection {
