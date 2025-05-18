@@ -1,6 +1,5 @@
 import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
-import { mockNotice } from './mock/mockNotice';
 import NoticeCategoryTabs from './components/NoticeCategoryTabs/NoticeCategoryTabs';
 import NoticeListTable from './components/NoticeListTable/NoticeListTable';
 import Pagination from './components/Pagination/Pagination';
@@ -16,7 +15,6 @@ export default function Notice() {
   };
 
   const itemsPerPage = 10;
-  const filtered = mockNotice.filter((item) => item.category === activeTab);
 
   const getNotices = async () => {
     try {
@@ -50,7 +48,7 @@ export default function Notice() {
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}
-        totalItems={filtered.length}
+        totalItems={notices.length}
         itemsPerPage={itemsPerPage}
       />
     </>

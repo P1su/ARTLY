@@ -1,6 +1,5 @@
 import styles from './Artists.module.css';
 import { useEffect, useState } from 'react';
-import artistImage from './mock/mockArtistImage.png';
 import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 
