@@ -1,10 +1,12 @@
 import styles from './Artists.module.css';
-import { useState } from 'react';
-import { mockArtistList } from './mock/mockArtistList.js';
+import { useEffect, useState } from 'react';
+import artistImage from './mock/mockArtistImage.png';
 import { Link } from 'react-router-dom';
+import { instance } from '../../apis/instance.js';
 
 export default function Artists() {
   const [isDisplay, setIsDisplay] = useState(false);
+  const [artists, setArtists] = useState([]);
 
   const handleIsDisplay = () => {
     setIsDisplay((prev) => !prev);
@@ -12,6 +14,19 @@ export default function Artists() {
     //isDisplay 값에 따라 데이터 fetch
     console.log('API 연결');
   };
+
+  const getArtists = async () => {
+    try {
+      const response = await instance.get('/api/artist');
+      setArtists(response.data);
+    } catch {
+      throw new Error('API 연결 실패');
+    }
+  };
+
+  useEffect(() => {
+    getArtists();
+  }, []);
 
   return (
     <div className={styles.layout}>
@@ -31,23 +46,21 @@ export default function Artists() {
         </span>
       </section>
       <section className={styles.artistListSection}>
-        {mockArtistList.map(
-          ({ artistId, artistName, artistImage, artistCategory }) => (
-            <Link
-              className={styles.artistItemContainer}
-              key={artistId}
-              to={`/artists/${artistId}`}
-            >
-              <img
-                className={styles.artistImage}
-                src={artistImage}
-                alt='작가 대표 이미지'
-              />
-              <span className={styles.titleSpan}>{artistName}</span>
-              <span className={styles.subSpan}>{artistCategory}</span>
-            </Link>
-          ),
-        )}
+        {artists.map(({ id, name, field, image }) => (
+          <Link
+            className={styles.artistItemContainer}
+            key={id}
+            to={`/artists/${id}`}
+          >
+            <img
+              className={styles.artistImage}
+              src={image}
+              alt='작가 대표 이미지'
+            />
+            <span className={styles.titleSpan}>{name}</span>
+            <span className={styles.subSpan}>{field}</span>
+          </Link>
+        ))}
       </section>
     </div>
   );
