@@ -1,5 +1,4 @@
 import styles from './Galleries.module.css';
-import { mockGalleryList } from './mock/mockGalleryList.js';
 import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
