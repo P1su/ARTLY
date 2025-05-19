@@ -11,7 +11,7 @@ const dummyExhibitions = [
     id: '0',
     title: '어둠 속의 대화',
     imageUrl: exhibitionImg,
-    location: '북촌 어둠속의 대화',
+    location: '북촌 아트갤러리',
     dateRange: '2025.03.15 ~ 2025.06.21',
     duration: '100분',
   },
@@ -45,7 +45,7 @@ export default function Reservation() {
       people,
       total,
     };
-    const dummyReservationId = Date.now();
+    const dummyReservationId = Date.now().toString();
     navigate(`/purchase/${dummyReservationId}`, { state: reservationData });
   };
 
