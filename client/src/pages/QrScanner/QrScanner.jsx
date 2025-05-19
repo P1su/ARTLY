@@ -28,12 +28,11 @@ export default function QrScanner() {
             onResult={handleScan}
             onError={handleError}
             constraints={{
-              facingMode: 'environment', // 후면 카메라 사용 (전면: 'user')
+              facingMode: 'environment',
             }}
-            scanDelay={300} // 0.3초마다 스캔 시도
+            scanDelay={300}
           />
         </div>
-        {/* 추가적인 UI 요소 (예: 설명 텍스트, 취소 버튼 등) */}
       </div>
     </div>
   );

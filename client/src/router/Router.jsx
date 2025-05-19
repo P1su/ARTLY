@@ -75,7 +75,7 @@ const router = createBrowserRouter([
             element: <ReservationDetail />,
           },
           {
-            path: '/qr',
+            path: '/scan',
             element: <QrScanner />,
           },
         ],
