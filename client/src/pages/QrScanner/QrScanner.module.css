@@ -1,18 +1,36 @@
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
   padding: 2rem;
   background-color: #000;
   color: #fff;
 }
 
-.title {
-  margin-bottom: 3rem;
+.scanLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.backBtn {
+  text-align: start;
+  margin-bottom: 2rem;
   font-size: 2rem;
+  color: white;
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
   font-weight: bold;
+}
+.scanGuide {
+  margin-bottom: 1rem;
+
+  font-size: 1.2rem;
+  color: #c4c4c4;
 }
 
 .scannerBox {
@@ -24,35 +42,8 @@
 .cameraArea {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 90vw;
-  max-width: 32rem;
-  height: 32rem;
+  width: 32rem;
+  height: 40rem;
   margin-bottom: 2rem;
   border: 0.2rem solid #fff;
-  border-radius: 1rem;
-  background-color: #111;
-}
-
-.scanGuide {
-  position: absolute;
-  font-size: 1.2rem;
-  color: #aaa;
-}
-
-.scanFrame {
-  width: 18rem;
-  height: 18rem;
-  border: 0.2rem dashed #4caf50;
-  border-radius: 0.5rem;
-}
-
-.scanButton {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #4caf50;
-  font-size: 1.2rem;
-  color: #fff;
 }
