@@ -1,0 +1,64 @@
+.layout {
+  padding: 2rem;
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.scannerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cameraArea {
+  position: relative;
+  width: 90vw;
+  max-width: 320px;
+  height: 320px;
+  border: 2px solid #fff;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #111;
+  margin-bottom: 2rem;
+}
+
+.scanGuide {
+  position: absolute;
+  top: -2rem;
+  font-size: 1.2rem;
+  color: #aaa;
+}
+
+.scanFrame {
+  width: 180px;
+  height: 180px;
+  border: 2px dashed #4caf50;
+  border-radius: 0.5rem;
+}
+
+.scanButton {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.scanButton:hover {
+  background-color: #388e3c;
+}
