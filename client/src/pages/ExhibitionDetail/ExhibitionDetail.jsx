@@ -14,6 +14,7 @@ export default function ExhibitionDetail() {
   const getExhibitionDetail = async () => {
     try {
       const response = await instance.get(`/api/exhibitions/${exhibitionId}`);
+
       setExhibitionDetail(response.data);
     } catch (error) {
       throw new Error(error);

@@ -11,6 +11,7 @@ export default function GalleryDetail() {
   const getGalleryDetail = async () => {
     try {
       const response = await instance.get(`/api/galleries/${galleryId}`);
+
       setGalleryData(response.data);
     } catch (error) {
       throw new Error(error);

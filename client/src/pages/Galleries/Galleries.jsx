@@ -9,9 +9,10 @@ export default function Galleries() {
   const getGalleies = async () => {
     try {
       const response = await instance.get('/api/galleries');
+
       setGalleries(response.data);
-    } catch {
-      throw new Error('API 연결 실패');
+    } catch (error) {
+      throw new Error(error);
     }
   };
 

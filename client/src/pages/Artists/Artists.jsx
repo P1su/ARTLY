@@ -17,9 +17,10 @@ export default function Artists() {
   const getArtists = async () => {
     try {
       const response = await instance.get('/api/artist');
+
       setArtists(response.data);
-    } catch {
-      throw new Error('API 연결 실패');
+    } catch (error) {
+      throw new Error(error);
     }
   };
 

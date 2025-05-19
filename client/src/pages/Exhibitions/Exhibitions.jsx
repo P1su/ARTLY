@@ -16,8 +16,8 @@ export default function Exhibitions() {
       const response = await instance.get('/api/exhibitions');
 
       setExhibitionaData(response.data);
-    } catch {
-      throw new Error('API 연결 실패');
+    } catch (error) {
+      throw new Error(error);
     }
   };
 

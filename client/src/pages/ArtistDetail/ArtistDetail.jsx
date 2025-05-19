@@ -14,6 +14,7 @@ export default function ArtistDetail() {
   const getArtistDetail = async () => {
     try {
       const response = await instance.get(`/api/artists/${artistId}`);
+
       setArtistData(response.data);
     } catch (error) {
       throw new Error(error);
