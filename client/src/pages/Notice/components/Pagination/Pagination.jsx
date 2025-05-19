@@ -1,6 +1,11 @@
 import styles from './Pagination.module.css';
 
-export default function Pagination({ currentPage, onPageChange, totalItems, itemsPerPage = 10 }) {
+export default function Pagination({
+  currentPage,
+  onPageChange,
+  totalItems,
+  itemsPerPage = 10,
+}) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const pageNumbers = getPageNumbers(currentPage, totalPages, 5);
 
@@ -8,8 +13,15 @@ export default function Pagination({ currentPage, onPageChange, totalItems, item
     <div className={styles.paginationContainer}>
       {currentPage > 1 && (
         <>
-          <button onClick={() => onPageChange(1)} className={styles.pageButton}>«</button>
-          <button onClick={() => onPageChange(currentPage - 1)} className={styles.pageButton}>‹</button>
+          <button onClick={() => onPageChange(1)} className={styles.pageButton}>
+            «
+          </button>
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            className={styles.pageButton}
+          >
+            ‹
+          </button>
         </>
       )}
 
@@ -25,8 +37,18 @@ export default function Pagination({ currentPage, onPageChange, totalItems, item
 
       {currentPage < totalPages && (
         <>
-          <button onClick={() => onPageChange(currentPage + 1)} className={styles.pageButton}>›</button>
-          <button onClick={() => onPageChange(totalPages)} className={styles.pageButton}>»</button>
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            className={styles.pageButton}
+          >
+            ›
+          </button>
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className={styles.pageButton}
+          >
+            »
+          </button>
         </>
       )}
     </div>
