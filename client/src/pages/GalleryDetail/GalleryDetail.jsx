@@ -2,7 +2,6 @@ import styles from './GalleryDetail.module.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance } from '../../apis/instance.js';
-import { mockGalleryDetail } from './mock/mockGalleryDetail.js';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
 
 export default function GalleryDetail() {
