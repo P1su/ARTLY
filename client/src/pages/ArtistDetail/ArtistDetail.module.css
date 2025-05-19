@@ -14,6 +14,13 @@
   gap: 0.5rem;
 }
 
+.artistImage {
+  width: 10rem;
+  height: 15rem;
+
+  object-fit: fill;
+}
+
 .titleSpan {
   font-size: 1.4rem;
   font-weight: 500;
@@ -21,6 +28,11 @@
 
 .subSpan {
   color: #878787;
+}
+
+.descriptionParagraph {
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .descriptionSection {
