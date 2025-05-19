@@ -8,9 +8,7 @@ export default function Exhibitions() {
   const navigate = useNavigate();
 
   const handleNavigate = (exhibitionId) => {
-    navigate(`/exhibitions/${exhibitionId}`, {
-      state: exhibitionData.find((item) => item.id === exhibitionId),
-    });
+    navigate(`/exhibitions/${exhibitionId}`);
   };
 
   const getExhibitionList = async () => {

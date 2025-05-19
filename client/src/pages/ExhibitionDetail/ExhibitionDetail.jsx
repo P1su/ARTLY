@@ -1,12 +1,29 @@
 import styles from './ExhibitionDetail.module.css';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { mockData } from './mock/exhibitionDetail.js';
+import { useEffect, useState } from 'react';
+import { instance } from '../../apis/instance.js';
 import BtnFavorite from './components/BtnFavorite/BtnFavorite';
 import BtnShare from './components/BtnShare/BtnShare';
 import StickyMenu from './components/StikcyMenu/StickyMenu';
 
 export default function ExhibitionDetail() {
-  const location = useLocation();
+  const { exhibitionId } = useParams();
+  const [exhibitionDetail, setExhibitionDetail] = useState([]);
+
+  const getExhibitionDetail = async () => {
+    try {
+      const response = await instance.get(`/api/exhibitions/${exhibitionId}`);
+      setExhibitionDetail(response.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  useEffect(() => {
+    getExhibitionDetail();
+  }, []);
+
   const {
     id,
     exhibition_category: category,
@@ -20,12 +37,10 @@ export default function ExhibitionDetail() {
     exhibition_start_time: startTime,
     exhibition_end_time: endTime,
     gallery_id: gallaryId,
-  } = location.state;
+  } = exhibitionDetail;
 
-  console.log(category);
-
-  console.log(location.state);
   const { galleryInfo } = mockData;
+
   return (
     <div className={styles.layout}>
       <StickyMenu id={id} />
