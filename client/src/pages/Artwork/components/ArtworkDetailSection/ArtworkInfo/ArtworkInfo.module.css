@@ -1,0 +1,29 @@
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+  width: 100%;
+  max-width: 280px;
+}
+
+.textBox {
+  text-align: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.artist,
+.meta {
+  font-size: 14px;
+  color: #666;
+}

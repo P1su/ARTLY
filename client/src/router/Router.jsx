@@ -22,6 +22,7 @@ import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
+import Artwork from '../pages/Artwork/Artwork';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
               { path: '/galleries/:galleryId', element: <GalleryDetail /> },
               { path: '/artists/:artistId', element: <ArtistDetail /> },
               { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
+              { path: '/art/:artId', element: <Artwork /> }, 
               { path: '/catalog', element: <div>도록 페이지</div> },
               { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
             ],
