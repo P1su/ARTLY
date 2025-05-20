@@ -8,21 +8,22 @@ import Artists from '../pages/Artists/Artists';
 import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Galleries/Galleries';
 import GalleryDetail from '../pages/GalleryDetail/GalleryDetail';
-import Test from '../pages/Test/Test';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
-
+import Search from '../pages/Search/Search';
 import Reservation from '../pages/Reservation/Reservation';
 import Purchase from '../pages/Purchase/Purchase';
-
 import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
 import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
 import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import Artwork from '../pages/Artwork/Artwork';
+import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
+import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
+
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,8 @@ const router = createBrowserRouter([
                   { path: '/exhibitions', element: <Exhibitions /> },
                   { path: '/galleries', element: <Galleries /> },
                   { path: '/artists', element: <Artists /> },
+                  { path: '/search', element: <Search /> },
                   { path: '/notices', element: <Notice /> },
-                  { path: '/test', element: <Test /> },
                 ],
               },
               { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
@@ -61,6 +62,14 @@ const router = createBrowserRouter([
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/reservation/:exhibitionId', element: <Reservation /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
+          {
+            path: '/reservation/complete/:reservationId',
+            element: <ReservationComplete />,
+          },
+          {
+            path: '/reservation/detail/:reservationId',
+            element: <ReservationDetail />,
+          },
         ],
       },
     ],
