@@ -1,12 +1,13 @@
-.section {
+.sectionContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.controls {
+.controlsContainer {
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;   /* ← 간격 추가 */
+  gap: 1.5rem;
+
   margin-top: 1rem;
 }

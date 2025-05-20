@@ -2,19 +2,16 @@ import styles from './ArtworkDetailSection.module.css';
 import ArtworkInfo from './ArtworkInfo/ArtworkInfo';
 import DocentScript from './DocentScript/DocentScript';
 
-const ArtworkDetailSection = ({ title, image, artist, info, script }) => {
+export default function ArtworkDetailSection({ title, image, artist, info, script }) {
   return (
-    <div className={styles.detailSection}>
+    <section className={styles.detailContainer}>
       <ArtworkInfo
         title={title}
         image={image}
         artist={artist}
         info={info}
       />
-      <DocentScript script={script} /> 
-    </div>
+      <DocentScript script={script} />
+    </section>
   );
-};
-
-
-export default ArtworkDetailSection;
+}

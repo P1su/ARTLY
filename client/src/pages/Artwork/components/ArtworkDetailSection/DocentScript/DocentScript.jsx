@@ -1,11 +1,9 @@
 import styles from './DocentScript.module.css';
 
-const DocentScript = ({ script }) => {
+export default function DocentScript({ script }) {
   return (
-    <div className={styles.script}>
+    <section className={styles.scriptBox}>
       <p>{script}</p>
-    </div>
+    </section>
   );
-};
-
-export default DocentScript;
+}

@@ -2,28 +2,30 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.8rem;
+
+  padding: 1.6rem;
+  box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.1);
+
   background-color: white;
-  padding: 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.image {
+.infoImage {
   width: 100%;
-  max-width: 280px;
+  max-width: 28rem;
 }
 
 .textBox {
   text-align: center;
 }
 
-.title {
-  font-size: 20px;
+.infoTitle {
+  font-size: 2rem;
   font-weight: 600;
 }
 
-.artist,
-.meta {
-  font-size: 14px;
+.artistText,
+.metaText {
+  font-size: 1.4rem;
   color: #666;
 }

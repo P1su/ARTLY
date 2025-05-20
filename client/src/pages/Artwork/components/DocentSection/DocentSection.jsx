@@ -3,16 +3,27 @@ import styles from './DocentSection.module.css';
 import DocentAudioPlayer from './DocentAudioPlayer/DocentAudioPlayer';
 import BtnOption from './BtnOption/BtnOption';
 
-const DocentSection = () => {
+export default function DocentSection() {
   return (
-    <div className={styles.section}>
+    <section className={styles.sectionContainer}>
       <DocentAudioPlayer />
-      <div className={styles.controls}>
-        <BtnOption label="음성 언어" options={['한국어', '영어']} />
-        <BtnOption label="재생 속도" options={['1x', '1.5x', '2x']} />
+      <div className={styles.controlsContainer}>
+        <BtnOption
+          label="음성 언어"
+          options={[
+            { id: 'ko', label: '한국어' },
+            { id: 'en', label: '영어' },
+          ]}
+        />
+        <BtnOption
+          label="재생 속도"
+          options={[
+            { id: '1x', label: '1배속' },
+            { id: '1.5x', label: '1.5배속' },
+            { id: '2x', label: '2배속' },
+          ]}
+        />
       </div>
-    </div>
+    </section>
   );
-};
-
-export default DocentSection;
+}

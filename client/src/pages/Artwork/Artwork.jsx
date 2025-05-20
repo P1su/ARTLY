@@ -7,14 +7,13 @@ import DocentScript from './components/ArtworkDetailSection/DocentScript/DocentS
 import DocentSection from './components/DocentSection/DocentSection';
 
 const paginateScript = (script, maxLength = 300) => {
-  const chunks = [];
-  for (let i = 0; i < script.length; i += maxLength) {
-    chunks.push(script.slice(i, i + maxLength));
-  }
-  return chunks;
+  return Array.from(
+    { length: Math.ceil(script.length / maxLength) },
+    (_, i) => script.slice(i * maxLength, (i + 1) * maxLength)
+  );
 };
 
-const Artwork = () => {
+export default function Artwork() {
   const { title, image, artist, info, script } = mockArtwork;
   const scriptPages = paginateScript(script);
   const [pageIndex, setPageIndex] = useState(0);
@@ -28,8 +27,8 @@ const Artwork = () => {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.mainContent}>
+    <main className={styles.pageContainer}>
+      <section className={styles.mainContent}>
         <SectionTitle title="Description" />
         {pageIndex === 0 ? (
           <ArtworkDetailSection
@@ -42,11 +41,11 @@ const Artwork = () => {
         ) : (
           <DocentScript script={scriptPages[pageIndex]} />
         )}
-      </div>
+      </section>
 
-      <div className={styles.bottomBar}>
+      <section className={styles.bottomContainer}>
         <DocentSection />
-        <div className={styles.buttonRow}>
+        <div className={styles.buttonContainer}>
           <button
             className={styles.navButton}
             onClick={goToPreviousPage}
@@ -62,9 +61,7 @@ const Artwork = () => {
             다음 페이지 →
           </button>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
-};
-
-export default Artwork;
+}

@@ -1,16 +1,14 @@
 import styles from './ArtworkInfo.module.css';
 
-const ArtworkInfo = ({ title, image, artist, info }) => {
+export default function ArtworkInfo({ title, image, artist, info }) {
   return (
-    <div className={styles.infoContainer}>
-      <img src={image} alt={`${title} 이미지`} className={styles.image} />
+    <article className={styles.infoContainer}>
+      <img src={image} alt={`${title} 이미지`} className={styles.infoImage} />
       <div className={styles.textBox}>
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.artist}>{artist}</p>
-        <p className={styles.meta}>{info}</p>
+        <h3 className={styles.infoTitle}>{title}</h3>
+        <p className={styles.artistText}>{artist}</p>
+        <p className={styles.metaText}>{info}</p>
       </div>
-    </div>
+    </article>
   );
-};
-
-export default ArtworkInfo;
+}

@@ -1,15 +1,13 @@
 import styles from './Dropdown.module.css';
 
-const Dropdown = ({ options }) => {
+export default function Dropdown({ options }) {
   return (
-    <select className={styles.dropdown}>
+    <select className={styles.dropdownBox}>
       {options.map((opt) => (
-        <option key={opt} value={opt}>
-          {opt}
+        <option key={opt.id} value={opt.id}>
+          {opt.label}
         </option>
       ))}
     </select>
   );
-};
-
-export default Dropdown;
+}
