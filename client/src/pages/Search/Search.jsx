@@ -20,7 +20,6 @@ export default function Search() {
       });
 
       setResults(response.data);
-      console.log(response.data);
     } catch (error) {
       throw new Error(error);
     }
