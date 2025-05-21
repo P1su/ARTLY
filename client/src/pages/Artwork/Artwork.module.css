@@ -1,0 +1,51 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  height: calc(100vh - 6rem);
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  flex: 1;
+}
+
+.bottomContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.navButton {
+  display: inline-block;
+
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+
+  background-color: #4b4ded;
+
+  color: white;
+  font-size: 1rem;
+
+  cursor: pointer;
+}
+
+.navButton:disabled {
+  background-color: #aaa;
+
+  cursor: not-allowed;
+}
