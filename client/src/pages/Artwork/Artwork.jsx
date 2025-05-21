@@ -19,11 +19,17 @@ export default function Artwork() {
   const [pageIndex, setPageIndex] = useState(0);
 
   const goToNextPage = () => {
-    if (pageIndex < scriptPages.length - 1) setPageIndex(pageIndex + 1);
+    setPageIndex(prevIndex => {
+      if (prevIndex < scriptPages.length - 1) return prevIndex + 1;
+      return prevIndex;
+    });
   };
 
   const goToPreviousPage = () => {
-    if (pageIndex > 0) setPageIndex(pageIndex - 1);
+    setPageIndex(prevIndex => {
+      if (prevIndex > 0) return prevIndex - 1;
+      return prevIndex;
+    });
   };
 
   return (
