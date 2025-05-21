@@ -9,7 +9,7 @@ export default function Search() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const queryString = params.get('query');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState({});
 
   const getSearchResult = async () => {
     try {
