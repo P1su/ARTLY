@@ -2,6 +2,9 @@ import styles from './Register.module.css';
 import { useState } from 'react';
 import { instance } from '../../apis/instance.js';
 import InputText from '../../components/InputText/InputText';
+import InputRadio from '../../components/Input/InputRadio/InputRadio';
+import InputImage from '../../components/Input/InputImage/InputImage';
+import InputContainer from '../../components/Input/InputConatiner/InputContainer';
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
@@ -47,36 +50,35 @@ export default function Register() {
       <p className={styles.subParagraph}>아뜰리의 회원이 되어보세요</p>
       <form className={styles.form} action={handleRegister}>
         <InputText
-          label='아이디'
+          title='아이디'
           name='login_id'
           placeholder='아이디를 입력해주세요'
         />
         <InputText
-          label='비밀번호'
+          title='비밀번호'
           name='login_pwd'
           placeholder='비밀번호'
           type='password'
         />
-        <InputText label='성명' name='user_name' placeholder='이름' />
+        <InputText title='성명' name='user_name' placeholder='이름' />
         <InputText
-          label='휴대폰 번호'
+          title='휴대폰 번호'
           name='user_phone'
           placeholder='휴대폰 번호'
         />
-        <InputText label='이메일' name='user_email' placeholder='이메일' />
-        <InputText label='나이' name='user_age' placeholder='몇살?' />
-        <label>성별</label>
-        <span>남자</span>
-        <input name='user_gender' type='radio' value='M' />
-        <span>여자</span>
-        <input name='user_gender' type='radio' value='F' />
-        <label>관리자 여부</label>
-        <span>관리자</span>
-        <input name='admin_flag' type='radio' value={1} />
-        <span>유저</span>
-        <input name='admin_flag' type='radio' value={0} />
-        <label>사진</label>
-        <input name='user_img' type='file' onChange={handleImage} />
+        <InputText title='이메일' name='user_email' placeholder='이메일' />
+        <InputText title='나이' name='user_age' placeholder='몇살?' />
+        <InputContainer title='성별'>
+          <InputRadio label='남' name='user_gender' value='M' />
+          <InputRadio label='여' name='user_gender' value='F' />
+        </InputContainer>
+        <InputContainer title='유형'>
+          <InputRadio label='관리자' name='admin_flag' value={1} />
+          <InputRadio label='유저' name='admin_flag' value={0} />
+        </InputContainer>
+        <InputContainer title='프로필'>
+          <InputImage name='user_img' onChange={handleImage} file={file} />
+        </InputContainer>
         <div className={styles.keywordBox}>
           <label className={styles.keywordLabel}>관심 키워드</label>
           <div className={styles.keywords}>
@@ -105,7 +107,6 @@ export default function Register() {
             ))}
           </div>
         </div>
-        <img src={file} />
         <BtnPrimary label='회원가입' />
       </form>
     </div>
