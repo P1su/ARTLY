@@ -22,6 +22,7 @@ import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import Artwork from '../pages/Artwork/Artwork';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
+import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
 
 
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
           {
             path: '/reservation/detail/:reservationId',
             element: <ReservationDetail />,
+          },
+          {
+            path: '/scan',
+            element: <QrScanner />,
           },
         ],
       },

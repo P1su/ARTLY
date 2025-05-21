@@ -1,0 +1,74 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #000;
+  color: white;
+}
+
+.scanLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.backBtn {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: white;
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.scanGuide {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.errorText {
+  color: red;
+  font-weight: bold;
+}
+
+.cameraArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 32rem;
+  height: 40rem;
+  margin-bottom: 2rem;
+  border: 0.2rem solid #fff;
+}
+
+.confirmButton {
+  text-align: center;
+  width: 80%;
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+
+  background-color: #333;
+  color: #a0a0a0;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.confirmButton.active {
+  background-color: #8054fa;
+  color: white;
+  cursor: pointer;
+  opacity: 1;
+}
