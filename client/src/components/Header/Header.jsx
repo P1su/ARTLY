@@ -27,9 +27,21 @@ export default function Header() {
       <h1 className={styles.logoBox}>
         <span onClick={handleHome}>Artly</span>
       </h1>
-      <button onClick={isOpen ? handleClose : handleOpen}>
-        {isOpen ? '닫기' : '메뉴'}
-      </button>
+      <div className={styles.rightSection}>
+        <img
+          src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvklEQVR4nO2VOxLFIAwDff9L6zXJK2jAWOYTa2fomBEbGWImhPCCyXVcHr4mMkq73xsczasngs7B2CJw5kkEk42wGsXuRq4TaZGIkRuJ7qeNyin/kW0icK6oyGzecpGsvDS2BZcUwcKVSkmRF4kwYYzG6ue8poiRgkqIYFBUIiA2EmnpeCCRhuzLF7ngKC0ySpZImM+KoBPUC2aNEqKjJZEH7xfFbY1IxKo30oP2XD5IpCXtXd/VCG4XEULYnx+qft9LsKtc1gAAAABJRU5ErkJggg=='
+          alt='qr-code'
+          className={styles.qrCode}
+          onClick={() => navigate('/scan')}
+        />
+        <button
+          className={styles.menu}
+          onClick={isOpen ? handleClose : handleOpen}
+        >
+          {isOpen ? '닫기' : '메뉴'}
+        </button>
+      </div>
+
       {isOpen && <Menu onOpen={handleClose} />}
     </header>
   );
