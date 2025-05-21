@@ -1,6 +1,5 @@
 import styles from './Login.module.css';
 import { instance } from '../../apis/instance.js';
-import { useState } from 'react';
 import useInput from '../../hooks/useInput';
 import InputText from '../../components/Input/InputText/InputText';
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';

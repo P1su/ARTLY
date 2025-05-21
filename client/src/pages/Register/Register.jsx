@@ -1,5 +1,4 @@
 import styles from './Register.module.css';
-import { useState } from 'react';
 import { instance } from '../../apis/instance.js';
 import useInput from '../../hooks/useInput';
 import InputText from '../../components/Input/InputText/InputText';
