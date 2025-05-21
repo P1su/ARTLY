@@ -18,13 +18,20 @@
   color: #666666;
   font-size: 1.4rem;
 }
+
 .contentContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
 
-  flex-grow: 1;
+  max-width: 48rem;
+  padding: 3rem;
+  border-radius: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0rem 0.2rem 1.5rem;
+
+  background-color: #ffffff;
 }
 
 .form {
