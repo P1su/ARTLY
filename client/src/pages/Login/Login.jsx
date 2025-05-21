@@ -1,21 +1,15 @@
 import styles from './Login.module.css';
 import { instance } from '../../apis/instance.js';
 import { useState } from 'react';
+import useInput from '../../hooks/useInput';
 import InputText from '../../components/Input/InputText/InputText';
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Login() {
-  const [loginDatas, setLoginDatas] = useState({
+  const { data: loginDatas, handleChange } = useInput({
     login_id: '',
     login_pwd: '',
   });
-
-  const handleChange = (e) => {
-    setLoginDatas((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const postLogin = async () => {
     try {

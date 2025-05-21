@@ -1,6 +1,7 @@
 import styles from './Register.module.css';
 import { useState } from 'react';
 import { instance } from '../../apis/instance.js';
+import useInput from '../../hooks/useInput';
 import InputText from '../../components/Input/InputText/InputText';
 import InputRadio from '../../components/Input/InputRadio/InputRadio';
 import InputImage from '../../components/Input/InputImage/InputImage';
@@ -8,7 +9,11 @@ import InputContainer from '../../components/Input/InputConatiner/InputContainer
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
-  const [formDatas, setFormDatas] = useState({
+  const {
+    data: formDatas,
+    setData: setFormDatas,
+    handleChange,
+  } = useInput({
     login_id: '',
     login_pwd: '',
     user_age: '',
@@ -21,7 +26,6 @@ export default function Register() {
     admin_flag: 0,
     gallery_id: 0,
   });
-  const [file, setFile] = useState();
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -31,7 +35,6 @@ export default function Register() {
 
     reader.onload = () => {
       const base64 = reader.result;
-      setFile(base64);
       setFormDatas((prev) => ({
         ...prev,
         user_img: base64,
@@ -50,13 +53,6 @@ export default function Register() {
   const handleRegister = (e) => {
     e.preventDefault();
     postRegister(formDatas);
-  };
-
-  const handleChange = (e) => {
-    setFormDatas((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
   };
 
   return (
@@ -142,7 +138,11 @@ export default function Register() {
           />
         </InputContainer>
         <InputContainer title='프로필'>
-          <InputImage name='user_img' onChange={handleImage} file={file} />
+          <InputImage
+            name='user_img'
+            onChange={handleImage}
+            file={formDatas.user_img}
+          />
         </InputContainer>
         <div className={styles.keywordBox}>
           <label className={styles.keywordLabel}>관심 키워드</label>
