@@ -41,24 +41,21 @@ export default function Register() {
     };
   };
 
-  const postRegister = async (body) => {
+  const postRegister = async (e) => {
+    e.preventDefault();
+
     try {
-      await instance.post('/api/auth/register', body);
+      await instance.post('/api/auth/register', formDatas);
     } catch (error) {
       throw new Error(error);
     }
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    postRegister(formDatas);
   };
 
   return (
     <div className={styles.layout}>
       <h1 className={styles.registerTitle}>회원가입</h1>
       <p className={styles.subParagraph}>아뜰리의 회원이 되어보세요</p>
-      <form className={styles.form} onSubmit={handleRegister}>
+      <form className={styles.form} onSubmit={postRegister}>
         <InputContainer title='아이디'>
           <InputText
             name='login_id'
