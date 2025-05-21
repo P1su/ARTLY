@@ -1,12 +1,23 @@
 .layout {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
+  align-items: center;
+  gap: 1rem;
+
   padding: 2rem;
   background-color: #f9f9f9;
 }
 
+.loginTitle {
+  color: rgb(51, 51, 51);
+  font-size: 2.8rem;
+  line-height: 1.5;
+}
+
+.subParagraph {
+  color: #666666;
+  font-size: 1.4rem;
+}
 .contentContainer {
   display: flex;
   flex-direction: column;
@@ -20,6 +31,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  width: 100%;
-  max-width: 36rem;
+
+  width: 27.5rem;
 }
