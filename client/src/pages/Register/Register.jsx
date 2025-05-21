@@ -8,21 +8,35 @@ import InputContainer from '../../components/Input/InputConatiner/InputContainer
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
-  const [selectedKeyword, setSelectedKeyword] = useState('');
+  const [formDatas, setFormDatas] = useState({
+    login_id: '',
+    login_pwd: '',
+    user_age: '',
+    user_email: '',
+    user_gender: '',
+    user_img: '',
+    user_keyword: '',
+    user_name: '',
+    user_phone: '',
+    admin_flag: 0,
+    gallery_id: 0,
+  });
   const [file, setFile] = useState();
-
-  const convertFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const base64 = reader.result;
-      setFile(base64);
-    };
-  };
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-    convertFile(file);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const base64 = reader.result;
+      setFile(base64);
+      setFormDatas((prev) => ({
+        ...prev,
+        user_img: base64,
+      }));
+    };
   };
 
   const postRegister = async (body) => {
@@ -34,16 +48,23 @@ export default function Register() {
   };
 
   const handleRegister = (formData) => {
+    /*
     const bodyData = Object.fromEntries(formData.entries());
-    console.log(bodyData);
     bodyData.admin_flag = Boolean(formData.get('admin_flag'));
     bodyData.user_age = Number(formData.get('user_age'));
     bodyData.user_img = file;
     bodyData.gallery_id = 0;
-    bodyData.user_keyword = selectedKeyword;
-    postRegister(bodyData);
+    bodyData.user_keyword = selectedKeyword;*/
+    postRegister(formDatas);
   };
 
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setFormDatas((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
     <div className={styles.layout}>
       <h1 className={styles.registerTitle}>회원가입</h1>
@@ -53,28 +74,72 @@ export default function Register() {
           title='아이디'
           name='login_id'
           placeholder='아이디를 입력해주세요'
+          onChange={handleChange}
+          value={formDatas.login_id}
         />
         <InputText
           title='비밀번호'
           name='login_pwd'
           placeholder='비밀번호'
           type='password'
+          onChange={handleChange}
+          value={formDatas.login_pwd}
         />
-        <InputText title='성명' name='user_name' placeholder='이름' />
+        <InputText
+          title='성명'
+          name='user_name'
+          placeholder='이름'
+          onChange={handleChange}
+          value={formDatas.user_name}
+        />
         <InputText
           title='휴대폰 번호'
           name='user_phone'
           placeholder='휴대폰 번호'
+          onChange={handleChange}
+          value={formDatas.user_phone}
         />
-        <InputText title='이메일' name='user_email' placeholder='이메일' />
-        <InputText title='나이' name='user_age' placeholder='몇살?' />
+        <InputText
+          title='이메일'
+          name='user_email'
+          placeholder='이메일'
+          onChange={handleChange}
+          value={formDatas.user_email}
+        />
+        <InputText
+          title='나이'
+          name='user_age'
+          placeholder='몇살?'
+          onChange={handleChange}
+          value={formDatas.user_age}
+        />
         <InputContainer title='성별'>
-          <InputRadio label='남' name='user_gender' value='M' />
-          <InputRadio label='여' name='user_gender' value='F' />
+          <InputRadio
+            label='남'
+            name='user_gender'
+            value='M'
+            onChange={handleChange}
+          />
+          <InputRadio
+            label='여'
+            name='user_gender'
+            value='F'
+            onChange={handleChange}
+          />
         </InputContainer>
         <InputContainer title='유형'>
-          <InputRadio label='관리자' name='admin_flag' value={1} />
-          <InputRadio label='유저' name='admin_flag' value={0} />
+          <InputRadio
+            label='관리자'
+            name='admin_flag'
+            value={1}
+            onChange={handleChange}
+          />
+          <InputRadio
+            label='유저'
+            name='admin_flag'
+            value={0}
+            onChange={handleChange}
+          />
         </InputContainer>
         <InputContainer title='프로필'>
           <InputImage name='user_img' onChange={handleImage} file={file} />
@@ -95,13 +160,11 @@ export default function Register() {
               '디지털',
             ].map((word) => (
               <input
-                className={`${styles.keywordBtn} ${selectedKeyword === word ? styles.active : ''}`}
+                className={`${styles.keywordBtn} ${formDatas.user_keyword === word ? styles.active : ''}`}
                 name='user_keyword'
                 key={word}
                 type='button'
-                onClick={() => {
-                  setSelectedKeyword(word);
-                }}
+                onClick={handleChange}
                 value={word}
               />
             ))}

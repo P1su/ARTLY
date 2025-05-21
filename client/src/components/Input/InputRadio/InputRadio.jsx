@@ -1,6 +1,6 @@
 import styles from './InputRadio.module.css';
 
-export default function InputRadio({ name, value, label }) {
+export default function InputRadio({ name, value, label, onChange }) {
   return (
     <div className={styles.layout}>
       <label className={styles.radioLabel}>{label}</label>
@@ -9,6 +9,7 @@ export default function InputRadio({ name, value, label }) {
         type='radio'
         name={name}
         value={value}
+        onChange={onChange}
       />
     </div>
   );
