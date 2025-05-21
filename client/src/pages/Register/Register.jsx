@@ -1,7 +1,7 @@
 import styles from './Register.module.css';
 import { useState } from 'react';
 import { instance } from '../../apis/instance.js';
-import InputText from '../../components/InputText/InputText';
+import InputText from '../../components/Input/InputText/InputText';
 import InputRadio from '../../components/Input/InputRadio/InputRadio';
 import InputImage from '../../components/Input/InputImage/InputImage';
 import InputContainer from '../../components/Input/InputConatiner/InputContainer';
@@ -47,72 +47,72 @@ export default function Register() {
     }
   };
 
-  const handleRegister = (formData) => {
-    /*
-    const bodyData = Object.fromEntries(formData.entries());
-    bodyData.admin_flag = Boolean(formData.get('admin_flag'));
-    bodyData.user_age = Number(formData.get('user_age'));
-    bodyData.user_img = file;
-    bodyData.gallery_id = 0;
-    bodyData.user_keyword = selectedKeyword;*/
+  const handleRegister = (e) => {
+    e.preventDefault();
     postRegister(formDatas);
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setFormDatas((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
+
   return (
     <div className={styles.layout}>
       <h1 className={styles.registerTitle}>회원가입</h1>
       <p className={styles.subParagraph}>아뜰리의 회원이 되어보세요</p>
-      <form className={styles.form} action={handleRegister}>
-        <InputText
-          title='아이디'
-          name='login_id'
-          placeholder='아이디를 입력해주세요'
-          onChange={handleChange}
-          value={formDatas.login_id}
-        />
-        <InputText
-          title='비밀번호'
-          name='login_pwd'
-          placeholder='비밀번호'
-          type='password'
-          onChange={handleChange}
-          value={formDatas.login_pwd}
-        />
-        <InputText
-          title='성명'
-          name='user_name'
-          placeholder='이름'
-          onChange={handleChange}
-          value={formDatas.user_name}
-        />
-        <InputText
-          title='휴대폰 번호'
-          name='user_phone'
-          placeholder='휴대폰 번호'
-          onChange={handleChange}
-          value={formDatas.user_phone}
-        />
-        <InputText
-          title='이메일'
-          name='user_email'
-          placeholder='이메일'
-          onChange={handleChange}
-          value={formDatas.user_email}
-        />
-        <InputText
-          title='나이'
-          name='user_age'
-          placeholder='몇살?'
-          onChange={handleChange}
-          value={formDatas.user_age}
-        />
+      <form className={styles.form} onSubmit={handleRegister}>
+        <InputContainer title='아이디'>
+          <InputText
+            name='login_id'
+            placeholder='아이디를 입력해주세요'
+            onChange={handleChange}
+            value={formDatas.login_id}
+          />
+        </InputContainer>
+        <InputContainer title='비밀번호'>
+          <InputText
+            name='login_pwd'
+            placeholder='비밀번호를 입력해주세요'
+            type='password'
+            onChange={handleChange}
+            value={formDatas.login_pwd}
+          />
+        </InputContainer>
+        <InputContainer title='성명'>
+          <InputText
+            name='user_name'
+            placeholder='이름을 입력해주세요'
+            onChange={handleChange}
+            value={formDatas.user_name}
+          />
+        </InputContainer>
+        <InputContainer title='휴대폰 번호'>
+          <InputText
+            name='user_phone'
+            placeholder='010-XXXX-XXXX'
+            onChange={handleChange}
+            value={formDatas.user_phone}
+          />
+        </InputContainer>
+        <InputContainer title='이메일'>
+          <InputText
+            name='user_email'
+            placeholder='이메일을 입력해주세요'
+            onChange={handleChange}
+            value={formDatas.user_email}
+          />
+        </InputContainer>
+        <InputContainer title='나이'>
+          <InputText
+            name='user_age'
+            placeholder='나이를 입력해주세요'
+            onChange={handleChange}
+            value={formDatas.user_age}
+          />
+        </InputContainer>
         <InputContainer title='성별'>
           <InputRadio
             label='남'
@@ -127,7 +127,7 @@ export default function Register() {
             onChange={handleChange}
           />
         </InputContainer>
-        <InputContainer title='유형'>
+        <InputContainer title='갤러리 관리자인가요?'>
           <InputRadio
             label='관리자'
             name='admin_flag'
