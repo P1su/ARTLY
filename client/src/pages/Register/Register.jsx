@@ -6,6 +6,21 @@ import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
   const [selectedKeyword, setSelectedKeyword] = useState('');
+  const [file, setFile] = useState();
+
+  const convertFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64 = reader.result;
+      setFile(base64);
+    };
+  };
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    convertFile(file);
+  };
 
   const postRegister = async (body) => {
     try {
@@ -16,10 +31,13 @@ export default function Register() {
   };
 
   const handleRegister = (formData) => {
-    formData.set('user_age', Number(formData.get('user_age')));
     const bodyData = Object.fromEntries(formData.entries());
     console.log(bodyData);
-
+    bodyData.admin_flag = Boolean(formData.get('admin_flag'));
+    bodyData.user_age = Number(formData.get('user_age'));
+    bodyData.user_img = file;
+    bodyData.gallery_id = 0;
+    bodyData.user_keyword = selectedKeyword;
     postRegister(bodyData);
   };
 
@@ -58,7 +76,7 @@ export default function Register() {
         <span>유저</span>
         <input name='admin_flag' type='radio' value={0} />
         <label>사진</label>
-        <input name='user_img' type='file' />
+        <input name='user_img' type='file' onChange={handleImage} />
         <div className={styles.keywordBox}>
           <label className={styles.keywordLabel}>관심 키워드</label>
           <div className={styles.keywords}>
@@ -87,6 +105,7 @@ export default function Register() {
             ))}
           </div>
         </div>
+        <img src={file} />
         <BtnPrimary label='회원가입' />
       </form>
     </div>
