@@ -10,6 +10,7 @@ export default function Search() {
   const params = new URLSearchParams(location.search);
   const queryString = params.get('query');
   const [results, setResults] = useState({});
+  console.log(queryString);
 
   const getSearchResult = async () => {
     try {
@@ -32,8 +33,8 @@ export default function Search() {
   return (
     <div className={styles.layout}>
       <h1 className={styles.summaryTitle}>
-        <span className={styles.queryStringSpan}>{queryString} </span>에 대한
-        검색 결과
+        <span className={styles.queryStringSpan}>{`'${queryString}'`}</span>에
+        대한 검색 결과
       </h1>
       <section className={styles.resultSection}>
         <SearchResultSection

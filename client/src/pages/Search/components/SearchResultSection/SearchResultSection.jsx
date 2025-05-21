@@ -7,7 +7,7 @@ export default function SearchResultSection({ category, results }) {
     <section className={styles.layout}>
       <h2 className={styles.categoryTitle}>{filterCategory(category).label}</h2>
       <hr />
-      <ul className={styles.resultList}>
+      <div className={styles.resultList}>
         {!results || results.length === 0 ? (
           <div className={styles.emptyBox}>검색 결과가 없습니다</div>
         ) : (
@@ -20,7 +20,7 @@ export default function SearchResultSection({ category, results }) {
             />
           ))
         )}
-      </ul>
+      </div>
     </section>
   );
 }
