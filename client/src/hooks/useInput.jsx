@@ -10,10 +10,26 @@ const useInput = (initialData) => {
     }));
   };
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const base64 = reader.result;
+
+      setData((prev) => ({
+        ...prev,
+        [e.target.name]: base64,
+      }));
+    };
+  };
+
   return {
     data,
-    setData,
     handleChange,
+    handleImage,
   };
 };
 

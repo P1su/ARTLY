@@ -10,8 +10,8 @@ import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 export default function Register() {
   const {
     data: formDatas,
-    setData: setFormDatas,
     handleChange,
+    handleImage,
   } = useInput({
     login_id: '',
     login_pwd: '',
@@ -25,21 +25,6 @@ export default function Register() {
     admin_flag: 0,
     gallery_id: 0,
   });
-
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      const base64 = reader.result;
-      setFormDatas((prev) => ({
-        ...prev,
-        user_img: base64,
-      }));
-    };
-  };
 
   const postRegister = async (e) => {
     e.preventDefault();
