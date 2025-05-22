@@ -44,15 +44,9 @@ export default function Catalog() {
   };
 
   const currentSectionIndex = useMemo(() => {
-    let result = 0;
-    for (let i = 0; i < sectionStarts.length; i++) {
-      if (currentPageIndex >= sectionStarts[i]) {
-        result = i;
-      } else {
-        break;
-      }
-    }
-    return result;
+    return sectionStarts.reduce((acc, start, index) => {
+      return currentPageIndex >= start ? index : acc;
+    }, 0);
   }, [currentPageIndex, sectionStarts]);
 
   return (
