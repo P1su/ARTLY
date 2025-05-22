@@ -1,0 +1,29 @@
+.catalogLayout {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+}
+
+.bodyContainer {
+  position: relative;
+
+  flex: 1;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.15); 
+  z-index: 5;
+
+  pointer-events: all; 
+}
