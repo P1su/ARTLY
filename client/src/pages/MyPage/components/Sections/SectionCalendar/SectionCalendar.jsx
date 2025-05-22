@@ -3,7 +3,7 @@ import styles from './SectionCalendar.module.css';
 
 export default function SectionCalendar({ items }) {
   // 추후 캘린더에서 예약된 item 내용 사용
-  const { title, location, date } = items;
+  // const { title, location, date } = items;
 
   const schedules = [
     { date: '2025/04/07', title: 'A 전시회' },

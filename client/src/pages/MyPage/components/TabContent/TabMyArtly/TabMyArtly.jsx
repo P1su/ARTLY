@@ -16,6 +16,8 @@ export default function TabMyArtly() {
       try {
         setLoading(true);
         const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
+        // 테스트용 토큰
         const headers = {
           Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDc4NzYxMDMsImV4cCI6MTc0Nzg3OTcwMywidXNlcl9pZCI6IjEiLCJsb2dpbl9pZCI6InRlc3QxIn0.rXk6EI2KsV1pcH6xtbakUsSdRgU-4yjQomP33xzKI0Q`,
         };
@@ -32,8 +34,10 @@ export default function TabMyArtly() {
         const viewedRes = await axios.get(
           //`${BASE_URL}/api/users/me/purchases`
           '/api/users/me/purchases',
+          { headers },
         );
         setViewedExhibitions(viewedRes.data);
+        console.log(viewedRes.data);
       } catch (err) {
         setError(err);
         console.error('마이페이지 데이터 가져오기 에러 :', err);

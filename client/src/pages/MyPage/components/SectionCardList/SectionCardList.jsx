@@ -6,7 +6,12 @@ export default function SectionCardList({ items, type }) {
   return (
     <div className={styles.cardList}>
       {items.map((item) => (
-        <SectionCard key={item.id} item={item} type={type} />
+        <SectionCard
+          // 임시 키
+          key={`${item.id} - ${item.reservation_datetime}`}
+          item={item}
+          type={type}
+        />
       ))}
     </div>
   );
