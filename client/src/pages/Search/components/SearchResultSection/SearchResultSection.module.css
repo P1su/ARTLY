@@ -16,3 +16,12 @@
 
   overflow-x: scroll;
 }
+
+.emptyBox {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
+  font-size: 1.4rem;
+}
