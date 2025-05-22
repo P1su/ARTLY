@@ -6,7 +6,6 @@ import 'react-calendar/dist/Calendar.css';
 export default function SectionCalendar() {
   const [checkedDates, setCheckedDates] = useState(new Set());
 
-  // 날짜를 YYYY-MM-DD 형식 문자열로 변환 (로컬 기준)
   const formatDate = (date) => {
     const year = date.getFullYear();
     const month = `0${date.getMonth() + 1}`.slice(-2);

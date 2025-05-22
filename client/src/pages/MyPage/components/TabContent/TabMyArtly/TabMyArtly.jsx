@@ -16,26 +16,13 @@ export default function TabMyArtly() {
       try {
         setLoading(true);
         const BASE_URL = import.meta.env.VITE_SERVER_URL;
-
-        // 테스트용 토큰
-        const headers = {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDc4ODA0MzksImV4cCI6MTc0Nzg4NDAzOSwidXNlcl9pZCI6IjIiLCJsb2dpbl9pZCI6InRlc3QyIn0.ZuA-lufk4uZREm50aztQIFUmWqyTHAHgAbY3SK29Dpc`,
-        };
-
         const reservationsRes = await axios.get(
-          // `${BASE_URL}/api/users/me/exhibitions`,
-          '/api/users/me/exhibitions',
-
-          { headers },
+          `${BASE_URL}/api/users/me/exhibitions`,
         );
         setReservations(reservationsRes.data);
         console.log(reservationsRes.data);
 
-        const viewedRes = await axios.get(
-          //`${BASE_URL}/api/users/me/purchases`
-          '/api/users/me/purchases',
-          { headers },
-        );
+        const viewedRes = await axios.get(`${BASE_URL}/api/users/me/purchases`);
         setViewedExhibitions(viewedRes.data);
         console.log(viewedRes.data);
       } catch (err) {
