@@ -16,12 +16,23 @@ export default function TabMyArtly() {
       try {
         setLoading(true);
         const BASE_URL = import.meta.env.VITE_SERVER_URL;
+        const headers = {
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDc4NzYxMDMsImV4cCI6MTc0Nzg3OTcwMywidXNlcl9pZCI6IjEiLCJsb2dpbl9pZCI6InRlc3QxIn0.rXk6EI2KsV1pcH6xtbakUsSdRgU-4yjQomP33xzKI0Q`,
+        };
 
-        const reservationsRes = await axios.get('/api/users/me/exhibitions');
+        const reservationsRes = await axios.get(
+          // `${BASE_URL}/api/users/me/exhibitions`,
+          '/api/users/me/exhibitions',
+
+          { headers },
+        );
         setReservations(reservationsRes.data);
         console.log(reservationsRes.data);
 
-        const viewedRes = await axios.get(`${BASE_URL}/api/users/me/purchases`);
+        const viewedRes = await axios.get(
+          //`${BASE_URL}/api/users/me/purchases`
+          '/api/users/me/purchases',
+        );
         setViewedExhibitions(viewedRes.data);
       } catch (err) {
         setError(err);
