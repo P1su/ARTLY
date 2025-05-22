@@ -19,7 +19,7 @@ export default function TabMyArtly() {
 
         // 테스트용 토큰
         const headers = {
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDc4NzYxMDMsImV4cCI6MTc0Nzg3OTcwMywidXNlcl9pZCI6IjEiLCJsb2dpbl9pZCI6InRlc3QxIn0.rXk6EI2KsV1pcH6xtbakUsSdRgU-4yjQomP33xzKI0Q`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDc4ODA0MzksImV4cCI6MTc0Nzg4NDAzOSwidXNlcl9pZCI6IjIiLCJsb2dpbl9pZCI6InRlc3QyIn0.ZuA-lufk4uZREm50aztQIFUmWqyTHAHgAbY3SK29Dpc`,
         };
 
         const reservationsRes = await axios.get(
