@@ -11,7 +11,10 @@ export default function InputImage({ name, onChange, file }) {
             alt='프로필 미리보기'
           />
         ) : (
-          <div>프로필을 선택해주세요</div>
+          <>
+            <span className={styles.addIconSpan}>+</span>
+            <span>프로필을 선택해주세요</span>
+          </>
         )}
       </label>
 
