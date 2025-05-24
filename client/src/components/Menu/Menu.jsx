@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { menuList } from '../../utils/menu.js';
 
 export default function Menu({ onOpen }) {
-  const nickname = '필수';
   const navigate = useNavigate();
 
   const handleLogout = () => {
