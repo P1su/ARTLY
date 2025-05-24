@@ -1,5 +1,6 @@
 import styles from './Register.module.css';
 import { instance } from '../../apis/instance.js';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useInput from '../../hooks/useInput';
 import InputText from '../../components/Input/InputText/InputText';
 import InputRadio from '../../components/Input/InputRadio/InputRadio';
@@ -25,12 +26,16 @@ export default function Register() {
     admin_flag: 0,
     gallery_id: 0,
   });
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const postRegister = async (e) => {
     e.preventDefault();
 
     try {
       await instance.post('/api/auth/register', formDatas);
+      alert('회원가입에 성공하였습니다');
+      navigate('/login', { state: { from: location.pathname } });
     } catch (error) {
       throw new Error(error);
     }

@@ -1,5 +1,6 @@
 import styles from './Login.module.css';
 import { instance } from '../../apis/instance.js';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useInput from '../../hooks/useInput';
 import InputContainer from '../../components/Input/InputConatiner/InputContainer';
 import InputText from '../../components/Input/InputText/InputText';
@@ -12,12 +13,27 @@ export default function Login() {
     login_id: '',
     login_pwd: '',
   });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.state?.from;
 
   const postLogin = async () => {
     try {
-      await instance.post('/api/auth/login', loginDatas);
+      const response = await instance.post('/api/auth/login', loginDatas);
+      localStorage.setItem('ACCESS_TOKEN', response.data.jwt);
+
+      if (pathname === '/register') {
+        navigate('/');
+      } else {
+        navigate(-1);
+      }
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
+      if (error.status === 401) {
+        alert('아이디 및 비밀번호를 확인해주세요');
+      } else {
+        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
     }
   };
 
