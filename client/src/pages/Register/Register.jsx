@@ -9,11 +9,7 @@ import InputContainer from '../../components/Input/InputConatiner/InputContainer
 import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
-  const {
-    data: formDatas,
-    handleChange,
-    handleImage,
-  } = useInput({
+  const { data: formDatas, handleChange } = useInput({
     login_id: '',
     login_pwd: '',
     user_age: '',
@@ -126,7 +122,7 @@ export default function Register() {
         <InputContainer title='프로필'>
           <InputImage
             name='user_img'
-            onChange={handleImage}
+            onChange={handleChange}
             file={formDatas.user_img}
           />
         </InputContainer>

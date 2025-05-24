@@ -1,13 +1,16 @@
 import styles from './InputImage.module.css';
+import useImage from '../../../hooks/useImage';
 
 export default function InputImage({ name, onChange, file }) {
+  const { image: imageUrl, handleImage } = useImage();
+
   return (
     <>
       <label className={styles.imageLabel} htmlFor='profile'>
         {file ? (
           <img
             className={styles.previewImage}
-            src={file}
+            src={imageUrl}
             alt='프로필 미리보기'
           />
         ) : (
@@ -23,7 +26,11 @@ export default function InputImage({ name, onChange, file }) {
         type='file'
         id='profile'
         name={name}
-        onChange={onChange}
+        onChange={(e) => {
+          handleImage(e);
+          onChange(e);
+        }}
+        value={file}
       />
     </>
   );
