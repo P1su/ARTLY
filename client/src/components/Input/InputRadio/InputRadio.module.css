@@ -1,0 +1,25 @@
+.layout {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.radioLabel {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.radioInput[type='radio'] {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.2rem solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+}
+
+.radioInput[type='radio']:checked {
+  background-color: #5a4fcf;
+  border: 0.2rem solid #ffffff;
+  box-shadow: 0 0 0 0.2rem #5a4fcf;
+}

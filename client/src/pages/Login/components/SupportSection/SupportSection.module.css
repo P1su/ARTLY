@@ -1,0 +1,20 @@
+.layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding-top: 2rem;
+  border-top: 1px solid #eeeeee;
+
+  color: #dddddd;
+  font-size: 1.3rem;
+}
+
+.navigateLink {
+  color: #666666;
+}
+
+.divideSpan {
+  margin: 0 1.2rem;
+}
