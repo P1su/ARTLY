@@ -1,3 +1,8 @@
 .layout {
   display: flex;
 }
+
+.galleryWrapper {
+  width: 40rem;
+  height: 40rem;
+}
