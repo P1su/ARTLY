@@ -1,0 +1,30 @@
+.imageLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 15rem;
+  height: 15rem;
+  padding: 2rem;
+
+  background-color: #e2e2e2;
+}
+
+.fileInput {
+  display: none;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+
+  object-fit: fill;
+}
+
+.addIconSpan {
+  padding-bottom: 2rem;
+
+  color: #8e8e8e;
+  font-size: 3.2rem;
+}
