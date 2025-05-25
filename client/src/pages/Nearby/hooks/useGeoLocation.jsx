@@ -25,7 +25,7 @@ const useGeoLocation = () => {
     }
   }, []);
 
-  return coords;
+  return { coords, setCoords };
 };
 
 export default useGeoLocation;

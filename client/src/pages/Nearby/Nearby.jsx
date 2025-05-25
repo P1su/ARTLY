@@ -5,7 +5,8 @@ import useMap from './hooks/useMap';
 import axios from 'axios';
 
 export default function Nearby() {
-  const { lat, lng } = useGeoLocation();
+  const { coords, setCoords } = useGeoLocation();
+  const { lat, lng } = coords;
   const [query, setQuery] = useState('');
 
   const handleChange = (e) => {
@@ -27,10 +28,16 @@ export default function Nearby() {
           query: query,
         },
       });
-      console.log(response);
+      const newLng = response.data.addresses[0].x;
+      const newLat = response.data.addresses[0].y;
+
+      setCoords({
+        lat: newLat,
+        lng: newLng,
+      });
     } catch (error) {
       console.error(error);
-      alert('불러오는 중 오류가 발생했습니다');
+      alert('올바른 주소값을 입력해주세요');
     }
   };
 
