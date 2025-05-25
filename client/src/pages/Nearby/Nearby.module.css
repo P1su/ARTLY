@@ -1,8 +1,9 @@
 .layout {
   display: flex;
+  flex-direction: column;
 }
 
 .galleryWrapper {
-  width: 40rem;
+  width: 100%;
   height: 40rem;
 }

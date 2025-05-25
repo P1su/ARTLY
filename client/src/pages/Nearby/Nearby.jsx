@@ -1,13 +1,17 @@
 import styles from './Nearby.module.css';
 import { useEffect } from 'react';
+import useGeoLocation from './hooks/useGeoLocation';
 
 export default function Nearby() {
+  const { lat, lng } = useGeoLocation();
+
+  console.log(lat, lng);
   useEffect(() => {
     if (!window.naver) {
       return;
     }
     const map = new naver.maps.Map('map', {
-      center: new naver.maps.LatLng(37.3595704, 127.105399),
+      center: new naver.maps.LatLng(lat, lng),
       zoom: 10,
     });
   });
