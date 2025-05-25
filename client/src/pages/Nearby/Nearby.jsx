@@ -6,7 +6,6 @@ import axios from 'axios';
 export default function Nearby() {
   const { lat, lng } = useGeoLocation();
   const [query, setQuery] = useState('');
-  console.log(lat, lng);
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -45,10 +44,19 @@ export default function Nearby() {
   return (
     <div className={styles.layout}>
       <p>주변 갤러리 찾기 페이지,,,</p>
-      <form onSubmit={getGeocode}>
-        <input value={query} onChange={handleChange} />
+      <form className={styles.searchForm} onSubmit={getGeocode}>
+        <input
+          className={styles.searchInput}
+          value={query}
+          onChange={handleChange}
+          placeholder='주소를 입력해주세요'
+        />
       </form>
       <div id='map' className={styles.galleryWrapper} />
+      <section className={styles.searchResultSection}>
+        <h2 className={styles.searchTitle}>주변 갤러리 목록</h2>
+        <div>검색 결과가 없습니다.</div>
+      </section>
     </div>
   );
 }

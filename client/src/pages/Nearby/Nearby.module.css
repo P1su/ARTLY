@@ -1,9 +1,38 @@
 .layout {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 .galleryWrapper {
   width: 100%;
   height: 40rem;
+}
+
+.searchForm {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.searchInput {
+  width: 80%;
+  height: 3rem;
+  padding: 1rem;
+
+  border: 0.15rem solid #efefef;
+  border-radius: 0.8rem;
+
+  outline: none;
+}
+
+.searchResultSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchTitle {
+  font-size: 2rem;
 }
