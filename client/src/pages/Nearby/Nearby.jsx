@@ -1,6 +1,7 @@
 import styles from './Nearby.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
+import useMap from './hooks/useMap';
 import axios from 'axios';
 
 export default function Nearby() {
@@ -11,15 +12,7 @@ export default function Nearby() {
     setQuery(e.target.value);
   };
 
-  useEffect(() => {
-    if (!window.naver) {
-      return;
-    }
-    const map = new naver.maps.Map('map', {
-      center: new naver.maps.LatLng(lat, lng),
-      zoom: 15,
-    });
-  });
+  useMap(lat, lng);
 
   const getGeocode = async (e) => {
     e.preventDefault();
