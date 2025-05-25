@@ -22,7 +22,7 @@ export const menuList = [
   {
     name: 'gallary-nearby',
     label: '주변 갤러리',
-    path: '/gallery-nearby',
+    path: '/nearby-galleries',
   },
   {
     name: 'notice',
