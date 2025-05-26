@@ -22,6 +22,7 @@ export default function MyPage() {
         return null;
     }
   };
+
   return (
     <div className={styles.layout}>
       <ProfileCard />

@@ -15,7 +15,7 @@ export default function TabLike() {
       try {
         const likeRes = await instance.get('/api/users/me/likes');
         setLiked(likeRes.data);
-        console.log(likeRes.data);
+        // console.log(likeRes.data);
       } catch (err) {
         console.log('like fetch err : ', err);
       }
