@@ -13,6 +13,7 @@ const useInput = (initialData) => {
   return {
     data,
     handleChange,
+    setData,
   };
 };
 
