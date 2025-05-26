@@ -2,7 +2,6 @@ import styles from './Nearby.module.css';
 import { useState } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
-import axios from 'axios';
 import { mapInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
 
