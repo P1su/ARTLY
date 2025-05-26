@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styles from './Mypage.module.css';
 import ProfileCard from './components/ProfileCard/ProfileCard';
 import TabNav from './components/TabNav/TabNav';
-import TabContent from './components/TabContent/TabContent';
 import TabMyArtly from './components/TabContent/TabMyArtly/TabMyArtly';
 import TabLike from './components/TabContent/TabLike/TabLike';
 import TabPurchased from './components/TabContent/TabPurchased/TabPurchased';
