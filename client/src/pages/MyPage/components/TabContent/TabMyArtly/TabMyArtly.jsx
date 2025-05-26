@@ -4,6 +4,7 @@ import axios from 'axios';
 import SectionCalendar from '../../Sections/SectionCalendar/SectionCalendar';
 import SectionTitle from '../../SectionTitle/SectionTitle';
 import SectionCardList from '../../SectionCardList/SectionCardList';
+import { instance } from '../../../../../apis/instance';
 
 export default function TabMyArtly() {
   const [reservations, setReservations] = useState([]);
@@ -13,20 +14,17 @@ export default function TabMyArtly() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const BASE_URL = import.meta.env.VITE_SERVER_URL;
       setLoading(true);
 
       try {
-        const reservationsRes = await axios.get(
-          `${BASE_URL}/api/users/me/exhibitions`,
-        );
+        const reservationsRes = await instance.get('/api/users/me/exhibitions');
         setReservations(reservationsRes.data);
       } catch (err) {
         setError(err);
       }
 
       try {
-        const viewedRes = await axios.get(`${BASE_URL}/api/users/me/purchases`);
+        const viewedRes = await instance.get('/api/users/me/purchases');
         setViewedExhibitions(viewedRes.data);
       } catch (err) {
         setError(err);
