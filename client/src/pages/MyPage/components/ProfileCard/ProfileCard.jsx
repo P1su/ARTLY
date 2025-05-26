@@ -21,6 +21,8 @@ export default function ProfileCard() {
     user_keyword: '',
   });
 
+  const [imgSrc, setImgSrc] = useState(profileImg);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -35,20 +37,31 @@ export default function ProfileCard() {
           user_img: res.data.user_img,
           user_keyword: res.data.user_keyword,
         });
+        if (res.data.user_img) {
+          setImgSrc(res.data.user_img);
+        } else {
+          setImgSrc(profileImg);
+        }
       } catch (err) {
         console.log('fetch err : ', err);
+        setImgSrc(profileImg);
       }
     };
 
     fetchUserInfo();
   }, []);
 
+  const handleImgError = () => {
+    setImgSrc(profileImg);
+  };
+
   return (
     <div className={styles.layout}>
       <div className={styles.imgBox}>
         <img
-          src={formDatas.user_img || profileImg}
+          src={imgSrc}
           alt='유저 기본 프로필 이미지'
+          onError={handleImgError}
         />
       </div>
       <div className={styles.infoContainer}>
