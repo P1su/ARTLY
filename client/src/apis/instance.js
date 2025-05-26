@@ -7,3 +7,13 @@ export const instance = axios.create({
   },
   withCredentials: true,
 });
+
+export const mapInstance = axios.create({
+  baseURL: '',
+  headers: {
+    Accept: 'application/json',
+    'x-ncp-apigw-api-key-id	': import.meta.env.VITE_NAVER_MAP_CLIENT_ID,
+    'x-ncp-apigw-api-key': import.meta.env.VITE_NAVER_MAP_CLIENT_SECRET,
+  },
+  withCredentials: true,
+});

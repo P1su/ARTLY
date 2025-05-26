@@ -3,6 +3,7 @@ import { useState } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
 import axios from 'axios';
+import { mapInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
 
 export default function Nearby() {
@@ -20,12 +21,7 @@ export default function Nearby() {
     e.preventDefault();
 
     try {
-      const response = await axios.get('/v2/geocode', {
-        headers: {
-          Accept: 'application/json',
-          'x-ncp-apigw-api-key-id	': import.meta.env.VITE_NAVER_MAP_CLIENT_ID,
-          'x-ncp-apigw-api-key': import.meta.env.VITE_NAVER_MAP_CLIENT_SECRET,
-        },
+      const response = await mapInstance.get('/v2/geocode', {
         params: {
           query: query,
         },
