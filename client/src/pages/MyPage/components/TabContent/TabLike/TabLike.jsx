@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
 import dummyImg from '../../../mock/dummyImg.png';
 import SectionTitle from '../../SectionTitle/SectionTitle';
-import SectionCardList from '../../SectionCardList/SectionCardList';
-import SectionArtistCardList from '../../SectionArtistCardList/SectionArtistCardList';
 import { instance } from '../../../../../apis/instance';
+import SectionCard from '../../Sections/SectionCard/SectionCard';
+import SectionArtistCard from '../../Sections/SectionAtristCard/SectionArtistCard';
 
 export default function TabLike() {
   const [liked, setLiked] = useState([]);
@@ -15,6 +15,7 @@ export default function TabLike() {
       try {
         const likeRes = await instance.get('/api/users/me/likes');
         setLiked(likeRes.data);
+        console.log(likeRes.data);
       } catch (err) {
         console.log('like fetch err : ', err);
       }
@@ -34,11 +35,19 @@ export default function TabLike() {
     <div>
       <section>
         <SectionTitle title='북마크 전시' />
-        <SectionCardList items={liked} type='like' />
+        <div className={styles.cardList}>
+          {liked.map((item) => (
+            <SectionCard key={item.id} item={item} type='like' />
+          ))}
+        </div>
       </section>
       <section>
         <SectionTitle title='팔로우 중인 작가' />
-        <SectionArtistCardList items={followed} />
+        <div className={styles.cardList}>
+          {followed.map((item) => (
+            <SectionArtistCard key={item.id} item={item} />
+          ))}
+        </div>
       </section>
     </div>
   );

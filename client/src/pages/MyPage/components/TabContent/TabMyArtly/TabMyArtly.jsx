@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './TabMyArtly.module.css';
-import axios from 'axios';
 import SectionCalendar from '../../Sections/SectionCalendar/SectionCalendar';
 import SectionTitle from '../../SectionTitle/SectionTitle';
-import SectionCardList from '../../SectionCardList/SectionCardList';
 import { instance } from '../../../../../apis/instance';
+import SectionCard from '../../Sections/SectionCard/SectionCard';
 
 export default function TabMyArtly() {
   const [reservations, setReservations] = useState([]);
@@ -48,11 +47,19 @@ export default function TabMyArtly() {
     <div>
       <section>
         <SectionTitle title='예약한 전시' />
-        <SectionCardList items={reservations} type='reservation' />
+        <div className={styles.cardList}>
+          {reservations.map((item) => (
+            <SectionCard key={item.id} item={item} type='reservation' />
+          ))}
+        </div>
       </section>
       <section>
         <SectionTitle title='관람한 전시' />
-        <SectionCardList items={viewedExhibitions} type='viewed' />
+        <div className={styles.cardList}>
+          {viewedExhibitions.map((item) => (
+            <SectionCard key={item.id} item={item} type='viewed' />
+          ))}
+        </div>
       </section>
       <section>
         <SectionTitle title='전시 캘린더' />
