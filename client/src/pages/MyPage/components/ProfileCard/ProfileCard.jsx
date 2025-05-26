@@ -2,40 +2,27 @@ import React, { useEffect, useState } from 'react';
 import styles from './ProfileCard.module.css';
 import { Link } from 'react-router-dom';
 import { instance } from '../../../../apis/instance';
-import useInput from '../../../../hooks/useInput';
 import profileImg from '../../mock/userProfile.png';
 
 export default function ProfileCard() {
-  const {
-    data: formDatas,
-    setData: setFormDatas,
-    handleChange,
-  } = useInput({
-    login_id: '',
+  const [imgSrc, setImgSrc] = useState(profileImg);
+
+  const [userData, setUserData] = useState({
     user_name: '',
-    user_gender: '',
     user_age: '',
     user_email: '',
     user_phone: '',
-    user_img: '',
-    user_keyword: '',
   });
-
-  const [imgSrc, setImgSrc] = useState(profileImg);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const res = await instance.get('api/users/me');
-        setFormDatas({
-          login_id: res.data.login_id,
+        setUserData({
           user_name: res.data.user_name,
-          user_gender: res.data.user_gender,
           user_age: res.data.user_age,
           user_email: res.data.user_email,
           user_phone: res.data.user_phone,
-          user_img: res.data.user_img,
-          user_keyword: res.data.user_keyword,
         });
         if (res.data.user_img) {
           setImgSrc(res.data.user_img);
@@ -65,11 +52,11 @@ export default function ProfileCard() {
         />
       </div>
       <div className={styles.infoContainer}>
-        <h3>{formDatas.user_name} 님</h3>
+        <h3>{userData.user_name} 님</h3>
         <br />
-        <p>{formDatas.user_age}</p>
-        <p>{formDatas.user_email}</p>
-        <p>{formDatas.user_phone}</p>
+        <p>{userData.user_age}</p>
+        <p>{userData.user_email}</p>
+        <p>{userData.user_phone}</p>
       </div>
       <Link to='/mypage/edit' className={styles.btnBox}>
         프로필 수정
