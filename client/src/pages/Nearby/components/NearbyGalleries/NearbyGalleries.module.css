@@ -1,0 +1,9 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.searchTitle {
+  font-size: 2rem;
+}

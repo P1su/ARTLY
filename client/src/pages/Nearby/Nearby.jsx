@@ -3,6 +3,7 @@ import { useState } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
 import axios from 'axios';
+import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
 
 export default function Nearby() {
   const { coords, setCoords } = useGeoLocation();
@@ -17,6 +18,7 @@ export default function Nearby() {
 
   const getGeocode = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.get('/v2/geocode', {
         headers: {
@@ -53,10 +55,7 @@ export default function Nearby() {
         />
       </form>
       <div id='map' className={styles.galleryWrapper} />
-      <section className={styles.searchResultSection}>
-        <h2 className={styles.searchTitle}>주변 갤러리 목록</h2>
-        <div>검색 결과가 없습니다.</div>
-      </section>
+      <NearbyGalleries lat={lat} lng={lng} />
     </div>
   );
 }

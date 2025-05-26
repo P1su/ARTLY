@@ -27,12 +27,3 @@
 
   outline: none;
 }
-
-.searchResultSection {
-  display: flex;
-  flex-direction: column;
-}
-
-.searchTitle {
-  font-size: 2rem;
-}
