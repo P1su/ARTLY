@@ -13,21 +13,23 @@ export default function TabMyArtly() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const BASE_URL = import.meta.env.VITE_SERVER_URL;
+      setLoading(true);
+
       try {
-        setLoading(true);
-        const BASE_URL = import.meta.env.VITE_SERVER_URL;
         const reservationsRes = await axios.get(
           `${BASE_URL}/api/users/me/exhibitions`,
         );
         setReservations(reservationsRes.data);
-        console.log(reservationsRes.data);
-
-        const viewedRes = await axios.get(`${BASE_URL}/api/users/me/purchases`);
-        setViewedExhibitions(viewedRes.data);
-        console.log(viewedRes.data);
       } catch (err) {
         setError(err);
-        console.error('마이페이지 데이터 가져오기 에러 :', err);
+      }
+
+      try {
+        const viewedRes = await axios.get(`${BASE_URL}/api/users/me/purchases`);
+        setViewedExhibitions(viewedRes.data);
+      } catch (err) {
+        setError(err);
       } finally {
         setLoading(false);
       }
