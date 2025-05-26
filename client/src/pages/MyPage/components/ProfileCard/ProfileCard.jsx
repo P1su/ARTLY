@@ -30,7 +30,7 @@ export default function ProfileCard() {
           setImgSrc(profileImg);
         }
       } catch (err) {
-        console.log('fetch err : ', err);
+        console.log('profile fetch err : ', err);
         setImgSrc(profileImg);
       }
     };
