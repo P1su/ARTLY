@@ -1,0 +1,30 @@
+.titleBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1.2rem 2rem;
+
+  background-color: white;
+  border-bottom: 0.1rem solid #ddd;
+}
+
+.leftButtons,
+.rightButtons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.button {
+  background-color: #f3d9f6;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+}

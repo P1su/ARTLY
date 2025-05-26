@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
+import AuthRoute from '../layouts/AuthRoute';
 import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Exhibitions/Exhibitions';
 import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
@@ -21,6 +22,7 @@ import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import Artwork from '../pages/Artwork/Artwork';
+import Catalog from '../pages/Catalog/Catalog'
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
@@ -53,23 +55,28 @@ const router = createBrowserRouter([
               { path: '/artists/:artistId', element: <ArtistDetail /> },
               { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
               { path: '/art/:artId', element: <Artwork /> }, 
-              { path: '/catalog', element: <div>도록 페이지</div> },
+              { path: '/catalog', element: <Catalog />  },
               { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
             ],
           },
           { path: '/login', element: <Login /> },
           { path: '/register', element: <Register /> },
-          { path: '/mypage', element: <Mypage /> },
-          { path: '/mypage/edit', element: <EditProfile /> },
-          { path: '/reservation/:exhibitionId', element: <Reservation /> },
-          { path: '/purchase/:reservationId', element: <Purchase /> },
           {
-            path: '/reservation/complete/:reservationId',
-            element: <ReservationComplete />,
-          },
-          {
-            path: '/reservation/detail/:reservationId',
-            element: <ReservationDetail />,
+            element: <AuthRoute />,
+            children: [
+              { path: '/mypage', element: <Mypage /> },
+              { path: '/mypage/edit', element: <EditProfile /> },
+              { path: '/reservation/:exhibitionId', element: <Reservation /> },
+              { path: '/purchase/:reservationId', element: <Purchase /> },
+              {
+                path: '/reservation/complete/:reservationId',
+                element: <ReservationComplete />,
+              },
+              {
+                path: '/reservation/detail/:reservationId',
+                element: <ReservationDetail />,
+              },
+            ],
           },
           {
             path: '/scan',

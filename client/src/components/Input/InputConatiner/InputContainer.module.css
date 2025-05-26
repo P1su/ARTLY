@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputTitle {
+  color: #333333;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 2rem;
+}
