@@ -54,7 +54,7 @@ export default function ProfileCard() {
       <div className={styles.infoContainer}>
         <h3>{userData.user_name} 님</h3>
         <br />
-        <p>{userData.user_age}</p>
+        <p>{userData.user_age} 세</p>
         <p>{userData.user_email}</p>
         <p>{userData.user_phone}</p>
       </div>
