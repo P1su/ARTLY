@@ -10,6 +10,7 @@ export default function SectionCard({ item, type }) {
   }
 
   const {
+    id,
     exhibition_poster: posterFileName,
     exhibition_title: title = '제목 정보 없음',
     exhibition_location: location = '장소 정보 없음',
@@ -34,12 +35,16 @@ export default function SectionCard({ item, type }) {
         ? '전시 중'
         : '마감';
 
-  const handleNavigate = () => {
+  const handleNavigateDetail = () => {
     navigate(`/reservation/detail/${reservationSessionId}`, { state: item });
   };
 
+  const handleNavigateExhibition = () => {
+    navigate(`/exhibitions/${id}`, { state: item });
+  };
+
   return (
-    <div className={styles.cardContainer}>
+    <div className={styles.cardContainer} onClick={handleNavigateExhibition}>
       <img src={imageUrl} alt={title} className={styles.image} />
       <div className={styles.info}>
         <div className={styles.title}>{title}</div>
@@ -59,7 +64,7 @@ export default function SectionCard({ item, type }) {
 
         {type === 'reservation' && (
           <button
-            onClick={handleNavigate}
+            onClick={handleNavigateDetail}
             className={`${styles.btn} ${styles.confirmBtn}`}
           >
             예매 확인
