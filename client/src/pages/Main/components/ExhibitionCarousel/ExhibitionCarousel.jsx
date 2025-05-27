@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import styles from './ExhibitionCarousel.module.css';
 
 export default function ExhibitionCarousel({ title, items }) {
@@ -80,6 +80,10 @@ export default function ExhibitionCarousel({ title, items }) {
     }
   };
 
+  const handleClick = (id) => {
+    navigate(`/exhibitions/${id}`);
+  };
+
   return (
     <div className={styles.carouselWrapper}>
       <div className={styles.titleContainer}>
@@ -94,10 +98,10 @@ export default function ExhibitionCarousel({ title, items }) {
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
           {clonedItems.map((item, i) => (
-            <div
-              className={styles.carouselSlide}
+            <Link
+              to={`/exhibitions/${item?.id}`}
               key={item?.id ?? `clone-${i}`}
-              style={{ width: `${100 / slidesToShow}%` }}
+              className={styles.carouselSlide}
             >
               <img
                 src={item?.image || '/default.jpg'}
@@ -107,9 +111,12 @@ export default function ExhibitionCarousel({ title, items }) {
               <div className={styles.cardText}>
                 <h3>{item?.title || '제목 없음'}</h3>
                 <p>{item?.category || '카테고리 없음'}</p>
-                <p>{item?.startDate && item?.endDate  ? `${item.startDate} ~ ${item.endDate}` : '날짜 없음'}</p>
+                <p>{item?.startDate && item?.endDate
+                  ? `${item.startDate} ~ ${item.endDate}`
+                  : '날짜 없음'}
+                </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { Link } from 'react-router-dom'; 
 import styles from './MainCarousel.module.css';
 
 export default function MainCarousel({ items }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const timeoutRef = useRef(null);
-  const navigate = useNavigate(); 
+  const timeoutRef = useRef(null); 
 
   useEffect(() => {
     resetAutoPlay();
@@ -22,10 +21,6 @@ export default function MainCarousel({ items }) {
 
   const goToSlide = (index) => setCurrentIndex(index);
 
-  const handleClick = (id) => {
-    navigate(`/exhibitions/${id}`);
-  };
-
   return (
     <div className={styles.carouselContainer}>
       <div className={styles.sliderWrapper}>
@@ -34,11 +29,10 @@ export default function MainCarousel({ items }) {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {items.map((item) => (
-            <div
+            <Link
+              to={`/exhibitions/${item?.id}`} 
               key={item?.id}
               className={styles.carouselItem}
-              onClick={() => handleClick(item?.id)} 
-              style={{ cursor: 'pointer' }} 
             >
               <img
                 src={item?.image}
@@ -50,7 +44,7 @@ export default function MainCarousel({ items }) {
                 <p>{item?.period || item.date}</p>
                 <p>{item?.gallery}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
