@@ -40,7 +40,6 @@ export default function Nearby() {
 
   return (
     <div className={styles.layout}>
-      <p>주변 갤러리 찾기 페이지,,,</p>
       <form className={styles.searchForm} onSubmit={getGeocode}>
         <input
           className={styles.searchInput}

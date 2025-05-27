@@ -7,3 +7,12 @@
 .searchTitle {
   font-size: 2rem;
 }
+
+.resultNumParagraph {
+  font-size: 1.4rem;
+}
+
+.highlightSpan {
+  color: #5a4fcf;
+  font-weight: 600;
+}

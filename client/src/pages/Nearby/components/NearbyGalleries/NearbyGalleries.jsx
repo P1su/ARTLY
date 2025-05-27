@@ -26,11 +26,15 @@ export default function NearbyGalleries({ lat, lng }) {
     getNaerbyGalleries();
   }, [lat, lng]);
 
-  console.log(results);
-
   return (
     <section className={styles.layout}>
-      <h2 className={styles.searchTitle}>주변 갤러리 검색 결과</h2>
+      <div>
+        <h2 className={styles.searchTitle}>주변 갤러리 검색 결과</h2>
+        <p className={styles.resultNumParagraph}>
+          총 <span className={styles.highlightSpan}>{results.length}</span> 개의
+          갤러리
+        </p>
+      </div>
       {results.map((item) => (
         <GalleryCard key={item.id} results={item} />
       ))}
