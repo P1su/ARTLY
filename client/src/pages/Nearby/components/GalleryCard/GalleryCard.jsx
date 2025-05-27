@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function GalleryCard({ results }) {
   const { id, name, image } = results;
   return (
-    <Link className={styles.layout} to={`galleries/${id}`}>
+    <Link className={styles.layout} to={`/galleries/${id}`}>
       <img
         className={styles.galleryImage}
         src={image}
