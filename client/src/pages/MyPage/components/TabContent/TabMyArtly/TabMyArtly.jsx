@@ -14,19 +14,28 @@ export default function TabMyArtly() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
 
       try {
-        const reservationsRes = await instance.get('/api/users/me/exhibitions');
-        setReservations(reservationsRes.data);
-      } catch (err) {
-        setError(err);
-      }
+        const allReservationsRes = await instance.get(
+          '/api/users/me/exhibitions',
+        );
+        const allReservations = allReservationsRes.data;
 
-      try {
-        const viewedRes = await instance.get('/api/users/me/purchases');
-        setViewedExhibitions(viewedRes.data);
+        const currentAndUpcoming = allReservations.filter(
+          (item) =>
+            item.exhibition_status === 'scheduled' ||
+            item.exhibition_status === 'exhibited',
+        );
+        const pastExhibitions = allReservations.filter(
+          (item) => item.exhibition_status === 'closed',
+        );
+
+        setReservations(currentAndUpcoming);
+        setViewedExhibitions(pastExhibitions);
       } catch (err) {
         setError(err);
+        console.error('데이터 가져오기 실패:', err);
       } finally {
         setLoading(false);
       }
@@ -49,7 +58,7 @@ export default function TabMyArtly() {
         <SectionTitle title='예약한 전시' />
         <div className={styles.cardList}>
           {reservations.map((item) => (
-            <SectionCard key={item.id} item={item} type='reservation' />
+            <SectionCard key={item.id} item={item} />
           ))}
         </div>
       </section>
@@ -57,7 +66,7 @@ export default function TabMyArtly() {
         <SectionTitle title='관람한 전시' />
         <div className={styles.cardList}>
           {viewedExhibitions.map((item) => (
-            <SectionCard key={item.id} item={item} type='viewed' />
+            <SectionCard key={item.id} item={item} type='closed' />
           ))}
         </div>
       </section>
