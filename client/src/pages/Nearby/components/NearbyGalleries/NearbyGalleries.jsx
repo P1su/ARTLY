@@ -5,6 +5,14 @@ import GalleryCard from '../GalleryCard/GalleryCard';
 
 export default function NearbyGalleries({ lat, lng }) {
   const [results, setResults] = useState([]);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+  const pageLen = Math.ceil(results.length / itemsPerPage);
+  const currentPageData = results.slice(
+    (page - 1) * itemsPerPage,
+    itemsPerPage * page,
+  );
+  console.log(page, pageLen);
 
   useEffect(() => {
     const getNaerbyGalleries = async () => {
@@ -35,9 +43,25 @@ export default function NearbyGalleries({ lat, lng }) {
           갤러리
         </p>
       </div>
-      {results.map((item) => (
+      {currentPageData.map((item) => (
         <GalleryCard key={item.id} results={item} />
       ))}
+      <button
+        disabled={page === 1}
+        onClick={() => {
+          setPage((prev) => prev - 1);
+        }}
+      >
+        이전
+      </button>
+      <button
+        disabled={page === pageLen}
+        onClick={() => {
+          setPage((prev) => prev + 1);
+        }}
+      >
+        다음
+      </button>
     </section>
   );
 }
