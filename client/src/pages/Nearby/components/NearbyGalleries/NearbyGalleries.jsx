@@ -8,6 +8,8 @@ export default function NearbyGalleries({ lat, lng }) {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const pageLen = Math.ceil(results.length / itemsPerPage);
+  const pageIndexes = Array.from({ length: pageLen }, (_, i) => i + 1);
+  console.log(pageIndexes);
   const currentPageData = results.slice(
     (page - 1) * itemsPerPage,
     itemsPerPage * page,
@@ -54,6 +56,17 @@ export default function NearbyGalleries({ lat, lng }) {
       >
         이전
       </button>
+      {pageIndexes.map((num) => (
+        <button
+          key={num}
+          disabled={num === page}
+          onClick={() => {
+            setPage(num);
+          }}
+        >
+          {num}
+        </button>
+      ))}
       <button
         disabled={page === pageLen}
         onClick={() => {
