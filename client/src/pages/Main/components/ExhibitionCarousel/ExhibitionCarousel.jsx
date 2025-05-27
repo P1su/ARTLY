@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom'; 
 import styles from './ExhibitionCarousel.module.css';
 
 export default function ExhibitionCarousel({ title, items }) {
@@ -79,9 +80,16 @@ export default function ExhibitionCarousel({ title, items }) {
     }
   };
 
+  const handleClick = (id) => {
+    navigate(`/exhibitions/${id}`);
+  };
+
   return (
     <div className={styles.carouselWrapper}>
-      <h2 className={styles.carouselTitle}>{title}</h2>
+      <div className={styles.titleContainer}>
+        <h2 className={styles.carouselTitle}>{title}</h2>
+        <Link to="/exhibitions" className={styles.moreButton}>더보기</Link>
+      </div>
       <div
         className={styles.carouselViewport}
         onTouchStart={handleTouchStart}
@@ -90,22 +98,25 @@ export default function ExhibitionCarousel({ title, items }) {
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
           {clonedItems.map((item, i) => (
-            <div
+            <Link
+              to={`/exhibitions/${item?.id}`}
+              key={item?.id ?? `clone-${i}`}
               className={styles.carouselSlide}
-              key={item.id ?? `clone-${i}`}
-              style={{ width: `${100 / slidesToShow}%` }}
             >
               <img
-                src={item.image}
-                alt={item.name ? `${item.name} 포스터` : '전시 이미지'}
+                src={item?.image || '/default.jpg'}
+                alt={item?.title ? `${item.title} 포스터` : '전시 이미지'}
                 className={styles.carouselImage}
               />
               <div className={styles.cardText}>
-                <h3>{item.name}</h3>
-                <p>{item.gallery}</p>
-                <p>{item.date}</p>
+                <h3>{item?.title || '제목 없음'}</h3>
+                <p>{item?.category || '카테고리 없음'}</p>
+                <p>{item?.startDate && item?.endDate
+                  ? `${item.startDate} ~ ${item.endDate}`
+                  : '날짜 없음'}
+                </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom'; 
 import styles from './MainCarousel.module.css';
 
 export default function MainCarousel({ items }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const timeoutRef = useRef(null);
-  const slideCount = items.length;
+  const timeoutRef = useRef(null); 
 
   useEffect(() => {
     resetAutoPlay();
     return () => clearTimeout(timeoutRef.current);
-  }, [currentIndex]);
+  }, [currentIndex, items]);
 
   const resetAutoPlay = () => {
     clearTimeout(timeoutRef.current);
+    if (!items || items.length <= 1) return;
     timeoutRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % slideCount);
+      setCurrentIndex((prev) => (prev + 1) % items.length);
     }, 5000);
   };
 
@@ -28,25 +29,29 @@ export default function MainCarousel({ items }) {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {items.map((item) => (
-            <div key={item.id} className={styles.carouselItem}>
+            <Link
+              to={`/exhibitions/${item?.id}`} 
+              key={item?.id}
+              className={styles.carouselItem}
+            >
               <img
-                src={item.image}
-                alt={item.title || `${item.name}`}
+                src={item?.image}
+                alt={item?.title || item?.name}
                 className={styles.carouselImage}
               />
               <div>
-                <h3>{item.title || item.name}</h3>
-                <p>{item.period || item.date}</p>
-                <p>{item.gallery}</p>
+                <h3>{item?.title || item.name}</h3>
+                <p>{item?.period || item.date}</p>
+                <p>{item?.gallery}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
       <div className={styles.dots}>
         {items.map((item, i) => (
           <button
-            key={item.id}
+            key={item?.id}
             onClick={() => goToSlide(i)}
             className={`${styles.dot} ${i === currentIndex ? styles.active : ''}`}
           />
