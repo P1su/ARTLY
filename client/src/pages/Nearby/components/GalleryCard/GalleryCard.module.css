@@ -1,0 +1,25 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  width: 33.5rem;
+  height: 30rem;
+
+  border: 0.1rem solid rgb(238, 238, 238);
+  border-radius: 0.8rem;
+}
+
+.galleryImage {
+  flex: 2;
+}
+
+.infoContainer {
+  flex: 1;
+  padding: 2rem;
+}
+
+.galleryTitle {
+  margin: 0;
+
+  font-size: 1.6rem;
+}
