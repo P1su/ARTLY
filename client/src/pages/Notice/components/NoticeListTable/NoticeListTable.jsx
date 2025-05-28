@@ -2,8 +2,8 @@ import NoticeTableHeader from './NoticeTableHeader/NoticeTableHeader';
 import NoticeRow from './NoticeRow/NoticeRow';
 import styles from './NoticeListTable.module.css';
 
-export default function NoticeListTable({ data, currentPage, itemsPerPage }) {
-
+export default function NoticeListTable({ data, currentPage }) {
+  const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pageItems = data.slice(startIndex, startIndex + itemsPerPage);
 

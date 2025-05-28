@@ -2,19 +2,12 @@ import styles from './NearbyGalleries.module.css';
 import { useEffect, useState } from 'react';
 import { instance } from '../../../../apis/instance.js';
 import GalleryCard from '../GalleryCard/GalleryCard';
+import usePagination from '../../../../hooks/usePagination';
+import Pagination from '../../../../components/Pagination/Pagination';
 
 export default function NearbyGalleries({ lat, lng }) {
   const [results, setResults] = useState([]);
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
-  const pageLen = Math.ceil(results.length / itemsPerPage);
-  const pageIndexes = Array.from({ length: pageLen }, (_, i) => i + 1);
-  console.log(pageIndexes);
-  const currentPageData = results.slice(
-    (page - 1) * itemsPerPage,
-    itemsPerPage * page,
-  );
-  console.log(page, pageLen);
+  const { currentPage, setCurrentPage, pageItems } = usePagination(10, results);
 
   useEffect(() => {
     const getNaerbyGalleries = async () => {
@@ -45,36 +38,14 @@ export default function NearbyGalleries({ lat, lng }) {
           갤러리
         </p>
       </div>
-      {currentPageData.map((item) => (
+      {pageItems.map((item) => (
         <GalleryCard key={item.id} results={item} />
       ))}
-      <button
-        disabled={page === 1}
-        onClick={() => {
-          setPage((prev) => prev - 1);
-        }}
-      >
-        이전
-      </button>
-      {pageIndexes.map((num) => (
-        <button
-          key={num}
-          disabled={num === page}
-          onClick={() => {
-            setPage(num);
-          }}
-        >
-          {num}
-        </button>
-      ))}
-      <button
-        disabled={page === pageLen}
-        onClick={() => {
-          setPage((prev) => prev + 1);
-        }}
-      >
-        다음
-      </button>
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        totalItems={results.length}
+      />
     </section>
   );
 }
