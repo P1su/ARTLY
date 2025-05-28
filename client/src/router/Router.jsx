@@ -23,6 +23,7 @@ import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
+import Nearby from '../pages/Nearby/Nearby';
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       { path: '/notices/:noticeId', element: <NoticeDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
       { path: '/catalog', element: <Catalog /> },
-      { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div> },
+      { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       {

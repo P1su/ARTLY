@@ -4,35 +4,51 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SectionCard({ item, type }) {
   const navigate = useNavigate();
+
+  if (!item) {
+    return null;
+  }
+
   const {
-    exhibition_poster,
-    exhibition_title,
-    exhibition_location,
-    exhibition_start_date,
-    exhibition_end_date,
-    exhibition_status,
+    id,
+    exhibition_poster: posterFileName,
+    exhibition_title: title = '제목 정보 없음',
+    exhibition_location: location = '장소 정보 없음',
+    exhibition_start_date: startDate = '',
+    exhibition_end_date: endDate = '',
+    exhibition_status: statusValue,
+    session_id: reservationSessionId,
   } = item;
 
-  const imageUrl = `${import.meta.env.VITE_SERVER_URL}/images/${exhibition_poster}`;
-  const date = `${exhibition_start_date} ~ ${exhibition_end_date}`;
+  const serverBaseUrl = import.meta.env.VITE_SERVER_URL;
+  const imageUrl = posterFileName
+    ? `${serverBaseUrl}/images/${posterFileName}`
+    : '';
+
+  const date =
+    startDate && endDate ? `${startDate} ~ ${endDate}` : '날짜 정보 없음';
+
   const status =
-    exhibition_status === 'scheduled'
+    statusValue === 'scheduled'
       ? '전시 전'
-      : exhibition_status === 'exhibited'
+      : statusValue === 'exhibited'
         ? '전시 중'
         : '마감';
 
-  const reservationId = item.session_id;
-  const handleNavigate = () => {
-    navigate(`/reservation/detail/${reservationId}`, { state: item });
+  const handleNavigateDetail = () => {
+    navigate(`/reservation/detail/${reservationSessionId}`, { state: item });
+  };
+
+  const handleNavigateExhibition = () => {
+    navigate(`/exhibitions/${id}`, { state: item });
   };
 
   return (
-    <div className={styles.cardContainer}>
-      <img src={imageUrl} alt={exhibition_title} className={styles.image} />
+    <div className={styles.cardContainer} onClick={handleNavigateExhibition}>
+      <img src={imageUrl} alt={title} className={styles.image} />
       <div className={styles.info}>
-        <div className={styles.title}>{exhibition_title}</div>
-        <div className={styles.location}>{exhibition_location}</div>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.location}>{location}</div>
         <div className={styles.date}>{date}</div>
         <div
           className={`${styles.btn} ${
@@ -48,7 +64,7 @@ export default function SectionCard({ item, type }) {
 
         {type === 'reservation' && (
           <button
-            onClick={handleNavigate}
+            onClick={handleNavigateDetail}
             className={`${styles.btn} ${styles.confirmBtn}`}
           >
             예매 확인
