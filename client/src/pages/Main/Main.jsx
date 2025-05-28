@@ -3,6 +3,7 @@ import styles from './Main.module.css';
 import { instance } from '../../apis/instance.js';
 import MainCarousel from './components/MainCarousel/MainCarousel';
 import ExhibitionCarousel from './components/ExhibitionCarousel/ExhibitionCarousel';
+import ChatbotWidget from '../../components/ChatbotWidget/ChatbotWidget';
 
 export default function Main() {
   const [exhibitions, setExhibitions] = useState([]);
@@ -27,7 +28,7 @@ export default function Main() {
           status,
           startDate,
           endDate,
-        })
+        }),
       );
 
       setExhibitions(parsed);
@@ -43,8 +44,12 @@ export default function Main() {
   return (
     <div className={styles.mainLayout}>
       <MainCarousel items={exhibitions} />
-      <ExhibitionCarousel title="지금 인기 있는 전시" items={exhibitions} />
-      <ExhibitionCarousel title="놓치지 않아야 할 특별 전시회" items={exhibitions} />
+      <ExhibitionCarousel title='지금 인기 있는 전시' items={exhibitions} />
+      <ExhibitionCarousel
+        title='놓치지 않아야 할 특별 전시회'
+        items={exhibitions}
+      />
+      <ChatbotWidget />
     </div>
   );
 }
