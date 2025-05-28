@@ -1,6 +1,6 @@
-import styles from './NoticeTableHeader.module.css';
+import styles from './NewsTableHeader.module.css';
 
-export default function NoticeTableHeader() {
+export default function NewsTableHeader() {
   return (
     <thead>
       <tr className={styles.headerRow}>

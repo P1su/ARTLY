@@ -1,6 +1,6 @@
-import styles from './NoticeCategoryTabs.module.css';
+import styles from './NewsCategoryTabs.module.css';
 
-export default function NoticeCategoryTabs({
+export default function NewsCategoryTabs({
   filterOption,
   setFilterOption,
 }) {

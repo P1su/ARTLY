@@ -7,7 +7,7 @@
 }
 
 .pageButton {
-  border: 1px solid #ddd;
+  border: 0.1rem solid #ddd;
   border-radius: 0.5rem;
   width: 2.5rem;
   height: 2.5rem;

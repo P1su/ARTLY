@@ -1,13 +1,13 @@
-import styles from './NoticeDetail.module.css';
+import styles from './NewsDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance } from '../../apis/instance.js';
-import ContentsTitle from './components/ContentsTitle/ContentsTitle';
-import ContentsCard from './components/ContentsCard/ContentsCard';
-import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection';
-import ContentsDetailSection from './components/ContentsDetailSection/ContentsDetailSection';
+import ContentsTitle from './components/ContentsTitle/ContentsTitle.jsx';
+import ContentsCard from './components/ContentsCard/ContentsCard.jsx';
+import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection.jsx';
+import ContentsDetailSection from './components/ContentsDetailSection/ContentsDetailSection.jsx';
 
-export default function NoticeDetail() {
+export default function NewsDetail() {
   const { noticeId } = useParams();
   const navigate = useNavigate();
   const [notice, setNotice] = useState({});

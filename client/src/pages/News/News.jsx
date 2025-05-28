@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom'; 
 import { instance } from '../../apis/instance.js';
-import NoticeCategoryTabs from './components/NoticeCategoryTabs/NoticeCategoryTabs';
-import NoticeListTable from './components/NoticeListTable/NoticeListTable';
-import Pagination from '../../components/Pagination/Pagination';
-import usePagination from '../../hooks/usePagination';
+import NewsCategoryTabs from './components/NewsCategoryTabs/NewsCategoryTabs.jsx';
+import NewsListTable from './components/NewsListTable/NewsListTable.jsx';
+import Pagination from '../../components/Pagination/Pagination.jsx';
+import usePagination from '../../hooks/usePagination.jsx';
 
-export default function Notice() {
+export default function News() {
   const [searchParams, setSearchParams] = useSearchParams(); 
   const initialCategory = searchParams.get('category') || '공모'; 
   const [filterOption, setFilterOption] = useState(initialCategory); 
@@ -40,11 +40,11 @@ export default function Notice() {
 
   return (
     <>
-      <NoticeCategoryTabs
+      <NewsCategoryTabs
         filterOption={filterOption}
         setFilterOption={handleFilterChange} 
       />
-      <NoticeListTable data={notices} currentPage={currentPage} />
+      <NewsListTable data={notices} currentPage={currentPage} />
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}
