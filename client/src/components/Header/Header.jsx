@@ -24,9 +24,9 @@ export default function Header() {
 
   return (
     <header className={styles.headerLayout}>
-      <h1 className={styles.logoBox}>
-        <span onClick={handleHome}>Artly</span>
-      </h1>
+      <span className={styles.logoSpan} onClick={handleHome}>
+        Artly
+      </span>
       <div className={styles.rightSection}>
         <img
           src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAvklEQVR4nO2VOxLFIAwDff9L6zXJK2jAWOYTa2fomBEbGWImhPCCyXVcHr4mMkq73xsczasngs7B2CJw5kkEk42wGsXuRq4TaZGIkRuJ7qeNyin/kW0icK6oyGzecpGsvDS2BZcUwcKVSkmRF4kwYYzG6ue8poiRgkqIYFBUIiA2EmnpeCCRhuzLF7ngKC0ySpZImM+KoBPUC2aNEqKjJZEH7xfFbY1IxKo30oP2XD5IpCXtXd/VCG4XEULYnx+qft9LsKtc1gAAAABJRU5ErkJggg=='
@@ -35,10 +35,12 @@ export default function Header() {
           onClick={() => navigate('/scan')}
         />
         <button
-          className={styles.menu}
+          className={isOpen ? styles.menuOpen : styles.menuClosed}
           onClick={isOpen ? handleClose : handleOpen}
         >
-          {isOpen ? '닫기' : '메뉴'}
+          <span className={styles.menuSpan} />
+          <span className={styles.menuSpan} />
+          <span className={styles.menuSpan} />
         </button>
       </div>
 
