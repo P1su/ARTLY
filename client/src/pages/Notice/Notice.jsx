@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom'; 
 import { instance } from '../../apis/instance.js';
 import NoticeCategoryTabs from './components/NoticeCategoryTabs/NoticeCategoryTabs';
 import NoticeListTable from './components/NoticeListTable/NoticeListTable';
-import Pagination from './components/Pagination/Pagination';
+import Pagination from '../../components/Pagination/Pagination';
+import usePagination from '../../hooks/usePagination';
 
 export default function Notice() {
-  const [filterOption, setFilterOption] = useState('공모');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [notices, setNotices] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams(); 
+  const initialCategory = searchParams.get('category') || '공모'; 
+  const [filterOption, setFilterOption] = useState(initialCategory); 
 
-  const itemsPerPage = 10;
+  const [notices, setNotices] = useState([]);
+  const { currentPage, setCurrentPage } = usePagination(10, notices);
 
   const getNotices = async () => {
     try {
@@ -30,22 +33,22 @@ export default function Notice() {
     setCurrentPage(1);
   }, [filterOption]);
 
+  const handleFilterChange = (value) => {
+    setFilterOption(value);
+    setSearchParams({ category: value });
+  };
+
   return (
     <>
       <NoticeCategoryTabs
         filterOption={filterOption}
-        setFilterOption={setFilterOption}
+        setFilterOption={handleFilterChange} 
       />
-      <NoticeListTable
-        data={notices}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-      />
+      <NoticeListTable data={notices} currentPage={currentPage} />
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}
         totalItems={notices.length}
-        itemsPerPage={itemsPerPage}
       />
     </>
   );

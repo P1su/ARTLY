@@ -1,0 +1,7 @@
+.cardList {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.6rem;
+  margin: 2rem 0;
+  gap: 1.8rem;
+}

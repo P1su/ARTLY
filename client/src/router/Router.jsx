@@ -22,11 +22,11 @@ import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import Artwork from '../pages/Artwork/Artwork';
-import Catalog from '../pages/Catalog/Catalog'
+import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
-
+import Nearby from '../pages/Nearby/Nearby';
 
 const router = createBrowserRouter([
   {
@@ -50,13 +50,16 @@ const router = createBrowserRouter([
                   { path: '/notices', element: <Notice /> },
                 ],
               },
-              { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
+              {
+                path: '/exhibitions/:exhibitionId',
+                element: <ExhibitionDetail />,
+              },
               { path: '/galleries/:galleryId', element: <GalleryDetail /> },
               { path: '/artists/:artistId', element: <ArtistDetail /> },
-              { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
-              { path: '/art/:artId', element: <Artwork /> }, 
-              { path: '/catalog', element: <Catalog />  },
-              { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
+              { path: '/notices/:noticeId', element: <NoticeDetail /> },
+              { path: '/art/:artId', element: <Artwork /> },
+              { path: '/catalog', element: <Catalog /> },
+              { path: '/nearby-galleries', element: <Nearby /> },
             ],
           },
           { path: '/login', element: <Login /> },
