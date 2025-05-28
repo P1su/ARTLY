@@ -1,18 +1,13 @@
-import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
+import { instance } from '../../apis/instance.js';
 import NoticeCategoryTabs from './components/NoticeCategoryTabs/NoticeCategoryTabs';
 import NoticeListTable from './components/NoticeListTable/NoticeListTable';
 import Pagination from './components/Pagination/Pagination';
 
 export default function Notice() {
-  const [activeTab, setActiveTab] = useState('공모');
+  const [filterOption, setFilterOption] = useState('공모');
   const [currentPage, setCurrentPage] = useState(1);
   const [notices, setNotices] = useState([]);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setCurrentPage(1);
-  };
 
   const itemsPerPage = 10;
 
@@ -20,7 +15,7 @@ export default function Notice() {
     try {
       const response = await instance.get('/api/announcements', {
         params: {
-          category: activeTab,
+          category: filterOption,
         },
       });
 
@@ -32,13 +27,14 @@ export default function Notice() {
 
   useEffect(() => {
     getNotices();
-  }, [activeTab]);
+    setCurrentPage(1);
+  }, [filterOption]);
 
   return (
     <>
       <NoticeCategoryTabs
-        activeTab={activeTab}
-        setActiveTab={handleTabChange}
+        filterOption={filterOption}
+        setFilterOption={setFilterOption}
       />
       <NoticeListTable
         data={notices}

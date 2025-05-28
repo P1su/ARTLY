@@ -12,10 +12,10 @@ export default function ContentsInfoSection({
   return (
     <div className={styles.info}>
       <p>
-        <strong>기간:</strong> {startDate} - {endDate}
+        <strong>기간:</strong> {startDate}
       </p>
       <p>
-        <strong>공모처:</strong> {host}
+        <strong>기관:</strong> {host}
       </p>
       <p>
         <strong>문의:</strong> {contact}
