@@ -1,16 +1,8 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
+import { NavLink, useLocation } from 'react-router-dom';
+import { menuList } from '../../utils/menu.js';
 
 export default function NavBar() {
-  const menuList = [
-    { label: 'EXHIBITION', path: '/exhibitions' },
-    { label: 'NEWS', path: '/notices' },
-    { label: 'ART', path: '/nearby-galleriess' },
-    { label: 'ARTIST', path: '/artists' },
-    { label: 'GALLERY', path: '/galleries' },
-  ];
-
   const { pathname } = useLocation();
 
   return (
