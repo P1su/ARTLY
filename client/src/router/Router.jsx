@@ -16,71 +16,52 @@ import EditProfile from '../pages/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
 import Reservation from '../pages/Reservation/Reservation';
 import Purchase from '../pages/Purchase/Purchase';
-import LayoutWithSearchbarFooter from '../layouts/LayoutWithSearchbarFooter';
-import LayoutWithChatbot from '../layouts/LayoutWithChatbot';
-import LayoutWithHeader from '../layouts/LayoutWithHeader';
 import Notice from '../pages/Notice/Notice';
 import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
 import Artwork from '../pages/Artwork/Artwork';
-import Catalog from '../pages/Catalog/Catalog'
+import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
-
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
+      { path: '/', element: <Main /> },
+      { path: '/exhibitions', element: <Exhibitions /> },
+      { path: '/galleries', element: <Galleries /> },
+      { path: '/artists', element: <Artists /> },
+      { path: '/search', element: <Search /> },
+      { path: '/notices', element: <Notice /> },
+      { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
+      { path: '/galleries/:galleryId', element: <GalleryDetail /> },
+      { path: '/artists/:artistId', element: <ArtistDetail /> },
+      { path: '/notices/:noticeId', element: <NoticeDetail /> },
+      { path: '/art/:artId', element: <Artwork /> },
+      { path: '/catalog', element: <Catalog /> },
+      { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div> },
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
       {
-        element: <LayoutWithHeader />,
+        path: '/scan',
+        element: <QrScanner />,
+      },
+      {
+        element: <AuthRoute />,
         children: [
+          { path: '/mypage', element: <Mypage /> },
+          { path: '/mypage/edit', element: <EditProfile /> },
+          { path: '/reservation/:exhibitionId', element: <Reservation /> },
+          { path: '/purchase/:reservationId', element: <Purchase /> },
           {
-            element: <LayoutWithChatbot />,
-            children: [
-              {
-                element: <LayoutWithSearchbarFooter />,
-                children: [
-                  { path: '/', element: <Main /> },
-                  { path: '/exhibitions', element: <Exhibitions /> },
-                  { path: '/galleries', element: <Galleries /> },
-                  { path: '/artists', element: <Artists /> },
-                  { path: '/search', element: <Search /> },
-                  { path: '/notices', element: <Notice /> },
-                ],
-              },
-              { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
-              { path: '/galleries/:galleryId', element: <GalleryDetail /> },
-              { path: '/artists/:artistId', element: <ArtistDetail /> },
-              { path: '/notices/:noticeId', element: <NoticeDetail /> }, 
-              { path: '/art/:artId', element: <Artwork /> }, 
-              { path: '/catalog', element: <Catalog />  },
-              { path: '/nearby-galleries', element: <div>주변 갤러리 페이지</div>},
-            ],
-          },
-          { path: '/login', element: <Login /> },
-          { path: '/register', element: <Register /> },
-          {
-            element: <AuthRoute />,
-            children: [
-              { path: '/mypage', element: <Mypage /> },
-              { path: '/mypage/edit', element: <EditProfile /> },
-              { path: '/reservation/:exhibitionId', element: <Reservation /> },
-              { path: '/purchase/:reservationId', element: <Purchase /> },
-              {
-                path: '/reservation/complete/:reservationId',
-                element: <ReservationComplete />,
-              },
-              {
-                path: '/reservation/detail/:reservationId',
-                element: <ReservationDetail />,
-              },
-            ],
+            path: '/reservation/complete/:reservationId',
+            element: <ReservationComplete />,
           },
           {
-            path: '/scan',
-            element: <QrScanner />,
+            path: '/reservation/detail/:reservationId',
+            element: <ReservationDetail />,
           },
         ],
       },
