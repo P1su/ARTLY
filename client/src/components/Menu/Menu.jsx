@@ -19,49 +19,54 @@ export default function Menu({ onOpen }) {
   return (
     <div className={styles.menuLayout}>
       <section className={styles.menuSection}>
-        {/*localStorage.getItem('ACCESS_TOKEN') ? (
-          <div>
-            <span className={styles.boldSpan}>{nickname}</span>님 안녕하세요
-          </div>
-        ) : (
-          <span className={styles.mutedSpan}>로그인 해주세요</span>
-        )*/}
-        <nav>
-          <ul>
-            {menuList.map(({ name, label, path }) => (
-              <MenuItem
-                key={name}
-                label={label}
-                onNavigate={() => {
-                  handleNavigate(path);
-                }}
-              />
-            ))}
-          </ul>
+        <h3 className={styles.menuTitle}>메뉴</h3>
+        <nav className={styles.menuNav}>
+          {menuList.map(({ name, label, path }) => (
+            <span
+              className={styles.menuSpan}
+              key={name}
+              onClick={() => {
+                handleNavigate(path);
+              }}
+            >
+              {label}
+            </span>
+          ))}
         </nav>
       </section>
-      <footer className={styles.menuFooter}>
-        {localStorage.getItem('ACCESS_TOKEN') ? (
-          <span className={styles.logoutSpan} onClick={handleLogout}>
-            로그아웃
+      <hr className={styles.divider} />
+      <section className={styles.menuSection}>
+        <nav className={styles.menuNav}>
+          {localStorage.getItem('ACCESS_TOKEN') ? (
+            <span className={styles.menuSpan} onClick={handleLogout}>
+              LOGOUT
+            </span>
+          ) : (
+            <span
+              className={styles.menuSpan}
+              onClick={() => handleNavigate('/login')}
+            >
+              LOGIN
+            </span>
+          )}
+          <span
+            className={styles.menuSpan}
+            onClick={() => {
+              handleNavigate('/mypage');
+            }}
+          >
+            MYPAGE
           </span>
-        ) : (
-          <>
-            <span onClick={() => handleNavigate('/login')}>로그인</span>
-            <span className={styles.mutedSpan}> | </span>
-            <span onClick={() => handleNavigate('/register')}>회원가입</span>
-          </>
-        )}
-      </footer>
-    </div>
-  );
-}
-
-function MenuItem({ label, onNavigate }) {
-  return (
-    <div className={styles.menuItemLayout} onClick={onNavigate}>
-      <span>{label}</span>
-      <span>&gt;</span>
+          <span
+            className={styles.menuSpan}
+            onClick={() => {
+              handleNavigate('/notice');
+            }}
+          >
+            NOTICE & FAQ
+          </span>
+        </nav>
+      </section>
     </div>
   );
 }
