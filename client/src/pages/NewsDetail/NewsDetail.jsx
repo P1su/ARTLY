@@ -1,21 +1,20 @@
-import styles from './NoticeDetail.module.css';
-import { useParams } from 'react-router-dom';
+import styles from './NewsDetail.module.css';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance } from '../../apis/instance.js';
-import { mockNoticeDetail } from './mock/mockNoticeDetail';
-import ContentsTitle from './components/ContentsTitle/ContentsTitle';
-import ContentsCard from './components/ContentsCard/ContentsCard';
-import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection';
-import ContentsDetailSection from './components/ContentsDetailSection/ContentsDetailSection';
+import ContentsTitle from './components/ContentsTitle/ContentsTitle.jsx';
+import ContentsCard from './components/ContentsCard/ContentsCard.jsx';
+import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection.jsx';
+import ContentsDetailSection from './components/ContentsDetailSection/ContentsDetailSection.jsx';
 
-export default function NoticeDetail() {
+export default function NewsDetail() {
   const { noticeId } = useParams();
+  const navigate = useNavigate();
   const [notice, setNotice] = useState({});
 
   const getNoticeDetail = async () => {
     try {
       const response = await instance.get(`/api/announcements/${noticeId}`);
-
       setNotice(response.data);
     } catch (error) {
       throw new Error(error);
@@ -41,30 +40,52 @@ export default function NoticeDetail() {
     announcement_attachment_url: attachment,
     announcement_site_url: site,
     announcement_content: content,
+    announcement_category: category,
+    announcement_status: status,
+    created_at: createdAt,
+    views,
   } = notice;
+
+  const formatDateRange = (start, end) => {
+    const format = (dateStr) => dateStr?.split(' ')[0];
+    return `${format(start)} ~ ${format(end)}`;
+  };
 
   return (
     <section className={styles.noticeLayout}>
-      <ContentsTitle title={title} />
+      <ContentsTitle title={title} status={status} category={category} />
+
+      <hr className={styles.divider} />
 
       <div className={styles.contentsContainer}>
         <ContentsCard image={image} alt={title} />
 
         <div className={styles.infoWrapper}>
           <ContentsInfoSection
-            startDate={startDate}
-            endDate={endDate}
+            startDate={formatDateRange(startDate, endDate)}
             host={host}
             contact={contact}
             apply={apply}
             attachment={attachment}
             site={site}
+            createdAt={createdAt}
+            views={views}
           />
-
-          <hr className={styles.divider} />
 
           <ContentsDetailSection content={content} />
         </div>
+        <hr className={styles.divider} />
+
+        <p className={styles.noticeText}>
+          * 아트맵에 등록된 이미지와 글의 저작권은 각 작가와 필자에게 있습니다.
+        </p>
+
+        <button
+          className={styles.backButton}
+          onClick={() => navigate(-1)}
+        >
+          목록으로
+        </button>
       </div>
     </section>
   );

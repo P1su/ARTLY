@@ -12,17 +12,12 @@ export default function Pagination({
   return (
     <div className={styles.paginationContainer}>
       {currentPage > 1 && (
-        <>
-          <button onClick={() => onPageChange(1)} className={styles.pageButton}>
-            «
-          </button>
-          <button
-            onClick={() => onPageChange(currentPage - 1)}
-            className={styles.pageButton}
-          >
-            ‹
-          </button>
-        </>
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          className={styles.pageButton}
+        >
+          &lt;
+        </button>
       )}
 
       {pageNumbers.map((page) => (
@@ -36,20 +31,12 @@ export default function Pagination({
       ))}
 
       {currentPage < totalPages && (
-        <>
-          <button
-            onClick={() => onPageChange(currentPage + 1)}
-            className={styles.pageButton}
-          >
-            ›
-          </button>
-          <button
-            onClick={() => onPageChange(totalPages)}
-            className={styles.pageButton}
-          >
-            »
-          </button>
-        </>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          className={styles.pageButton}
+        >
+          &gt;
+        </button>
       )}
     </div>
   );

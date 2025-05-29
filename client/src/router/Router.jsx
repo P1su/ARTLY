@@ -16,8 +16,8 @@ import EditProfile from '../pages/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
 import Reservation from '../pages/Reservation/Reservation';
 import Purchase from '../pages/Purchase/Purchase';
-import Notice from '../pages/Notice/Notice';
-import NoticeDetail from '../pages/NoticeDetail/NoticeDetail';
+import News from '../pages/News/News';
+import NewsDetail from '../pages/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
 import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
       { path: '/galleries', element: <Galleries /> },
       { path: '/artists', element: <Artists /> },
       { path: '/search', element: <Search /> },
-      { path: '/notices', element: <Notice /> },
+      { path: '/notices', element: <News /> },
       { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
       { path: '/galleries/:galleryId', element: <GalleryDetail /> },
       { path: '/artists/:artistId', element: <ArtistDetail /> },
-      { path: '/notices/:noticeId', element: <NoticeDetail /> },
+      { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
       { path: '/catalog', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },

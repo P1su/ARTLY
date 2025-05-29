@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import styles from './NoticeRow.module.css';
+import styles from './NewsRow.module.css';
 
-export default function NoticeRow({ notice, displayId }) {
+export default function NewsRow({ notice, displayId }) {
   const navigate = useNavigate();
 
   const handleClick = () => {

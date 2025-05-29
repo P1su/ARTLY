@@ -1,0 +1,21 @@
+.info {
+  width: 100%;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 1rem;
+
+  background-color: #f9f9f9;
+
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  color: #333;
+}
+
+.info p {
+  margin: 0.4rem 0;
+}
+
+.info a {
+  color: #2563eb;
+  text-decoration: underline;
+}

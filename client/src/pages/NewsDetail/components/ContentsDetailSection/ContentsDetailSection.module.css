@@ -6,8 +6,9 @@
 }
 
 .heading {
-  font-size: 1.4rem;
-  font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
+
+  font-size: 1.4rem;
+  font-weight: bold;
 }
