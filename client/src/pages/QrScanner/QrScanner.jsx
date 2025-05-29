@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Scanner } from '@yudiel/react-qr-scanner';
 import styles from './QrScanner.module.css';
 
 export default function QrScanner() {
