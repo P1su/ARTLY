@@ -46,7 +46,7 @@ export default function Artists() {
         </span>
       </section>
       <section className={styles.artistListSection}>
-        {artists.map(({ id, name, field, image }) => (
+        {artists.map(({ id, name, field, imageUrl }) => (
           <Link
             className={styles.artistItemContainer}
             key={id}
@@ -54,7 +54,7 @@ export default function Artists() {
           >
             <img
               className={styles.artistImage}
-              src={image}
+              src={imageUrl}
               alt='작가 대표 이미지'
             />
             <span className={styles.titleSpan}>{name}</span>

@@ -5,29 +5,35 @@ import { useNavigate } from 'react-router-dom';
 export default function SectionCatalog({ items }) {
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate('/catalog');
+  const handleNavigate = (bookId) => {
+    navigate(`/catalog/${bookId}`);
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.grid}>
-        {items.map((item) => (
-          <div key={item.id} className={styles.card}>
-            <img
-              src={item.imageUrl}
-              alt={item.title}
-              className={styles.image}
-            />
-            <div className={styles.info}>
-              <div className={styles.exhibitionTitle}>{item.title}</div>
-              <div className={styles.text}>- 위치 - {item.location}</div>
-              <div className={styles.text}>- 정보 - {item.info}</div>
-              <button className={styles.button} onClick={handleNavigate}>
-                보기
-              </button>
+        {items.map((item) => {
+          const {
+            book_id: bookId,
+            book_poster: bookImg,
+            book_title: title,
+          } = item;
+
+          return (
+            <div key={bookId} className={styles.card}>
+              <img src={bookImg} alt={title} className={styles.image} />
+              <div className={styles.info}>
+                <div className={styles.exhibitionTitle}>{title}</div>
+                <button
+                  className={styles.button}
+                  onClick={() => handleNavigate(bookId)}
+                >
+                  보기
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

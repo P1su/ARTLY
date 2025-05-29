@@ -8,6 +8,7 @@ export default function ProfileCard() {
   const [imgSrc, setImgSrc] = useState(profileImg);
 
   const [userData, setUserData] = useState({
+    user_img: '',
     user_name: '',
     user_age: '',
     user_email: '',
@@ -19,6 +20,7 @@ export default function ProfileCard() {
       try {
         const res = await instance.get('api/users/me');
         setUserData({
+          user_img: res.data.user_img,
           user_name: res.data.user_name,
           user_age: res.data.user_age,
           user_email: res.data.user_email,
