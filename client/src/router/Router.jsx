@@ -57,6 +57,7 @@ const router = createBrowserRouter([
           { path: '/reservation/:exhibitionId', element: <Reservation /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
           {
+
             path: '/reservation/complete/:reservationId',
             element: <ReservationComplete />,
           },
