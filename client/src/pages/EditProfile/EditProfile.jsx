@@ -1,17 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './EditProfile.module.css';
 import defaultProfile from '../MyPage/mock/userProfile.png';
 import SectionTitle from '../MyPage/components/SectionTitle/SectionTitle';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { instance } from '../../apis/instance';
 
 export default function EditProfile() {
+  const [userInfo, setUserInfo] = useState(null);
   const [selectedKeyword, setSelectedKeyword] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 유저 정보 GET
+    const fetchUserInfo = async () => {
+      try {
+        const res = await instance.get('/api/users/me');
+        setUserInfo(res.data);
+        console.log(res.data);
+        // keyword를 쉼표로 나눠 배열로 저장
+        setSelectedKeyword(res.data.user_keyword?.split(',') || []);
+      } catch (error) {
+        console.error('유저 정보 불러오기 실패:', error);
+        alert('로그인이 필요합니다.');
+        navigate('/login');
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
 
   const toggleKeyword = (word) => {
     setSelectedKeyword((prev) =>
       prev.includes(word) ? prev.filter((w) => w !== word) : [...prev, word],
     );
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await instance.put('/api/users/me', {
+        ...userInfo,
+        user_keyword: selectedKeyword.join(','),
+      });
+      alert('프로필이 수정되었습니다.');
+      navigate('/mypage');
+    } catch (error) {
+      console.error('수정 실패:', error);
+      alert('수정 중 오류가 발생했습니다.');
+    }
+  };
+
+  if (!userInfo) return <div>로딩 중...</div>;
 
   return (
     <div className={styles.layout}>
@@ -29,15 +72,23 @@ export default function EditProfile() {
         <div className={styles.inputContainer}>
           <div className={styles.inputRow}>
             <label>닉네임</label>
-            <input type='text' defaultValue='아뜰리' className={styles.input} />
+            <input
+              type='text'
+              name='user_name'
+              value={userInfo.user_name}
+              onChange={handleInputChange}
+              className={styles.input}
+            />
             님
           </div>
 
           <div className={styles.inputRow}>
             <label>생년월일</label>
             <input
-              type='date'
-              defaultValue='2000-10-10'
+              type='number'
+              name='user_age'
+              value={userInfo.user_age}
+              onChange={handleInputChange}
               className={styles.input}
             />
           </div>
@@ -46,8 +97,9 @@ export default function EditProfile() {
             <label>이메일</label>
             <input
               type='email'
-              defaultValue='123456@gmail.com'
-              required
+              name='user_email'
+              value={userInfo.user_email}
+              onChange={handleInputChange}
               className={styles.input}
             />
           </div>
@@ -56,7 +108,9 @@ export default function EditProfile() {
             <label>전화번호</label>
             <input
               type='tel'
-              defaultValue='010-0000-0000'
+              name='user_phone'
+              value={userInfo.user_phone}
+              onChange={handleInputChange}
               className={styles.input}
             />
           </div>
@@ -81,7 +135,9 @@ export default function EditProfile() {
             ].map((word) => (
               <button
                 key={word}
-                className={`${styles.keywordBtn} ${selectedKeyword.includes(word) ? styles.active : ''}`}
+                className={`${styles.keywordBtn} ${
+                  selectedKeyword.includes(word) ? styles.active : ''
+                }`}
                 onClick={() => toggleKeyword(word)}
               >
                 {word}
@@ -90,9 +146,9 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <Link to='/mypage' className={styles.submitBtn}>
+        <button onClick={handleSubmit} className={styles.submitBtn}>
           수정하기
-        </Link>
+        </button>
       </div>
     </div>
   );
