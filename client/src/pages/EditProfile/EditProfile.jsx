@@ -11,13 +11,11 @@ export default function EditProfile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 유저 정보 GET
     const fetchUserInfo = async () => {
       try {
         const res = await instance.get('/api/users/me');
         setUserInfo(res.data);
         console.log(res.data);
-        // keyword를 쉼표로 나눠 배열로 저장
         setSelectedKeyword(res.data.user_keyword?.split(',') || []);
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
