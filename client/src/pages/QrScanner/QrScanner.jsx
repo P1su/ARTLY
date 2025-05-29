@@ -94,9 +94,7 @@ export default function QrScanner() {
           <p className={styles.guideText}>QR코드를 화면에 인식해주세요.</p>
         )}
         {scanResult && (
-          <p className={`${styles.guideText} ${styles.guideSuccess}`}>
-            버튼을 눌러 작품을 확인해보세요!
-          </p>
+          <p className={styles.guideText}>버튼을 눌러 작품을 확인해보세요!</p>
         )}
         {error && (
           <p className={`${styles.guideText} ${styles.errorText}`}>
