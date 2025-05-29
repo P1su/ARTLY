@@ -27,14 +27,26 @@ export default function QrScanner() {
         (decodedText) => {
           setScanResult(decodedText);
           setError(null);
+
+          if (
+            html5QrcodeScannerRef.current &&
+            html5QrcodeScannerRef.current.isScanning
+          ) {
+            html5QrcodeScannerRef.current
+              .stop()
+              .catch((err) =>
+                console.error('Failed to stop scanner on success:', err),
+              );
+            console.log('QR 스캔 성공');
+          }
         },
         (errorMessage) => {
-          console.log('QR scan error:', errorMessage);
+          // console.log('cant find code :', errorMessage);
         },
       )
       .catch((err) => {
         setError('카메라를 사용할 수 없습니다.');
-        console.error(err);
+        console.error('qr 에러 발생 : ', err);
       });
 
     return () => {
@@ -66,15 +78,16 @@ export default function QrScanner() {
           <div className={styles.cornerTopRight} />
           <div className={styles.cornerBottomLeft} />
           <div className={styles.cornerBottomRight} />
-          <div className={styles.crosshair}>+</div>
-          <img src='/qr-icon.png' alt='QR 아이콘' className={styles.qrIcon} />
+          <div className={styles.cross}>+</div>
         </div>
 
         {!scanResult && !error && (
           <p className={styles.guideText}>QR코드를 화면에 인식해주세요.</p>
         )}
         {scanResult && (
-          <p className={styles.guideText}>버튼을 눌러 작품을 확인해보세요!</p>
+          <p className={`${styles.guideText} ${styles.guideSuccess}`}>
+            버튼을 눌러 작품을 확인해보세요!
+          </p>
         )}
         {error && (
           <p className={`${styles.guideText} ${styles.errorText}`}>
