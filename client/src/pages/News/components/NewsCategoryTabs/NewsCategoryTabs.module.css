@@ -1,0 +1,15 @@
+.dropdownContainer {
+  display: flex;
+  
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.dropdown {
+  padding: 0.5rem 1rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.5rem;
+
+  font-size: 1rem;
+}

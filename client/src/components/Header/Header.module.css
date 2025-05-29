@@ -5,16 +5,18 @@
 
   position: relative;
 
-  height: 4rem;
-  padding: 0.5rem 1.6rem;
+  height: 6rem;
+  padding: 1.5rem 2rem;
 
-  background-color: #5a4fcf;
+  background-color: #000000;
   color: white;
 }
 
-.logoBox {
+.logoSpan {
+  color: white;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.2rem;
 }
 
 .rightSection {
@@ -22,11 +24,65 @@
   align-items: center;
   gap: 1rem;
 }
+
 .qrCode {
   width: 2.5rem;
   background-color: white;
 }
-.menu {
-  color: white;
-  font-size: 1.3rem;
+
+.menuClosed,
+.menuOpen {
+  display: block;
+
+  position: relative;
+
+  width: 2.4rem;
+  height: 2rem;
+  padding: 0.5rem;
+}
+
+.menuClosed {
+  span:nth-child(1) {
+    top: 0;
+    transform: rotate(0deg);
+  }
+  span:nth-child(2) {
+    top: 0.9rem;
+    opacity: 1;
+  }
+  span:nth-child(3) {
+    top: 1.8rem;
+    transform: rotate(0deg);
+  }
+}
+
+.menuOpen {
+  span:nth-child(1) {
+    top: 0.9rem;
+    transform: rotate(135deg);
+  }
+  span:nth-child(2) {
+    top: 0.9rem;
+    opacity: 0;
+  }
+  span:nth-child(3) {
+    top: 0.9rem;
+    transform: rotate(-135deg);
+  }
+}
+
+.menuSpan {
+  display: block;
+
+  position: absolute;
+  opacity: 1;
+  left: 0;
+
+  width: 100%;
+  height: 0.2rem;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.2rem;
+
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
 }

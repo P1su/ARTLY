@@ -17,6 +17,12 @@ export default defineConfig(({ mode }) => {
           secure: false,
           ws: true,
         },
+        '/v2': {
+          target: 'https://maps.apigw.ntruss.com/map-geocode',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        },
       },
     },
   };

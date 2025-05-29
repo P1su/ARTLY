@@ -1,0 +1,40 @@
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.pageButton {
+  border: 0.1rem solid #ddd;
+  border-radius: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+
+  background-color: white;
+
+  color: #333;
+  font-size: 1rem;
+
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:hover:not(.active) {
+  border-color: #888;
+
+  color: #000;
+}
+
+.active {
+  background-color: black;
+  
+  color: white;
+  font-weight: bold;
+}
+
+.disabled {
+  color: #ccc;
+  cursor: default;
+}
