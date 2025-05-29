@@ -40,21 +40,30 @@ export default function QrScanner() {
             console.log('QR 스캔 성공');
           }
         },
-        (errorMessage) => {
-          // console.log('cant find code :', errorMessage);
-        },
+        (errorMessage) => {},
       )
       .catch((err) => {
         setError('카메라를 사용할 수 없습니다.');
         console.error('qr 에러 발생 : ', err);
       });
 
-    return () => {
-      if (html5QrcodeScannerRef.current) {
-        html5QrcodeScannerRef.current.stop().catch(() => {});
-        html5QrcodeScannerRef.current.clear();
+    const cleanupScanner = async () => {
+      const scanner = html5QrcodeScannerRef.current;
+      if (scanner) {
+        try {
+          if (scanner.isScanning) {
+            await scanner.stop();
+            console.log('Cleanup: Scanner stopped.');
+          }
+          scanner.clear();
+          console.log('Cleanup: Scanner cleared.');
+        } catch (err) {
+          console.error('Cleanup: Failed to stop or clear scanner:', err);
+        }
       }
     };
+
+    return cleanupScanner;
   }, []);
 
   const handleConfirmArt = () => {
@@ -78,7 +87,7 @@ export default function QrScanner() {
           <div className={styles.cornerTopRight} />
           <div className={styles.cornerBottomLeft} />
           <div className={styles.cornerBottomRight} />
-          <div className={styles.cross}>+</div>
+          <div className={styles.crosshair}>+</div>
         </div>
 
         {!scanResult && !error && (

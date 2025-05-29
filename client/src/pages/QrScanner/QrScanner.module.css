@@ -103,7 +103,7 @@
 }
 
 .cornerTopLeft {
-  top: 1.6rem;
+  top: 3rem;
   left: 1.6rem;
   border-right: none;
   border-bottom: none;
@@ -111,7 +111,7 @@
 }
 
 .cornerTopRight {
-  top: 1.6rem;
+  top: 3rem;
   right: 1.6rem;
   border-left: none;
   border-bottom: none;
@@ -119,7 +119,7 @@
 }
 
 .cornerBottomLeft {
-  bottom: 1.6rem;
+  bottom: 5rem;
   left: 1.6rem;
   border-right: none;
   border-top: none;
@@ -127,7 +127,7 @@
 }
 
 .cornerBottomRight {
-  bottom: 1.6rem;
+  bottom: 5rem;
   right: 1.6rem;
   border-left: none;
   border-top: none;
