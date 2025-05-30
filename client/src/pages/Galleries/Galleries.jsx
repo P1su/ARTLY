@@ -5,6 +5,7 @@ import ListHeader from '../../components/List/ListHeader/ListHeader';
 import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
 import { galleryFilter } from '../../utils/filters/galleryFilter.js';
 import GalleryCard from '../Nearby/components/GalleryCard/GalleryCard';
+import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
@@ -51,6 +52,7 @@ export default function Galleries() {
         filterList={galleryFilter}
         onSetFilter={setGalleryFilters}
       />
+      <TotalCounts num={galleries.length} label='갤러리' />
       {isLoading && <div>갤러리 데이터 조회 중..</div>}
       {galleries.map((item) => (
         <GalleryCard key={item.id} galleryItem={item} />
