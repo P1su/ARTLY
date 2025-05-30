@@ -8,6 +8,11 @@ import { artistFilter } from '../../utils/filters/artisFilter.js';
 
 export default function Artists() {
   const [artists, setArtists] = useState([]);
+  const [isFav, setIsFav] = useState(false);
+
+  const handleFav = () => {
+    setIsFav((prev) => !prev);
+  };
 
   const getArtists = async () => {
     try {
@@ -25,7 +30,12 @@ export default function Artists() {
 
   return (
     <div className={styles.layout}>
-      <ListHeader title='작가' placeholder='작가명 또는 국적 검색' />
+      <ListHeader
+        title='작가'
+        placeholder='작가명 또는 국적 검색'
+        isFav={isFav}
+        onFav={handleFav}
+      />
       <DropdownContainer filterList={artistFilter} />
 
       <section className={styles.artistListSection}>

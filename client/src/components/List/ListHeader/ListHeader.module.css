@@ -19,6 +19,7 @@
   font-weight: 700;
 }
 
+.clickedFavButton,
 .favButton {
   display: flex;
   align-items: center;
@@ -36,6 +37,15 @@
   font-size: 1.2rem;
 
   cursor: pointer;
+}
+
+.clickedFavButton {
+  border: 0.1rem solid #ffcdd2;
+  background-color: #ffebee;
+  color: #e57373;
+}
+.clickedIcon {
+  color: #e57373;
 }
 
 .searchForm {
