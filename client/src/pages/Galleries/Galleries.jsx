@@ -1,10 +1,10 @@
 import styles from './Galleries.module.css';
-import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
 import ListHeader from '../../components/List/ListHeader/ListHeader';
 import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
 import { galleryFilter } from '../../utils/filters/galleryFilter.js';
+import GalleryCard from '../Nearby/components/GalleryCard/GalleryCard';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
@@ -52,23 +52,8 @@ export default function Galleries() {
         onSetFilter={setGalleryFilters}
       />
       {isLoading && <div>갤러리 데이터 조회 중..</div>}
-      {galleries.map(({ id, image, name, galleryAddress, operatingHours }) => (
-        <Link
-          className={styles.galleryItemContainer}
-          key={id}
-          to={`/galleries/${id}`}
-        >
-          <img
-            className={styles.galleryItemImage}
-            src={image}
-            alt='갤러리 대표 이미지'
-          />
-          <div className={styles.galleryInfoContainer}>
-            <span className={styles.titleSpan}>{name}</span>
-            <span>{galleryAddress}</span>
-            <span>{operatingHours}</span>
-          </div>
-        </Link>
+      {galleries.map((item) => (
+        <GalleryCard key={item.id} galleryItem={item} />
       ))}
     </div>
   );
