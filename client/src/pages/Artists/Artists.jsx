@@ -3,17 +3,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import ListHeader from '../../components/List/ListHeader/ListHeader';
+import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
+import { artistFilter } from '../../utils/filters/artisFilter.js';
 
 export default function Artists() {
-  const [isDisplay, setIsDisplay] = useState(false);
   const [artists, setArtists] = useState([]);
-
-  const handleIsDisplay = () => {
-    setIsDisplay((prev) => !prev);
-
-    //isDisplay 값에 따라 데이터 fetch
-    console.log('API 연결');
-  };
 
   const getArtists = async () => {
     try {
@@ -32,21 +26,8 @@ export default function Artists() {
   return (
     <div className={styles.layout}>
       <ListHeader title='작가' placeholder='작가명 또는 국적 검색' />
-      <section>
-        <span
-          className={isDisplay ? styles.activedSpan : undefined}
-          onClick={handleIsDisplay}
-        >
-          현재 전시중인 작가
-        </span>
-        <span> | </span>
-        <span
-          className={isDisplay ? undefined : styles.activedSpan}
-          onClick={handleIsDisplay}
-        >
-          모든 작가
-        </span>
-      </section>
+      <DropdownContainer filterList={artistFilter} />
+
       <section className={styles.artistListSection}>
         {artists.map(({ id, name, field, imageUrl }) => (
           <Link

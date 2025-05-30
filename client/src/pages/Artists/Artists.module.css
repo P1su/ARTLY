@@ -6,9 +6,10 @@
   padding: 3rem 2rem 6rem;
 }
 
-.activedSpan {
-  color: #f54dfe;
-  font-weight: 500;
+.dropdownContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .artistListSection {

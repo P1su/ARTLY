@@ -24,6 +24,7 @@ import ReservationComplete from '../pages/ReservationComplete/ReservationComplet
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
 import Nearby from '../pages/Nearby/Nearby';
+import Test from '../pages/Test/Test';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
+      { path: '/test', element: <Test /> },
       {
         path: '/scan',
         element: <QrScanner />,

@@ -20,6 +20,7 @@ li {
 }
 
 button {
+  font-family: 'Noto-sans', sans-serif;
   border: none;
   background: transparent;
   cursor: pointer;

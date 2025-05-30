@@ -1,0 +1,26 @@
+export const artistFilter = [
+  [{ label: '현재 전시 중' }],
+  [
+    { label: '전체' },
+    { label: '대한민국' },
+    { label: '미국' },
+    { label: '일본' },
+    { label: '중국' },
+    { label: '독일' },
+    { label: '영국' },
+    { label: '유럽' },
+    { label: '기타' },
+  ],
+  [
+    { label: '전체' },
+    { label: '1920년대' },
+    { label: '1930년대' },
+    { label: '1940년대' },
+    { label: '1950년대' },
+    { label: '1960년대' },
+    { label: '1970년대' },
+    { label: '1980년대' },
+    { label: '1990년대' },
+    { label: '2000년대' },
+  ],
+];
