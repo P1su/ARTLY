@@ -9,6 +9,7 @@ import { galleryFilter } from '../../utils/filters/galleryFilter.js';
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
   const [isFav, setIsFav] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [galleryFilters, setGalleryFilters] = useState({
     status: '',
     regions: '',
@@ -20,9 +21,9 @@ export default function Galleries() {
   };
 
   useEffect(() => {
-    console.log(galleryFilters);
     const getGalleies = async () => {
       try {
+        setIsLoading(true);
         const response = await instance.get('/api/galleries', {
           params: galleryFilters,
         });
@@ -30,6 +31,8 @@ export default function Galleries() {
         setGalleries(response.data);
       } catch (error) {
         throw new Error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -48,6 +51,7 @@ export default function Galleries() {
         filterList={galleryFilter}
         onSetFilter={setGalleryFilters}
       />
+      {isLoading && <div>갤러리 데이터 조회 중..</div>}
       {galleries.map(({ id, image, name, galleryAddress, operatingHours }) => (
         <Link
           className={styles.galleryItemContainer}

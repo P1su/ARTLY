@@ -38,7 +38,11 @@
   transform: rotate(180deg);
 }
 
-.dropdownList {
+.undisplay {
+  display: none;
+}
+
+.clickedDropdownList {
   display: flex;
   flex-direction: column;
 

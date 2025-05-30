@@ -28,7 +28,9 @@ export default function Dropdown({
       >
         {label}
       </button>
-      <ul className={styles.dropdownList}>
+      <ul
+        className={`${isOpen && styles.clickedDropdownList} ${isOpen && styles.undisplay}`}
+      >
         {isOpen &&
           dropdownItems.map((item) => (
             <li
