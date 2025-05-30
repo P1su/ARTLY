@@ -2,6 +2,7 @@ import styles from './Artists.module.css';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
+import ListHeader from '../../components/List/ListHeader/ListHeader';
 
 export default function Artists() {
   const [isDisplay, setIsDisplay] = useState(false);
@@ -30,6 +31,7 @@ export default function Artists() {
 
   return (
     <div className={styles.layout}>
+      <ListHeader title='작가' placeholder='작가명 또는 국적 검색' />
       <section>
         <span
           className={isDisplay ? styles.activedSpan : undefined}
