@@ -8,27 +8,46 @@ import { galleryFilter } from '../../utils/filters/galleryFilter.js';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
+  const [isFav, setIsFav] = useState(false);
+  const [galleryFilters, setGalleryFilters] = useState({
+    status: '',
+    regions: '',
+    type: '',
+  });
 
-  const getGalleies = async () => {
-    try {
-      const response = await instance.get('/api/galleries');
-
-      setGalleries(response.data);
-    } catch (error) {
-      throw new Error(error);
-    }
+  const handleFav = () => {
+    setIsFav((prev) => !prev);
   };
 
   useEffect(() => {
-    getGalleies();
-  }, []);
+    console.log(galleryFilters);
+    const getGalleies = async () => {
+      try {
+        const response = await instance.get('/api/galleries', {
+          params: galleryFilters,
+        });
 
-  console.log(galleries);
+        setGalleries(response.data);
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
+
+    getGalleies();
+  }, [galleryFilters]);
 
   return (
     <div className={styles.layout}>
-      <ListHeader title='갤러리' placeholder='갤러리명 검색' />
-      <DropdownContainer filterList={galleryFilter} />
+      <ListHeader
+        title='갤러리'
+        placeholder='갤러리명 검색'
+        isFav={isFav}
+        onFav={handleFav}
+      />
+      <DropdownContainer
+        filterList={galleryFilter}
+        onSetFilter={setGalleryFilters}
+      />
       {galleries.map(({ id, image, name, galleryAddress, operatingHours }) => (
         <Link
           className={styles.galleryItemContainer}

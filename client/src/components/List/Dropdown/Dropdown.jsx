@@ -1,14 +1,23 @@
 import styles from './Dropdown.module.css';
 import { useState } from 'react';
 
-export default function Dropdown({ dropdownItems, isOpen, onOpen }) {
-  const [filter, setFilter] = useState(dropdownItems[0].label);
+export default function Dropdown({
+  dropdownItems,
+  isOpen,
+  filterKey,
+  onOpen,
+  onSetFilter,
+}) {
+  const [label, setLabel] = useState(dropdownItems[0].label);
 
   const handleCategory = (category) => {
-    setFilter(category.label);
+    setLabel(category.label);
 
-    //api 연결
-    onOpen(null);
+    onSetFilter((prev) => ({
+      ...prev,
+      [filterKey]: category.value,
+    }));
+    onOpen();
   };
 
   return (
@@ -17,13 +26,13 @@ export default function Dropdown({ dropdownItems, isOpen, onOpen }) {
         className={`${styles.dropdownButton} ${isOpen && styles.clickedButton}`}
         onClick={onOpen}
       >
-        {filter}
+        {label}
       </button>
       <ul className={styles.dropdownList}>
         {isOpen &&
           dropdownItems.map((item) => (
             <li
-              className={`${styles.dropdownItem} ${item.label === filter && styles.clickedItem}`}
+              className={`${styles.dropdownItem} ${item.label === label && styles.clickedItem}`}
               key={item.label}
               onClick={() => {
                 handleCategory(item);
