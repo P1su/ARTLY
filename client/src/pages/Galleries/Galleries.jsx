@@ -6,11 +6,17 @@ import DropdownContainer from '../../components/List/DropdownContainer/DropdownC
 import { galleryFilter } from '../../utils/filters/galleryFilter.js';
 import GalleryCard from '../Nearby/components/GalleryCard/GalleryCard';
 import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
+import Pagination from '../../components/Pagination/Pagination';
+import usePagination from '../../hooks/usePagination';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
   const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { currentPage, setCurrentPage, pageItems } = usePagination(
+    10,
+    galleries,
+  );
   const [galleryFilters, setGalleryFilters] = useState({
     status: '',
     regions: '',
@@ -54,9 +60,14 @@ export default function Galleries() {
       />
       <TotalCounts num={galleries.length} label='갤러리' />
       {isLoading && <div>갤러리 데이터 조회 중..</div>}
-      {galleries.map((item) => (
+      {pageItems.map((item) => (
         <GalleryCard key={item.id} galleryItem={item} />
       ))}
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        totalItems={galleries.length}
+      />
     </div>
   );
 }
