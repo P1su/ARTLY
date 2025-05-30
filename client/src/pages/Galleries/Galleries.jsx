@@ -2,6 +2,9 @@ import styles from './Galleries.module.css';
 import { Link } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
+import ListHeader from '../../components/List/ListHeader/ListHeader';
+import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
+import { galleryFilter } from '../../utils/filters/galleryFilter.js';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
@@ -24,6 +27,8 @@ export default function Galleries() {
 
   return (
     <div className={styles.layout}>
+      <ListHeader title='갤러리' placeholder='갤러리명 검색' />
+      <DropdownContainer filterList={galleryFilter} />
       {galleries.map(({ id, image, name, galleryAddress, operatingHours }) => (
         <Link
           className={styles.galleryItemContainer}
