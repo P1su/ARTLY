@@ -1,0 +1,27 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.artistImage {
+  width: 100%;
+  height: 33.5rem;
+  border-radius: 50%;
+
+  transition: transform 0.3s;
+}
+
+.artistNameTitle {
+  margin: 0.5rem 0 0 0;
+
+  color: #333;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.subParagraph {
+  color: #777;
+  font-size: 1.3rem;
+}

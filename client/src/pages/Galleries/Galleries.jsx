@@ -31,8 +31,12 @@ export default function Galleries() {
     const getGalleies = async () => {
       try {
         setIsLoading(true);
+        const updatedFilters = {
+          ...galleryFilters,
+          regions: galleryFilters.regions.replace(/\s+/g, ','),
+        };
         const response = await instance.get('/api/galleries', {
-          params: galleryFilters,
+          params: updatedFilters,
         });
 
         setGalleries(response.data);
@@ -60,6 +64,7 @@ export default function Galleries() {
       />
       <TotalCounts num={galleries.length} label='갤러리' />
       {isLoading && <div>갤러리 데이터 조회 중..</div>}
+      {galleries.length === 0 && <div>조회된 데이터가 없습니다.</div>}
       {pageItems.map((item) => (
         <GalleryCard key={item.id} galleryItem={item} />
       ))}
