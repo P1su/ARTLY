@@ -1,4 +1,7 @@
 .navbarNavigation {
+  position: sticky;
+  top: 6rem;
+
   height: 6.5rem;
   margin: 0 auto;
   padding: 1.5rem 0;
@@ -7,6 +10,8 @@
 
   overflow-x: auto;
   scrollbar-width: none;
+
+  z-index: 100;
 }
 
 .menuList {
