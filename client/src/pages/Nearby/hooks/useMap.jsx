@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useMap = (lat, lng) => {
+const useMap = (lat, lng, id) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const useMap = (lat, lng) => {
     }
 
     if (!mapRef.current) {
-      mapRef.current = new naver.maps.Map('map', {
+      mapRef.current = new naver.maps.Map(id, {
         center: new naver.maps.LatLng(lat, lng),
         zoom: 15,
       });
