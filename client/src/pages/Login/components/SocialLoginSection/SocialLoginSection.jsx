@@ -9,7 +9,7 @@ export default function SocialLoginSection() {
         <div className={styles.divider} />
       </div>
       <button className={styles.button}>카카오 로그인</button>
-      <button className={styles.button}>네이버 로그인</button>
+      <button className={styles.naverButton}>네이버 로그인</button>
     </section>
   );
 }

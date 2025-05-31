@@ -45,7 +45,7 @@ export default function Login() {
         <form className={styles.form} action={postLogin}>
           <InputContainer title='아이디'>
             <InputText
-              placeholder='아이디를 입력해주세요'
+              placeholder='ID (6 ~ 20자 영문, 숫자)'
               name='login_id'
               onChange={handleChange}
               value={loginDatas.login_id}
@@ -53,7 +53,7 @@ export default function Login() {
           </InputContainer>
           <InputContainer title='비밀번호'>
             <InputText
-              placeholder='비밀번호'
+              placeholder='Password (8 ~ 16자 영문+숫자+특수문자)'
               name='login_pwd'
               onChange={handleChange}
               value={loginDatas.login_pwd}
@@ -61,8 +61,8 @@ export default function Login() {
           </InputContainer>
           <BtnPrimary label='로그인' />
         </form>
-        <SocialLoginSection />
         <SupportSection />
+        <SocialLoginSection />
       </div>
     </div>
   );
