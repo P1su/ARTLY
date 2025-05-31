@@ -27,6 +27,7 @@ import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
 import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
 import Test from '../pages/Test/Test';
+import Find from '../pages/Find/Find';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,8 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       { path: '/test', element: <Test /> },
+      { path: '/find', element: <Find /> },
+
       {
         path: '/scan',
         element: <QrScanner />,
