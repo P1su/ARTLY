@@ -18,6 +18,15 @@ export const mapInstance = axios.create({
   withCredentials: true,
 });
 
+export const userInstance = axios.create({
+  baseURL: '', // 서버 주소 작성 예정
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+  },
+  withCredentials: true,
+});
+
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');

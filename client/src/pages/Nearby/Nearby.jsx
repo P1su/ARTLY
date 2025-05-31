@@ -14,7 +14,7 @@ export default function Nearby() {
     setQuery(e.target.value);
   };
 
-  useMap(lat, lng);
+  useMap(lat, lng, 'nearby-map');
 
   const getGeocode = async (e) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export default function Nearby() {
           placeholder='주소를 입력해주세요'
         />
       </form>
-      <div id='map' className={styles.galleryWrapper} />
+      <div id='nearby-map' className={styles.galleryWrapper} />
       <NearbyGalleries lat={lat} lng={lng} />
     </div>
   );

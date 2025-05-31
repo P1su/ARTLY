@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  width: 100%;
 }
 
 .activityTypeContainer {
@@ -23,19 +25,38 @@
   font-weight: 500;
 }
 
+.artworkImage {
+  width: 30rem;
+  height: 30rem;
+}
+
 .activityItemList {
   display: flex;
   gap: 2rem;
-}
 
-.activityItemContainer {
-  display: flex;
-  flex-direction: column;
+  min-height: 25rem;
+
+  overflow-x: scroll;
 }
 
 .activityImage {
-  width: 7rem;
-  height: 10rem;
+  width: 30rem;
+  height: 15rem;
 
   object-fit: fill;
+}
+
+.activityItemInfoBox {
+  padding: 2rem 0;
+}
+
+.activityItemTitle {
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.activityItemSpan {
+  color: #666;
+  font-size: 1.4rem;
 }

@@ -1,74 +1,202 @@
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #000;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  height: 100vh;
+
+  background: black;
+}
+
+.closeBtn {
+  display: inline-block;
+
+  position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
+  z-index: 10;
+
+  font-size: 2.8rem;
   color: white;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
 }
 
 .scanLayout {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: relative;
+
   width: 100%;
+  max-width: 40rem;
+  padding: 0 1.6rem 3.2rem;
+  box-sizing: border-box;
+
+  background: transparent;
 }
 
-.backBtn {
-  margin-bottom: 1rem;
-  font-size: 2rem;
-  color: white;
+.header {
+  display: inline-block;
+
+  margin-top: 4rem;
+  margin-bottom: 1.2rem;
+  padding: 0.8rem 2.4rem;
+  border-radius: 2rem;
+
+  background-color: #7ed957;
+
+  color: #2a2a2a;
+  font-weight: 700;
+  font-size: 1.8rem;
+
+  user-select: none;
 }
 
-.title {
-  margin-bottom: 1rem;
-  font-size: 2rem;
-  font-weight: bold;
+.qrRegion {
+  display: block;
+
+  position: relative;
+
+  width: 100%;
+  max-width: 40rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 1.2rem;
+
+  overflow: hidden;
+
+  background: black;
 }
 
-.scanGuide {
+.frame {
+  display: block;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  pointer-events: none;
+  border-radius: 1.2rem;
+}
+
+.cornerTopLeft,
+.cornerTopRight,
+.cornerBottomLeft,
+.cornerBottomRight {
+  position: absolute;
+
+  width: 4rem;
+  height: 4rem;
+  border: 0.4rem solid #7ed957;
+  box-sizing: border-box;
+}
+
+.cornerTopLeft {
+  top: 1.6rem;
+  left: 1.6rem;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 0.8rem;
+}
+
+.cornerTopRight {
+  top: 1.6rem;
+  right: 1.6rem;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 0.8rem;
+}
+
+.cornerBottomLeft {
+  bottom: 0rem;
+  left: 1.6rem;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 0.8rem;
+}
+
+.cornerBottomRight {
+  bottom: 0rem;
+  right: 1.6rem;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 0.8rem;
+}
+
+.cross {
+  display: inline-block;
+
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  pointer-events: none;
+
+  color: #7ed957;
+  font-size: 2.4rem;
+  font-weight: 700;
+
+  user-select: none;
+}
+
+.guideText {
+  display: block;
+
+  margin-top: 1.6rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.8rem;
+
+  color: #ffffff;
+  font-size: 1.6rem;
   text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  color: white;
+
+  user-select: none;
 }
 
 .errorText {
-  color: red;
-  font-weight: bold;
-}
-
-.cameraArea {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  width: 32rem;
-  height: 40rem;
-  margin-bottom: 2rem;
-  border: 0.2rem solid #fff;
+  color: #ff4d4f;
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .confirmButton {
-  text-align: center;
-  width: 80%;
-  margin-top: 1.5rem;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1.2rem;
+  display: block;
 
-  background-color: #333;
-  color: #a0a0a0;
+  margin-top: 1.8rem;
+  width: 80%;
+  max-width: 36rem;
+  padding: 1.4rem 0;
+  border-radius: 3rem;
+  border: none;
+
+  background-color: #ccc;
+
+  color: #666;
+  font-size: 1.8rem;
+  font-weight: 700;
+
   cursor: not-allowed;
-  opacity: 0.6;
-  transition: all 0.3s ease;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  user-select: none;
 }
 
 .confirmButton.active {
-  background-color: #8054fa;
-  color: white;
+  background-color: #7ed957;
+
+  color: #2a2a2a;
+
   cursor: pointer;
-  opacity: 1;
 }

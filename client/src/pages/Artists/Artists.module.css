@@ -3,17 +3,18 @@
   flex-direction: column;
   gap: 2rem;
 
-  padding: 2rem;
+  padding: 3rem 2rem 6rem;
 }
 
-.activedSpan {
-  color: #f54dfe;
-  font-weight: 500;
+.dropdownContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .artistListSection {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
 

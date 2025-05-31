@@ -11,7 +11,7 @@ export default function SectionCard({ item, type }) {
 
   const {
     id,
-    exhibition_poster: posterFileName,
+    exhibition_poster: img,
     exhibition_title: title = '제목 정보 없음',
     exhibition_location: location = '장소 정보 없음',
     exhibition_start_date: startDate = '',
@@ -19,11 +19,6 @@ export default function SectionCard({ item, type }) {
     exhibition_status: statusValue,
     session_id: reservationSessionId,
   } = item;
-
-  const serverBaseUrl = import.meta.env.VITE_SERVER_URL;
-  const imageUrl = posterFileName
-    ? `${serverBaseUrl}/images/${posterFileName}`
-    : '';
 
   const date =
     startDate && endDate ? `${startDate} ~ ${endDate}` : '날짜 정보 없음';
@@ -45,7 +40,7 @@ export default function SectionCard({ item, type }) {
 
   return (
     <div className={styles.cardContainer} onClick={handleNavigateExhibition}>
-      <img src={imageUrl} alt={title} className={styles.image} />
+      <img src={img} alt={title} className={styles.image} />
       <div className={styles.info}>
         <div className={styles.title}>{title}</div>
         <div className={styles.location}>{location}</div>
