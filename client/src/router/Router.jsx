@@ -19,11 +19,13 @@ import Purchase from '../pages/Purchase/Purchase';
 import News from '../pages/News/News';
 import NewsDetail from '../pages/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
+import ArtworkList from '../pages/ArtworkList/ArtworkList';
 import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
 import Nearby from '../pages/Nearby/Nearby';
+import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
 import Test from '../pages/Test/Test';
 
 const router = createBrowserRouter([
@@ -35,12 +37,14 @@ const router = createBrowserRouter([
       { path: '/exhibitions', element: <Exhibitions /> },
       { path: '/galleries', element: <Galleries /> },
       { path: '/artists', element: <Artists /> },
+      { path: '/artworks', element: <ArtworkList /> },
       { path: '/search', element: <Search /> },
       { path: '/notices', element: <News /> },
       { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
       { path: '/galleries/:galleryId', element: <GalleryDetail /> },
       { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
+      { path: '/artwork-detail/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
       { path: '/catalog', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
