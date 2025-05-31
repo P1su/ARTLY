@@ -1,15 +1,18 @@
 .headerLayout {
+  position: sticky;
+  top: 0rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  position: relative;
 
   height: 6rem;
   padding: 1.5rem 2rem;
 
   background-color: #000000;
   color: white;
+
+  z-index: 100;
 }
 
 .logoSpan {

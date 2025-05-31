@@ -1,15 +1,14 @@
 import styles from './ArtistDetail.module.css';
-import { mockArtistDetail } from './mock/mockArtistDetail.js';
-import BtnFavorite from '../ExhibitionDetail/components/BtnFavorite/BtnFavorite'; //추후 확장 및 수정 예정
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../apis/instance.js';
 import ArtistActivity from './components/ArtistActivity/ArtistActivity';
+import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
 
 export default function ArtistDetail() {
-  const { educations, careers } = mockArtistDetail;
   const { artistId } = useParams();
   const [artistData, setArtistData] = useState([]);
+  const [isLike, setIsLike] = useState('false');
 
   const getArtistDetail = async () => {
     try {
@@ -25,6 +24,64 @@ export default function ArtistDetail() {
     getArtistDetail();
   }, []);
 
+  const handleLike = () => {
+    const postArtistLike = async () => {
+      try {
+        await userInstance.post('/api/likes', {
+          liked_id: artistId,
+          liked_type: 'artist',
+        });
+      } catch (error) {
+        console.error(error);
+        alert('좋아요 실패');
+      }
+    };
+
+    const deleteArtistLike = async () => {
+      try {
+        await userInstance.delete('/api/likes', {
+          liked_id: artistId,
+          liked_type: 'artist',
+        });
+      } catch (error) {
+        console.error(error);
+        alert('좋아요 실패');
+      }
+    };
+
+    if (isLike) {
+      deleteArtistLike();
+      setIsLike(false);
+    } else {
+      postArtistLike();
+      setIsLike(true);
+    }
+  };
+
+  const buttons = [
+    {
+      label: '관심 작가',
+      icon: (
+        <FaHeart className={`${styles.icon} ${isLike && styles.icHeart}`} />
+      ),
+      action: handleLike,
+    },
+    {
+      label: '홈페이지',
+      icon: <FaGlobe className={styles.icon} />,
+      action: () => {
+        alert('구현 중에 있습니다.');
+      },
+    },
+    {
+      label: '공유하기',
+      icon: <FaShare className={styles.icon} />,
+      action: () => {
+        alert('구현 중에 있습니다.');
+      },
+    },
+  ];
+
   return (
     <div className={styles.layout}>
       <section className={styles.infoSection}>
@@ -33,25 +90,23 @@ export default function ArtistDetail() {
           src={artistData.imageUrl}
           alt='작가 대표 이미지'
         />
-        <span className={styles.titleSpan}>{artistData.name}</span>
-        <span className={styles.subSpan}>{artistData.nation}</span>
-        <span className={styles.subSpan}>{artistData.field}</span>
-        <BtnFavorite />
+        <h3 className={styles.artistTitle}>{artistData.name}</h3>
+        <span className={styles.subSpan}>
+          {artistData.nation} | {artistData.field}
+        </span>
       </section>
-      <p className={styles.descriptionParagraph}>{artistData.description}</p>
-      <section className={styles.descriptionSection}>
-        <span className={styles.titleSpan}>학력</span>
-        {educations.map((education) => (
-          <span key={education}>{education}</span>
+      <div className={styles.buttonContainer}>
+        {buttons.map(({ label, icon, action }) => (
+          <button className={styles.subButton} key={label} onClick={action}>
+            {icon}
+            <span>{label}</span>
+          </button>
         ))}
-      </section>
-      <section className={styles.descriptionSection}>
-        <span className={styles.titleSpan}>이력</span>
-        {careers.map((career) => (
-          <span key={career}>{career}</span>
-        ))}
-      </section>
-      <ArtistActivity />
+      </div>
+      <ArtistActivity description={artistData.description} />
+      <Link className={styles.backButton} to='/artists'>
+        목록으로 돌아가기
+      </Link>
     </div>
   );
 }
