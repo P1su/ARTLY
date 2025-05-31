@@ -35,15 +35,25 @@
   font-size: 1.6rem;
 }
 
-.descriptionParagraph {
-  font-size: 1.2rem;
-  text-align: center;
+.icon {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
-.descriptionSection {
+.icHeart {
+  fill: #e57373;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 2rem;
+}
+
+.subButton {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .backButton {
