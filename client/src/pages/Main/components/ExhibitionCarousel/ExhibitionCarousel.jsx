@@ -95,7 +95,7 @@ export default function ExhibitionCarousel({ title, items }) {
           {clonedItems.map((item, i) => (
             <Link
               to={`/exhibitions/${item?.id}`}
-              key={item?.id ?? `clone-${i}`}
+              key={`exhibition-${item?.id}-${i}`} // ✅ 유니크 key 보장
               className={styles.carouselSlide}
             >
               <img
@@ -106,9 +106,10 @@ export default function ExhibitionCarousel({ title, items }) {
               <div className={styles.cardText}>
                 <h3>{item?.title || '제목 없음'}</h3>
                 <p>{item?.category || '카테고리 없음'}</p>
-                <p>{item?.startDate && item?.endDate
-                  ? `${item.startDate} ~ ${item.endDate}`
-                  : '날짜 없음'}
+                <p>
+                  {item?.startDate && item?.endDate
+                    ? `${item.startDate} ~ ${item.endDate}`
+                    : '날짜 없음'}
                 </p>
               </div>
             </Link>

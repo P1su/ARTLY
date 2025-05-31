@@ -98,3 +98,30 @@
 
   width: 100%;
 }
+
+.iconSection {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.iconBox {
+  display: flex;             /* ✅ 핵심 */
+  flex-direction: column;    /* ✅ 세로 정렬 */
+  align-items: center;       /* ✅ 가로 가운데 정렬 */
+  justify-content: center;   /* ✅ 세로 가운데 정렬 */
+  width: 6.4rem;
+  height: 6.4rem;
+  border: 1px solid #ddd;
+  border-radius: 0.8rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.iconImage {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.4rem;
+}

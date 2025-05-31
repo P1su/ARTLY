@@ -1,28 +1,25 @@
 import styles from './NewsCategoryTabs.module.css';
 
-export default function NewsCategoryTabs({
-  filterOption,
-  setFilterOption,
-}) {
-  const options = ['공모', '프로그램', '레지던시', '지원사업', '채용'];
-
+export default function NewsCategoryTabs({ filterStatus, setFilterStatus, sortOption, setSortOption }) {
   return (
-    <div className={styles.dropdownContainer}>
-      <select className={styles.dropdown}>
-        <option value="최신순">최신순</option>
-        <option value="종료순">종료순</option>
+    <div className={styles.tabContainer}>
+      <select
+        className={styles.selectBox}
+        value={filterStatus}
+        onChange={(e) => setFilterStatus(e.target.value)}
+      >
+        <option value="진행중">진행중</option>
+        <option value="예정">예정</option>
+        <option value="종료">종료</option>
       </select>
 
       <select
-        className={styles.dropdown}
-        value={filterOption}
-        onChange={(e) => setFilterOption(e.target.value)}
+        className={styles.selectBox}
+        value={sortOption}
+        onChange={(e) => setSortOption(e.target.value)}
       >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
+        <option value="최신순">최신순</option>
+        <option value="종료임박순">종료순</option>
       </select>
     </div>
   );
