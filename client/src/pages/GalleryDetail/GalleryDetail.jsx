@@ -1,14 +1,21 @@
 import styles from './GalleryDetail.module.css';
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance } from '../../apis/instance.js';
-import { FaPhoneFlip, FaLocationDot, FaClock, FaGlobe } from 'react-icons/fa6';
+import { instance, userInstance } from '../../apis/instance.js';
+import {
+  FaPhoneFlip,
+  FaLocationDot,
+  FaClock,
+  FaGlobe,
+  FaHeart,
+} from 'react-icons/fa6';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
 import useMap from '../Nearby/hooks/useMap';
 
 export default function GalleryDetail() {
   const { galleryId } = useParams();
   const [galleryData, setGalleryData] = useState({});
+  const [isLike, setIsLike] = useState('false');
 
   const getGalleryDetail = async () => {
     try {
@@ -23,6 +30,40 @@ export default function GalleryDetail() {
   useEffect(() => {
     getGalleryDetail();
   }, []);
+
+  const handleLike = () => {
+    const postGalleryLike = async () => {
+      try {
+        await userInstance.post('/api/likes', {
+          liked_id: galleryId,
+          liked_type: 'gallery',
+        });
+      } catch (error) {
+        console.error(error);
+        alert('좋아요 실패');
+      }
+    };
+
+    const deleteGalleryLike = async () => {
+      try {
+        await userInstance.delete('/api/likes', {
+          liked_id: galleryId,
+          liked_type: 'gallery',
+        });
+      } catch (error) {
+        console.error(error);
+        alert('좋아요 실패');
+      }
+    };
+
+    if (isLike) {
+      deleteGalleryLike();
+      setIsLike(false);
+    } else {
+      postGalleryLike();
+      setIsLike(true);
+    }
+  };
 
   const {
     id,
@@ -68,11 +109,18 @@ export default function GalleryDetail() {
     <div className={styles.layout}>
       <h1 className={styles.galleryTitle}>{name}</h1>
       <section className={styles.infoSection}>
-        <img
-          className={styles.galleryImage}
-          src={image}
-          alt='갤러리 대표 이미지'
-        />
+        <div className={styles.imageBox}>
+          <img
+            className={styles.galleryImage}
+            src={image}
+            alt='갤러리 대표 이미지'
+          />
+          <button className={styles.favButton} onClick={handleLike}>
+            <FaHeart
+              className={`${styles.icHeart} ${isLike && styles.isClicked} `}
+            />
+          </button>
+        </div>
         <span className={styles.categorySpan}>{category}</span>
         <p className={styles.descriptionParagraph}>{description}</p>
         {infoItems.map(({ label, icon, content }) => (
