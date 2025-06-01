@@ -80,7 +80,7 @@ export default function TabPurchased() {
           {purchased.length > 0 ? (
             purchased.map((item) => (
               <SectionCard
-                key={item.id} // item에 id가 있다고 가정
+                key={item.id}
                 item={item}
                 onGoDetail={() => handleGoDetail(item.id)}
                 onQR={handleQR}
