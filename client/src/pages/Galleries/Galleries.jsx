@@ -11,7 +11,6 @@ import usePagination from '../../hooks/usePagination';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
-  const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
     10,
@@ -21,32 +20,42 @@ export default function Galleries() {
     status: '',
     regions: '',
     type: '',
+    liked_only: 0,
   });
+  const [query, setQuery] = useState('');
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+  };
 
   const handleFav = () => {
-    setIsFav((prev) => !prev);
+    setGalleryFilters((prev) => ({
+      ...prev,
+      liked_only: !prev.liked_only,
+    }));
+  };
+
+  const getGalleies = async () => {
+    try {
+      setIsLoading(true);
+      const updatedFilters = {
+        ...galleryFilters,
+        regions: galleryFilters.regions.replace(/\s+/g, ','),
+        search: query,
+      };
+      const response = await instance.get('/api/galleries', {
+        params: updatedFilters,
+      });
+
+      setGalleries(response.data);
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    const getGalleies = async () => {
-      try {
-        setIsLoading(true);
-        const updatedFilters = {
-          ...galleryFilters,
-          regions: galleryFilters.regions.replace(/\s+/g, ','),
-        };
-        const response = await instance.get('/api/galleries', {
-          params: updatedFilters,
-        });
-
-        setGalleries(response.data);
-      } catch (error) {
-        throw new Error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getGalleies();
   }, [galleryFilters]);
 
@@ -55,8 +64,11 @@ export default function Galleries() {
       <ListHeader
         title='갤러리'
         placeholder='갤러리명 검색'
-        isFav={isFav}
+        isFav={galleryFilters.liked_only}
+        onEvent={getGalleies}
         onFav={handleFav}
+        onSearch={handleSearch}
+        value={query}
       />
       <DropdownContainer
         filterList={galleryFilter}
