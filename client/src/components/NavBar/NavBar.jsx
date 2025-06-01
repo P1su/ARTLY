@@ -15,7 +15,9 @@ export default function NavBar() {
           >
             <NavLink
               to={path}
-              className={({ isActive }) => isActive && styles.activeLink}
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : undefined
+              }
             >
               {label}
             </NavLink>
