@@ -15,7 +15,6 @@ export default function EditProfile() {
       try {
         const res = await instance.get('/api/users/me');
         setUserInfo(res.data);
-        console.log(res.data);
         setSelectedKeyword(res.data.user_keyword?.split(',') || []);
       } catch (error) {
         console.error('유저 정보 불러오기 실패:', error);
@@ -81,7 +80,7 @@ export default function EditProfile() {
           </div>
 
           <div className={styles.inputRow}>
-            <label>생년월일</label>
+            <label>나이</label>
             <input
               type='number'
               name='user_age'
