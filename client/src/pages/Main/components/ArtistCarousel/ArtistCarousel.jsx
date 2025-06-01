@@ -95,7 +95,7 @@ export default function ArtistCarousel({ title, items }) {
           {clonedItems.map((item, i) => (
             <Link
               to={`/artists/${item?.id}`}
-              key={`artist-${item?.id}-${i}`} // ✅ 고유 key 보장
+              key={`artist-${item?.id}-${i}`} 
               className={styles.carouselSlide}
             >
               <img

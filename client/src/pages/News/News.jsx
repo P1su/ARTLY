@@ -46,7 +46,7 @@ export default function News() {
   return (
     <div className={styles.layout}>
       <ListHeader
-        title="공고"
+        title="뉴스"
         placeholder="전시회명 또는 장소 검색"
         isFav={isFav}
         onFav={handleFav}

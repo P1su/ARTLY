@@ -31,6 +31,9 @@ export default function SpecialCarousel({ title, items }) {
     <div className={styles.carouselWrapper}>
       <div className={styles.carouselHeader}>
         <h2 className={styles.carouselTitle}>{title}</h2>
+        <Link to="/exhibitions" className={styles.moreButton}>
+          더보기
+        </Link>        
       </div>
 
       <Swiper

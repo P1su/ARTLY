@@ -11,7 +11,6 @@ export default function NowCarousel({ title, items }) {
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
 
-  // 버튼 연결
   useEffect(() => {
     if (
       swiperRef.current &&
@@ -32,6 +31,9 @@ export default function NowCarousel({ title, items }) {
     <div className={styles.carouselWrapper}>
       <div className={styles.carouselHeader}>
         <h2 className={styles.carouselTitle}>{title}</h2>
+        <Link to="/exhibitions" className={styles.moreButton}>
+          더보기
+        </Link>        
       </div>
 
       <Swiper

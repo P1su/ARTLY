@@ -1,5 +1,3 @@
-// utils/filters/exhibitionFilter.js
-
 export const exhibitionFilter = [
   {
     key: 'sort',
