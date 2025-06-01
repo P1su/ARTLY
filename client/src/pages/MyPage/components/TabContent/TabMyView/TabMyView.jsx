@@ -90,6 +90,7 @@ export default function TabMyView() {
           <DropdownContainer
             filterList={tabMyViewFilter}
             onSetFilter={setFilter}
+            shape='rect'
           />
         </div>
       </div>

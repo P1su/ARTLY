@@ -2,7 +2,11 @@ import styles from './DropdownContainer.module.css';
 import { useState } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 
-export default function DropdownContainer({ filterList, onSetFilter }) {
+export default function DropdownContainer({
+  filterList,
+  onSetFilter,
+  shape = 'round',
+}) {
   const [itemIndex, setItemIndex] = useState(null);
   const handleOpen = (num) => {
     setItemIndex(itemIndex === num ? null : num);
@@ -20,6 +24,7 @@ export default function DropdownContainer({ filterList, onSetFilter }) {
             handleOpen(idx);
           }}
           onSetFilter={onSetFilter}
+          shape={shape}
         />
       ))}
     </div>

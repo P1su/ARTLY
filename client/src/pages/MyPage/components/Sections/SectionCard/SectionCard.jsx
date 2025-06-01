@@ -11,7 +11,7 @@ export default function SectionCard({ item, onQR, onCancel, onGoDetail }) {
     exhibition_start_date: startDate = '',
     exhibition_end_date: endDate = '',
     exhibition_status: status,
-    reservation_number: reservationNum = '예약번호 없음',
+    session_id: reservationId = '예약번호 없음',
     reservation_datetime: reservationDate,
   } = item;
 
@@ -40,7 +40,7 @@ export default function SectionCard({ item, onQR, onCancel, onGoDetail }) {
           <br />
           {date}
           <br />
-          예약번호: {reservationNum}
+          예약번호: {reservationId}
         </p>
 
         <div className={styles.statusContainer}>

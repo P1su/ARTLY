@@ -7,6 +7,7 @@ export default function Dropdown({
   filterKey,
   onOpen,
   onSetFilter,
+  shape = 'round',
 }) {
   const [label, setLabel] = useState(dropdownItems[0].label);
 
@@ -23,7 +24,7 @@ export default function Dropdown({
   return (
     <div className={styles.layout}>
       <button
-        className={`${styles.dropdownButton} ${isOpen && styles.clickedButton}`}
+        className={`${styles.dropdownButton} ${isOpen && styles.clickedButton} ${shape === 'rect' ? styles.rectButton : ''}`}
         onClick={onOpen}
       >
         {label}
