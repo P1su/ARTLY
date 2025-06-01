@@ -30,9 +30,14 @@
   flex: 1 1 0%;
 }
 
+.naverButton,
 .button {
   height: 4.5rem;
   border-radius: 1rem;
 
   background-color: #fee500;
+}
+
+.naverButton {
+  background-color: #03cf5d;
 }

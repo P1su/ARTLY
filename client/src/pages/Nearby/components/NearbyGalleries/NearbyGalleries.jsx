@@ -1,33 +1,10 @@
 import styles from './NearbyGalleries.module.css';
-import { useEffect, useState } from 'react';
-import { instance } from '../../../../apis/instance.js';
 import GalleryCard from '../GalleryCard/GalleryCard';
 import usePagination from '../../../../hooks/usePagination';
 import Pagination from '../../../../components/Pagination/Pagination';
 
-export default function NearbyGalleries({ lat, lng }) {
-  const [results, setResults] = useState([]);
+export default function NearbyGalleries({ results }) {
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, results);
-
-  useEffect(() => {
-    const getNaerbyGalleries = async () => {
-      try {
-        const response = await instance.get('/api/galleries', {
-          params: {
-            latitude: lat,
-            longitude: lng,
-          },
-        });
-
-        setResults(response.data);
-      } catch (error) {
-        console.error(error);
-        alert('주변 갤러리를 불러오는데 실패했습니다');
-      }
-    };
-
-    getNaerbyGalleries();
-  }, [lat, lng]);
 
   return (
     <section className={styles.layout}>
@@ -38,8 +15,9 @@ export default function NearbyGalleries({ lat, lng }) {
           갤러리
         </p>
       </div>
+      {results.length === 0 && <div>조회된 데이터가 없습니다.</div>}
       {pageItems.map((item) => (
-        <GalleryCard key={item.id} results={item} />
+        <GalleryCard key={item.id} galleryItem={item} />
       ))}
       <Pagination
         currentPage={currentPage}

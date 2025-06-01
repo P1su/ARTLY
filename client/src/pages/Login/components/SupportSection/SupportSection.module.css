@@ -1,20 +1,44 @@
 .layout {
   display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 0.1rem solid #eeeeee;
+
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.navigateLink {
+  display: flex;
+  justify-content: start;
+
+  color: #666666;
+  font-weight: 500;
+}
+
+.termParagraph {
+  text-align: center;
+}
+
+.termLink {
+  color: #333;
+  font-weight: 500;
+}
+
+.registerButton {
+  display: flex;
   align-items: center;
   justify-content: center;
 
   width: 100%;
-  padding-top: 2rem;
-  border-top: 0.1rem solid #eeeeee;
+  height: 4rem;
+  border-radius: 0.8rem;
 
-  color: #dddddd;
-  font-size: 1.3rem;
-}
+  background-color: #eee;
+  color: #333;
 
-.navigateLink {
-  color: #666666;
-}
-
-.divideSpan {
-  margin: 0 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 500;
 }

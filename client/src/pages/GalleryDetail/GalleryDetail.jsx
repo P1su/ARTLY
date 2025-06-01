@@ -15,7 +15,6 @@ import useMap from '../Nearby/hooks/useMap';
 export default function GalleryDetail() {
   const { galleryId } = useParams();
   const [galleryData, setGalleryData] = useState({});
-  const [isLike, setIsLike] = useState('false');
 
   const getGalleryDetail = async () => {
     try {
@@ -31,37 +30,26 @@ export default function GalleryDetail() {
     getGalleryDetail();
   }, []);
 
-  const handleLike = () => {
-    const postGalleryLike = async () => {
-      try {
+  const handleLike = async () => {
+    try {
+      if (galleryData.is_liked === true) {
+        await userInstance.delete('/api/likes', {
+          data: {
+            liked_id: galleryId,
+            liked_type: 'gallery',
+          },
+        });
+      } else {
         await userInstance.post('/api/likes', {
           liked_id: galleryId,
           liked_type: 'gallery',
         });
-      } catch (error) {
-        console.error(error);
-        alert('좋아요 실패');
       }
-    };
 
-    const deleteGalleryLike = async () => {
-      try {
-        await userInstance.delete('/api/likes', {
-          liked_id: galleryId,
-          liked_type: 'gallery',
-        });
-      } catch (error) {
-        console.error(error);
-        alert('좋아요 실패');
-      }
-    };
-
-    if (isLike) {
-      deleteGalleryLike();
-      setIsLike(false);
-    } else {
-      postGalleryLike();
-      setIsLike(true);
+      await getGalleryDetail();
+    } catch (error) {
+      console.error(error);
+      alert('좋아요 처리 실패');
     }
   };
 
@@ -117,7 +105,7 @@ export default function GalleryDetail() {
           />
           <button className={styles.favButton} onClick={handleLike}>
             <FaHeart
-              className={`${styles.icHeart} ${isLike && styles.isClicked} `}
+              className={`${styles.icHeart} ${galleryData.is_liked === true && styles.isClicked} `}
             />
           </button>
         </div>

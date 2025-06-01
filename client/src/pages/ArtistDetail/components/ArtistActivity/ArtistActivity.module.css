@@ -50,6 +50,11 @@
   padding: 2rem 0;
 }
 
+.descriptionParagraph {
+  color: #333;
+  font-size: 1.6rem;
+}
+
 .activityItemTitle {
   margin-bottom: 0.5rem;
   color: #333;

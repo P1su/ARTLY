@@ -10,3 +10,9 @@
 
   object-fit: fill;
 }
+
+.itemSpan {
+  color: #222;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
