@@ -36,7 +36,7 @@
   margin: 0 0 10px 0;
 }
 
-.detail {
+.info {
   font-size: 14px;
   color: #666;
   margin: 0 0 auto 0;
@@ -103,4 +103,10 @@
 .btn:hover {
   background-color: #000;
   color: #fff;
+}
+
+.catalogRegisteredDate {
+  font-size: 13px;
+  color: #999;
+  margin: 10px 0 0 0;
 }

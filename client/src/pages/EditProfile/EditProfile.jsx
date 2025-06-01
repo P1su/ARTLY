@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './EditProfile.module.css';
 import defaultProfile from '../MyPage/mock/userProfile.png';
-import SectionTitle from '../MyPage/components/SectionTitle/SectionTitle';
 import { useNavigate } from 'react-router-dom';
 import { instance } from '../../apis/instance';
 
@@ -55,8 +54,6 @@ export default function EditProfile() {
 
   return (
     <div className={styles.layout}>
-      <SectionTitle title='프로필' />
-
       <div className={styles.profileContainer}>
         <div className={styles.imageBox}>
           <img

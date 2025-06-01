@@ -93,10 +93,11 @@ export default function TabMyView() {
               <SectionCard
                 key={item.id}
                 item={item}
-                showActions={item.exhibition_status === '관람신청'}
+                status={item.exhibition_status === '관람신청'}
                 onGoDetail={() => handleGoDetail(item.id)}
                 onCancel={() => handleStatusChange(item.id, '취소')}
                 onQR={handleQR}
+                type='reservation'
               />
             ))
           ) : (
