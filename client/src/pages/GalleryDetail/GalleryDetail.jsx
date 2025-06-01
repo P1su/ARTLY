@@ -15,7 +15,7 @@ import useMap from '../Nearby/hooks/useMap';
 export default function GalleryDetail() {
   const { galleryId } = useParams();
   const [galleryData, setGalleryData] = useState({});
-  const [isLike, setIsLike] = useState('false');
+  const [isLike, setIsLike] = useState(galleryData.is_liked);
 
   const getGalleryDetail = async () => {
     try {

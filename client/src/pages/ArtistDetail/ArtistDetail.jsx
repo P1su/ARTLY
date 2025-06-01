@@ -8,7 +8,7 @@ import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
 export default function ArtistDetail() {
   const { artistId } = useParams();
   const [artistData, setArtistData] = useState([]);
-  const [isLike, setIsLike] = useState('false');
+  const [isLike, setIsLike] = useState(artistData.is_liked);
 
   const getArtistDetail = async () => {
     try {
