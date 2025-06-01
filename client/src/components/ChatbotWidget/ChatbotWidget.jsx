@@ -21,7 +21,14 @@ export default function ChatbotWidget() {
         
         console.log('채팅 내역 불러오기 응답:', res.data);
         // 200 - set messages with the response data
-        setMessages(Array.isArray(res.data) ? res.data : []);
+        setMessages(
+          Array.isArray(res.data) ? 
+          res.data.map(msg => ({
+            id: msg.id,
+            sender: msg.role === 'assistant' ? 'bot' : 'user',
+            text: msg.content
+          })) : []
+        );
       } 
       catch (err) {
         setMessages([
