@@ -47,7 +47,7 @@ export default function News() {
     <div className={styles.layout}>
       <ListHeader
         title="뉴스"
-        placeholder="전시회명 또는 장소 검색"
+        placeholder="뉴스 제목 검색"
         isFav={isFav}
         onFav={handleFav}
       />   
@@ -57,9 +57,9 @@ export default function News() {
         onSetFilter={setNewsFilters}
       />
 
-      <TotalCounts num={news.length} label="전시회" />
+      <TotalCounts num={news.length} label="뉴스" />
 
-      {isLoading && <div>작가 데이터 조회 중..</div>}
+      {isLoading && <div>뉴스 데이터 조회 중..</div>}
       {news.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
       <section className={styles.exhibitionListSection}>
