@@ -15,20 +15,21 @@
 .badge {
   display: inline-block;
   white-space: nowrap;
-
   padding: 0.2rem 0.8rem;
   border-radius: 0.8rem;
-
   font-size: 0.75rem;
   font-weight: bold;
   color: white;
 }
 
+.statusOrange {
+  background-color: orange; /* 주황색 */
+}
 
 .statusBlue {
-  background-color: #3b82f6;
+  background-color: #3b82f6; /* 파란색 */
 }
 
 .statusGray {
-  background-color: #9ca3af;
+  background-color: #9ca3af; /* 회색 */
 }

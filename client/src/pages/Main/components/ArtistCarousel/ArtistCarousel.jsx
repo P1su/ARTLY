@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom'; 
-import styles from './ExhibitionCarousel.module.css';
+import { Link } from 'react-router-dom';
+import styles from './ArtistCarousel.module.css';
 
-export default function ExhibitionCarousel({ title, items }) {
+export default function ArtistCarousel({ title, items }) {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [slidesToShow, setSlidesToShow] = useState(1);
   const [isSliding, setIsSliding] = useState(false);
@@ -13,16 +13,11 @@ export default function ExhibitionCarousel({ title, items }) {
   const clonedItems = [items[items.length - 1], ...items, ...items.slice(0, slidesToShow)];
 
   const updateSlidesToShow = () => {
-    const width = window.innerWidth;
-    if (width < 600) setSlidesToShow(1);
-    else if (width < 900) setSlidesToShow(2);
-    else setSlidesToShow(3);
+    setSlidesToShow(4);
   };
 
   useEffect(() => {
     updateSlidesToShow();
-    window.addEventListener('resize', updateSlidesToShow);
-    return () => window.removeEventListener('resize', updateSlidesToShow);
   }, []);
 
   const slideTo = (index) => {
@@ -81,14 +76,14 @@ export default function ExhibitionCarousel({ title, items }) {
   };
 
   const handleClick = (id) => {
-    navigate(`/exhibitions/${id}`);
-  };
-
+    navigate(`/astists/${id}`);
+  };  
+  
   return (
     <div className={styles.carouselWrapper}>
       <div className={styles.titleContainer}>
         <h2 className={styles.carouselTitle}>{title}</h2>
-        <Link to="/exhibitions" className={styles.moreButton}>더보기</Link>
+        <Link to="/artists" className={styles.moreButton}>더보기</Link>
       </div>
       <div
         className={styles.carouselViewport}
@@ -99,21 +94,21 @@ export default function ExhibitionCarousel({ title, items }) {
         <div className={styles.carouselTrack} ref={carouselRef}>
           {clonedItems.map((item, i) => (
             <Link
-              to={`/exhibitions/${item?.id}`}
-              key={item?.id ?? `clone-${i}`}
+              to={`/artists/${item?.id}`}
+              key={`artist-${item?.id}-${i}`} 
               className={styles.carouselSlide}
             >
               <img
-                src={item?.image || '/default.jpg'}
-                alt={item?.title ? `${item.title} 포스터` : '전시 이미지'}
-                className={styles.carouselImage}
+                src={item?.imageUrl || '/default.jpg'}
+                alt={item?.name ? `${item.name} 이미지` : '작가 이미지'}
+                className={styles.artistImage}
               />
-              <div className={styles.cardText}>
-                <h3>{item?.title || '제목 없음'}</h3>
-                <p>{item?.category || '카테고리 없음'}</p>
-                <p>{item?.startDate && item?.endDate
-                  ? `${item.startDate} ~ ${item.endDate}`
-                  : '날짜 없음'}
+              <div className={styles.artistText}>
+                <h3 className={styles.name}>
+                  {item?.name && item.name.trim() !== '' ? item.name : '이름 없음'}
+                </h3>
+                <p className={styles.field}>
+                  {item?.field && item.field.trim() !== '' ? item.field : '장르 없음'}
                 </p>
               </div>
             </Link>
