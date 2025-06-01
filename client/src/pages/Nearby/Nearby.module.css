@@ -3,6 +3,13 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+
+  padding: 3rem 2rem 6rem;
+}
+
+.title {
+  color: #333;
+  font-size: 2.8rem;
 }
 
 .galleryWrapper {

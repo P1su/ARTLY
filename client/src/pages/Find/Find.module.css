@@ -1,0 +1,28 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.findForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  padding: 2rem;
+  background-color: #eee;
+}
+
+.formTitle {
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.submitButton {
+  height: 4rem;
+  border-radius: 0.8rem;
+
+  color: #eee;
+  background-color: #333;
+}

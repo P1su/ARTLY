@@ -1,9 +1,9 @@
 export const artistFilter = [
   {
-    key: 'status',
+    key: 'category',
     options: [
       { label: '전체', value: '' },
-      { label: '현재 전시 중', value: 'active' },
+      { label: '현재 전시 중', value: 'onExhibition' },
     ],
   },
   {

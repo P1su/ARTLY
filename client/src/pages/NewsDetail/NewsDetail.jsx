@@ -88,5 +88,7 @@ export default function NewsDetail() {
         </button>
       </div>
     </section>
+
+    
   );
 }

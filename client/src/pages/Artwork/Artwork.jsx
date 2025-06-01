@@ -50,7 +50,7 @@ export default function Artwork() {
       </section>
 
       <section className={styles.bottomContainer}>
-        <DocentSection />
+        <DocentSection script={script} />
         <div className={styles.buttonContainer}>
           <button
             className={styles.navButton}

@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom'; 
 import styles from './MainCarousel.module.css';
 
 export default function MainCarousel({ items }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const timeoutRef = useRef(null); 
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     resetAutoPlay();
@@ -19,35 +18,57 @@ export default function MainCarousel({ items }) {
     }, 5000);
   };
 
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % items.length);
+  };
+
   const goToSlide = (index) => setCurrentIndex(index);
 
   return (
     <div className={styles.carouselContainer}>
+      <button className={`${styles.arrowButton} ${styles.left}`} onClick={prevSlide}>
+        &#8249;
+      </button>
+
       <div className={styles.sliderWrapper}>
         <div
           className={styles.slider}
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {items.map((item) => (
-            <Link
-              to={`/exhibitions/${item?.id}`} 
-              key={item?.id}
-              className={styles.carouselItem}
-            >
+            <div key={item?.id} className={styles.carouselItem}>
               <img
                 src={item?.image}
                 alt={item?.title || item?.name}
                 className={styles.carouselImage}
               />
-              <div>
-                <h3>{item?.title || item.name}</h3>
-                <p>{item?.period || item.date}</p>
-                <p>{item?.gallery}</p>
+              <div className={styles.captionBox}>
+                <h3 className={styles.title}>{item?.title}</h3>
+                <p className={styles.location}>
+                  {item?.organizationName}에서 {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
+                </p>
+                <button
+                  className={styles.detailButton}
+                  onClick={() => {
+                    window.location.href = `/exhibitions/${item?.id}`;
+                  }}
+                >
+                  자세히 보기
+                </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
+
+      <button className={`${styles.arrowButton} ${styles.right}`} onClick={nextSlide}>
+        &#8250;
+      </button>
+
       <div className={styles.dots}>
         {items.map((item, i) => (
           <button

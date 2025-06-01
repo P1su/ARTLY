@@ -5,8 +5,8 @@ import { mockArtistDetail } from '../../mock/mockArtistDetail.js';
 
 export default function ArtistActivity({ description }) {
   const [activity, setActivity] = useState('artworks');
-  const { educations, careers, artworks, exhibitions } = mockArtistDetail;
-  console.log(artworks);
+  const { artworks, exhibitions } = mockArtistDetail;
+
   const handleActivity = (activityType) => {
     setActivity(activityType);
   };
@@ -55,18 +55,6 @@ export default function ArtistActivity({ description }) {
         {activity === 'profile' ? (
           <div>
             <p className={styles.descriptionParagraph}>{description}</p>
-            <section className={styles.descriptionSection}>
-              <span className={styles.titleSpan}>학력</span>
-              {educations.map((education) => (
-                <span key={education}>{education}</span>
-              ))}
-            </section>
-            <section className={styles.descriptionSection}>
-              <span className={styles.titleSpan}>이력</span>
-              {careers.map((career) => (
-                <span key={career}>{career}</span>
-              ))}
-            </section>
           </div>
         ) : activity === 'artworks' ? (
           artworks.length === 0 ? (

@@ -1,0 +1,21 @@
+.exhibitionItemContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.exhibitionImage {
+  width: 100%;
+  height: 20rem;
+  object-fit: fill;
+}
+
+.titleSpan {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.subSpan {
+  color: #878787;
+}
+
