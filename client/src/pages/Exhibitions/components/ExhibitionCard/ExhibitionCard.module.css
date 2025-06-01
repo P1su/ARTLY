@@ -4,12 +4,42 @@
   align-items: center;
 }
 
+.imageBox {
+  position: relative;
+}
+
 .exhibitionImage {
   width: 100%;
   height: 40rem;
   border-radius: 0.8rem;
 
   object-fit: fill;
+}
+
+.favButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+
+  width: 5rem;
+  height: 5rem;
+
+  border-radius: 50%;
+
+  background-color: #fff;
+}
+
+.isClicked {
+  fill: #e57373;
+}
+
+.icHeart {
+  width: 3rem;
+  height: 3rem;
+  color: #333;
 }
 
 .exhibitionTitle {

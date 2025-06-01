@@ -82,7 +82,11 @@ export default function Exhibitions() {
       {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
       {pageItems.map((item) => (
-        <ExhibitionCard key={item.id} exhibitionItem={item} />
+        <ExhibitionCard
+          key={item.id}
+          exhibitionItem={item}
+          onEvent={getExhibitions}
+        />
       ))}
 
       <Pagination
