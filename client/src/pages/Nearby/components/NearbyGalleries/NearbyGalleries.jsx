@@ -7,15 +7,20 @@ import Pagination from '../../../../components/Pagination/Pagination';
 
 export default function NearbyGalleries({ lat, lng }) {
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, results);
 
   useEffect(() => {
     const getNaerbyGalleries = async () => {
       try {
+        setIsLoading(true);
+
         const response = await instance.get('/api/galleries', {
           params: {
             latitude: lat,
             longitude: lng,
+            distance: 10000,
           },
         });
 
@@ -23,6 +28,8 @@ export default function NearbyGalleries({ lat, lng }) {
       } catch (error) {
         console.error(error);
         alert('주변 갤러리를 불러오는데 실패했습니다');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -38,8 +45,10 @@ export default function NearbyGalleries({ lat, lng }) {
           갤러리
         </p>
       </div>
+      {isLoading && <div>갤러리 데이터 조회 중..</div>}
+      {results.length === 0 && <div>조회된 데이터가 없습니다.</div>}
       {pageItems.map((item) => (
-        <GalleryCard key={item.id} results={item} />
+        <GalleryCard key={item.id} galleryItem={item} />
       ))}
       <Pagination
         currentPage={currentPage}

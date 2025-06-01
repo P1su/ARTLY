@@ -4,4 +4,5 @@ export const menuList = [
   { label: 'ART', path: '/artworks' },
   { label: 'ARTIST', path: '/artists' },
   { label: 'GALLERY', path: '/galleries' },
+  { label: 'NEARBY', path: '/nearby-galleries' },
 ];
