@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance } from '../../apis/instance.js';
 import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection.jsx';
-import ContentsDetailSection from './components/ContentsDetailSection/ContentsDetailSection.jsx';
 
 export default function NewsDetail() {
   const { noticeId } = useParams();
@@ -38,7 +37,6 @@ export default function NewsDetail() {
     announcement_site_url: site,
     announcement_content: content,
     announcement_category: category,
-    announcement_status: status,
     created_at: createdAt,
     views,
   } = notice;

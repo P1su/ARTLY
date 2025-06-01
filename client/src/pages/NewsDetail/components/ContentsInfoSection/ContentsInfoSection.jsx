@@ -2,7 +2,6 @@ import styles from './ContentsInfoSection.module.css';
 
 export default function ContentsInfoSection({
   startDate,
-  endDate,
   host,
   contact,
   apply,
