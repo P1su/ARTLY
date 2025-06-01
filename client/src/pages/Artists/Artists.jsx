@@ -11,36 +11,49 @@ import ArtistCard from './components/ArtistCard/ArtistCard';
 
 export default function Artists() {
   const [artists, setArtists] = useState([]);
-  const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, artists);
   const [artistFilters, setArtistFilters] = useState({
-    status: '',
+    category: '',
     nation: '',
     birthDecade: '',
+    liked_only: 0,
   });
 
+  const [query, setQuery] = useState('');
+
   const handleFav = () => {
-    setIsFav((prev) => !prev);
+    setArtistFilters((prev) => ({
+      ...prev,
+      liked_only: !prev.liked_only,
+    }));
+  };
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const getArtists = async () => {
+    const params = {
+      ...artistFilters,
+      search: query,
+    };
+    try {
+      setIsLoading(true);
+
+      const response = await instance.get('/api/artist', {
+        params: params,
+      });
+
+      setArtists(response.data);
+    } catch (error) {
+      throw new Error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    const getArtists = async () => {
-      try {
-        setIsLoading(true);
-
-        const response = await instance.get('/api/artist', {
-          params: artistFilters,
-        });
-
-        setArtists(response.data);
-      } catch (error) {
-        throw new Error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getArtists();
   }, [artistFilters]);
 
@@ -49,8 +62,11 @@ export default function Artists() {
       <ListHeader
         title='작가'
         placeholder='작가명 또는 국적 검색'
-        isFav={isFav}
+        isFav={artistFilters.liked_only}
+        onEvent={getArtists}
         onFav={handleFav}
+        onSearch={handleSearch}
+        value={query}
       />
       <DropdownContainer
         filterList={artistFilter}

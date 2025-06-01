@@ -1,18 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { instance, userInstance } from '../../apis/instance.js';
 import styles from './ChatbotWidget.module.css';
 import chatbotIcon from './mock/chatbot.png';
 import chatbotProfile from './mock/chatbotProfile.png';
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 0,
-      sender: 'bot',
-      text: '안녕하세요! 아뜰리입니다 :) 무엇을 도와드릴까요?',
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // state for loading gpt response
+
+  const getNextId = () => (messages[messages.length - 1].id + 1);
+
+  // load user chat history from server on component mount
+  useEffect(() => {
+    const fetchChats = async () => {
+
+      try {
+        const res = await userInstance.get('/api/chats/me');
+        
+        console.log('채팅 내역 불러오기 응답:', res.data);
+        // 200 - set messages with the response data
+        setMessages(
+          Array.isArray(res.data) ? 
+          res.data.map(msg => ({
+            id: msg.id,
+            sender: msg.role === 'assistant' ? 'bot' : 'user',
+            text: msg.content
+          })) : []
+        );
+      } 
+      catch (err) {
+        setMessages([
+          {
+            id: 0,
+            sender: 'bot',
+            text: err.response && err.response.status === 404 ? 
+            '안녕하세요! 아뜰리의 챗봇 Artlas입니다 :) 무엇을 도와드릴까요?' : // 404 - no chat history, set default
+            '채팅 내역을 불러오지 못했습니다. 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+          }
+        ]);
+      }
+
+    };
+
+    fetchChats();
+  }, []);
+
   const handleToggleChat = () => {
     setIsOpen(!isOpen);
   };
@@ -21,19 +55,75 @@ export default function ChatbotWidget() {
     setInputValue(e.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (inputValue.trim()) {
-      setMessages([
-        ...messages,
-        { id: 1, sender: 'user', text: inputValue },
-        {
-          id: 2,
-          sender: 'bot',
-          text: '아뜰리에 대해 설명드리겠습니다. 잠시만 기다려 주세요.',
-        },
-      ]);
-      setInputValue('');
+  // Function to handle text query to GPT
+  const textQuery = async (text) => {
+    const userMessage = {
+      id: getNextId(),
+      sender: 'user',
+      text: text
     }
+    // display user message immediately
+    setMessages(prev => [
+      ...prev,
+      userMessage
+    ]);
+    console.log('messages:\n', messages);
+
+    const textQueryVariables = { text };
+    const gptReply = { 
+      id: getNextId(), 
+      sender: 'bot', 
+      text: "An error occured. Please report this to the service team." 
+    };
+
+    try {
+      setIsLoading(true); // Set loading state to true before sending request
+      const gptResponse = await userInstance.post('/api/chats', textQueryVariables);
+      let msgText = gptResponse.data;
+
+      console.log('GPT Response:\n', gptResponse.data);
+      gptReply.text = msgText;
+
+    } catch (error) {
+      console.error('Error occurred while querying GPT:', error);
+    }
+    finally {
+      setIsLoading(false); // Set loading state to false after request is complete
+    }
+
+    // display bot reply after receiving response
+    setMessages(prev => [
+      ...prev,
+      gptReply
+    ]);
+
+    console.log('Updated messages:\n', messages);
+  };
+
+  // Function to parse bold text of GPT response
+  const parseBold = (text) => {
+    const parts = text.split(/(\*\*[^\*]+\*\*)/g);
+    return parts.map((part, idx) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <b key={idx}>{part.slice(2, -2)}</b>;
+      }
+      return part;
+    });
+  }
+
+  const keyPressHanlder = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const handleSendMessage = () => {
+    const text = inputValue.trim();
+    if (!text)
+      return alert('텍스트를 입력해주세요!');
+
+    textQuery(text);
+    setInputValue('');
   };
 
   return (
@@ -71,7 +161,7 @@ export default function ChatbotWidget() {
                     <div className={styles.botContent}>
                       <p className={styles.botName}>Artly</p>
                       <div className={styles.botBubble}>
-                        <p>{msg.text}</p>
+                        <p>{parseBold(msg.text)}</p>
                       </div>
                     </div>
                   </>
@@ -84,6 +174,11 @@ export default function ChatbotWidget() {
                 )}
               </div>
             ))}
+            {isLoading && ( // if loading, show a loading message below the chat
+                <div style={{ textAlign: 'center', color: 'gray', marginTop: '10px' }}>
+                    챗봇이 생각하는 중...
+                </div>
+            )}
           </div>
 
           <div className={styles.inputContainer}>
@@ -92,6 +187,7 @@ export default function ChatbotWidget() {
               type='text'
               value={inputValue}
               onChange={handleInputChange}
+              onKeyPress={keyPressHanlder}
               placeholder='챗봇에게 물어보세요.'
             />
             <button className={styles.sendButton} onClick={handleSendMessage}>

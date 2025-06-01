@@ -1,7 +1,15 @@
 import styles from './ListHeader.module.css';
 import { FaHeart, FaSearch } from 'react-icons/fa';
 
-export default function ListHeader({ title, placeholder, isFav, onFav }) {
+export default function ListHeader({
+  title,
+  placeholder,
+  isFav,
+  onEvent,
+  onFav,
+  onSearch,
+  value,
+}) {
   return (
     <div className={styles.layout}>
       <div className={styles.titleContainer}>
@@ -14,8 +22,13 @@ export default function ListHeader({ title, placeholder, isFav, onFav }) {
           좋아요
         </button>
       </div>
-      <form className={styles.searchForm}>
-        <input className={styles.searchInput} placeholder={placeholder} />
+      <form className={styles.searchForm} action={onEvent}>
+        <input
+          className={styles.searchInput}
+          placeholder={placeholder}
+          onChange={onSearch}
+          value={value}
+        />
         <button className={styles.formButton}>
           <FaSearch />
         </button>
