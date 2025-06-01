@@ -6,7 +6,7 @@ import TabPurchased from './components/TabContent/TabPurchased/TabPurchased';
 import TabMyView from './components/TabContent/TabMyView/TabMyView';
 
 export default function MyPage() {
-  const [selectedTab, setSelectedTab] = useState('My관람');
+  const [selectedTab, setSelectedTab] = useState('좋아요');
   const tabs = ['좋아요', 'My관람', 'MY도록'];
 
   const renderTabContent = () => {

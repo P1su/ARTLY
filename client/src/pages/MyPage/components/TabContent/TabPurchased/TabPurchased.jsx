@@ -26,28 +26,24 @@ export default function TabPurchased() {
         const res = await instance.get('/api/users/me/purchases');
         const purchases = res.data;
 
-        // 1. 모든 book에서 exhibition_id를 Set으로 모으기
+        // 백엔드 필드 수정시 삭제 예정
         const exhibitionIds = new Set(purchases.map((p) => p.exhibition_id));
-        // 2. exhibition_id로 전시회 정보 가져오는 함수 (Promise 반환)
 
         const fetchExhibitionInfo = async (exhibitionId) => {
           try {
             const res = await instance.get(`/api/exhibitions/${exhibitionId}`);
-            return { [exhibitionId]: res.data }; // exhibitionId를 키로 사용
+            return { [exhibitionId]: res.data };
           } catch {
             return { [exhibitionId]: null };
           }
         };
 
-        // 3. 모든 exhibitionId에 대해 API 호출 후 Promise.all로 기다리기
         const exhibitionPromises =
           Array.from(exhibitionIds).map(fetchExhibitionInfo);
         const exhibitionInfos = await Promise.all(exhibitionPromises);
 
-        // 4. exhibition 정보를 객체로 변환 (exhibitionId를 키로 사용)
         const exhibitionMap = Object.assign({}, ...exhibitionInfos);
 
-        // 5. book 데이터와 exhibition 정보 합치기
         const purchasesWithExhibition = purchases.map((p) => ({
           ...p,
           ...exhibitionMap[p.exhibition_id],

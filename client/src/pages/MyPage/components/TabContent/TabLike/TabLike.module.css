@@ -1,7 +1,66 @@
+.header {
+  /* display: flex; 삭제 */
+  justify-content: space-between; /* 삭제 */
+  align-items: center; /* 삭제 */
+  margin-bottom: 15px;
+}
+
+.countText {
+  margin: 2.5rem 0 1rem 0;
+  font-size: 14px;
+  color: #666;
+  display: block; /* 또는 inline-block */
+  width: 100%;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.count {
+  color: #3cb371;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.tabButtonContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tabButton {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  color: #666;
+}
+
+.tabButton:hover {
+  background-color: #000000;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
+.cardListSection {
+  margin-top: 16px;
+}
+
 .cardList {
   display: flex;
   flex-direction: column;
-  padding: 0 1.6rem;
-  margin: 1rem 0;
-  gap: 1.2rem;
+  gap: 16px;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  margin-top: 32px;
 }

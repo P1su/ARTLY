@@ -11,19 +11,45 @@ export default function SectionCard({
   if (!item) return null;
 
   const renderLike = () => {
-    // like 타입 UI 예시 (필요에 맞게 커스터마이징)
-    const {
-      likeImg = '/default_like_img.jpg',
-      likeTitle = '좋아요한 항목',
-      likeDescription = '',
-    } = item;
+    const { likeType } = item;
+
+    let image = '';
+    let title = '';
+    let description = '';
+    let imageRound = styles.image;
+
+    if (likeType === 'exhibition') {
+      image = item.exhibition_poster;
+      title = item.exhibition_title;
+      description = `${item.exhibition_location}<br />${item.exhibition_start_date} ~ ${item.exhibition_end_date}`;
+    } else if (likeType === 'gallery') {
+      image = item.gallery_image;
+      title = item.gallery_name;
+      description = item.gallery_address;
+    } else if (likeType === 'artist') {
+      image = item.artist_image;
+      title = item.artist_name;
+      description = `${item.artist_category} / ${item.artist_nation}`;
+      imageRound = styles.artistImage;
+    } else {
+      return null;
+    }
 
     return (
-      <div className={styles.likeCardContainer}>
-        <img src={likeImg} alt={likeTitle} className={styles.likeImage} />
-        <div className={styles.likeContent}>
-          <h3 className={styles.likeTitle}>{likeTitle}</h3>
-          <p className={styles.likeDescription}>{likeDescription}</p>
+      <div className={styles.cardContainer}>
+        <div className={styles.imgContainer}>
+          <img
+            src={image}
+            alt={title}
+            className={`${styles.image} ${imageRound}`}
+          />
+        </div>
+        <div className={styles.contents}>
+          <h3 className={styles.title}>{title}</h3>
+          <p
+            className={styles.info}
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </div>
       </div>
     );
@@ -119,7 +145,6 @@ export default function SectionCard({
         ? `${exhibitionStartDate} ~ ${exhibitionEndDate}`
         : '';
 
-    // 날짜 포맷 (YYYY-MM-DD)
     const formattedDate = bookCreatedDate
       ? new Date(bookCreatedDate).toISOString().slice(0, 10)
       : '';
