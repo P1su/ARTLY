@@ -11,46 +11,64 @@ import ExhibitionCard from './components/ExhibitionCard/ExhibitionCard';
 
 export default function Exhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
-  const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { currentPage, setCurrentPage, pageItems } = usePagination(10, exhibitions);
+  const { currentPage, setCurrentPage, pageItems } = usePagination(
+    10,
+    exhibitions,
+  );
   const [exhibitionFilters, setExhibitionFilters] = useState({
     sort: 'latest',
     region: '',
     category: '',
     status: 'exhibited',
+    liked_only: 0,
   });
+  const [query, setQuery] = useState('');
 
-  const handleFav = () => {
-    setIsFav((prev) => !prev);
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
   };
 
+  const handleFav = () => {
+    setExhibitionFilters((prev) => ({
+      ...prev,
+      liked_only: !prev.liked_only,
+    }));
+  };
+
+  const getExhibitions = async () => {
+    try {
+      setIsLoading(true);
+      const updatedFilters = {
+        ...exhibitionFilters,
+        search: query,
+      };
+
+      const response = await instance.get('/api/exhibitions', {
+        params: updatedFilters, // ✅ 키 일치 → 바로 사용 가능
+      });
+      setExhibitions(response.data);
+    } catch (error) {
+      console.error('전시회 목록 불러오기 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getExhibitions = async () => {
-      setIsLoading(true);
-      try {
-        const response = await instance.get('/api/exhibitions', {
-          params: exhibitionFilters, // ✅ 키 일치 → 바로 사용 가능
-        });
-        setExhibitions(response.data);
-      } catch (error) {
-        console.error('전시회 목록 불러오기 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getExhibitions();
   }, [exhibitionFilters]);
 
   return (
     <div className={styles.layout}>
       <ListHeader
-        title="전시회"
-        placeholder="전시회명 또는 장소 검색"
-        isFav={isFav}
+        title='전시회'
+        placeholder='전시회명 또는 장소 검색'
+        isFav={exhibitionFilters.liked_only}
+        onEvent={getExhibitions}
         onFav={handleFav}
+        onSearch={handleSearch}
+        value={query}
       />
 
       <DropdownContainer
@@ -58,7 +76,7 @@ export default function Exhibitions() {
         onSetFilter={setExhibitionFilters}
       />
 
-      <TotalCounts num={exhibitions.length} label="전시회" />
+      <TotalCounts num={exhibitions.length} label='전시회' />
 
       {isLoading && <div>전시회 데이터 조회 중..</div>}
       {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}

@@ -40,6 +40,7 @@ export const exhibitionFilter = [
       { label: '현재전시', value: 'exhibited' },
       { label: '종료전시', value: 'ended' },
       { label: '예정전시', value: 'scheduled' },
+      { label: '전체', value: '' },
     ],
   },
 ];
