@@ -5,7 +5,7 @@ export default function SearchResultItem({ link, thumbnail, title }) {
   return (
     <Link className={styles.layout} to={link}>
       <img className={styles.itemImage} src={thumbnail} />
-      <span>{title}</span>
+      <span className={styles.itemSpan}>{title}</span>
     </Link>
   );
 }

@@ -11,16 +11,12 @@ export default function SearchBar() {
 
   return (
     <form className={styles.searchBarContainer} action={handleSearch}>
-      <span className={styles.searchIcon}>🔍</span>
       <input
         type='text'
         className={styles.searchInput}
-        placeholder='참여하고 싶은 행사를 검색해 보세요'
+        placeholder=''
         name='query'
       />
-      <button className={styles.searchButton} type='submit'>
-        검색
-      </button>
     </form>
   );
 }
