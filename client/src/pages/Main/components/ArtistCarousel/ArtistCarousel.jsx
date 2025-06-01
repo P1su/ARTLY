@@ -93,12 +93,13 @@ export default function ArtistCarousel({ title, items }) {
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
           {clonedItems.map((item, i) => (
-            <div
+            <Link
+              to={`/artists/${item?.id}`}
               key={`artist-${item?.id}-${i}`} // ✅ 고유 key 보장
               className={styles.carouselSlide}
             >
               <img
-                src={item?.image || '/default.jpg'}
+                src={item?.imageUrl || '/default.jpg'}
                 alt={item?.name ? `${item.name} 이미지` : '작가 이미지'}
                 className={styles.artistImage}
               />
@@ -110,7 +111,7 @@ export default function ArtistCarousel({ title, items }) {
                   {item?.field && item.field.trim() !== '' ? item.field : '장르 없음'}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

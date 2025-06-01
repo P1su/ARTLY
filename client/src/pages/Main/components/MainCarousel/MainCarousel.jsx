@@ -48,9 +48,8 @@ export default function MainCarousel({ items }) {
               />
               <div className={styles.captionBox}>
                 <h3 className={styles.title}>{item?.title}</h3>
-                <p className={styles.location}>{item?.gallery}</p>
-                <p className={styles.date}>
-                  {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
+                <p className={styles.location}>
+                  {item?.organizationName}에서 {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
                 </p>
                 <button
                   className={styles.detailButton}

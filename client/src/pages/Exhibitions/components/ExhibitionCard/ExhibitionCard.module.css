@@ -1,11 +1,3 @@
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  padding: 3rem 2rem 6rem;
-}
-
 .exhibitionItemContainer {
   display: flex;
   flex-direction: column;
@@ -26,3 +18,4 @@
 .subSpan {
   color: #878787;
 }
+

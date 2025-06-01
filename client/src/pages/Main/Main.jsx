@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import styles from './Main.module.css';
 import { instance } from '../../apis/instance.js';
 import MainCarousel from './components/MainCarousel/MainCarousel';
-import ExhibitionCarousel from './components/ExhibitionCarousel/ExhibitionCarousel';
+import PopularCarousel from './components/PopularCarousel/PopularCarousel.jsx';
+import SpecialCarousel from './components/SpecialCarousel/SpecialCarousel.jsx';
+import NowCarousel from './components/NowCarousel/NowCarousel.jsx';
 import ArtistCarousel from './components/ArtistCarousel/ArtistCarousel';
 import ChatbotWidget from '../../components/ChatbotWidget/ChatbotWidget';
 
@@ -22,6 +24,7 @@ export default function Main() {
           exhibition_status: status,
           exhibition_start_date: startDate,
           exhibition_end_date: endDate,
+          exhibition_organization,
         }) => ({
           id,
           image,
@@ -30,6 +33,7 @@ export default function Main() {
           status,
           startDate,
           endDate,
+          organizationName: exhibition_organization?.name,
         }),
       );
 
@@ -43,11 +47,11 @@ export default function Main() {
     try {
       const response = await instance.get('/api/artist');
       const parsed = response.data.map(
-        ({ id, name, field, image }) => ({
+        ({ id, name, field, imageUrl }) => ({
           id,
           name,
           field,
-          image,
+          imageUrl,
         }),
       );
       setArtists(parsed);
@@ -65,14 +69,20 @@ export default function Main() {
     <div className={styles.mainLayout}>
       <MainCarousel items={exhibitions} />
 
-      <ExhibitionCarousel
+      <PopularCarousel
         title="지금 인기 있는 전시"
         items={exhibitions}
       />
-      <ExhibitionCarousel
-        title="놓치지 않아야 할 특별 전시회"
+
+      <SpecialCarousel
+        title="놓치지 않아야 할 특별 전시"
         items={exhibitions}
-      />
+      />   
+
+      <NowCarousel
+        title="현재 전시"
+        items={exhibitions}
+      />         
 
       <ArtistCarousel
         title="전시중인 작가"

@@ -1,8 +1,11 @@
-.layout {
-  min-height: calc(100vh - 9rem);
-  padding-bottom: 4rem;
-}
 
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  padding: 3rem 2rem 6rem;
+}
 .filterSection {
   display: flex;
   gap: 1.2rem;

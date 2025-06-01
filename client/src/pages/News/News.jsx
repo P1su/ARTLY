@@ -1,85 +1,78 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
-import NewsCategoryTabs from './components/NewsCategoryTabs/NewsCategoryTabs.jsx';
-import NewsListTable from './components/NewsListTable/NewsListTable.jsx';
 import Pagination from '../../components/Pagination/Pagination.jsx';
 import usePagination from '../../hooks/usePagination.jsx';
+import styles from './News.module.css';
+import ListHeader from '../../components/List/ListHeader/ListHeader';
+import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
+import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
+import { newsFilter } from '../../utils/filters/newsFilter.js';
+import NewsCard from './components/NewsCard/NewsCard';
 
 export default function News() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialCategory = searchParams.get('category') || '공모';
-  const [filterOption, setFilterOption] = useState(initialCategory);
+  const [news, setNews] = useState([]);
+  const [isFav, setIsFav] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentPage, setCurrentPage, pageItems } = usePagination(10, news);
+  const [newsFilters, setNewsFilters] = useState({
+    category: '공모',
+    status: 'ongoing',
+    sort: 'latest',
+  });
 
-  const [notices, setNotices] = useState([]);
-  const [sortOption, setSortOption] = useState('최신순');
-  const [filterStatus, setFilterStatus] = useState('진행중');
 
-  const { currentPage, setCurrentPage } = usePagination(10, notices);
-
-  const getNotices = async () => {
-    try {
-      const response = await instance.get('/api/announcements', {
-        params: {
-          category: filterOption,
-        },
-      });
-      setNotices(response.data);
-    } catch (error) {
-      throw new Error(error);
-    }
+  const handleFav = () => {
+    setIsFav((prev) => !prev);
   };
 
   useEffect(() => {
-    getNotices();
-    setCurrentPage(1);
-  }, [filterOption]);
+    const getNews = async () => {
+      setIsLoading(true);
+      try {
+        const response = await instance.get('/api/announcements', {
+          params: newsFilters, 
+        });
+        setNews(response.data);
+      } catch (error) {
+        console.error('전시회 목록 불러오기 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleFilterChange = (value) => {
-    setFilterOption(value);
-    setSearchParams({ category: value });
-  };
-
-  const getStatusByDate = (start, end) => {
-    const now = new Date();
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    if (now < startDate) return '예정';
-    if (now > endDate) return '종료';
-    return '진행중';
-  };
-
-  const filteredNotices = notices
-    .filter((notice) => {
-      return getStatusByDate(notice.start_datetime, notice.end_datetime) === filterStatus;
-    })
-    .sort((a, b) => {
-      const dateA =
-        filterStatus === '종료'
-          ? new Date(a.end_datetime)
-          : new Date(a.start_datetime);
-      const dateB =
-        filterStatus === '종료'
-          ? new Date(b.end_datetime)
-          : new Date(b.start_datetime);
-
-      return sortOption === '최신순' ? dateB - dateA : dateA - dateB;
-    });
+    getNews();
+  }, [newsFilters]);
 
   return (
-    <>
-      <NewsCategoryTabs
-        filterStatus={filterStatus}
-        setFilterStatus={setFilterStatus}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
+    <div className={styles.layout}>
+      <ListHeader
+        title="공고"
+        placeholder="전시회명 또는 장소 검색"
+        isFav={isFav}
+        onFav={handleFav}
+      />   
+
+      <DropdownContainer
+        filterList={newsFilter}
+        onSetFilter={setNewsFilters}
       />
-      <NewsListTable data={filteredNotices} currentPage={currentPage} />
+
+      <TotalCounts num={news.length} label="전시회" />
+
+      {isLoading && <div>작가 데이터 조회 중..</div>}
+      {news.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+
+      <section className={styles.exhibitionListSection}>
+        {pageItems.map((item) => (
+          <NewsCard key={item.id} newsItem={item} />
+        ))}
+      </section>
+
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}
-        totalItems={filteredNotices.length}
+        totalItems={news.length}
       />
-    </>
+    </div>
   );
 }
