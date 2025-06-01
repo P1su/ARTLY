@@ -2,38 +2,38 @@
   /* display: flex; 삭제 */
   justify-content: space-between; /* 삭제 */
   align-items: center; /* 삭제 */
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
 }
 
 .countText {
   margin: 2.5rem 0 1rem 0;
-  font-size: 14px;
+  font-size: 1.4rem;
   color: #666;
   display: block; /* 또는 inline-block */
   width: 100%;
 }
 .title {
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
 }
 
 .count {
   color: #3cb371;
   font-weight: 600;
-  margin-left: 5px;
+  margin-left: 0.5rem;
 }
 
 .tabButtonContainer {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
 }
 
 .tabButton {
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 0.8rem 1.6rem;
+  border-radius: 2rem;
   background-color: #f2f2f2;
-  font-size: 14px;
+  font-size: 1.4rem;
   cursor: pointer;
   border: none;
   color: #666;
@@ -49,18 +49,18 @@
 }
 
 .cardListSection {
-  margin-top: 16px;
+  margin-top: 1.6rem;
 }
 
 .cardList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.6rem;
 }
 
 .emptyText {
-  font-size: 14px;
+  font-size: 1.4rem;
   color: #999;
   text-align: center;
-  margin-top: 32px;
+  margin-top: 3.2rem;
 }

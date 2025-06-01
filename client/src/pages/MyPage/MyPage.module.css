@@ -1,37 +1,37 @@
 .layout {
-  max-width: 1200px;
+  max-width: 120rem;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 4rem 2rem;
 }
 
 .profileCard {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 }
 
 .mainTab {
   display: flex;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
+  border-bottom: 0.1rem solid #eee;
+  margin-bottom: 2rem;
 }
 
 .tabButton {
-  padding: 15px 20px;
+  padding: 1.5rem 2rem;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 0.2rem solid transparent;
   color: #666;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1.6rem;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .tabButton:hover,
 .tabButton.active {
-  border-bottom: 2px solid #000;
+  border-bottom: 0.2rem solid #000;
   color: #000;
   font-weight: 600;
 }
