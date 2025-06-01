@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import styles from './TabMyArtly.module.css';
+import styles from './TabMyView.module.css';
 import SectionCalendar from '../../Sections/SectionCalendar/SectionCalendar';
 import SectionTitle from '../../SectionTitle/SectionTitle';
 import { instance } from '../../../../../apis/instance';
 import SectionCard from '../../Sections/SectionCard/SectionCard';
 
-export default function TabMyArtly() {
+export default function TabMyView() {
   const [reservations, setReservations] = useState([]);
   const [viewedExhibitions, setViewedExhibitions] = useState([]);
   const [loading, setLoading] = useState(true);

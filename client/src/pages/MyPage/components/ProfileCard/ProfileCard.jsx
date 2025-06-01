@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProfileCard.module.css';
 import { Link } from 'react-router-dom';
+import { FaCog, FaHeart, FaChevronDown } from 'react-icons/fa';
+
 import { instance } from '../../../../apis/instance';
 import profileImg from '../../mock/userProfile.png';
 
@@ -44,25 +46,21 @@ export default function ProfileCard() {
     setImgSrc(profileImg);
   };
 
+  const handleSettingClick = () => {
+    <Link to='/mypage/edit' />;
+  };
+
   return (
     <div className={styles.layout}>
-      <div className={styles.imgBox}>
-        <img
-          src={imgSrc}
-          alt='유저 기본 프로필 이미지'
-          onError={handleImgError}
-        />
+      <div className={styles.info}>
+        <div className={styles.imgBox}>
+          <img src={imgSrc} alt='사 진' onError={handleImgError} />
+        </div>
+        <h3 className={styles.name}>{userData.user_name} 님</h3>
       </div>
-      <div className={styles.infoContainer}>
-        <h3>{userData.user_name} 님</h3>
-        <br />
-        <p>{userData.user_age} 세</p>
-        <p>{userData.user_email}</p>
-        <p>{userData.user_phone}</p>
-      </div>
-      <Link to='/mypage/edit' className={styles.btnBox}>
-        프로필 수정
-      </Link>
+      <button className={styles.btn} onClick={handleSettingClick}>
+        <FaCog />
+      </button>
     </div>
   );
 }
