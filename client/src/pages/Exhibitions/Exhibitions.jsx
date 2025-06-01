@@ -81,11 +81,9 @@ export default function Exhibitions() {
       {isLoading && <div>전시회 데이터 조회 중..</div>}
       {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
-      <section className={styles.exhibitionListSection}>
-        {pageItems.map((item) => (
-          <ExhibitionCard key={item.id} exhibitionItem={item} />
-        ))}
-      </section>
+      {pageItems.map((item) => (
+        <ExhibitionCard key={item.id} exhibitionItem={item} />
+      ))}
 
       <Pagination
         currentPage={currentPage}
