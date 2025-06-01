@@ -6,7 +6,7 @@ import { mockArtistDetail } from '../../mock/mockArtistDetail.js';
 export default function ArtistActivity({ description }) {
   const [activity, setActivity] = useState('artworks');
   const { artworks, exhibitions } = mockArtistDetail;
-  console.log(artworks);
+
   const handleActivity = (activityType) => {
     setActivity(activityType);
   };

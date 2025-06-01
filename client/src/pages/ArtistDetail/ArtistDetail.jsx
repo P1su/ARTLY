@@ -8,7 +8,6 @@ import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
 export default function ArtistDetail() {
   const { artistId } = useParams();
   const [artistData, setArtistData] = useState([]);
-  const [isLike, setIsLike] = useState(artistData.is_liked);
 
   const getArtistDetail = async () => {
     try {
@@ -24,37 +23,26 @@ export default function ArtistDetail() {
     getArtistDetail();
   }, []);
 
-  const handleLike = () => {
-    const postArtistLike = async () => {
-      try {
+  const handleLike = async () => {
+    try {
+      if (artistData.is_liked === '1') {
+        await userInstance.delete('/api/likes', {
+          data: {
+            liked_id: artistId,
+            liked_type: 'artist',
+          },
+        });
+      } else {
         await userInstance.post('/api/likes', {
           liked_id: artistId,
           liked_type: 'artist',
         });
-      } catch (error) {
-        console.error(error);
-        alert('좋아요 실패');
       }
-    };
 
-    const deleteArtistLike = async () => {
-      try {
-        await userInstance.delete('/api/likes', {
-          liked_id: artistId,
-          liked_type: 'artist',
-        });
-      } catch (error) {
-        console.error(error);
-        alert('좋아요 실패');
-      }
-    };
-
-    if (isLike) {
-      deleteArtistLike();
-      setIsLike(false);
-    } else {
-      postArtistLike();
-      setIsLike(true);
+      await getArtistDetail();
+    } catch (error) {
+      console.error(error);
+      alert('좋아요 처리 실패');
     }
   };
 
@@ -62,7 +50,9 @@ export default function ArtistDetail() {
     {
       label: '관심 작가',
       icon: (
-        <FaHeart className={`${styles.icon} ${isLike && styles.icHeart}`} />
+        <FaHeart
+          className={`${styles.icon} ${artistData.is_liked === '1' && styles.icHeart}`}
+        />
       ),
       action: handleLike,
     },
