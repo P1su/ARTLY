@@ -52,19 +52,13 @@ export default function TabMyView() {
     if (newStatus === '취소') {
       const confirm = window.confirm('예약을 취소하시겠습니까?');
       if (!confirm) return;
-    }
 
-    try {
-      await instance.put(`/api/users/me/exhibitions/${id}`, {
-        exhibition_status: newStatus,
-      });
-      setReservations((prev) =>
-        prev.map((res) =>
-          res.id === id ? { ...res, exhibition_status: newStatus } : res,
-        ),
-      );
-    } catch (err) {
-      console.error('상태 변경 실패:', err);
+      try {
+        await instance.delete(`/api/reservations/${id}`);
+        setReservations((prev) => prev.filter((res) => res.id !== id));
+      } catch (err) {
+        console.error('예약 취소 실패:', err);
+      }
     }
   };
 
@@ -73,10 +67,7 @@ export default function TabMyView() {
   };
 
   const handleQR = () => {
-    const event = new CustomEvent('openQRScanner', {
-      detail: { scanType: 'exhibition' },
-    });
-    window.dispatchEvent(event);
+    navigate('/scan');
   };
 
   return (
