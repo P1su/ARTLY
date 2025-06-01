@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
-      { path: '/catalog', element: <Catalog /> },
+      { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },

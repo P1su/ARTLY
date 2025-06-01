@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProfileCard.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaCog, FaHeart, FaChevronDown } from 'react-icons/fa';
 
 import { instance } from '../../../../apis/instance';
@@ -16,6 +16,8 @@ export default function ProfileCard() {
     user_email: '',
     user_phone: '',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -47,7 +49,7 @@ export default function ProfileCard() {
   };
 
   const handleSettingClick = () => {
-    <Link to='/mypage/edit' />;
+    navigate('/mypage/edit');
   };
 
   return (

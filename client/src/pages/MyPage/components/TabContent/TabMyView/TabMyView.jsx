@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import styles from './TabMyView.module.css';
 import { instance } from '../../../../../apis/instance';
-import SectionCard from '../../Sections/SectionCard/SectionCard';
+import SectionCard from '../../SectionCard/SectionCard';
 import DropdownContainer from '../../../../../components/List/DropdownContainer/DropdownContainer';
 import tabMyViewFilter from '../../../../../utils/filters/tabMyViewFilter';
 import { useNavigate } from 'react-router-dom';

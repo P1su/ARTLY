@@ -1,18 +1,38 @@
 import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
 import { instance } from '../../../../../apis/instance';
-import SectionCard from '../../Sections/SectionCard/SectionCard';
+import SectionCard from '../../SectionCard/SectionCard';
+import { useNavigate } from 'react-router-dom';
 
 const TABS = [
   { label: '전시회', key: 'exhibition' },
   { label: '갤러리', key: 'gallery' },
-  { label: '작품', key: 'artwork' }, // artwork는 예시입니다. API가 없으므로 이후 구현 필요
+  { label: '작품', key: 'artwork' },
   { label: '작가', key: 'artist' },
 ];
 
 export default function TabLike() {
   const [likedItems, setLikedItems] = useState([]);
   const [activeTab, setActiveTab] = useState('exhibition');
+
+  const navigate = useNavigate();
+
+  const handleGoDetail = (item) => {
+    switch (item.likeType) {
+      case 'exhibition':
+        navigate(`/exhibitions/${item.id}`);
+        break;
+      case 'gallery':
+        navigate(`/galleries/${item.id}`);
+        break;
+      case 'artist':
+        navigate(`/artists/${item.id}`);
+        break;
+      default:
+        console.warn('알 수 없는 likeType:', item.likeType);
+        break;
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +97,7 @@ export default function TabLike() {
                 key={`${item.likeType}-${item.id}`}
                 item={item}
                 type='like'
+                onGoDetail={() => handleGoDetail(item)}
               />
             ))
           ) : (

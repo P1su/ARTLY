@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { instance } from '../../../../../apis/instance';
-import SectionCard from '../../Sections/SectionCard/SectionCard';
+import SectionCard from '../../SectionCard/SectionCard';
 import styles from './TabPurchased.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +48,6 @@ export default function TabPurchased() {
           ...p,
           ...exhibitionMap[p.exhibition_id],
         }));
-        console.log(purchasesWithExhibition);
 
         setPurchased(purchasesWithExhibition);
       } catch (err) {

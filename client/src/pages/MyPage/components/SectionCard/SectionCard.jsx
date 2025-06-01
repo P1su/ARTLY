@@ -36,7 +36,7 @@ export default function SectionCard({
     }
 
     return (
-      <div className={styles.cardContainer}>
+      <div onClick={onGoDetail} className={styles.cardContainer}>
         <div className={styles.imgContainer}>
           <img
             src={image}
@@ -150,7 +150,7 @@ export default function SectionCard({
       : '';
 
     return (
-      <div className={styles.cardContainer}>
+      <div onClick={onGoDetail} className={styles.cardContainer}>
         <div className={styles.imgContainer}>
           <img src={bookImg} alt={bookTitle} className={styles.image} />
         </div>
