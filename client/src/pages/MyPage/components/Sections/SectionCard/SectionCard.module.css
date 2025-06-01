@@ -1,81 +1,105 @@
 .cardContainer {
   display: flex;
-  align-items: flex-start;
-  padding: 1.2rem;
-  gap: 1rem;
-  box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+.cardContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.image {
+.imgContainer {
+  width: 120px;
+  height: 150px;
   flex-shrink: 0;
+}
+.image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  width: 8rem;
-  height: 8rem;
-  border-radius: 0.2rem;
 }
 
-.info {
+.contents {
+  padding: 15px;
+  flex-grow: 1;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  position: relative;
-  gap: 0.4rem;
-  font-size: 0.9rem;
 }
 
 .title {
-  color: #222;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.4;
-  word-break: keep-all;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
 }
 
-.location {
+.info {
+  font-size: 14px;
   color: #666;
-  font-size: 0.85rem;
+  margin: 0 0 auto 0;
+  line-height: 1.5;
 }
 
-.date {
-  color: #999;
-  font-size: 0.8rem;
+.statusContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3cb371;
+  margin-top: 10px;
+}
+
+.statusValue {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a73e8;
+}
+
+.complete {
+  color: #28a745;
+}
+.cancel {
+  padding: 4px 8px;
+  border: 1px solid #dc3545;
+  background-color: #fff;
+  color: #dc3545;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.action {
+  display: flex;
+  gap: 8px;
 }
 
 .btn {
-  display: inline-block;
-  width: fit-content;
-  margin-top: 0.4rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-.confirmBtn {
-  position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  padding: 0.7rem 1rem;
-  background-color: #6c6c6c;
-  color: white;
-  font-size: 1rem;
-  font-weight: 400;
+  padding: 4px 8px;
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.upcoming {
-  border: 0.1rem solid #b19900;
-  background-color: #fff8e1;
-  color: #b19900;
-}
-
-.ongoing {
-  border: 0.1rem solid #1554b2;
-  background-color: #eef3fc;
-  color: #1554b2;
-}
-
-.closed {
-  border: 0.1rem solid #aaa;
-  background-color: #f0f0f0;
-  color: #444;
+.btn:hover {
+  background-color: #000;
+  color: #fff;
 }

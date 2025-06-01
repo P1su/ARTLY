@@ -1,78 +1,116 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import styles from './TabMyView.module.css';
-import SectionCalendar from '../../Sections/SectionCalendar/SectionCalendar';
-import SectionTitle from '../../SectionTitle/SectionTitle';
 import { instance } from '../../../../../apis/instance';
 import SectionCard from '../../Sections/SectionCard/SectionCard';
+import DropdownContainer from '../../../../../components/List/DropdownContainer/DropdownContainer';
+import tabMyViewFilter from '../../../../../utils/filters/tabMyViewFilter';
+import { useNavigate } from 'react-router-dom';
 
 export default function TabMyView() {
   const [reservations, setReservations] = useState([]);
-  const [viewedExhibitions, setViewedExhibitions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState({
+    dateSort: 'latest',
+    statusFilter: 'all',
+  });
+
+  const navigate = useNavigate();
+
+  const filteredReservations = useMemo(() => {
+    return reservations
+      .filter((reservation) =>
+        filter.statusFilter === 'all'
+          ? true
+          : reservation.exhibition_status === filter.statusFilter,
+      )
+      .sort((a, b) => {
+        const dateA = new Date(a.reservation_datetime);
+        const dateB = new Date(b.reservation_datetime);
+        return filter.dateSort === 'latest' ? dateB - dateA : dateA - dateB;
+      });
+  }, [reservations, filter]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
       try {
-        const allReservationsRes = await instance.get(
-          '/api/users/me/exhibitions',
-        );
-        const allReservations = allReservationsRes.data;
+        const res = await instance.get('/api/users/me/exhibitions');
+        const { data } = res;
 
-        const currentAndUpcoming = allReservations.filter(
-          (item) =>
-            item.exhibition_status === 'scheduled' ||
-            item.exhibition_status === 'exhibited',
-        );
-        const pastExhibitions = allReservations.filter(
-          (item) => item.exhibition_status === 'closed',
+        const currentAndUpcoming = data.filter((item) =>
+          ['scheduled', 'exhibited'].includes(item.exhibition_status),
         );
 
         setReservations(currentAndUpcoming);
-        setViewedExhibitions(pastExhibitions);
       } catch (err) {
-        setError(err);
         console.error('데이터 가져오기 실패:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div>데이터를 불러오는 중입니다...</div>;
-  }
+  const handleStatusChange = async (id, newStatus) => {
+    if (newStatus === '취소') {
+      const confirm = window.confirm('예약을 취소하시겠습니까?');
+      if (!confirm) return;
+    }
 
-  if (error) {
-    return <div>데이터 로드 실패: {error.message}</div>;
-  }
+    try {
+      await instance.put(`/api/users/me/exhibitions/${id}`, {
+        exhibition_status: newStatus,
+      });
+      setReservations((prev) =>
+        prev.map((res) =>
+          res.id === id ? { ...res, exhibition_status: newStatus } : res,
+        ),
+      );
+    } catch (err) {
+      console.error('상태 변경 실패:', err);
+    }
+  };
+
+  const handleGoDetail = (id) => {
+    navigate(`/exhibitions/${id}`);
+  };
+
+  const handleQR = () => {
+    const event = new CustomEvent('openQRScanner', {
+      detail: { scanType: 'exhibition' },
+    });
+    window.dispatchEvent(event);
+  };
 
   return (
     <div>
-      <section>
-        <SectionTitle title='예약한 전시' />
-        <div className={styles.cardList}>
-          {reservations.map((item) => (
-            <SectionCard key={item.id} item={item} />
-          ))}
+      <div className={styles.header}>
+        <p className={styles.countText}>
+          예약한 전시회{' '}
+          <span className={styles.count}>{filteredReservations.length}</span>
+        </p>
+        <div className={styles.filterSection}>
+          <DropdownContainer
+            filterList={tabMyViewFilter}
+            onSetFilter={setFilter}
+          />
         </div>
-      </section>
+      </div>
+
       <section>
-        <SectionTitle title='관람한 전시' />
         <div className={styles.cardList}>
-          {viewedExhibitions.map((item) => (
-            <SectionCard key={item.id} item={item} type='closed' />
-          ))}
+          {filteredReservations.length > 0 ? (
+            filteredReservations.map((item) => (
+              <SectionCard
+                key={item.id}
+                item={item}
+                showActions={item.exhibition_status === '관람신청'}
+                onGoDetail={() => handleGoDetail(item.id)}
+                onCancel={() => handleStatusChange(item.id, '취소')}
+                onQR={handleQR}
+              />
+            ))
+          ) : (
+            <p className={styles.emptyText}>예약한 전시가 없습니다.</p>
+          )}
         </div>
-      </section>
-      <section>
-        <SectionTitle title='전시 캘린더' />
-        <SectionCalendar items={reservations} />
       </section>
     </div>
   );
