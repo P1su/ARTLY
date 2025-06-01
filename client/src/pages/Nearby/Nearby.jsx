@@ -1,12 +1,14 @@
 import styles from './Nearby.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
-import { mapInstance } from '../../apis/instance.js';
+import { instance, mapInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
 
 export default function Nearby() {
   const { coords, setCoords } = useGeoLocation();
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { lat, lng } = coords;
   const [query, setQuery] = useState('');
 
@@ -14,7 +16,7 @@ export default function Nearby() {
     setQuery(e.target.value);
   };
 
-  useMap(lat, lng, 'nearby-map');
+  useMap(lat, lng, 'nearby-map', results, 12);
 
   const getGeocode = async (e) => {
     e.preventDefault();
@@ -38,6 +40,31 @@ export default function Nearby() {
     }
   };
 
+  useEffect(() => {
+    const getNaerbyGalleries = async () => {
+      try {
+        setIsLoading(true);
+
+        const response = await instance.get('/api/galleries', {
+          params: {
+            latitude: lat,
+            longitude: lng,
+            distance: 5000,
+          },
+        });
+
+        setResults(response.data);
+      } catch (error) {
+        console.error(error);
+        alert('주변 갤러리를 불러오는데 실패했습니다');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getNaerbyGalleries();
+  }, [lat, lng]);
+
   return (
     <div className={styles.layout}>
       <h1 className={styles.title}>주변 갤러리 찾기</h1>
@@ -50,7 +77,8 @@ export default function Nearby() {
         />
       </form>
       <div id='nearby-map' className={styles.galleryWrapper} />
-      <NearbyGalleries lat={lat} lng={lng} />
+      {isLoading && <div>갤러리 데이터 조회 중..</div>}
+      <NearbyGalleries results={results} />
     </div>
   );
 }
