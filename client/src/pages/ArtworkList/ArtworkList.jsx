@@ -47,16 +47,8 @@ export default function ArtworkList() {
 
   return (
     <div className={styles.layout}>
-      <ListHeader
-        title='작품'
-        placeholder='작품명 검색'
-        isFav={isFav}
-        onFav={handleFav}
-      />
-      <DropdownContainer
-        filterList={artworkFilter}
-        onSetFilter={setArtworkFilters}
-      />
+      <h1 className={styles.listTitle}>작품</h1>
+
       <TotalCounts num={artworks.length} label='작품' />
       {isLoading && <div>작품 리스트 불러오는 중</div>}
       {pageItems.map((item) => (
