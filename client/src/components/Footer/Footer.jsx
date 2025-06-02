@@ -5,9 +5,9 @@ export default function Footer() {
   return (
     <footer className={styles.footerLayout}>
       <div className={styles.linkContainer}>
-        <Link className={styles.link}>공지사항&FAQ</Link>
+        <Link to="/announcement" className={styles.link}>공지사항&FAQ</Link>
         <span className={styles.divideSpan}>|</span>
-        <Link className={styles.link}>약관 및 정책</Link>
+        <Link to="/termspolicy" className={styles.link}>약관 및 정책</Link>
       </div>
       <div className={styles.infoContainer}>
         <p>Copyright © 2024 Artly Corp. All Rights Reserved.</p>

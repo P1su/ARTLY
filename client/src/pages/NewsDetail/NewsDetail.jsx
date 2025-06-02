@@ -82,5 +82,7 @@ export default function NewsDetail() {
         </Link>
       </div>
     </section>
+
+    
   );
 }

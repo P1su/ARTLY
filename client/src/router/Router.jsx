@@ -20,7 +20,7 @@ import News from '../pages/News/News';
 import NewsDetail from '../pages/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
 import ArtworkList from '../pages/ArtworkList/ArtworkList';
-import Catalog from '../pages/Catalog/Catalog';
+import Catalog from '../pages/Catalog/Catalog'; 
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
@@ -28,7 +28,8 @@ import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
 import Test from '../pages/Test/Test';
 import Find from '../pages/Find/Find';
-
+import Announcement from '../pages/Announcement/Announcement';
+import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -53,7 +54,8 @@ const router = createBrowserRouter([
       { path: '/register', element: <Register /> },
       { path: '/test', element: <Test /> },
       { path: '/find', element: <Find /> },
-
+      { path: '/announcement', element: <Announcement/>},
+      { path: '/termspolicy', element: <TermsPolicy/>},
       {
         element: <AuthRoute />,
         children: [
