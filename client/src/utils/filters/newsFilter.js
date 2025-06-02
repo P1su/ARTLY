@@ -9,6 +9,7 @@ export const newsFilter = [
   {
     key: 'category',
     options: [
+      { label: '전체', value: '' },
       { label: '공모', value: '공모' },
       { label: '프로그램', value: '프로그램' },
       { label: '채용', value: '채용' },

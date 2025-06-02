@@ -1,11 +1,28 @@
 .noticeLayout {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   padding: 2rem;
   margin: 0 auto;
   gap: 2rem;
+
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.categorySpan {
+  color: #666;
+}
+
+.newsTitle {
+  font-size: 2.4rem;
+}
+
+.newsImage {
+  width: 100%;
+  height: auto;
+
+  object-fit: fill;
 }
 
 .contentsContainer {
@@ -19,43 +36,33 @@
 
 .divider {
   width: 100%;
-  
+
   border: none;
   border-top: 0.1rem solid #e5e5e5;
 }
 
-
-.infoWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  max-width: 100%;
-  gap: 2rem;
+.contentParagraph {
+  width: 100%;
+  padding-bottom: 5rem;
+  text-align: left;
 }
 
 .noticeText {
   margin-top: 2rem;
-  
+
   color: #999;
   font-size: 1.2rem;
   text-align: center;
 }
 
 .backButton {
-  display: block;
-
-  margin: 2rem auto 0;
   padding: 1rem 2rem;
-  border: 0.1rem solid black;
-  border-radius: 0.6rem;
-
-  background-color: #E0E0E0;
-  
-  color: #333;
+  margin-top: 2rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.4rem;
+  color: #666;
   font-size: 1.4rem;
-
-  cursor: pointer;
+  font-weight: 500;
 }
 
 

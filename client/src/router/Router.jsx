@@ -48,7 +48,7 @@ const router = createBrowserRouter([
       { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/artwork-detail/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
-      { path: '/catalog', element: <Catalog /> },
+      { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
@@ -56,10 +56,6 @@ const router = createBrowserRouter([
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement/>},
       { path: '/termspolicy', element: <TermsPolicy/>},
-      {
-        path: '/scan',
-        element: <QrScanner />,
-      },
       {
         element: <AuthRoute />,
         children: [
@@ -78,6 +74,14 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/scan',
+    element: <QrScanner />,
+  },
+  {
+    path: '/scan/:id',
+    element: <QrScanner />,
   },
 ]);
 

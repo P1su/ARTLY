@@ -1,3 +1,9 @@
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -18,27 +24,6 @@
   margin-left: 0.5rem;
 }
 
-.registerCatalogBtn {
-  background-color: #b37dec;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 2rem;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.registerCatalogBtn:hover {
-  background-color: #9c69d3;
-}
-
-.cardList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
 .emptyText {
   text-align: center;
   padding: 2rem;
@@ -46,5 +31,4 @@
   background-color: #f9f9f9;
   border-radius: 0.8rem;
   line-height: 1.5;
-  font-size: 1.5rem;
 }

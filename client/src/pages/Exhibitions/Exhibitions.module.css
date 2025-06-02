@@ -34,12 +34,6 @@
   font-weight: 500;
 }
 
-.exhibitionListSection {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
 .exhibitionItemContainer {
   display: flex;
   flex-direction: column;
