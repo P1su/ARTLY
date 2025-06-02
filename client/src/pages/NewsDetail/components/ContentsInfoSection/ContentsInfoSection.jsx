@@ -2,7 +2,6 @@ import styles from './ContentsInfoSection.module.css';
 
 export default function ContentsInfoSection({
   startDate,
-  endDate,
   host,
   contact,
   apply,
@@ -12,20 +11,20 @@ export default function ContentsInfoSection({
   return (
     <div className={styles.info}>
       <p>
-        <strong>기간:</strong> {startDate}
+        <strong className={styles.label}>기간 </strong> {startDate}
       </p>
       <p>
-        <strong>기관:</strong> {host}
+        <strong className={styles.label}>기관 </strong> {host}
       </p>
       <p>
-        <strong>문의:</strong> {contact}
+        <strong className={styles.label}>문의 </strong> {contact}
       </p>
       <p>
-        <strong>지원:</strong> {apply}
+        <strong className={styles.label}>지원 </strong> {apply}
       </p>
       {site && (
         <p>
-          <strong>사이트:</strong>{' '}
+          <strong className={styles.label}>사이트 </strong>{' '}
           <a href={site} target='_blank' rel='noreferrer'>
             {site}
           </a>

@@ -11,53 +11,66 @@ import NewsCard from './components/NewsCard/NewsCard';
 
 export default function News() {
   const [news, setNews] = useState([]);
-  const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, news);
   const [newsFilters, setNewsFilters] = useState({
-    category: '공모',
+    category: '',
     status: 'ongoing',
     sort: 'latest',
+    liked_only: 0,
   });
+  const [query, setQuery] = useState('');
 
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+  };
 
   const handleFav = () => {
-    setIsFav((prev) => !prev);
+    setNewsFilters((prev) => ({
+      ...prev,
+      liked_only: !prev.liked_only,
+    }));
+  };
+
+  const getNews = async () => {
+    try {
+      setIsLoading(true);
+      const updatedFilters = {
+        ...newsFilters,
+        search: query,
+      };
+
+      const response = await instance.get('/api/announcements', {
+        params: updatedFilters,
+      });
+
+      setNews(response.data);
+    } catch (error) {
+      console.error('전시회 목록 불러오기 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    const getNews = async () => {
-      setIsLoading(true);
-      try {
-        const response = await instance.get('/api/announcements', {
-          params: newsFilters, 
-        });
-        setNews(response.data);
-      } catch (error) {
-        console.error('전시회 목록 불러오기 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getNews();
   }, [newsFilters]);
 
   return (
     <div className={styles.layout}>
       <ListHeader
-        title="뉴스"
-        placeholder="뉴스 제목 검색"
-        isFav={isFav}
+        title='뉴스'
+        placeholder='뉴스 제목 검색'
+        isFav={newsFilters.liked_only}
+        onEvent={getNews}
         onFav={handleFav}
-      />   
-
-      <DropdownContainer
-        filterList={newsFilter}
-        onSetFilter={setNewsFilters}
+        onSearch={handleSearch}
+        value={query}
       />
 
-      <TotalCounts num={news.length} label="뉴스" />
+      <DropdownContainer filterList={newsFilter} onSetFilter={setNewsFilters} />
+
+      <TotalCounts num={news.length} label='뉴스' />
 
       {isLoading && <div>뉴스 데이터 조회 중..</div>}
       {news.length === 0 && <div>조회된 데이터가 없습니다.</div>}

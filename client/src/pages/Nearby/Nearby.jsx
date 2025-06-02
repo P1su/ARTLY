@@ -16,7 +16,7 @@ export default function Nearby() {
     setQuery(e.target.value);
   };
 
-  useMap(lat, lng, 'nearby-map', results, 12);
+  useMap({ lat, lng, id: 'nearby-map', results, zoomLevel: 12 });
 
   const getGeocode = async (e) => {
     e.preventDefault();

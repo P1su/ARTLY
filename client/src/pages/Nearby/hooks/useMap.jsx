@@ -1,10 +1,48 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const useMap = (lat, lng, id, results, zoomLevel = 15) => {
+const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
   const mapRef = useRef(null);
   const navigate = useNavigate();
   const markersRef = useRef([]);
+  const markerStyle = (title, location) => `
+                <div style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  width: 15rem;
+                  height: 10rem;
+                ">
+                  <div style="
+                    width: 2rem;
+                    aspect-ratio: 1 / 1;
+                    background-color: rgb(229, 115, 115);
+                    border-radius: 50%;
+                    border: 0.3rem solid white;
+                    box-shadow: rgba(0, 0, 0, 0.3) 0 0.2rem 0.5rem;
+                    margin-bottom: 0.5rem;
+                  " >
+                  </div>
+                  <div style="
+                    width: 100%;
+                    padding: 0.8rem 1.2rem;
+                    border-radius: 0.4rem;
+                    background-color: #fff;
+                    color: #333;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                    text-align: center;
+                  ">
+                    ${title}
+                    <div style="
+                      padding-top: 1rem;
+                      color: #666;
+                      font-size: 1.2rem;
+                      text-align: center;
+                  ">${location}</div>
+                  </div>
+                </div>
+              `;
 
   useEffect(() => {
     // 네이버 기능이 실행 가능하거나 위도, 경도가 있을 경우에만 동작작
@@ -27,20 +65,35 @@ const useMap = (lat, lng, id, results, zoomLevel = 15) => {
     }
 
     // 현재 유저의 위치 마커
-    const userMarker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(lat, lng),
-      map: mapRef.current,
-      title: '현재 위치',
-    });
-    markersRef.current.push(userMarker);
+    if (title && location) {
+      // title 존재할 경우 갤러리 혹은 전시회 마커
+      const currentMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lng),
+        map: mapRef.current,
+        title: title,
+        icon: {
+          content: markerStyle(title, location),
+        },
+      });
+      markersRef.current.push(currentMarker);
+    } else {
+      // title 이 없을 경우 유저 위치 마커
+      const currentMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(lat, lng),
+        map: mapRef.current,
+        title: '현재 위치',
+      });
+      markersRef.current.push(currentMarker);
+    }
 
-    if (results) {
+    if (results && results.length > 0) {
       // 검색 결과 배열이 존재할 경우 각 요소에 대한 마커 생성
       const markers = results.map(
         ({
           gallery_name: name,
           gallery_latitude: lat,
           gallery_longitude: lng,
+          gallery_address: address,
           id,
         }) => {
           const position = new naver.maps.LatLng(lat, lng);
@@ -49,19 +102,7 @@ const useMap = (lat, lng, id, results, zoomLevel = 15) => {
             map: mapRef.current,
             title: name,
             icon: {
-              content: `
-                <div style="
-                  background: #fff;
-                  padding: 0.6rem 1rem;
-                  border-radius: 0.8rem;
-                  border: 0.1rem solid #555;
-                  font-size: 1.2rem;
-                  color: #222;
-                  white-space: nowrap;
-                ">
-                  🎨 ${name}
-                </div>
-              `,
+              content: markerStyle(name, address),
             },
           });
 
