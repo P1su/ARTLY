@@ -47,6 +47,7 @@ export default function MainCarousel() {
             exhibition_status: status,
             exhibition_start_date: startDate,
             exhibition_end_date: endDate,
+            exhibition_organization: organization,
           }) => ({
             id,
             image,
@@ -55,6 +56,7 @@ export default function MainCarousel() {
             status,
             startDate,
             endDate,
+            organization,
           }),
         );
 
@@ -91,7 +93,7 @@ export default function MainCarousel() {
               <div className={styles.captionBox}>
                 <h3 className={styles.title}>{item?.title}</h3>
                 <p className={styles.location}>
-                  {item?.organizationName}에서{' '}
+                  {item?.organization.name}에서{' '}
                   {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
                 </p>
                 <button

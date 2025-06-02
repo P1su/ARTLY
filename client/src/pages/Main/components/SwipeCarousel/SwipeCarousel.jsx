@@ -47,6 +47,7 @@ export default function SwipeCarousel({ title, category, value }) {
             exhibition_status: status,
             exhibition_start_date: startDate,
             exhibition_end_date: endDate,
+            exhibition_organization: organization,
           }) => ({
             id,
             image,
@@ -55,6 +56,7 @@ export default function SwipeCarousel({ title, category, value }) {
             status,
             startDate,
             endDate,
+            organization,
           }),
         );
 
@@ -76,21 +78,21 @@ export default function SwipeCarousel({ title, category, value }) {
         </Link>
       </div>
 
-      <Swiper
-        modules={[Navigation]}
-        onSwiper={(swiper) => (swiperRef.current = swiper)}
-        slidesPerView='auto'
-        centeredSlides
-        loop={items.length > 2}
-        spaceBetween={20}
-        navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
-        }}
-        className={styles.carouselViewport}
-      >
-        {items ? (
-          items.map((item) => (
+      {items.length > 0 ? (
+        <Swiper
+          modules={[Navigation]}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          slidesPerView='auto'
+          centeredSlides
+          loop={items.length > 2}
+          spaceBetween={20}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          className={styles.carouselViewport}
+        >
+          {items.map((item) => (
             <SwiperSlide key={item.id} className={styles.carouselSlide}>
               <Link to={`/exhibitions/${item.id}`} className={styles.slideCard}>
                 <img
@@ -100,18 +102,18 @@ export default function SwipeCarousel({ title, category, value }) {
                 />
                 <div className={styles.cardText}>
                   <h3>《{item.title}》</h3>
-                  <p>{/*item.organizationName*/}</p>
+                  <p>{item.organization.name}</p>
                   <p>
                     {item.startDate} ~ {item.endDate}
                   </p>
                 </div>
               </Link>
             </SwiperSlide>
-          ))
-        ) : (
-          <div>진행 중인 전시가 없습니다</div>
-        )}
-      </Swiper>
+          ))}
+        </Swiper>
+      ) : (
+        <div className={styles.emptyBox}>해당하는 전시가 없습니다.</div>
+      )}
 
       <button ref={prevRef} className={styles.prevButton}>
         &#8249;

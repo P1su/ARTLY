@@ -112,6 +112,11 @@
   cursor: pointer;
 }
 
+.emptyBox {
+  font-size: 1.6rem;
+  text-align: center;
+}
+
 .prevButton {
   left: 1rem;
 }

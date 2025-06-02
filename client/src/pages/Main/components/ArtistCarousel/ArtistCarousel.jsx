@@ -27,15 +27,17 @@ export default function ArtistCarousel({ title }) {
       try {
         const response = await instance.get('/api/artist', {
           params: {
-            category: 'onExhibition',
+            //category: 'onExhibition',
           },
         });
-        const parsed = response.data.map(({ id, name, field, imageUrl }) => ({
-          id,
-          name,
-          field,
-          imageUrl,
-        }));
+        const parsed = response.data
+          .map(({ id, name, field, imageUrl }) => ({
+            id,
+            name,
+            field,
+            imageUrl,
+          }))
+          .slice(0, 10);
         setArtists(parsed);
       } catch (error) {
         console.error('작가 데이터를 불러오는 중 오류 발생:', error);
