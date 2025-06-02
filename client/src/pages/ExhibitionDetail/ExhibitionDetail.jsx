@@ -121,7 +121,6 @@ export default function ExhibitionDetail() {
     },
   ];
 
-  
   return (
     <div className={styles.layout}>
       <h1 className={styles.title}>{title}</h1>
@@ -137,17 +136,6 @@ export default function ExhibitionDetail() {
           <button className={styles.buttonBox} key={label} onClick={action}>
             {icon}
             {label}
-          </button>
-        ))}
-      </div>
-
-      <hr className={styles.divider} />
-
-      <div className={styles.buttonContainer}>
-        {buttons.map(({ label, icon, action }) => (
-          <button className={styles.subButton} key={label} onClick={action}>
-            {icon}
-            <span>{label}</span>
           </button>
         ))}
       </div>
