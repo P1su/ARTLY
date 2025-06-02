@@ -63,7 +63,9 @@ export default function ArtworkDetail() {
       icon: (
         <FaHeart className={`${styles.icon} ${isLike && styles.icHeart}`} />
       ),
-      action: handleLike,
+      action: () => {
+        alert('구현 중에 있습니다.');
+      },
     },
     {
       label: '공유하기',
