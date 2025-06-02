@@ -1,0 +1,129 @@
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+.tabWrapper {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  flex: 1;
+  padding: 1rem 0;
+  text-align: center;
+  font-weight: 500;
+  color: #aaa;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: #555;
+}
+
+.active {
+  color: #000;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+}
+
+.loading {
+  text-align: center;
+  color: #888;
+  padding: 2rem 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  border: 1px solid #eee;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.cardHeader {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  flex: 1;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.arrow {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.cardBody {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  line-height: 1.5;
+  font-size: 1.2rem;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.cardBody p {
+  margin: 0.3rem 0;
+}
+
+.cardBody strong {
+  display: inline-block;
+}
+
+.poster {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 1rem;
+  border-radius: 6px;
+}
