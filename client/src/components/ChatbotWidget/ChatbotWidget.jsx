@@ -54,7 +54,12 @@ export default function ChatbotWidget() {
   }, []);*/
 
   const handleToggleChat = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+    if (isOpen) {
+      document.body.style.overflow = 'unset';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
   };
 
   const handleInputChange = (e) => {
