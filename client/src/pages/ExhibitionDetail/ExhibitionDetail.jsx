@@ -36,7 +36,7 @@ export default function ExhibitionDetail() {
 
   useEffect(() => {
     getExhibitionDetail();
-  }, []);
+  }, [exhibitionId]);
 
   const handleLike = async () => {
     try {
@@ -163,7 +163,7 @@ export default function ExhibitionDetail() {
         {relatedExhibitions?.length > 0 ? (
           relatedExhibitions.map((exhibition) => (
             <Link
-              to={`/exhibition/${exhibition.id}`}
+              to={`/exhibitions/${exhibition.id}`}
               key={exhibition.id}
               className={styles.relatedExhibitionCard}
             >
