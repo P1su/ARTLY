@@ -20,7 +20,7 @@ import News from '../pages/News/News';
 import NewsDetail from '../pages/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
 import ArtworkList from '../pages/ArtworkList/ArtworkList';
-import Catalog from '../pages/Catalog/Catalog'; 
+import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       { path: '/galleries/:galleryId', element: <GalleryDetail /> },
       { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
-      { path: '/artwork-detail/:artworkId', element: <ArtworkDetail /> },
+      { path: '/artworks/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
       { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
@@ -54,8 +54,8 @@ const router = createBrowserRouter([
       { path: '/register', element: <Register /> },
       { path: '/test', element: <Test /> },
       { path: '/find', element: <Find /> },
-      { path: '/announcement', element: <Announcement/>},
-      { path: '/termspolicy', element: <TermsPolicy/>},
+      { path: '/announcement', element: <Announcement /> },
+      { path: '/termspolicy', element: <TermsPolicy /> },
       {
         element: <AuthRoute />,
         children: [
