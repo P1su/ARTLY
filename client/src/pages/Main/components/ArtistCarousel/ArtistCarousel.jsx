@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ArtistCarousel.module.css';
+import { instance } from '../../../../apis/instance.js';
 
-export default function ArtistCarousel({ title, items }) {
+export default function ArtistCarousel({ title }) {
+  const [artists, setArtists] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [slidesToShow, setSlidesToShow] = useState(1);
   const [isSliding, setIsSliding] = useState(false);
@@ -10,13 +12,37 @@ export default function ArtistCarousel({ title, items }) {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const clonedItems = [items[items.length - 1], ...items, ...items.slice(0, slidesToShow)];
+  const clonedItems = [
+    artists[artists.length - 1],
+    ...artists,
+    ...artists.slice(0, slidesToShow),
+  ];
 
   const updateSlidesToShow = () => {
     setSlidesToShow(4);
   };
 
   useEffect(() => {
+    const getArtistList = async () => {
+      try {
+        const response = await instance.get('/api/artist', {
+          params: {
+            category: 'onExhibition',
+          },
+        });
+        const parsed = response.data.map(({ id, name, field, imageUrl }) => ({
+          id,
+          name,
+          field,
+          imageUrl,
+        }));
+        setArtists(parsed);
+      } catch (error) {
+        console.error('작가 데이터를 불러오는 중 오류 발생:', error);
+      }
+    };
+
+    getArtistList();
     updateSlidesToShow();
   }, []);
 
@@ -75,15 +101,13 @@ export default function ArtistCarousel({ title, items }) {
     }
   };
 
-  const handleClick = (id) => {
-    navigate(`/astists/${id}`);
-  };  
-  
   return (
     <div className={styles.carouselWrapper}>
       <div className={styles.titleContainer}>
         <h2 className={styles.carouselTitle}>{title}</h2>
-        <Link to="/artists" className={styles.moreButton}>더보기</Link>
+        <Link to='/artists' className={styles.moreButton}>
+          더보기
+        </Link>
       </div>
       <div
         className={styles.carouselViewport}
@@ -92,10 +116,10 @@ export default function ArtistCarousel({ title, items }) {
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
-          {clonedItems.map((item, i) => (
+          {clonedItems.map((item) => (
             <Link
               to={`/artists/${item?.id}`}
-              key={`artist-${item?.id}-${i}`} 
+              key={`artist-${item?.id}`}
               className={styles.carouselSlide}
             >
               <img
@@ -105,10 +129,14 @@ export default function ArtistCarousel({ title, items }) {
               />
               <div className={styles.artistText}>
                 <h3 className={styles.name}>
-                  {item?.name && item.name.trim() !== '' ? item.name : '이름 없음'}
+                  {item?.name && item.name.trim() !== ''
+                    ? item.name
+                    : '이름 없음'}
                 </h3>
                 <p className={styles.field}>
-                  {item?.field && item.field.trim() !== '' ? item.field : '장르 없음'}
+                  {item?.field && item.field.trim() !== ''
+                    ? item.field
+                    : '장르 없음'}
                 </p>
               </div>
             </Link>
@@ -116,10 +144,16 @@ export default function ArtistCarousel({ title, items }) {
         </div>
       </div>
 
-      <button className={styles.prevButton} onClick={() => !isSliding && prevSlide()}>
+      <button
+        className={styles.prevButton}
+        onClick={() => !isSliding && prevSlide()}
+      >
         &#8249;
       </button>
-      <button className={styles.nextButton} onClick={() => !isSliding && nextSlide()}>
+      <button
+        className={styles.nextButton}
+        onClick={() => !isSliding && nextSlide()}
+      >
         &#8250;
       </button>
     </div>

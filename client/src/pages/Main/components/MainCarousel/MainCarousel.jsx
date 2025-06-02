@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
 import styles from './MainCarousel.module.css';
+import { useEffect, useRef, useState } from 'react';
+import { instance } from '../../../../apis/instance.js';
 
-export default function MainCarousel({ items }) {
+export default function MainCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [items, setItems] = useState([]);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -28,9 +30,49 @@ export default function MainCarousel({ items }) {
 
   const goToSlide = (index) => setCurrentIndex(index);
 
+  useEffect(() => {
+    const getExhibitionList = async () => {
+      try {
+        const response = await instance.get('/api/exhibitions', {
+          params: {
+            status: 'exhibited',
+          },
+        });
+        const parsed = response.data.map(
+          ({
+            id,
+            exhibition_poster: image,
+            exhibition_title: title,
+            exhibition_category: category,
+            exhibition_status: status,
+            exhibition_start_date: startDate,
+            exhibition_end_date: endDate,
+          }) => ({
+            id,
+            image,
+            title,
+            category,
+            status,
+            startDate,
+            endDate,
+          }),
+        );
+
+        setItems(parsed);
+      } catch (error) {
+        console.error('전시회 데이터를 불러오는 중 오류 발생:', error);
+      }
+    };
+
+    getExhibitionList();
+  }, []);
+
   return (
     <div className={styles.carouselContainer}>
-      <button className={`${styles.arrowButton} ${styles.left}`} onClick={prevSlide}>
+      <button
+        className={`${styles.arrowButton} ${styles.left}`}
+        onClick={prevSlide}
+      >
         &#8249;
       </button>
 
@@ -49,7 +91,8 @@ export default function MainCarousel({ items }) {
               <div className={styles.captionBox}>
                 <h3 className={styles.title}>{item?.title}</h3>
                 <p className={styles.location}>
-                  {item?.organizationName}에서 {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
+                  {item?.organizationName}에서{' '}
+                  {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
                 </p>
                 <button
                   className={styles.detailButton}
@@ -65,7 +108,10 @@ export default function MainCarousel({ items }) {
         </div>
       </div>
 
-      <button className={`${styles.arrowButton} ${styles.right}`} onClick={nextSlide}>
+      <button
+        className={`${styles.arrowButton} ${styles.right}`}
+        onClick={nextSlide}
+      >
         &#8250;
       </button>
 

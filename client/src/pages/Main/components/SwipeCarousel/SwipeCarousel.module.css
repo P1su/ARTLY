@@ -41,9 +41,14 @@
 
 /* 공통 슬라이드 */
 .carouselSlide {
-  width: 50% !important;  
+  width: 50% !important;
   display: flex;
   justify-content: center;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  opacity: 0.3;
+  transform: scale(0.85);
 }
 
 /* 실제 카드 콘텐츠 */
@@ -79,13 +84,14 @@
   margin: 0.2rem 0;
 }
 
-
+/* ✅ 중앙 슬라이드 강조 (실제 크기와 스타일 차이) */
 :global(.swiper-slide-active) {
   transform: scale(1);
   opacity: 1;
 }
 
 :global(.swiper-slide-active) .slideCard {
+  transform: scale(1.1);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -106,5 +112,9 @@
   cursor: pointer;
 }
 
-.prevButton { left: 1rem; }
-.nextButton { right: 1rem; }
+.prevButton {
+  left: 1rem;
+}
+.nextButton {
+  right: 1rem;
+}
