@@ -59,7 +59,7 @@ export default function ArtworkDetail() {
 
   const buttons = [
     {
-      label: '관심 작가',
+      label: '관심 작품',
       icon: (
         <FaHeart className={`${styles.icon} ${isLike && styles.icHeart}`} />
       ),
