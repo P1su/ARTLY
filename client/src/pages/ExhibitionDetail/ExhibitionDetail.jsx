@@ -39,6 +39,7 @@ export default function ExhibitionDetail() {
   }, [exhibitionId]);
 
   const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     try {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {
@@ -57,7 +58,6 @@ export default function ExhibitionDetail() {
       await getExhibitionDetail();
     } catch (error) {
       console.error(error);
-      alert('좋아요 처리 실패');
     }
   };
 

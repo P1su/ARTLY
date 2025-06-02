@@ -32,7 +32,6 @@ export default function ArtworkDetail() {
         });
       } catch (error) {
         console.error(error);
-        alert('좋아요 실패');
       }
     };
 

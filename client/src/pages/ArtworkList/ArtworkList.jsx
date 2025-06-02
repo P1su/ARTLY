@@ -1,5 +1,6 @@
 import styles from './ArtworkList.module.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import { artworkFilter } from '../../utils/filters/artworkFilter.js';
 import ArtworkCard from './components/ArtworkCard/ArtworkCard';
@@ -17,6 +18,7 @@ export default function ArtworkList() {
     10,
     artworks,
   );
+  const navigate = useNavigate();
   const [artworkFilters, setArtworkFilters] = useState({
     type: '',
   });
@@ -39,6 +41,7 @@ export default function ArtworkList() {
   }, [artworkFilters]);
 
   const handleFav = () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     setIsFav((prev) => !prev);
   };
 
