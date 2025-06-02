@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import styles from './QrScanner.module.css';
 
@@ -8,6 +8,15 @@ export default function QrScanner() {
   const qrCodeRegionId = 'html5qr-code-full-region';
   const html5QrcodeScannerRef = useRef(null);
   const [error, setError] = useState(null);
+
+  const location = useLocation();
+  const [showTestMessage, setShowTestMessage] = useState(false);
+
+  const handleTestBtnClick = () => {
+    localStorage.setItem('showAttendanceModal', 'true');
+
+    navigate('/mypage');
+  };
 
   useEffect(() => {
     const config = {
@@ -53,6 +62,14 @@ export default function QrScanner() {
     };
   }, [navigate]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const itemId = params.get('itemId');
+    if (itemId) {
+      setShowTestMessage(true);
+    }
+  }, [location]);
+
   return (
     <div className={styles.scannerContainer}>
       <div className={styles.header}>
@@ -97,6 +114,11 @@ export default function QrScanner() {
 
       <div className={styles.instructionBox}>
         <p>QR 코드를 화면에 인식해주세요.</p>
+        {showTestMessage && (
+          <button onClick={handleTestBtnClick} className={styles.test}>
+            전시회 관람인증 QR 테스트
+          </button>
+        )}
       </div>
     </div>
   );

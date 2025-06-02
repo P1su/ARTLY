@@ -113,7 +113,7 @@ export default function SectionCard({
 
               {exhibitionStatus === 'scheduled' && (
                 <>
-                  <button className={styles.btn} onClick={onQR}>
+                  <button className={styles.btn} onClick={() => onQR(item.id)}>
                     관람확인
                   </button>
                   <button className={styles.cancel} onClick={onCancel}>

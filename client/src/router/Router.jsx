@@ -77,6 +77,10 @@ const router = createBrowserRouter([
     path: '/scan',
     element: <QrScanner />,
   },
+  {
+    path: '/scan/:id',
+    element: <QrScanner />,
+  },
 ]);
 
 export default router;
