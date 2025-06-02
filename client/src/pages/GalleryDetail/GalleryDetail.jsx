@@ -91,7 +91,7 @@ export default function GalleryDetail() {
     },
   ];
 
-  useMap(lat, lng, `gallery-${id}-map`);
+  useMap({ lat, lng, id: `gallery-${id}-map`, title: name, location: address });
 
   return (
     <div className={styles.layout}>

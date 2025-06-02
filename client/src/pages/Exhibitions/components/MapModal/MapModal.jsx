@@ -43,7 +43,13 @@ export default function MapModal({ item, onClose }) {
     },
   ];
 
-  useMap(organization.latitude, organization.longitude, `exhibition-${id}-map`);
+  useMap({
+    lat: organization.latitude,
+    lng: organization.longitude,
+    id: `exhibition-${id}-map`,
+    title,
+    location,
+  });
 
   return (
     <div className={styles.layout}>
