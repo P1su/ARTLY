@@ -1,7 +1,9 @@
 import styles from './ExhibitionCard.module.css';
 import { Link } from 'react-router-dom';
-import { FaHeart } from 'react-icons/fa6';
+import { useState } from 'react';
+import { FaHeart, FaLocationDot } from 'react-icons/fa6';
 import { userInstance } from '../../../../apis/instance.js';
+import MapModal from '../MapModal/MapModal';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   const {
@@ -14,6 +16,11 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     exhibition_end_date: endDate,
     is_liked: isLike,
   } = exhibitionItem;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   const handleLike = async () => {
     try {
@@ -39,36 +46,50 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   };
 
   return (
-    <Link className={styles.layout} to={`/exhibitions/${id}`}>
-      <div className={styles.imageBox}>
-        <img
-          className={styles.exhibitionImage}
-          src={poster || '/placeholder.jpg'}
-          alt='전시 대표 이미지'
-        />
-        <button
-          className={styles.favButton}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleLike();
-          }}
-        >
-          <FaHeart
-            className={`${styles.icHeart} ${isLike === true && styles.isClicked} `}
+    <>
+      {isOpen && <MapModal item={exhibitionItem} onClose={handleOpen} />}
+      <Link className={styles.layout} to={`/exhibitions/${id}`}>
+        <div className={styles.imageBox}>
+          <img
+            className={styles.exhibitionImage}
+            src={poster || '/placeholder.jpg'}
+            alt='전시 대표 이미지'
           />
-        </button>
-        <button>지도</button>
-      </div>
-      <div className={styles.infoContainer}>
-        <h3 className={styles.exhibitionTitle}>{title}</h3>
-        <p className={styles.subParagraph}>
-          {category} | {location || '장소 미정'}
-        </p>
-        <p className={styles.subParagraph}>
-          {startDate} ~ {endDate}
-        </p>
-      </div>
-    </Link>
+          <div className={styles.buttonField}>
+            <button
+              className={styles.iconButton}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleLike();
+              }}
+            >
+              <FaHeart
+                className={`${styles.icHeart} ${isLike === true && styles.isClicked} `}
+              />
+            </button>
+            <button
+              className={styles.iconButton}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleOpen();
+              }}
+            >
+              <FaLocationDot className={styles.icLoc} />
+            </button>
+          </div>
+        </div>
+        <div className={styles.infoContainer}>
+          <h3 className={styles.exhibitionTitle}>{title}</h3>
+          <p className={styles.subParagraph}>
+            {category} | {location || '장소 미정'}
+          </p>
+          <p className={styles.subParagraph}>
+            {startDate} ~ {endDate}
+          </p>
+        </div>
+      </Link>
+    </>
   );
 }
