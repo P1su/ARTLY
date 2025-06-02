@@ -1,202 +1,168 @@
-.layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-
-  height: 100vh;
-
-  background: black;
-}
-
-.closeBtn {
-  display: inline-block;
-
-  position: absolute;
-  top: 1.6rem;
-  left: 1.6rem;
-  z-index: 10;
-
-  font-size: 2.8rem;
-  color: white;
-
-  background: transparent;
-  border: none;
-
-  cursor: pointer;
-}
-
-.scanLayout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  position: relative;
-
+.scannerContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 40rem;
-  padding: 0 1.6rem 3.2rem;
-  box-sizing: border-box;
-
-  background: transparent;
+  height: 100%;
+  background-color: #000;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  display: inline-block;
-
-  margin-top: 4rem;
-  margin-bottom: 1.2rem;
-  padding: 0.8rem 2.4rem;
-  border-radius: 2rem;
-
-  background-color: #7ed957;
-
-  color: #2a2a2a;
-  font-weight: 700;
-  font-size: 1.8rem;
-
-  user-select: none;
-}
-
-.qrRegion {
-  display: block;
-
   position: relative;
-
-  width: 100%;
-  max-width: 40rem;
-  aspect-ratio: 1 / 1;
-  border-radius: 1.2rem;
-
-  overflow: hidden;
-
-  background: black;
+  padding: 1.5rem;
+  text-align: center;
 }
 
-.frame {
-  display: block;
+.closeButton {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.4rem;
+  cursor: pointer;
+}
 
+.title {
+  color: white;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: #3cb371;
+  border-radius: 3rem;
+  display: inline-block;
+  font-size: 1.8rem;
+}
+
+.scannerArea {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.qrScannerWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.qrScannerWrapper video {
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.qrScannerWrapper section {
+  height: 100% !important;
+}
+
+.qrScannerWrapper button,
+.qrScannerWrapper select,
+.qrScannerWrapper img[alt='Info icon'],
+.qrScannerWrapper div:has(> select) {
+  display: none !important;
+}
+
+.scannerOverlay {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  border-radius: 1.2rem;
 }
 
-.cornerTopLeft,
-.cornerTopRight,
-.cornerBottomLeft,
-.cornerBottomRight {
+.corner {
   position: absolute;
-
-  width: 4rem;
-  height: 4rem;
-  border: 0.4rem solid #7ed957;
-  box-sizing: border-box;
+  width: 2rem;
+  height: 2rem;
+  border: 0.2rem solid white;
 }
 
-.cornerTopLeft {
-  top: 1.6rem;
-  left: 1.6rem;
-  border-right: none;
-  border-bottom: none;
-  border-top-left-radius: 0.8rem;
-}
-
-.cornerTopRight {
-  top: 1.6rem;
-  right: 1.6rem;
-  border-left: none;
-  border-bottom: none;
-  border-top-right-radius: 0.8rem;
-}
-
-.cornerBottomLeft {
-  bottom: 0rem;
-  left: 1.6rem;
-  border-right: none;
-  border-top: none;
-  border-bottom-left-radius: 0.8rem;
-}
-
-.cornerBottomRight {
-  bottom: 0rem;
-  right: 1.6rem;
-  border-left: none;
-  border-top: none;
-  border-bottom-right-radius: 0.8rem;
-}
-
-.cross {
-  display: inline-block;
-
-  position: absolute;
+.topLeft {
   top: 40%;
+  left: 40%;
+  transform: translate(-12rem, -12rem);
+  border-right: none;
+  border-bottom: none;
+}
+
+.topRight {
+  top: 40%;
+  left: 60%;
+  transform: translate(10rem, -12rem);
+  border-left: none;
+  border-bottom: none;
+}
+
+.bottomLeft {
+  top: 60%;
+  left: 40%;
+  transform: translate(-12rem, 10rem);
+  border-right: none;
+  border-top: none;
+}
+
+.bottomRight {
+  top: 60%;
+  left: 60%;
+  transform: translate(10rem, 10rem);
+  border-left: none;
+  border-top: none;
+}
+.instructionBox {
+  background-color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.instructionBox p {
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 1.5;
+}
+
+.qrIconButton {
+  position: absolute;
+  bottom: 8.5rem;
+  right: 2rem;
+  background-color: white;
+  border: none;
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.qrIconButton svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.errorMessage {
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  pointer-events: none;
-
-  color: #7ed957;
-  font-size: 2.4rem;
-  font-weight: 700;
-
-  user-select: none;
-}
-
-.guideText {
-  display: block;
-
-  margin-top: 1.6rem;
-  padding: 0.8rem 1.6rem;
+  max-width: 80%;
   border-radius: 0.8rem;
-
-  color: #ffffff;
-  font-size: 1.6rem;
-  text-align: center;
-
-  user-select: none;
 }
 
-.errorText {
-  color: #ff4d4f;
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.confirmButton {
-  display: block;
-
-  margin-top: 1.8rem;
-  width: 80%;
-  max-width: 36rem;
-  padding: 1.4rem 0;
-  border-radius: 3rem;
-  border: none;
-
-  background-color: #ccc;
-
-  color: #666;
-  font-size: 1.8rem;
-  font-weight: 700;
-
-  cursor: not-allowed;
-
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-
-  user-select: none;
-}
-
-.confirmButton.active {
-  background-color: #7ed957;
-
-  color: #2a2a2a;
-
-  cursor: pointer;
+.test {
+  background-color: #3cb371;
+  color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
 }

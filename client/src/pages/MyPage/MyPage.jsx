@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Mypage.module.css';
 import ProfileCard from './components/ProfileCard/ProfileCard';
 import TabLike from './components/TabContent/TabLike/TabLike';
@@ -8,6 +8,13 @@ import TabMyView from './components/TabContent/TabMyView/TabMyView';
 export default function MyPage() {
   const [selectedTab, setSelectedTab] = useState('좋아요');
   const tabs = ['좋아요', 'My관람', 'MY도록'];
+
+  useEffect(() => {
+    const attendanceModalFlag = localStorage.getItem('showAttendanceModal');
+    if (attendanceModalFlag === 'true') {
+      setSelectedTab('My관람');
+    }
+  }, []);
 
   const renderTabContent = () => {
     switch (selectedTab) {

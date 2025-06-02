@@ -55,10 +55,6 @@ const router = createBrowserRouter([
       { path: '/find', element: <Find /> },
 
       {
-        path: '/scan',
-        element: <QrScanner />,
-      },
-      {
         element: <AuthRoute />,
         children: [
           { path: '/mypage', element: <Mypage /> },
@@ -76,6 +72,14 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/scan',
+    element: <QrScanner />,
+  },
+  {
+    path: '/scan/:id',
+    element: <QrScanner />,
   },
 ]);
 
