@@ -1,10 +1,11 @@
 import styles from './SearchBar.module.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function SearchBar() {
+export default function SearchBar({ onClose }) {
   const navigate = useNavigate();
 
   const handleSearch = (formData) => {
+    onClose();
     const query = formData.get('query');
     navigate(`/search?query=${query}`);
   };

@@ -30,7 +30,13 @@ export default function Header() {
       <span className={styles.logoSpan} onClick={handleHome}>
         Artly
       </span>
-      {isSearch && <SearchBar />}
+      {isSearch && (
+        <SearchBar
+          onClose={() => {
+            setIsSearch((prev) => !prev);
+          }}
+        />
+      )}
       <div className={styles.rightSection}>
         <FaSearch
           className={styles.icon}
