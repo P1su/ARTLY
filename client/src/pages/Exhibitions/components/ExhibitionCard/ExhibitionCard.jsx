@@ -20,6 +20,12 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleClose = () => {
+    setIsOpen((prev) => !prev);
+    document.body.style.overflow = 'unset';
   };
 
   const handleLike = async () => {
@@ -47,7 +53,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
 
   return (
     <>
-      {isOpen && <MapModal item={exhibitionItem} onClose={handleOpen} />}
+      {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
         <div className={styles.imageBox}>
           <img
