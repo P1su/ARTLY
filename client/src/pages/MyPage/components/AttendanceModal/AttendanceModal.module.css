@@ -1,0 +1,121 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+.modalContainer {
+  background-color: #fff;
+  width: 90%;
+  max-width: 36rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0 3rem;
+  position: relative;
+}
+
+.modalHeader {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.2rem 0;
+  border-bottom: 0.1rem solid #eee;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  left: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.imageContainer {
+  width: 32rem;
+  height: 18rem;
+  margin: 2rem auto 3rem;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.checkIconContainer {
+  width: 6.4rem;
+  height: 6.4rem;
+  border: 0.25rem solid #3cb371;
+  border-radius: 50%;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkIconContainer svg {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #3cb371;
+}
+
+.confirmText {
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  color: #222;
+}
+
+.visitDate {
+  font-size: 1.3rem;
+  text-align: center;
+  color: #999;
+  margin-bottom: 2rem;
+}
+
+.infoButton {
+  display: block;
+  width: 14rem;
+  margin: 0 auto 2rem;
+  padding: 0.8rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  background-color: #f5f5f5;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.infoButton:hover {
+  background-color: #e0e0e0;
+}
+
+.footerText {
+  font-size: 1.2rem;
+  color: #bbb;
+  text-align: center;
+  user-select: none;
+}

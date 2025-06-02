@@ -1,0 +1,37 @@
+.layout {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.profileCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.mainTab {
+  display: flex;
+  border-bottom: 0.1rem solid #eee;
+  margin-bottom: 2rem;
+}
+
+.tabButton {
+  padding: 1.5rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 0.2rem solid transparent;
+  color: #666;
+  font-weight: 400;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tabButton:hover,
+.tabButton.active {
+  border-bottom: 0.2rem solid #000;
+  color: #000;
+  font-weight: 600;
+}

@@ -47,17 +47,13 @@ const router = createBrowserRouter([
       { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/artwork-detail/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
-      { path: '/catalog', element: <Catalog /> },
+      { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       { path: '/test', element: <Test /> },
       { path: '/find', element: <Find /> },
 
-      {
-        path: '/scan',
-        element: <QrScanner />,
-      },
       {
         element: <AuthRoute />,
         children: [
@@ -76,6 +72,14 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/scan',
+    element: <QrScanner />,
+  },
+  {
+    path: '/scan/:id',
+    element: <QrScanner />,
   },
 ]);
 
