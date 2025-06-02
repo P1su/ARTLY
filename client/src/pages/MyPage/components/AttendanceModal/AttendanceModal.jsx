@@ -35,12 +35,7 @@ const AttendanceModal = ({
           전시회 정보 보기
         </button>
 
-        <div
-          onClick={() => localStorage.removeItem('showAttendanceModal')}
-          className={styles.footerText}
-        >
-          관람 확인 처리 (클릭하여 확인 처리)
-        </div>
+        <div className={styles.footerText}>관람 확인 처리</div>
       </div>
     </div>
   );

@@ -8,9 +8,10 @@ export default function QrScanner() {
   const qrCodeRegionId = 'html5qr-code-full-region';
   const html5QrcodeScannerRef = useRef(null);
   const [error, setError] = useState(null);
+  const [showTestMessage, setShowTestMessage] = useState(false);
 
   const location = useLocation();
-  const [showTestMessage, setShowTestMessage] = useState(false);
+  const exhibitionId = new URLSearchParams(location.search).get('exhibitionId');
 
   const handleTestBtnClick = () => {
     localStorage.setItem('showAttendanceModal', 'true');
@@ -62,6 +63,15 @@ export default function QrScanner() {
     };
   }, [navigate]);
 
+  const handleCloseButton = () => {
+    // 1. localStorage에 저장된 정보 삭제
+    localStorage.removeItem('showAttendanceModal');
+    localStorage.removeItem('exhibitionInfo');
+
+    // 2. 이전 페이지로 돌아가기
+    navigate(-1);
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const itemId = params.get('itemId');
@@ -73,7 +83,7 @@ export default function QrScanner() {
   return (
     <div className={styles.scannerContainer}>
       <div className={styles.header}>
-        <button className={styles.closeButton} onClick={() => navigate(-1)}>
+        <button className={styles.closeButton} onClick={handleCloseButton}>
           ×
         </button>
         <h2 className={styles.title}>Artly QR Reader</h2>
