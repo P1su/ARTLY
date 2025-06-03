@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import styles from "./Announcement.module.css";
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const categoryList = ["공지사항", "FAQ"];
 
@@ -53,7 +54,7 @@ export default function Announcement() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.heading}>공지사항 & FAQ</h2>
+      <h1 className={styles.heading}>공지사항&FAQ</h1>
       <div className={styles.tabWrapper}>
         {categoryList.map((category) => (
           <button
@@ -80,7 +81,7 @@ export default function Announcement() {
                   <div className={styles.title}>{item.title}</div>
                   <div className={styles.right}>
                     <span className={styles.arrow}>
-                      {openItems[index] ? "▲" : "▼"}
+                      {openItems[index] ? <FaChevronUp />  : <FaChevronDown />}
                     </span>
                   </div>
                 </div>
@@ -88,27 +89,20 @@ export default function Announcement() {
 
               {openItems[index] && expandedItems[item.id] && (
                 <div className={styles.cardBody}>
-                  {expandedItems[item.id].announcement_poster && (
-                    <img
-                      src={expandedItems[item.id].announcement_poster}
-                      alt="poster"
-                      className={styles.poster}
-                    />
-                  )}
-                  <p><strong>제목:</strong> {expandedItems[item.id].announcement_title}</p>
-                  <p><strong>내용:</strong> {expandedItems[item.id].announcement_content}</p>
+                  <p>제목: {expandedItems[item.id].announcement_title}</p>
+                  <p>내용: {expandedItems[item.id].announcement_content}</p>
                   {expandedItems[item.id].announcement_organizer && (
-                    <p><strong>주최:</strong> {expandedItems[item.id].announcement_organizer}</p>
+                    <p>주최: {expandedItems[item.id].announcement_organizer}</p>
                   )}
                   {expandedItems[item.id].announcement_contact && (
-                    <p><strong>연락처:</strong> {expandedItems[item.id].announcement_contact}</p>
+                    <p>연락처: {expandedItems[item.id].announcement_contact}</p>
                   )}
                   {expandedItems[item.id].announcement_support_detail && (
-                    <p><strong>지원 내용:</strong> {expandedItems[item.id].announcement_support_detail}</p>
+                    <p>지원 내용: {expandedItems[item.id].announcement_support_detail}</p>
                   )}
                   {(expandedItems[item.id].announcement_start_datetime || expandedItems[item.id].announcement_end_datetime) && (
                     <p>
-                      <strong>기간:</strong>{" "}
+                      기간:{" "}
                       {expandedItems[item.id].announcement_start_datetime?.slice(0, 10)} ~{" "}
                       {expandedItems[item.id].announcement_end_datetime?.slice(0, 10)}
                     </p>
