@@ -75,7 +75,7 @@ export default function TabMyView() {
       try {
         const res = await instance.get('/api/users/me/exhibitions');
         const { data } = res;
-
+        console.log(data, res);
         const currentAndUpcoming = data.filter((item) =>
           ['scheduled', 'exhibited'].includes(item.exhibition_status),
         );

@@ -108,11 +108,12 @@ export default function ReservationModal({
     setReservationInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if (step === 1 && !selectedDate) {
       alert('날짜를 선택해주세요.');
       return;
     }
+
     if (
       step === 2 &&
       (!reservationInfo.name ||
@@ -122,6 +123,28 @@ export default function ReservationModal({
       alert('예약자 정보를 모두 입력해주세요.');
       return;
     }
+
+    if (step === 2) {
+      try {
+        const response = await instance.post('/api/reservations', {
+          exhibition_id: Number(exhibitionId),
+          number_of_tickets: personCount,
+          date: selectedDate,
+          name: reservationInfo.name,
+          phone: reservationInfo.phone,
+          email: reservationInfo.email,
+          payment_method: '', // 현재 구현 안 했으므로 null 또는 빈 문자열
+          total_price: 0, // 마찬가지로 null 처리
+        });
+
+        console.log('예약 완료:', response.data);
+      } catch (error) {
+        console.error('예약 실패:', error);
+        alert('예약 처리 중 문제가 발생했습니다.');
+        return;
+      }
+    }
+
     setStep(step + 1);
   };
 
