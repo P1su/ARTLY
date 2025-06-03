@@ -26,7 +26,7 @@ export default function ChatbotWidget() {
         block: 'end',
         inline: 'nearest',
       });
-  }, [currentChat.current]);
+  }, [currentChat.current, messages]);
   // load user chat history from server on component mount
   /*
   useEffect(() => {
