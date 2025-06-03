@@ -12,12 +12,6 @@ export default function ArtistCarousel({ title }) {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const clonedItems = [
-    artists[artists.length - 1],
-    ...artists,
-    ...artists.slice(0, slidesToShow),
-  ];
-
   const updateSlidesToShow = () => {
     setSlidesToShow(4);
   };
@@ -71,11 +65,11 @@ export default function ArtistCarousel({ title }) {
       const width = carouselRef.current.offsetWidth / slidesToShow;
       carouselRef.current.style.transition = 'none';
 
-      if (currentIndex >= clonedItems.length - slidesToShow) {
+      if (currentIndex >= artists.length - slidesToShow) {
         carouselRef.current.style.transform = `translateX(-${width}px)`;
         setCurrentIndex(1);
       } else if (currentIndex === 0) {
-        const resetIndex = clonedItems.length - slidesToShow - 1;
+        const resetIndex = artists.length - slidesToShow - 1;
         carouselRef.current.style.transform = `translateX(-${width * resetIndex}px)`;
         setCurrentIndex(resetIndex);
       }
@@ -86,7 +80,7 @@ export default function ArtistCarousel({ title }) {
     const node = carouselRef.current;
     node.addEventListener('transitionend', handleTransitionEnd);
     return () => node.removeEventListener('transitionend', handleTransitionEnd);
-  }, [currentIndex, clonedItems.length, slidesToShow]);
+  }, [currentIndex, artists.length, slidesToShow]);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -118,10 +112,10 @@ export default function ArtistCarousel({ title }) {
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
-          {clonedItems.map((item) => (
+          {artists.map((item, index) => (
             <Link
               to={`/artists/${item?.id}`}
-              key={`artist-${item?.id}`}
+              key={`${item?.name}-${item?.id}`}
               className={styles.carouselSlide}
             >
               <img
