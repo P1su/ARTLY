@@ -112,7 +112,7 @@ export default function ArtistCarousel({ title }) {
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.carouselTrack} ref={carouselRef}>
-          {artists.map((item, index) => (
+          {artists.map((item) => (
             <Link
               to={`/artists/${item?.id}`}
               key={`${item?.name}-${item?.id}`}
