@@ -21,7 +21,14 @@ export default function Login() {
     try {
       const response = await instance.post('/api/auth/login', loginDatas);
       localStorage.setItem('ACCESS_TOKEN', response.data.jwt);
-
+      /*
+      window.dispatchEvent(
+        new StorageEvent('storage', {
+          key: 'ACCESS_TOKEN',
+          newValue: response.data.jwt,
+        }),
+      );
+*/
       if (pathname === '/register') {
         navigate('/');
       } else {
