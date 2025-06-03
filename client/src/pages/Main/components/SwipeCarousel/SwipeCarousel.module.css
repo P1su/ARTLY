@@ -13,9 +13,9 @@
 }
 
 .carouselTitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 15px;
 }
 
 .moreButton {
