@@ -20,7 +20,6 @@ import NewsDetail from '../pages/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
 import ArtworkList from '../pages/ArtworkList/ArtworkList';
 import Catalog from '../pages/Catalog/Catalog';
-import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
