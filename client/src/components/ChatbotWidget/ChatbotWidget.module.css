@@ -96,9 +96,9 @@
   border: 0.08rem solid #b0b0b0;
   border-radius: 0.96rem;
   font-size: 1.44rem;
-  word-break: break-word;      /* 긴 단어 줄바꿈 */
-  overflow-wrap: break-word;   /* 긴 단어 줄바꿈 */
-  white-space: pre-line;       /* 줄바꿈 문자 반영 */
+  word-break: break-word; /* 긴 단어 줄바꿈 */
+  overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+  white-space: pre-line; /* 줄바꿈 문자 반영 */
 }
 
 .botBubble {

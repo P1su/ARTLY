@@ -189,15 +189,19 @@ export default function ChatbotWidget() {
                 )}
               </div>
             ))}
-            {isLoading && ( // if loading, show a loading message below the chat
-              <div
-                style={{
-                  textAlign: 'center',
-                  color: 'gray',
-                  marginTop: '10px',
-                }}
-              >
-                챗봇이 생각하는 중...
+            {isLoading && (
+              <div className={styles.botMessageContainer} ref={currentChat}>
+                <img
+                  src={chatbotProfile}
+                  alt='챗봇 프로필'
+                  className={styles.botProfile}
+                />
+                <div className={styles.botContent}>
+                  <p className={styles.botName}>Artly</p>
+                  <div className={styles.botBubble}>
+                    <p>챗봇이 답변을 생성하고 있어요. 잠시만 기다려주세요</p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
