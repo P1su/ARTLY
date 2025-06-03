@@ -56,7 +56,6 @@ export default function TabMyView() {
       try {
         const res = await instance.get('/api/users/me/exhibitions');
         const { data } = res;
-        console.log(data, res);
 
         setReservations(data);
       } catch (err) {
@@ -87,14 +86,17 @@ export default function TabMyView() {
     setShowAttendanceModal(false);
     localStorage.removeItem('exhibitionInfo');
   };
-
   const handleStatusChange = async (id) => {
     const confirm = window.confirm('예약을 취소하시겠습니까?');
     if (!confirm) return;
 
     try {
       await instance.delete(`/api/reservations/${id}`);
-      setReservations((prev) => prev.filter((res) => res.id !== id));
+      setReservations((prev) =>
+        prev.map((res) =>
+          res.id === id ? { ...res, reservation_status: 'canceled' } : res,
+        ),
+      );
     } catch (err) {
       console.error('예약 취소 실패:', err);
     }
