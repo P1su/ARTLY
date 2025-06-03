@@ -1,28 +1,39 @@
 .chatbotContainer {
   position: fixed;
-  margin-left: 30rem;
-  bottom: 4rem;
+  margin-left: 28rem;
+  bottom: 2rem;
   z-index: 1000;
 }
 
-.iconWrapper img {
-  width: 4.8rem;
-  height: 4.8rem;
-  cursor: pointer;
+.chatbotButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0.2rem 1rem;
+
+  background-color: #329760;
+
+  color: #fff;
+  font-size: 3rem;
+
+  transition: 0.3s;
 }
 
 .popupContainer {
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 46%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 36rem;
+  width: 33rem;
   height: 52rem;
-  border: 0.16rem solid #ccc;
-  border-radius: 0.8rem;
-  box-shadow: 0 0.16rem 0.96rem rgba(0, 0, 0, 0.1);
+  border-radius: 1.2rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
   background-color: #f0f5ff;
 }
 
@@ -30,18 +41,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1.6rem;
+  padding: 1.5rem;
   border-top-right-radius: 0.8rem;
   border-top-left-radius: 0.8rem;
-  background-color: #021c9d;
+  background-color: #e9f9ef;
   color: white;
 }
 
+.headerTitle {
+  color: #333;
+  font-size: 1.6rem;
+}
+
 .closeButton {
+  display: flex;
+  align-items: center;
   border: none;
   background: none;
-  color: white;
-  font-size: 1.6rem;
+  color: #333;
+  font-size: 2rem;
 }
 
 .chatContainer {
@@ -50,6 +68,8 @@
   flex-grow: 1;
   overflow-y: auto;
   padding: 0.96rem;
+
+  background-color: #fff;
 }
 
 .botMessageContainer {
@@ -78,6 +98,7 @@
 .botName {
   margin-bottom: 0.16rem;
   margin-left: 0.48rem;
+  color: #333;
   font-size: 1.44rem;
   font-weight: bold;
 }
@@ -93,8 +114,6 @@
 .userBubble {
   max-width: 70%;
   padding: 0.96rem;
-  border: 0.08rem solid #b0b0b0;
-  border-radius: 0.96rem;
   font-size: 1.44rem;
   word-break: break-word; /* 긴 단어 줄바꿈 */
   overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
@@ -102,11 +121,15 @@
 }
 
 .botBubble {
-  background-color: #bfd8ff;
+  border-radius: 1.8rem 1.8rem 1.8rem 0;
+  color: #333;
+  background-color: #e9f9ef;
 }
 
 .userBubble {
-  background-color: #ffffff;
+  border-radius: 1.8rem 1.8rem 0 1.8rem;
+  color: #eee;
+  background-color: #b37de7;
 }
 
 .inputContainer {
@@ -118,16 +141,26 @@
 
 .input {
   flex: 1;
+  height: 4.5rem;
   padding: 0.96rem 1.28rem;
   border: 0.16rem solid #ccc;
-  border-radius: 0.8rem;
+  border-radius: 2rem;
+  color: #333;
+  font-size: 1.4rem;
+  font-weight: 500;
+  outline: none;
+}
+
+.input:focus {
+  border: 0.16rem solid #3cb371;
+  box-shadow: 0 0 0.4rem #3cb371;
 }
 
 .sendButton {
-  padding: 0 1.6rem;
-  margin-left: 0.8rem;
   border: none;
-  border-radius: 0.8rem;
-  background-color: #2f55ff;
-  color: white;
+  margin-left: 1rem;
+  background-color: #fff;
+  color: #3cb371;
+  font-size: 1.4rem;
+  font-weight: 500;
 }

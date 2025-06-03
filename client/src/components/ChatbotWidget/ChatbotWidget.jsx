@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { userInstance } from '../../apis/instance.js';
 import styles from './ChatbotWidget.module.css';
-import chatbotIcon from './mock/chatbot.png';
+import { BsChatFill } from 'react-icons/bs';
+import { IoCloseSharp } from 'react-icons/io5';
 import chatbotProfile from './mock/chatbotProfile.png';
 
 export default function ChatbotWidget() {
@@ -142,16 +143,16 @@ export default function ChatbotWidget() {
 
   return (
     <div className={styles.chatbotContainer}>
-      <div className={styles.iconWrapper} onClick={handleToggleChat}>
-        <img src={chatbotIcon} alt='챗봇 아이콘' />
-      </div>
+      <button className={styles.chatbotButton} onClick={handleToggleChat}>
+        <BsChatFill />
+      </button>
 
       {isOpen && (
         <div className={styles.popupContainer}>
           <div className={styles.headerContainer}>
-            <h3>ARTLY BOT</h3>
+            <h3 className={styles.headerTitle}>Artly에게 물어봐!</h3>
             <button className={styles.closeButton} onClick={handleToggleChat}>
-              X
+              <IoCloseSharp />
             </button>
           </div>
 
@@ -213,7 +214,7 @@ export default function ChatbotWidget() {
               value={inputValue}
               onChange={handleInputChange}
               onKeyPress={keyPressHanlder}
-              placeholder='챗봇에게 물어보세요.'
+              placeholder='챗봇에게 물어보세요'
             />
             <button className={styles.sendButton} onClick={handleSendMessage}>
               전송
