@@ -11,7 +11,6 @@ export default function QrScanner() {
   const [showTestMessage, setShowTestMessage] = useState(false);
 
   const location = useLocation();
-  const exhibitionId = new URLSearchParams(location.search).get('exhibitionId');
 
   const handleTestBtnClick = () => {
     localStorage.setItem('showAttendanceModal', 'true');
@@ -64,11 +63,9 @@ export default function QrScanner() {
   }, [navigate]);
 
   const handleCloseButton = () => {
-    // 1. localStorage에 저장된 정보 삭제
     localStorage.removeItem('showAttendanceModal');
     localStorage.removeItem('exhibitionInfo');
 
-    // 2. 이전 페이지로 돌아가기
     navigate(-1);
   };
 

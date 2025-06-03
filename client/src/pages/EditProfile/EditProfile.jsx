@@ -19,7 +19,7 @@ const EditProfile = () => {
   const [newEmail, setNewEmail] = useState(''); // 새로운 이메일
 
   const navigate = useNavigate();
-
+  console.log(userInfo);
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -43,12 +43,12 @@ const EditProfile = () => {
 
   const handleEditName = () => {
     setEditingName(true);
-    setNewName(userInfo.user_name); // 초기값 설정
+    setNewName(userInfo.user_name);
   };
 
   const handleEditEmail = () => {
     setEditingEmail(true);
-    setNewEmail(userInfo.user_email); // 초기값 설정
+    setNewEmail(userInfo.user_email);
   };
 
   const handleChangeName = (e) => {
@@ -61,11 +61,8 @@ const EditProfile = () => {
 
   const handleSaveName = async () => {
     try {
-      // API 호출 (PUT 또는 PATCH)
       await instance.put('/api/users/me', { user_name: newName });
-      // 성공 시 userInfo 업데이트
       setUserInfo({ ...userInfo, user_name: newName });
-      // 수정 모드 종료
       setEditingName(false);
     } catch (error) {
       console.error('닉네임 변경에 실패했습니다.', error);
@@ -74,11 +71,8 @@ const EditProfile = () => {
 
   const handleSaveEmail = async () => {
     try {
-      // API 호출 (PUT 또는 PATCH)
       await instance.put('/api/users/me', { user_email: newEmail });
-      // 성공 시 userInfo 업데이트
       setUserInfo({ ...userInfo, user_email: newEmail });
-      // 수정 모드 종료
       setEditingEmail(false);
     } catch (error) {
       console.error('이메일 변경에 실패했습니다.', error);

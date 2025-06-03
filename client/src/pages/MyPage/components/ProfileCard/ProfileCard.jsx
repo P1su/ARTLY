@@ -30,6 +30,7 @@ export default function ProfileCard() {
           user_email: res.data.user_email,
           user_phone: res.data.user_phone,
         });
+        console.log(res.data);
         if (res.data.user_img) {
           setImgSrc(res.data.user_img);
         } else {
