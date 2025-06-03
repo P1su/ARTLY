@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaTimes, FaCheck } from 'react-icons/fa';
-import styles from './Reservation.module.css';
-import { instance } from '../../apis/instance'; // 경로는 실제 위치에 맞게 조정
+import styles from './ReservationModal.module.css';
+import { instance } from '../../../../apis/instance'; // 경로는 실제 위치에 맞게 조정
 
-export default function Reservation({ exhibition: propExhibition, onClose }) {
+export default function ReservationModal({
+  exhibition: propExhibition,
+  onClose,
+}) {
   const { exhibitionId } = useParams();
   const [exhibition, setExhibition] = useState(propExhibition || null);
   const [loading, setLoading] = useState(!propExhibition);
