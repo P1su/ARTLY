@@ -66,9 +66,9 @@ export default function SectionCard({
     } = item;
 
     const statusMap = {
-      reserved: { label: '관람신청', className: styles.scheduled },
-      used: { label: '관람완료', className: styles.exhibited },
-      canceled: { label: '취소', className: styles.closed },
+      reserved: { label: '관람신청', className: styles.statusReserved },
+      used: { label: '관람완료', className: styles.statusCompleted },
+      canceled: { label: '취소', className: styles.statusCanceled },
     };
 
     const statusLabel = statusMap[reservationStatus]?.label || '알 수 없음';
@@ -95,9 +95,7 @@ export default function SectionCard({
           </p>
 
           <div className={styles.statusContainer}>
-            <span className={`${styles.statusValue} ${statusClass}`}>
-              {statusLabel}
-            </span>
+            <span className={statusClass}>{statusLabel}</span>
 
             <div className={styles.action}>
               <button className={styles.btn} onClick={onGoDetail}>
