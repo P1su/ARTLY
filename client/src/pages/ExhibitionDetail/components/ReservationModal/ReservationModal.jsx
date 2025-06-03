@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import styles from './ReservationModal.module.css';
-import { instance } from '../../../../apis/instance'; // 경로는 실제 위치에 맞게 조정
-
+import { instance } from '../../../../apis/instance';
 export default function ReservationModal({
   exhibition: propExhibition,
   onClose,
 }) {
   const { exhibitionId } = useParams();
+  const navigate = useNavigate();
   const [exhibition, setExhibition] = useState(propExhibition || null);
   const [loading, setLoading] = useState(!propExhibition);
   const [error, setError] = useState(null);
 
-  // 예약 상태
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState('');
   const [personCount, setPersonCount] = useState(1);
@@ -26,7 +25,6 @@ export default function ReservationModal({
     state: '관람신청',
   });
 
-  // 달력 관련
   const currentDate = new Date();
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
@@ -37,7 +35,6 @@ export default function ReservationModal({
         try {
           const res = await instance.get(`/api/exhibitions/${exhibitionId}`);
           setExhibition(res.data);
-          console.log(res.data);
         } catch (err) {
           setError('전시 정보를 불러오는 중 오류가 발생했습니다.');
         } finally {
@@ -132,12 +129,33 @@ export default function ReservationModal({
     setStep(step - 1);
   };
 
+  const goToMyReservations = () => {
+    localStorage.setItem('fromReservationModal', 'true');
+    navigate('/mypage');
+  };
+
   if (loading) return <div className={styles.loading}>로딩 중...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
   if (!exhibition)
     return <div className={styles.empty}>전시 정보를 찾을 수 없습니다.</div>;
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const completionSummaryItems = [
+    {
+      label: '전시명',
+      value: exhibition ? exhibition.exhibition_title : '',
+    },
+    { label: '예약일', value: selectedDate },
+    { label: '인원', value: `${personCount}명` },
+    {
+      label: '장소',
+      value: exhibition ? exhibition.exhibition_location : '',
+    },
+    { label: '예약자', value: reservationInfo.name },
+    { label: '전화번호', value: reservationInfo.phone },
+    { label: '이메일', value: reservationInfo.email },
+  ];
 
   return (
     <div className={styles.modalOverlay}>
@@ -149,7 +167,7 @@ export default function ReservationModal({
           </button>
         </div>
 
-        {/* Step 1 */}
+        {/* step1 - 예약 날짜 및 인원 선택 파트 */}
         {step === 1 && (
           <>
             <div className={styles.exhibitionInfo}>
@@ -184,7 +202,7 @@ export default function ReservationModal({
               </div>
 
               <div className={styles.calendarGrid}>
-                {generateCalendarDays().map((day, idx) => {
+                {generateCalendarDays().map((day) => {
                   const dateKey = day.day
                     ? `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day.day).padStart(2, '0')}`
                     : `empty-${Math.random()}`;
@@ -238,19 +256,21 @@ export default function ReservationModal({
               </div>
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>장소</span>
-                <span className={styles.infoValue}>{exhibition.location}</span>
+                <span className={styles.infoValue}>
+                  {exhibition.exhibition_location}
+                </span>
               </div>
             </div>
           </>
         )}
 
-        {/* Step 2 */}
+        {/* step2 - 예매 정보 입력 파트 */}
         {step === 2 && (
           <div className={styles.reservationForm}>
-            <h3>예약 정보 입력</h3>
+            <h3 className={styles.formTitle}>예약 정보 입력</h3>
             {['name', 'phone', 'email'].map((field) => (
               <div key={field} className={styles.formGroup}>
-                <label>
+                <label className={styles.formLabel}>
                   {field === 'name'
                     ? '이름'
                     : field === 'phone'
@@ -258,6 +278,7 @@ export default function ReservationModal({
                       : '이메일'}
                 </label>
                 <input
+                  className={styles.formInput}
                   type={
                     field === 'email'
                       ? 'email'
@@ -278,19 +299,55 @@ export default function ReservationModal({
                 />
               </div>
             ))}
+
+            <div className={styles.reservationSummary}>
+              <div className={styles.summaryTitle}>예약 정보 확인</div>
+              {[
+                {
+                  label: '전시명',
+                  value: exhibition
+                    ? exhibition.exhibition_title
+                    : '전시회 제목',
+                },
+                { label: '예약일', value: selectedDate },
+                { label: '인원', value: `${personCount}명` },
+                {
+                  label: '장소',
+                  value: exhibition
+                    ? exhibition.exhibition_location
+                    : '전시 장소',
+                },
+              ].map((item) => (
+                <div className={styles.summaryRow} key={item.label}>
+                  <span className={styles.summaryLabel}>{item.label}</span>
+                  <span className={styles.summaryValue}>{item.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Step 3 */}
+        {/* step3 - 예매 완료 파트 */}
         {step === 3 && (
           <div className={styles.completionScreen}>
-            <FaCheck />
-            <h3>관람 예약 신청 완료</h3>
-            <p>신청 내역은 전시관에서 확인 후 최종 승인됩니다.</p>
+            <div className={styles.completionIcon}>
+              <FaCheck />
+            </div>
+            <div className={styles.completionTitle}>관람 예약 신청 완료</div>
+            <div className={styles.completionMessage}>
+              신청 내역은 전시관에서 확인 후 최종 승인됩니다.
+            </div>
+            <div className={styles.reservationSummary}>
+              {completionSummaryItems.map((item) => (
+                <div className={styles.summaryRow} key={item.label}>
+                  <span className={styles.summaryLabel}>{item.label}</span>
+                  <span className={styles.summaryValue}>{item.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Buttons */}
         <div className={styles.buttonsContainer}>
           {step === 1 ? (
             <button className={styles.actionButton} onClick={handleNextStep}>
@@ -298,7 +355,7 @@ export default function ReservationModal({
             </button>
           ) : step === 2 ? (
             <>
-              <button className={styles.actionButton} onClick={handlePrevStep}>
+              <button className={styles.backButton} onClick={handlePrevStep}>
                 이전
               </button>
               <button className={styles.actionButton} onClick={handleNextStep}>
@@ -307,8 +364,15 @@ export default function ReservationModal({
             </>
           ) : (
             <>
-              <button onClick={onClose}>완료</button>
-              <button onClick={onClose}>나의 관람내역 보기</button>
+              <button className={styles.backButton} onClick={onClose}>
+                완료
+              </button>
+              <button
+                className={styles.actionButton}
+                onClick={goToMyReservations}
+              >
+                나의 관람내역
+              </button>
             </>
           )}
         </div>
