@@ -14,7 +14,6 @@ import Register from '../pages/Register/Register';
 import Mypage from '../pages/MyPage/MyPage';
 import EditProfile from '../pages/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
-import Reservation from '../pages/Reservation/Reservation';
 import Purchase from '../pages/Purchase/Purchase';
 import News from '../pages/News/News';
 import NewsDetail from '../pages/NewsDetail/NewsDetail';
@@ -23,7 +22,6 @@ import ArtworkList from '../pages/ArtworkList/ArtworkList';
 import Catalog from '../pages/Catalog/Catalog';
 import ReservationComplete from '../pages/ReservationComplete/ReservationComplete';
 import QrScanner from '../pages/QrScanner/QrScanner';
-import ReservationDetail from '../pages/ReservationDetail/ReservationDetail';
 import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
 import Test from '../pages/Test/Test';
@@ -61,16 +59,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
-          { path: '/reservation/:exhibitionId', element: <Reservation /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
-          {
-            path: '/reservation/complete/:reservationId',
-            element: <ReservationComplete />,
-          },
-          {
-            path: '/reservation/detail/:reservationId',
-            element: <ReservationDetail />,
-          },
         ],
       },
     ],
