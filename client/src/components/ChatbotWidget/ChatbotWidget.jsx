@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { userInstance } from '../../apis/instance.js';
 import styles from './ChatbotWidget.module.css';
 import chatbotIcon from './mock/chatbot.png';
@@ -15,9 +15,18 @@ export default function ChatbotWidget() {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false); // state for loading gpt response
+  const currentChat = useRef(null);
 
   const getNextId = () => messages[messages.length - 1].id + 1;
 
+  useEffect(() => {
+    currentChat.current !== null &&
+      currentChat.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
+      });
+  }, [currentChat.current]);
   // load user chat history from server on component mount
   /*
   useEffect(() => {
@@ -155,6 +164,7 @@ export default function ChatbotWidget() {
                     ? styles.botMessageContainer
                     : styles.userMessageContainer
                 }
+                ref={currentChat}
               >
                 {msg.sender === 'bot' ? (
                   <>
