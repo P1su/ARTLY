@@ -51,36 +51,14 @@ export default function TabMyView() {
     }
   }, []);
 
-  const handleCloseModal = () => {
-    setShowAttendanceModal(false);
-    localStorage.removeItem('exhibitionInfo');
-  };
-
-  const filteredReservations = useMemo(() => {
-    return reservations
-      .filter((reservation) =>
-        filter.statusFilter === 'all'
-          ? true
-          : reservation.exhibition_status === filter.statusFilter,
-      )
-      .sort((a, b) => {
-        const dateA = new Date(a.reservation_datetime);
-        const dateB = new Date(b.reservation_datetime);
-        return filter.dateSort === 'latest' ? dateB - dateA : dateA - dateB;
-      });
-  }, [reservations, filter]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await instance.get('/api/users/me/exhibitions');
         const { data } = res;
         console.log(data, res);
-        const currentAndUpcoming = data.filter((item) =>
-          ['scheduled', 'exhibited'].includes(item.exhibition_status),
-        );
 
-        setReservations(currentAndUpcoming);
+        setReservations(data);
       } catch (err) {
         console.error('데이터 가져오기 실패:', err);
       }
@@ -89,17 +67,36 @@ export default function TabMyView() {
     fetchData();
   }, []);
 
-  const handleStatusChange = async (id, newStatus) => {
-    if (newStatus === '취소') {
-      const confirm = window.confirm('예약을 취소하시겠습니까?');
-      if (!confirm) return;
+  const filteredReservations = useMemo(() => {
+    let result = reservations;
+    if (filter.statusFilter !== 'all') {
+      result = result.filter(
+        (reservation) => reservation.reservation_status === filter.statusFilter,
+      );
+    }
+    result.sort((a, b) => {
+      const dateA = new Date(a.reservation_datetime);
+      const dateB = new Date(b.reservation_datetime);
+      return filter.dateSort === 'latest' ? dateB - dateA : dateA - dateB;
+    });
 
-      try {
-        await instance.delete(`/api/reservations/${id}`);
-        setReservations((prev) => prev.filter((res) => res.id !== id));
-      } catch (err) {
-        console.error('예약 취소 실패:', err);
-      }
+    return result;
+  }, [reservations, filter]);
+
+  const handleCloseModal = () => {
+    setShowAttendanceModal(false);
+    localStorage.removeItem('exhibitionInfo');
+  };
+
+  const handleStatusChange = async (id) => {
+    const confirm = window.confirm('예약을 취소하시겠습니까?');
+    if (!confirm) return;
+
+    try {
+      await instance.delete(`/api/reservations/${id}`);
+      setReservations((prev) => prev.filter((res) => res.id !== id));
+    } catch (err) {
+      console.error('예약 취소 실패:', err);
     }
   };
 
@@ -144,9 +141,9 @@ export default function TabMyView() {
               <SectionCard
                 key={item.id}
                 item={item}
-                status={item.exhibition_status === '관람신청'}
+                status={item.reservation_status === 'reserved'}
                 onGoDetail={() => handleGoDetail(item.id)}
-                onCancel={() => handleStatusChange(item.id, '취소')}
+                onCancel={() => handleStatusChange(item.id)}
                 onQR={() => handleQR(item)}
                 type='reservation'
               />

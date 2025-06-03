@@ -60,26 +60,19 @@ export default function SectionCard({
       exhibition_poster: exhibitionImg,
       exhibition_title: exhibitionTitle = '제목 정보 없음',
       exhibition_location: exhibitionLocation = '장소 정보 없음',
-      exhibition_start_date: exhibitionStartDate = '',
-      exhibition_end_date: exhibitionEndDate = '',
-      exhibition_status: exhibitionStatus = '',
-      session_id: sessionId = '예약번호 없음',
-      reservation_datetime: reservationDate = '',
+      reservation_status: reservationStatus = '',
+      id: reservationId = '예약번호 없음',
+      reservation_datetime: reservationDate,
     } = item;
 
-    const date =
-      exhibitionStartDate && exhibitionEndDate
-        ? `${exhibitionStartDate} ~ ${exhibitionEndDate}`
-        : reservationDate;
-
     const statusMap = {
-      scheduled: { label: '관람신청', className: styles.scheduled },
-      exhibited: { label: '관람완료', className: styles.exhibited },
-      closed: { label: '취소', className: styles.closed },
+      reserved: { label: '관람신청', className: styles.scheduled },
+      used: { label: '관람완료', className: styles.exhibited },
+      canceled: { label: '취소', className: styles.closed },
     };
 
-    const statusLabel = statusMap[exhibitionStatus]?.label || '알 수 없음';
-    const statusClass = statusMap[exhibitionStatus]?.className || '';
+    const statusLabel = statusMap[reservationStatus]?.label || '알 수 없음';
+    const statusClass = statusMap[reservationStatus]?.className || '';
 
     return (
       <div className={styles.cardContainer}>
@@ -96,9 +89,9 @@ export default function SectionCard({
           <p className={styles.info}>
             {exhibitionLocation}
             <br />
-            {date}
+            {reservationDate.split(' ')[0]}
             <br />
-            예약번호: {sessionId}
+            예약번호: {reservationId}
           </p>
 
           <div className={styles.statusContainer}>
@@ -111,7 +104,7 @@ export default function SectionCard({
                 전시정보
               </button>
 
-              {exhibitionStatus === 'scheduled' && (
+              {reservationStatus === 'reserved' && (
                 <>
                   <button className={styles.btn} onClick={() => onQR(item.id)}>
                     관람확인

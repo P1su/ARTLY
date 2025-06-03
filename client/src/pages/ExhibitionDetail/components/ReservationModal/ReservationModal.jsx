@@ -129,10 +129,10 @@ export default function ReservationModal({
         const response = await instance.post('/api/reservations', {
           exhibition_id: Number(exhibitionId),
           number_of_tickets: personCount,
-          date: selectedDate,
-          name: reservationInfo.name,
-          phone: reservationInfo.phone,
-          email: reservationInfo.email,
+          reservation_datetime: selectedDate,
+          visitor_name: reservationInfo.name,
+          visitor_phone: reservationInfo.phone,
+          visitor_email: reservationInfo.email,
           payment_method: '', // 현재 구현 안 했으므로 null 또는 빈 문자열
           total_price: 0, // 마찬가지로 null 처리
         });

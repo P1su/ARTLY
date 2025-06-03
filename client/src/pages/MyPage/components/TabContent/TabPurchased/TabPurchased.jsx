@@ -26,30 +26,8 @@ export default function TabPurchased() {
         const res = await instance.get('/api/users/me/purchases');
         const purchases = res.data;
 
-        // 백엔드 필드 수정시 삭제 예정
-        const exhibitionIds = new Set(purchases.map((p) => p.exhibition_id));
-
-        const fetchExhibitionInfo = async (exhibitionId) => {
-          try {
-            const res = await instance.get(`/api/exhibitions/${exhibitionId}`);
-            return { [exhibitionId]: res.data };
-          } catch {
-            return { [exhibitionId]: null };
-          }
-        };
-
-        const exhibitionPromises =
-          Array.from(exhibitionIds).map(fetchExhibitionInfo);
-        const exhibitionInfos = await Promise.all(exhibitionPromises);
-
-        const exhibitionMap = Object.assign({}, ...exhibitionInfos);
-
-        const purchasesWithExhibition = purchases.map((p) => ({
-          ...p,
-          ...exhibitionMap[p.exhibition_id],
-        }));
-
-        setPurchased(purchasesWithExhibition);
+        console.log(purchases);
+        setPurchased(purchases);
       } catch (err) {
         console.error(err);
         setPurchased([]);
