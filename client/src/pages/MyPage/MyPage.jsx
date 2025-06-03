@@ -11,8 +11,13 @@ export default function MyPage() {
 
   useEffect(() => {
     const attendanceModalFlag = localStorage.getItem('showAttendanceModal');
-    if (attendanceModalFlag === 'true') {
+    const fromReservationModalFlag = localStorage.getItem(
+      'fromReservationModal',
+    );
+
+    if (attendanceModalFlag === 'true' || fromReservationModalFlag === 'true') {
       setSelectedTab('My관람');
+      localStorage.removeItem('fromReservationModal');
     }
   }, []);
 

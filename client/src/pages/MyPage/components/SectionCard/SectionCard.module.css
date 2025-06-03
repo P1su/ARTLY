@@ -58,19 +58,26 @@
   justify-content: space-between;
 }
 
-.status {
+.statusCompleted {
   font-size: 1.3rem;
   font-weight: 500;
   color: #3cb371;
   margin-top: 1rem;
 }
 
-.statusValue {
+.statusReserved {
   font-size: 1.3rem;
   font-weight: 500;
   color: #1a73e8;
   white-space: nowrap;
   margin-right: 1rem;
+}
+
+.statusCanceled {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #dc3545;
+  margin-top: 1rem;
 }
 
 .complete {
