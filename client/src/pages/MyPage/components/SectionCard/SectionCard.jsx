@@ -126,7 +126,6 @@ export default function SectionCard({
       create_dtm: bookCreatedDate = '',
     } = item;
 
-    // bookDetail이 null이면 기본값 사용
     const {
       book: { book_title: bookTitle = '제목 정보 없음' } = {},
       exhibition: {

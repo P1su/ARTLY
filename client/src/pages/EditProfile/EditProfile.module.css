@@ -103,6 +103,11 @@
   flex-grow: 1;
 }
 
+.input {
+  font-size: 1.4rem;
+  flex-grow: 1;
+}
+
 .changeButton {
   background-color: #fff;
   border: 0.1rem solid #ddd;
