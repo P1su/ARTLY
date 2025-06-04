@@ -3,11 +3,11 @@
   flex-direction: column;
 
   position: fixed;
-  top: 12.5rem;
+  top: 6rem;
   right: 0;
 
   width: 100%;
-  height: calc(100vh - 12.5rem);
+  height: calc(100vh - 6rem);
   padding: 2rem;
 
   background-color: #ffffff;
