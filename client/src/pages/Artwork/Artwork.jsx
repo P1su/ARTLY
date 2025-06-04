@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styles from './Artwork.module.css';
 import { mockArtwork } from './mock/mockArtwork';
 import SectionTitle from './components/SectionTitle/SectionTitle';
 import ArtworkDetailSection from './components/ArtworkDetailSection/ArtworkDetailSection';
 import DocentScript from './components/ArtworkDetailSection/DocentScript/DocentScript';
 import DocentSection from './components/DocentSection/DocentSection';
+import { instance } from '../../apis/instance.js';
 
 const paginateScript = (script, maxLength = 300) => {
   return Array.from(
@@ -14,9 +16,41 @@ const paginateScript = (script, maxLength = 300) => {
 };
 
 export default function Artwork() {
-  const { title, image, artist, info, script } = mockArtwork;
+  const { artId } = useParams();  // get artId from URL params
+
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
+  const [artist, setArtist] = useState('');
+  const [info, setInfo] = useState('');
+  const [script, setScript] = useState('');
+  const [loading, setLoading] = useState(true);
+  
   const scriptPages = paginateScript(script);
   const [pageIndex, setPageIndex] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const fetchArtworkData = async (id) => {
+      try {
+        const { data: artworkData } = await instance.get('/api/arts/' + id);
+
+        setTitle(artworkData.art_title);
+        setImage(artworkData.art_image);
+        setArtist(artworkData.artist_name);
+        setInfo(artworkData.art_description);
+        setScript(artworkData.art_docent);
+      } catch (error) {
+        console.error('Error fetching artwork data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // fetch artwork data
+    if (artId) fetchArtworkData(artId);
+
+  }, [artId]);
 
   const goToNextPage = () => {
     setPageIndex(prevIndex => {
