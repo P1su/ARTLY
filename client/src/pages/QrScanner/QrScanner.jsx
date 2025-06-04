@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import styles from './QrScanner.module.css';
+import { instance } from '../../apis/instance';
 
 export default function QrScanner() {
   const navigate = useNavigate();
@@ -12,10 +13,22 @@ export default function QrScanner() {
 
   const location = useLocation();
 
-  const handleTestBtnClick = () => {
-    localStorage.setItem('showAttendanceModal', 'true');
+  const handleTestBtnClick = async () => {
+    const itemId = new URLSearchParams(location.search).get('itemId');
+    if (!itemId) return;
 
-    navigate('/mypage');
+    try {
+      await instance.patch(`/api/reservations/${itemId}`, {
+        reservation_status: 'used',
+      });
+
+      localStorage.setItem('showAttendanceModal', 'true');
+
+      navigate('/mypage');
+    } catch (err) {
+      console.error('관람 인증 실패:', err);
+      alert('관람 인증 처리 중 문제가 발생했습니다.');
+    }
   };
 
   useEffect(() => {

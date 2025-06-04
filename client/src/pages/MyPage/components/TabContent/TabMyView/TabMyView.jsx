@@ -82,12 +82,12 @@ export default function TabMyView() {
 
     return result;
   }, [reservations, filter]);
-  console.log('filteredReserv:', filteredReservations);
 
   const handleCloseModal = () => {
     setShowAttendanceModal(false);
     localStorage.removeItem('exhibitionInfo');
   };
+
   const handleStatusChange = async (id) => {
     const confirm = window.confirm('예약을 취소하시겠습니까?');
     if (!confirm) return;
@@ -118,7 +118,7 @@ export default function TabMyView() {
     localStorage.setItem('exhibitionInfo', JSON.stringify(exhibitionInfo));
 
     localStorage.setItem('showAttendanceModal', 'true');
-
+    console.log('예매 데이터 바뀌기 전: ');
     navigate(`/scan?itemId=${item.id}`);
   };
 
