@@ -148,6 +148,9 @@ export default function TabMyView() {
                 key={item.id}
                 item={item}
                 status={item.reservation_status === 'reserved'}
+                onReservation={() => {
+                  navigate(`/reservation/${item.id}`);
+                }}
                 onGoDetail={() => handleGoDetail(item.exhibition_id)}
                 onCancel={() => handleStatusChange(item.id)}
                 onQR={() => handleQR(item)}
