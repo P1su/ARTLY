@@ -1,8 +1,23 @@
+body {
+  overflow: hidden;
+}
+
 .chatbotContainer {
   position: fixed;
-  margin-left: 28rem;
+  right: 3rem;
   bottom: 2rem;
-  z-index: 1000;
+  z-index: 1501;
+}
+
+.chatbotOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.572);
+  z-index: 1499;
 }
 
 .chatbotButton {
@@ -35,6 +50,7 @@
   border-radius: 1.2rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
   background-color: #f0f5ff;
+  z-index: 1500;
 }
 
 .headerContainer {

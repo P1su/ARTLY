@@ -145,86 +145,91 @@ export default function ChatbotWidget() {
   };
 
   return (
-    <div className={styles.chatbotContainer}>
-      <button className={styles.chatbotButton} onClick={handleToggleChat}>
-        <BsChatFill />
-      </button>
+    <>
+      <div className={styles.chatbotContainer}>
+        <button className={styles.chatbotButton} onClick={handleToggleChat}>
+          <BsChatFill />
+        </button>
+      </div>
 
       {isOpen && (
-        <div className={styles.popupContainer}>
-          <div className={styles.headerContainer}>
-            <h3 className={styles.headerTitle}>Artly에게 물어봐!</h3>
-            <button className={styles.closeButton} onClick={handleToggleChat}>
-              <IoCloseSharp />
-            </button>
-          </div>
+        <>
+          <div className={styles.chatbotOverlay} />
+          <div className={styles.popupContainer}>
+            <div className={styles.headerContainer}>
+              <h3 className={styles.headerTitle}>Artly에게 물어봐!</h3>
+              <button className={styles.closeButton} onClick={handleToggleChat}>
+                <IoCloseSharp />
+              </button>
+            </div>
 
-          <div className={styles.chatContainer}>
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={
-                  msg.sender === 'bot'
-                    ? styles.botMessageContainer
-                    : styles.userMessageContainer
-                }
-                ref={currentChat}
-              >
-                {msg.sender === 'bot' ? (
-                  <>
-                    <img
-                      src={chatbotProfile}
-                      alt='챗봇 프로필'
-                      className={styles.botProfile}
-                    />
-                    <div className={styles.botContent}>
-                      <p className={styles.botName}>Artly</p>
-                      <div className={styles.botBubble}>
-                        <p>{parseBold(msg.text)}</p>
+            <div className={styles.chatContainer}>
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={
+                    msg.sender === 'bot'
+                      ? styles.botMessageContainer
+                      : styles.userMessageContainer
+                  }
+                  ref={currentChat}
+                >
+                  {msg.sender === 'bot' ? (
+                    <>
+                      <img
+                        src={chatbotProfile}
+                        alt='챗봇 프로필'
+                        className={styles.botProfile}
+                      />
+                      <div className={styles.botContent}>
+                        <p className={styles.botName}>Artly</p>
+                        <div className={styles.botBubble}>
+                          <p>{parseBold(msg.text)}</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className={styles.userMessageContainer}>
+                      <div className={styles.userBubble}>
+                        <p>{msg.text}</p>
                       </div>
                     </div>
-                  </>
-                ) : (
-                  <div className={styles.userMessageContainer}>
-                    <div className={styles.userBubble}>
-                      <p>{msg.text}</p>
+                  )}
+                </div>
+              ))}
+              {isLoading && (
+                <div className={styles.botMessageContainer} ref={currentChat}>
+                  <img
+                    src={chatbotProfile}
+                    alt='챗봇 프로필'
+                    className={styles.botProfile}
+                  />
+                  <div className={styles.botContent}>
+                    <p className={styles.botName}>Artly</p>
+                    <div className={styles.botBubble}>
+                      <p>챗봇이 답변을 생성하고 있어요. 잠시만 기다려주세요</p>
                     </div>
                   </div>
-                )}
-              </div>
-            ))}
-            {isLoading && (
-              <div className={styles.botMessageContainer} ref={currentChat}>
-                <img
-                  src={chatbotProfile}
-                  alt='챗봇 프로필'
-                  className={styles.botProfile}
-                />
-                <div className={styles.botContent}>
-                  <p className={styles.botName}>Artly</p>
-                  <div className={styles.botBubble}>
-                    <p>챗봇이 답변을 생성하고 있어요. 잠시만 기다려주세요</p>
-                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className={styles.inputContainer}>
-            <input
-              className={styles.input}
-              type='text'
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyPress={keyPressHanlder}
-              placeholder='챗봇에게 물어보세요'
-            />
-            <button className={styles.sendButton} onClick={handleSendMessage}>
-              전송
-            </button>
+            <div className={styles.inputContainer}>
+              <input
+                className={styles.input}
+                type='text'
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyPress={keyPressHanlder}
+                placeholder='챗봇에게 물어보세요'
+              />
+              <button className={styles.sendButton} onClick={handleSendMessage}>
+                전송
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 }
