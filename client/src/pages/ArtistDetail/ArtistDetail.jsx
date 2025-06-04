@@ -94,7 +94,11 @@ export default function ArtistDetail() {
           </button>
         ))}
       </div>
-      <ArtistActivity description={artistData.description} />
+      <ArtistActivity
+        description={artistData.description}
+        artworks={artistData?.artworks}
+        exhibitions={artistData?.exhibitions}
+      />
       <Link className={styles.backButton} to='/artists'>
         목록으로 돌아가기
       </Link>

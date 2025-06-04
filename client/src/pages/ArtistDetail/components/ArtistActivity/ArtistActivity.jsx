@@ -1,11 +1,9 @@
 import styles from './ArtistActivity.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { mockArtistDetail } from '../../mock/mockArtistDetail.js';
 
-export default function ArtistActivity({ description }) {
-  const [activity, setActivity] = useState('artworks');
-  const { artworks, exhibitions } = mockArtistDetail;
+export default function ArtistActivity({ description, artworks, exhibitions }) {
+  const [activity, setActivity] = useState('profile');
 
   const handleActivity = (activityType) => {
     setActivity(activityType);
@@ -57,47 +55,41 @@ export default function ArtistActivity({ description }) {
             <p className={styles.descriptionParagraph}>{description}</p>
           </div>
         ) : activity === 'artworks' ? (
-          artworks.length === 0 ? (
+          artworks && artworks.length === 0 ? (
             <div>작업한 작품이 없습니다</div>
           ) : (
-            artworks.map(
-              ({ artworkId, artworkImage, artworkTitle, date, field }) => (
-                <div className={styles.activityItemContainer} key={artworkId}>
-                  <img className={styles.artworkImage} src={artworkImage} />
-                  <h3 className={styles.activityItemTitle}>{artworkTitle}</h3>
-                  <span className={styles.activityItemSpan}>
-                    {date} | {field}
-                  </span>
-                </div>
-              ),
-            )
+            artworks?.map(({ id, imageUrl, title }) => (
+              <div className={styles.activityItemContainer} key={id}>
+                <img className={styles.artworkImage} src={imageUrl} />
+                <h3 className={styles.activityItemTitle}>{title}</h3>
+              </div>
+            ))
           )
-        ) : exhibitions.length === 0 ? (
+        ) : exhibitions && exhibitions.length === 0 ? (
           <div>참여 중인 전시회가 없습니다</div>
         ) : (
-          exhibitions.map(
+          exhibitions?.map(
             ({
-              exhibitionId,
-              exhibitionImage,
-              exhibitionTitle,
-              exhibitionDate,
+              id,
+              exhibition_poster: poster,
+              exhibition_title: title,
+              exhibition_start_date: startDate,
+              exhibition_end_date: endDate,
             }) => (
               <Link
                 className={styles.activityItemContainer}
-                key={exhibitionId}
-                to={`/exhibitions/${exhibitionId}`}
+                key={id}
+                to={`/exhibitions/${id}`}
               >
                 <img
                   className={styles.activityImage}
-                  src={exhibitionImage}
+                  src={poster}
                   alt='대표 이미지'
                 />
                 <div className={styles.activityItemInfoBox}>
-                  <h3 className={styles.activityItemTitle}>
-                    {exhibitionTitle}
-                  </h3>
+                  <h3 className={styles.activityItemTitle}>{title}</h3>
                   <span className={styles.activityItemSpan}>
-                    | {exhibitionDate}
+                    | {startDate} ~ {endDate}
                   </span>
                 </div>
               </Link>
