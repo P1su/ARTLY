@@ -121,15 +121,21 @@ export default function SectionCard({
 
   const renderCatalog = () => {
     const {
+      bookDetail,
       book_poster: bookImg,
-      book_title: bookTitle = '제목 정보 없음',
-      gallery = '갤러리 정보 없음',
-      city = '도시 정보 없음',
-      region = '지역 정보 없음',
-      exhibition_start_date: exhibitionStartDate = '',
-      exhibition_end_date: exhibitionEndDate = '',
       create_dtm: bookCreatedDate = '',
     } = item;
+
+    // bookDetail이 null이면 기본값 사용
+    const {
+      book: { book_title: bookTitle = '제목 정보 없음' } = {},
+      exhibition: {
+        exhibition_location: exhibitionLocation = '전시 장소 정보 없음',
+      } = {},
+      gallery: { gallery_name: galleryName = '갤러리 정보 없음' } = {},
+      exhibition: { exhibition_start_date: exhibitionStartDate = '' } = {},
+      exhibition: { exhibition_end_date: exhibitionEndDate = '' } = {},
+    } = bookDetail?.book || {};
 
     const exhibitionPeriod =
       exhibitionStartDate && exhibitionEndDate
@@ -148,7 +154,7 @@ export default function SectionCard({
         <div className={styles.contents}>
           <h3 className={styles.title}>{bookTitle}</h3>
           <p className={styles.info}>
-            {gallery} / {city} / {region}
+            {galleryName} / {exhibitionLocation}
             <br />
             {exhibitionPeriod}
           </p>
