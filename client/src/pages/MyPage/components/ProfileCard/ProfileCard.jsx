@@ -15,8 +15,8 @@ export default function ProfileCard() {
     user_phone: '',
   });
 
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const imageBaseUrl = 'http://artly.soundgram.co.kr/images/';
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -32,6 +32,8 @@ export default function ProfileCard() {
         console.log(res.data);
       } catch (err) {
         console.log('profile fetch err : ', err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,16 +47,18 @@ export default function ProfileCard() {
   return (
     <div className={styles.layout}>
       <div className={styles.info}>
-        <div className={styles.imgBox}>
-          <img
-            src={
-              userData.user_img
-                ? imageBaseUrl + userData.user_img
-                : defaultProfileImg
-            }
-            alt='프로필 사진'
-          />
-        </div>
+        {isLoading ? (
+          <div className={styles.imgBox}>
+            <img src={defaultProfileImg} alt='로딩 중...' />
+          </div>
+        ) : (
+          <div className={styles.imgBox}>
+            <img
+              src={userData.user_img || defaultProfileImg}
+              alt='프로필 사진'
+            />
+          </div>
+        )}
         <h3 className={styles.name}>{userData.user_name} 님</h3>
       </div>
       <button className={styles.btn} onClick={handleSettingClick}>
