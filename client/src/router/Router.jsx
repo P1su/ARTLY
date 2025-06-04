@@ -27,6 +27,8 @@ import Test from '../pages/Test/Test';
 import Find from '../pages/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
+import Reservation from '../pages/Reservation/Reservation';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
       { path: '/galleries/:galleryId', element: <GalleryDetail /> },
       { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
-      { path: '/artwork-detail/:artworkId', element: <ArtworkDetail /> },
+      { path: '/artworks/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
       { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
@@ -53,6 +55,7 @@ const router = createBrowserRouter([
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
+      { path: '/reservation/:reservationId', element: <Reservation /> },
       {
         element: <AuthRoute />,
         children: [

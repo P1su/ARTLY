@@ -9,18 +9,21 @@ export default function ListHeader({
   onFav,
   onSearch,
   value,
+  isNews = false,
 }) {
   return (
     <div className={styles.layout}>
       <div className={styles.titleContainer}>
         <h1 className={styles.listTitle}>{title}</h1>
-        <button
-          className={`${styles.favButton} ${isFav && styles.clickedFavButton}`}
-          onClick={onFav}
-        >
-          <FaHeart className={`${isFav && styles.clickedIcon}`} />
-          좋아요
-        </button>
+        {!isNews && (
+          <button
+            className={`${styles.favButton} ${isFav && styles.clickedFavButton}`}
+            onClick={onFav}
+          >
+            <FaHeart className={`${isFav && styles.clickedIcon}`} />
+            좋아요
+          </button>
+        )}
       </div>
       <form className={styles.searchForm} action={onEvent}>
         <input

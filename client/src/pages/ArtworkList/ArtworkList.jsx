@@ -1,5 +1,6 @@
 import styles from './ArtworkList.module.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import { artworkFilter } from '../../utils/filters/artworkFilter.js';
 import ArtworkCard from './components/ArtworkCard/ArtworkCard';
@@ -17,6 +18,7 @@ export default function ArtworkList() {
     10,
     artworks,
   );
+  const navigate = useNavigate();
   const [artworkFilters, setArtworkFilters] = useState({
     type: '',
   });
@@ -39,21 +41,14 @@ export default function ArtworkList() {
   }, [artworkFilters]);
 
   const handleFav = () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     setIsFav((prev) => !prev);
   };
 
   return (
     <div className={styles.layout}>
-      <ListHeader
-        title='작품'
-        placeholder='작품명 검색'
-        isFav={isFav}
-        onFav={handleFav}
-      />
-      <DropdownContainer
-        filterList={artworkFilter}
-        onSetFilter={setArtworkFilters}
-      />
+      <h1 className={styles.listTitle}>작품</h1>
+
       <TotalCounts num={artworks.length} label='작품' />
       {isLoading && <div>작품 리스트 불러오는 중</div>}
       {pageItems.map((item) => (

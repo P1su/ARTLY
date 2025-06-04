@@ -4,8 +4,20 @@
   gap: 0.5rem;
 }
 
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
 .categoryTitle {
   font-size: 1.6rem;
+}
+
+.extraLink {
+  display: flex;
+  align-items: flex-end;
+  font-size: 1.4rem;
 }
 
 .resultList {

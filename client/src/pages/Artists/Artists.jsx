@@ -1,5 +1,6 @@
 import styles from './Artists.module.css';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import ListHeader from '../../components/List/ListHeader/ListHeader';
 import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
@@ -19,10 +20,11 @@ export default function Artists() {
     birthDecade: '',
     liked_only: 0,
   });
-
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
   const handleFav = () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     setArtistFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

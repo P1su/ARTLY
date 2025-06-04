@@ -1,5 +1,5 @@
 import styles from './GalleryDetail.module.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../apis/instance.js';
 import {
@@ -15,6 +15,7 @@ import useMap from '../Nearby/hooks/useMap';
 export default function GalleryDetail() {
   const { galleryId } = useParams();
   const [galleryData, setGalleryData] = useState({});
+  const navigate = useNavigate();
 
   const getGalleryDetail = async () => {
     try {
@@ -31,6 +32,8 @@ export default function GalleryDetail() {
   }, []);
 
   const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+
     try {
       if (galleryData.is_liked === true) {
         await userInstance.delete('/api/likes', {
@@ -49,7 +52,6 @@ export default function GalleryDetail() {
       await getGalleryDetail();
     } catch (error) {
       console.error(error);
-      alert('좋아요 처리 실패');
     }
   };
 

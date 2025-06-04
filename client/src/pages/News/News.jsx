@@ -61,11 +61,10 @@ export default function News() {
       <ListHeader
         title='뉴스'
         placeholder='뉴스 제목 검색'
-        isFav={newsFilters.liked_only}
         onEvent={getNews}
-        onFav={handleFav}
         onSearch={handleSearch}
         value={query}
+        isNews
       />
 
       <DropdownContainer filterList={newsFilter} onSetFilter={setNewsFilters} />

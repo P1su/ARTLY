@@ -39,9 +39,10 @@ export default function ExhibitionDetail() {
 
   useEffect(() => {
     getExhibitionDetail();
-  }, []);
+  }, [exhibitionId]);
 
   const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     try {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {
@@ -60,7 +61,6 @@ export default function ExhibitionDetail() {
       await getExhibitionDetail();
     } catch (error) {
       console.error(error);
-      alert('좋아요 처리 실패');
     }
   };
 
@@ -181,7 +181,7 @@ export default function ExhibitionDetail() {
         {relatedExhibitions?.length > 0 ? (
           relatedExhibitions.map((exhibition) => (
             <Link
-              to={`/exhibition/${exhibition.id}`}
+              to={`/exhibitions/${exhibition.id}`}
               key={exhibition.id}
               className={styles.relatedExhibitionCard}
             >
