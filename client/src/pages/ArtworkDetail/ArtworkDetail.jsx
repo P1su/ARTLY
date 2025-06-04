@@ -1,13 +1,14 @@
 import styles from './ArtworkDetail.module.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { instance, userInstance } from '../../apis/instance.js';
-import { FaHeart, FaShare } from 'react-icons/fa';
+import { FaHeart, FaShare, FaQrcode } from 'react-icons/fa';
 
 export default function ArtworkDetail() {
   const { artworkId } = useParams();
   const [artworkData, setArtworkData] = useState([]);
   const [isLike, setIsLike] = useState('false');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getArtworkDetail = async () => {
@@ -32,7 +33,6 @@ export default function ArtworkDetail() {
         });
       } catch (error) {
         console.error(error);
-        alert('좋아요 실패');
       }
     };
 
@@ -59,12 +59,10 @@ export default function ArtworkDetail() {
 
   const buttons = [
     {
-      label: '관심 작품',
-      icon: (
-        <FaHeart className={`${styles.icon} ${isLike && styles.icHeart}`} />
-      ),
+      label: '도슨트',
+      icon: <FaQrcode className={`${styles.icon}`} />,
       action: () => {
-        alert('구현 중에 있습니다.');
+        navigate('/scan');
       },
     },
     {

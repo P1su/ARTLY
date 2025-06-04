@@ -1,5 +1,6 @@
 import styles from './Exhibitions.module.css';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import ListHeader from '../../components/List/ListHeader/ListHeader';
 import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
@@ -23,6 +24,7 @@ export default function Exhibitions() {
     status: 'exhibited',
     liked_only: 0,
   });
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
   const handleSearch = (e) => {
@@ -30,6 +32,7 @@ export default function Exhibitions() {
   };
 
   const handleFav = () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     setExhibitionFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

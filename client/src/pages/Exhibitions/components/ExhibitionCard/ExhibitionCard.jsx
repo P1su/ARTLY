@@ -1,5 +1,5 @@
 import styles from './ExhibitionCard.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FaHeart, FaLocationDot } from 'react-icons/fa6';
 import { userInstance } from '../../../../apis/instance.js';
@@ -17,6 +17,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     is_liked: isLike,
   } = exhibitionItem;
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -29,6 +30,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   };
 
   const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     try {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {
@@ -47,7 +49,6 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
       await onEvent();
     } catch (error) {
       console.error(error);
-      alert('좋아요 처리 실패');
     }
   };
 

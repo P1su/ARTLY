@@ -1,5 +1,5 @@
 import styles from './ArtistDetail.module.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../apis/instance.js';
 import ArtistActivity from './components/ArtistActivity/ArtistActivity';
@@ -8,6 +8,7 @@ import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
 export default function ArtistDetail() {
   const { artistId } = useParams();
   const [artistData, setArtistData] = useState([]);
+  const navigate = useNavigate();
 
   const getArtistDetail = async () => {
     try {
@@ -24,6 +25,7 @@ export default function ArtistDetail() {
   }, []);
 
   const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     try {
       if (artistData.is_liked === '1') {
         await userInstance.delete('/api/likes', {
@@ -42,7 +44,6 @@ export default function ArtistDetail() {
       await getArtistDetail();
     } catch (error) {
       console.error(error);
-      alert('좋아요 처리 실패');
     }
   };
 
@@ -93,7 +94,11 @@ export default function ArtistDetail() {
           </button>
         ))}
       </div>
-      <ArtistActivity description={artistData.description} />
+      <ArtistActivity
+        description={artistData.description}
+        artworks={artistData?.artworks}
+        exhibitions={artistData?.exhibitions}
+      />
       <Link className={styles.backButton} to='/artists'>
         목록으로 돌아가기
       </Link>

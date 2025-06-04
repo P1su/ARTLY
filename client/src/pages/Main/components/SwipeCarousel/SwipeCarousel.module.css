@@ -41,10 +41,12 @@
 
 /* 공통 슬라이드 */
 .carouselSlide {
-  width: 50% !important;  
+  width: 50% !important;
   display: flex;
   justify-content: center;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   opacity: 0.3;
   transform: scale(0.85);
 }
@@ -110,5 +112,14 @@
   cursor: pointer;
 }
 
-.prevButton { left: 1rem; }
-.nextButton { right: 1rem; }
+.emptyBox {
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.prevButton {
+  left: 1rem;
+}
+.nextButton {
+  right: 1rem;
+}

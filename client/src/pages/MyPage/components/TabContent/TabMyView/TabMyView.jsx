@@ -83,6 +83,8 @@ export default function TabMyView() {
     return result;
   }, [reservations, filter]);
 
+  console.log(filteredReservations);
+
   const handleCloseModal = () => {
     setShowAttendanceModal(false);
     localStorage.removeItem('exhibitionInfo');

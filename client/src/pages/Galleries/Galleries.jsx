@@ -1,6 +1,7 @@
 import styles from './Galleries.module.css';
 import { instance } from '../../apis/instance.js';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ListHeader from '../../components/List/ListHeader/ListHeader';
 import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
 import { galleryFilter } from '../../utils/filters/galleryFilter.js';
@@ -22,6 +23,7 @@ export default function Galleries() {
     type: '',
     liked_only: 0,
   });
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
   const handleSearch = (e) => {
@@ -29,6 +31,7 @@ export default function Galleries() {
   };
 
   const handleFav = () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     setGalleryFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

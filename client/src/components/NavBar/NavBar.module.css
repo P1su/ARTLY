@@ -11,7 +11,7 @@
   overflow-x: auto;
   scrollbar-width: none;
 
-  z-index: 100;
+  z-index: 1000;
 }
 
 .menuList {
