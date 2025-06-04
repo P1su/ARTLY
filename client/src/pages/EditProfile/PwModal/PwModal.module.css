@@ -20,7 +20,7 @@
   box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: 6rem;
+  height: 40rem;
 }
 
 .modalHeader {
@@ -111,25 +111,10 @@
   font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
 }
 
 .submitButton:hover {
   background-color: #38a169;
-}
-
-.mascot {
-  align-self: flex-end;
-  margin-top: 2rem;
-}
-
-.mascotImage {
-  width: 10rem;
-  height: 10rem;
-  background-color: #f0f0f0;
-  border-radius: 0.8rem;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/600px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg');
-  background-size: cover;
-  background-position: center;
 }

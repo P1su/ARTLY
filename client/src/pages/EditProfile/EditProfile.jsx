@@ -25,6 +25,7 @@ const EditProfile = () => {
       try {
         const response = await instance.get('/api/users/me');
         setUserInfo(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('사용자 정보를 불러오는 데 실패했습니다.', error);
       }
@@ -61,7 +62,10 @@ const EditProfile = () => {
 
   const handleSaveName = async () => {
     try {
-      await instance.put('/api/users/me', { user_name: newName });
+      await instance.put('/api/users/me', {
+        ...userInfo,
+        user_name: newName,
+      });
       setUserInfo({ ...userInfo, user_name: newName });
       setEditingName(false);
     } catch (error) {
@@ -71,7 +75,10 @@ const EditProfile = () => {
 
   const handleSaveEmail = async () => {
     try {
-      await instance.put('/api/users/me', { user_email: newEmail });
+      await instance.put('/api/users/me', {
+        ...userInfo,
+        user_email: newEmail,
+      });
       setUserInfo({ ...userInfo, user_email: newEmail });
       setEditingEmail(false);
     } catch (error) {

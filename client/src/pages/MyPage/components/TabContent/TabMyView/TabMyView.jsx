@@ -73,6 +73,7 @@ export default function TabMyView() {
         (reservation) => reservation.reservation_status === filter.statusFilter,
       );
     }
+
     result.sort((a, b) => {
       const dateA = new Date(a.reservation_datetime);
       const dateB = new Date(b.reservation_datetime);
@@ -88,6 +89,7 @@ export default function TabMyView() {
     setShowAttendanceModal(false);
     localStorage.removeItem('exhibitionInfo');
   };
+
   const handleStatusChange = async (id) => {
     const confirm = window.confirm('예약을 취소하시겠습니까?');
     if (!confirm) return;
@@ -111,15 +113,15 @@ export default function TabMyView() {
 
   const handleQR = (item) => {
     const exhibitionInfo = {
-      id: item.id,
+      id: item.exhibition_id,
       title: item.exhibition_title,
       imageUrl: item.exhibition_poster,
     };
     localStorage.setItem('exhibitionInfo', JSON.stringify(exhibitionInfo));
 
     localStorage.setItem('showAttendanceModal', 'true');
-
-    navigate(`/scan?itemId=${item.session_id}`);
+    console.log('예매 데이터 바뀌기 전: ');
+    navigate(`/scan?itemId=${item.id}`);
   };
 
   return (
@@ -146,9 +148,6 @@ export default function TabMyView() {
                 key={item.id}
                 item={item}
                 status={item.reservation_status === 'reserved'}
-                onReservation={() => {
-                  navigate(`/reservation/${item.id}`);
-                }}
                 onGoDetail={() => handleGoDetail(item.exhibition_id)}
                 onCancel={() => handleStatusChange(item.id)}
                 onQR={() => handleQR(item)}

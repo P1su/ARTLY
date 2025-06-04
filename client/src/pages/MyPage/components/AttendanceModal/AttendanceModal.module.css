@@ -20,7 +20,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 2rem 0 3rem;
+  padding: 0 0 3rem;
   position: relative;
 }
 
@@ -28,14 +28,14 @@
   font-size: 1.8rem;
   font-weight: 600;
   text-align: center;
-  padding: 1.2rem 0;
+  padding: 2rem 0;
   border-bottom: 0.1rem solid #eee;
   position: relative;
 }
 
 .closeButton {
   position: absolute;
-  left: 1.6rem;
+  right: 1.6rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;

@@ -26,10 +26,33 @@ export default function TabPurchased() {
         const res = await instance.get('/api/users/me/purchases');
         const purchases = res.data;
 
-        console.log(purchases);
-        setPurchased(purchases);
+        const detailedPurchases = await Promise.all(
+          purchases.map(async (item) => {
+            try {
+              const bookDetailRes = await instance.get(
+                `/api/books/${item.book_id}`,
+              );
+              return {
+                ...item,
+                bookDetail: bookDetailRes.data,
+              };
+            } catch (err) {
+              console.error(
+                `Book ${item.book_id} 상세 정보 가져오기 실패: `,
+                err,
+              );
+              return {
+                ...item,
+                bookDetail: null,
+              };
+            }
+          }),
+        );
+
+        console.log(detailedPurchases);
+        setPurchased(detailedPurchases);
       } catch (err) {
-        console.error(err);
+        console.error('구매 목록 가져오기 실패: ', err);
         setPurchased([]);
       }
     }

@@ -4,11 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaCog, FaHeart, FaChevronDown } from 'react-icons/fa';
 
 import { instance } from '../../../../apis/instance';
-import profileImg from '../../mock/userProfile.png';
+import defaultProfileImg from '../../mock/userProfile.png';
 
 export default function ProfileCard() {
-  const [imgSrc, setImgSrc] = useState(profileImg);
-
   const [userData, setUserData] = useState({
     user_img: '',
     user_name: '',
@@ -17,6 +15,7 @@ export default function ProfileCard() {
     user_phone: '',
   });
 
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,23 +30,15 @@ export default function ProfileCard() {
           user_phone: res.data.user_phone,
         });
         console.log(res.data);
-        if (res.data.user_img) {
-          setImgSrc(res.data.user_img);
-        } else {
-          setImgSrc(profileImg);
-        }
       } catch (err) {
         console.log('profile fetch err : ', err);
-        setImgSrc(profileImg);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchUserInfo();
   }, []);
-
-  const handleImgError = () => {
-    setImgSrc(profileImg);
-  };
 
   const handleSettingClick = () => {
     navigate('/mypage/edit');
@@ -56,9 +47,18 @@ export default function ProfileCard() {
   return (
     <div className={styles.layout}>
       <div className={styles.info}>
-        <div className={styles.imgBox}>
-          <img src={imgSrc} alt='사 진' onError={handleImgError} />
-        </div>
+        {isLoading ? (
+          <div className={styles.imgBox}>
+            <img src={defaultProfileImg} alt='로딩 중...' />
+          </div>
+        ) : (
+          <div className={styles.imgBox}>
+            <img
+              src={userData.user_img || defaultProfileImg}
+              alt='프로필 사진'
+            />
+          </div>
+        )}
         <h3 className={styles.name}>{userData.user_name} 님</h3>
       </div>
       <button className={styles.btn} onClick={handleSettingClick}>
