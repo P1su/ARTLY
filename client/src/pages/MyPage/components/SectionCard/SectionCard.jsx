@@ -6,6 +6,7 @@ export default function SectionCard({
   onQR,
   onCancel,
   onGoDetail,
+  onReservation,
   type,
 }) {
   if (!item) return null;
@@ -75,7 +76,7 @@ export default function SectionCard({
     const statusClass = statusMap[reservationStatus]?.className || '';
 
     return (
-      <div className={styles.cardContainer}>
+      <div className={styles.cardContainer} onClick={onReservation}>
         <div className={styles.imgContainer}>
           <img
             src={exhibitionImg}
