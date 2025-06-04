@@ -49,3 +49,18 @@
 
   cursor: not-allowed;
 }
+
+.loadingMessage {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.notFoundMessage {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  color: red;
+}
+

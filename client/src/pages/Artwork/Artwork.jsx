@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './Artwork.module.css';
-import { mockArtwork } from './mock/mockArtwork';
 import SectionTitle from './components/SectionTitle/SectionTitle';
 import ArtworkDetailSection from './components/ArtworkDetailSection/ArtworkDetailSection';
 import DocentScript from './components/ArtworkDetailSection/DocentScript/DocentScript';
@@ -74,7 +73,7 @@ export default function Artwork() {
   if (loading) {
     return (
       <main className={styles.pageContainer}>
-        <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '1.5rem' }}>
+        <div className={styles.loadingMessage}>
           작품 정보를 불러오는 중입니다...
         </div>
       </main>
@@ -84,7 +83,7 @@ export default function Artwork() {
   if (notFound) {
     return (
       <main className={styles.pageContainer}>
-        <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '1.5rem', color: 'red' }}>
+        <div className={styles.notFoundMessage}>
           해당하는 작품을 찾을 수 없습니다.
         </div>
       </main>
