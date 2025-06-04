@@ -24,6 +24,7 @@ export default function Artwork() {
   const [info, setInfo] = useState('');
   const [script, setScript] = useState('');
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   
   const scriptPages = paginateScript(script);
   const [pageIndex, setPageIndex] = useState(0);
@@ -41,7 +42,11 @@ export default function Artwork() {
         setInfo(artworkData.art_description);
         setScript(artworkData.art_docent);
       } catch (error) {
-        console.error('Error fetching artwork data:', error);
+        if (error.response && error.response.status === 404) {
+          setNotFound(true);
+        } else {
+          console.error('Error fetching artwork data:', error);
+        }
       } finally {
         setLoading(false);
       }
@@ -65,6 +70,26 @@ export default function Artwork() {
       return prevIndex;
     });
   };
+
+  if (loading) {
+    return (
+      <main className={styles.pageContainer}>
+        <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '1.5rem' }}>
+          작품 정보를 불러오는 중입니다...
+        </div>
+      </main>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <main className={styles.pageContainer}>
+        <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '1.5rem', color: 'red' }}>
+          해당하는 작품을 찾을 수 없습니다.
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className={styles.pageContainer}>
