@@ -62,7 +62,10 @@ const EditProfile = () => {
 
   const handleSaveName = async () => {
     try {
-      await instance.put('/api/users/me', { user_name: newName });
+      await instance.put('/api/users/me', {
+        ...userInfo,
+        user_name: newName,
+      });
       setUserInfo({ ...userInfo, user_name: newName });
       setEditingName(false);
     } catch (error) {
@@ -72,7 +75,10 @@ const EditProfile = () => {
 
   const handleSaveEmail = async () => {
     try {
-      await instance.put('/api/users/me', { user_email: newEmail });
+      await instance.put('/api/users/me', {
+        ...userInfo,
+        user_email: newEmail,
+      });
       setUserInfo({ ...userInfo, user_email: newEmail });
       setEditingEmail(false);
     } catch (error) {
