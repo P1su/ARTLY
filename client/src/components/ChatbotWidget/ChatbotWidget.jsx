@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { instance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../apis/instance.js';
 import styles from './ChatbotWidget.module.css';
 import { BsChatFill } from 'react-icons/bs';
 import { IoCloseSharp } from 'react-icons/io5';
@@ -17,6 +17,9 @@ export default function ChatbotWidget() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false); // state for loading gpt response
   const currentChat = useRef(null);
+  const curInstance = localStorage.getItem('ACCESS_TOKEN')
+    ? userInstance
+    : instance;
 
   const getNextId = () => messages[messages.length - 1].id + 1;
 
@@ -96,7 +99,10 @@ export default function ChatbotWidget() {
 
     try {
       setIsLoading(true); // Set loading state to true before sending request
-      const gptResponse = await instance.post('/api/chats', textQueryVariables);
+      const gptResponse = await curInstance.post(
+        '/api/chats',
+        textQueryVariables,
+      );
       let msgText = gptResponse.data;
 
       console.log('GPT Response:\n', gptResponse.data);
