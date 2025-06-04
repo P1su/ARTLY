@@ -47,7 +47,7 @@ body {
   transform: translate(-50%, -50%);
   width: 33rem;
   height: 52rem;
-  border-radius: 1.2rem;
+  border-radius: 3rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
   background-color: #f0f5ff;
   z-index: 1500;
@@ -58,9 +58,8 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-top-right-radius: 0.8rem;
-  border-top-left-radius: 0.8rem;
-  background-color: #e9f9ef;
+  border-radius: 0.8rem;
+  background-color: #dcffe9;
   color: white;
 }
 
@@ -158,6 +157,8 @@ body {
   padding: 0.8rem;
   border-top: 0.16rem solid #ccc;
   background-color: #fff;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
 }
 
 .input {
