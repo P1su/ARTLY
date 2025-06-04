@@ -1,19 +1,20 @@
 import { useRef, useState, useEffect } from 'react';
 import styles from './DocentAudioPlayer.module.css';
+import { FaPlay, FaStop, FaPause } from 'react-icons/fa';
 
 export default function DocentAudioPlayer({ script, playbackRate }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioReady, setIsAudioReady] = useState(false);
   const [changedPlaybackRate, setChangedPlaybackRate] = useState(playbackRate);
   const audioRef = useRef(null);
-  
+
   // get audio content when script changes
   useEffect(() => {
     let isMounted = true;
     setIsAudioReady(false);
 
     const fetchAudio = async () => {
-      console.log('Fetching audio for script:', script.substr(0, 50) + '...');
+      console.log('Fetching audio for script:', `${script.substr(0, 50)}...`);
       const audioContent = await callTTS();
 
       if (audioContent && isMounted) {
@@ -59,12 +60,12 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
           voice: { languageCode: 'ko-KR', name: 'ko-KR-Chirp3-HD-Kore' }, //Aoede, Kore, Leda, Orus, Puck...
           audioConfig: { audioEncoding: 'MP3' },
         }),
-      }
+      },
     );
 
     const data = await response.json();
-    const audioContent = data.audioContent;
-    
+    const { audioContent } = data;
+
     if (audioContent) return audioContent;
   };
 
@@ -96,16 +97,15 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
         onClick={handlePlayPauseClick}
         disabled={!isAudioReady}
       >
-        {!isAudioReady ? '로딩 중...' : isPlaying ? '⏸' : '▶'}
+        {!isAudioReady ? '로딩 중...' : isPlaying ? <FaPause /> : <FaPlay />}
       </button>
       <button
         className={styles.audioButton}
         onClick={handleStopClick}
         disabled={!isAudioReady}
-        style={{ marginLeft: 8, minWidth: 40, fontSize: 24 }}
-        aria-label="정지"
+        aria-label='정지'
       >
-        {!isAudioReady ? '' : '■'}
+        {!isAudioReady ? '' : <FaStop />}
       </button>
     </div>
   );
