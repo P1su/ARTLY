@@ -102,7 +102,7 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
         className={styles.audioButton}
         onClick={handleStopClick}
         disabled={!isAudioReady}
-        style={{ marginLeft: 8, minWidth: 40, fontSize: 24 }}
+        style={{ marginLeft: 8, minWidth: 40 }}
         aria-label="정지"
       >
         {!isAudioReady ? '' : '■'}
