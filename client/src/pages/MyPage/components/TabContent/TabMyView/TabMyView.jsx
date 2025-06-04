@@ -73,6 +73,7 @@ export default function TabMyView() {
         (reservation) => reservation.reservation_status === filter.statusFilter,
       );
     }
+
     result.sort((a, b) => {
       const dateA = new Date(a.reservation_datetime);
       const dateB = new Date(b.reservation_datetime);
@@ -81,6 +82,7 @@ export default function TabMyView() {
 
     return result;
   }, [reservations, filter]);
+  console.log('filteredReserv:', filteredReservations);
 
   const handleCloseModal = () => {
     setShowAttendanceModal(false);
@@ -109,7 +111,7 @@ export default function TabMyView() {
 
   const handleQR = (item) => {
     const exhibitionInfo = {
-      id: item.id,
+      id: item.exhibition_id,
       title: item.exhibition_title,
       imageUrl: item.exhibition_poster,
     };
@@ -117,7 +119,7 @@ export default function TabMyView() {
 
     localStorage.setItem('showAttendanceModal', 'true');
 
-    navigate(`/scan?itemId=${item.session_id}`);
+    navigate(`/scan?itemId=${item.id}`);
   };
 
   return (
@@ -144,7 +146,7 @@ export default function TabMyView() {
                 key={item.id}
                 item={item}
                 status={item.reservation_status === 'reserved'}
-                onGoDetail={() => handleGoDetail(item.id)}
+                onGoDetail={() => handleGoDetail(item.exhibition_id)}
                 onCancel={() => handleStatusChange(item.id)}
                 onQR={() => handleQR(item)}
                 type='reservation'
@@ -163,7 +165,7 @@ export default function TabMyView() {
           exhibitionTitle={selectedExhibition.title}
           imageUrl={selectedExhibition.imageUrl}
           visitDate={new Date().toLocaleDateString()}
-          onViewExhibition={handleGoDetail}
+          onViewExhibition={() => handleGoDetail(selectedExhibition.id)}
         />
       )}
     </div>

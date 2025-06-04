@@ -104,7 +104,10 @@ export default function SectionCard({
 
               {reservationStatus === 'reserved' && (
                 <>
-                  <button className={styles.btn} onClick={() => onQR(item.id)}>
+                  <button
+                    className={styles.btn}
+                    onClick={() => onQR(item.exhibition_id)}
+                  >
                     관람확인
                   </button>
                   <button className={styles.cancel} onClick={onCancel}>
