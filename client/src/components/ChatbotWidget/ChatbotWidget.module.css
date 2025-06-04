@@ -115,12 +115,13 @@
   max-width: 70%;
   padding: 0.96rem;
   font-size: 1.44rem;
-  word-break: break-word; 
+  word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-line;
 }
 
-.botBubble p, .userBubble p {
+.botBubble p,
+.userBubble p {
   white-space: pre-line;
 }
 
