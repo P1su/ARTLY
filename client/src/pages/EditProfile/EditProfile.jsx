@@ -25,6 +25,7 @@ const EditProfile = () => {
       try {
         const response = await instance.get('/api/users/me');
         setUserInfo(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('사용자 정보를 불러오는 데 실패했습니다.', error);
       }
