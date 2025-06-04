@@ -18,7 +18,9 @@ export default function Reservation() {
   } = reservationData;
 
   const parseDate = (date) => {
-    return date.split(' ')[0];
+    if (date) {
+      return date.split(' ')[0];
+    }
   };
 
   const completionSummaryItems = [
