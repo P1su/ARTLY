@@ -27,7 +27,7 @@ export default function ArtistDetail() {
   const handleLike = async () => {
     !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
     try {
-      if (artistData.is_liked === '1') {
+      if (artistData.is_liked === true) {
         await userInstance.delete('/api/likes', {
           data: {
             liked_id: artistId,
@@ -52,7 +52,7 @@ export default function ArtistDetail() {
       label: '관심 작가',
       icon: (
         <FaHeart
-          className={`${styles.icon} ${artistData.is_liked === '1' && styles.icHeart}`}
+          className={`${styles.icon} ${artistData.is_liked === true && styles.icHeart}`}
         />
       ),
       action: handleLike,
