@@ -2,7 +2,6 @@ import styles from './Artwork.module.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
-import { mockArtwork } from './mock/mockArtwork';
 import ArtworkDetailSection from './components/ArtworkDetailSection/ArtworkDetailSection';
 import DocentScript from './components/ArtworkDetailSection/DocentScript/DocentScript';
 import DocentSection from './components/DocentSection/DocentSection';
