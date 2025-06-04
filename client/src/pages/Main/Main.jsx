@@ -2,7 +2,6 @@ import styles from './Main.module.css';
 import MainCarousel from './components/MainCarousel/MainCarousel';
 import ArtistCarousel from './components/ArtistCarousel/ArtistCarousel';
 import SwipeCarousel from './components/SwipeCarousel/SwipeCarousel';
-import ChatbotWidget from '../../components/ChatbotWidget/ChatbotWidget';
 
 export default function Main() {
   return (
@@ -16,8 +15,6 @@ export default function Main() {
       />
       <SwipeCarousel title='인기있는 전시' category='sort' value='popular' />
       <ArtistCarousel title='전시 중인 작가' />
-
-      <ChatbotWidget />
     </div>
   );
 }

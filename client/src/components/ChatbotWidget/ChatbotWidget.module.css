@@ -1,8 +1,23 @@
+body {
+  overflow: hidden;
+}
+
 .chatbotContainer {
   position: fixed;
-  margin-left: 28rem;
+  right: 3rem;
   bottom: 2rem;
-  z-index: 1000;
+  z-index: 1501;
+}
+
+.chatbotOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.572);
+  z-index: 1499;
 }
 
 .chatbotButton {
@@ -32,9 +47,10 @@
   transform: translate(-50%, -50%);
   width: 33rem;
   height: 52rem;
-  border-radius: 1.2rem;
+  border-radius: 3rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
   background-color: #f0f5ff;
+  z-index: 1500;
 }
 
 .headerContainer {
@@ -42,9 +58,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-top-right-radius: 0.8rem;
-  border-top-left-radius: 0.8rem;
-  background-color: #e9f9ef;
+  border-radius: 0.8rem;
+  background-color: #dcffe9;
   color: white;
 }
 
@@ -115,12 +130,13 @@
   max-width: 70%;
   padding: 0.96rem;
   font-size: 1.44rem;
-  word-break: break-word; 
+  word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-line;
 }
 
-.botBubble p, .userBubble p {
+.botBubble p,
+.userBubble p {
   white-space: pre-line;
 }
 
@@ -141,6 +157,8 @@
   padding: 0.8rem;
   border-top: 0.16rem solid #ccc;
   background-color: #fff;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
 }
 
 .input {
