@@ -7,7 +7,7 @@ import TabMyView from './components/TabContent/TabMyView/TabMyView';
 
 export default function MyPage() {
   const [selectedTab, setSelectedTab] = useState('좋아요');
-  const tabs = ['좋아요', 'My관람', 'MY도록'];
+  const tabs = ['좋아요', 'MY관람', 'MY도록'];
 
   useEffect(() => {
     const attendanceModalFlag = localStorage.getItem('showAttendanceModal');
@@ -16,7 +16,7 @@ export default function MyPage() {
     );
 
     if (attendanceModalFlag === 'true' || fromReservationModalFlag === 'true') {
-      setSelectedTab('My관람');
+      setSelectedTab('MY관람');
       localStorage.removeItem('fromReservationModal');
     }
   }, []);
@@ -25,7 +25,7 @@ export default function MyPage() {
     switch (selectedTab) {
       case '좋아요':
         return <TabLike />;
-      case 'My관람':
+      case 'MY관람':
         return <TabMyView />;
       case 'MY도록':
         return <TabPurchased />;
