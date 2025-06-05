@@ -1,0 +1,57 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  padding: 2rem;
+}
+
+.artworkImage {
+  width: 100%;
+  hieght: 33.5rem;
+
+  object-fit: fill;
+}
+
+.artworkTitle {
+  color: #333;
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.artworkParagraph {
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.icHeart {
+  fill: #e57373;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 2rem;
+}
+
+.subButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton {
+  padding: 1rem 2rem;
+  margin-top: 2rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.4rem;
+  color: #666;
+  font-size: 1.4rem;
+  font-weight: 500;
+}

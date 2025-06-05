@@ -1,0 +1,39 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
+.categoryTitle {
+  font-size: 1.6rem;
+}
+
+.extraLink {
+  display: flex;
+  align-items: flex-end;
+  font-size: 1.4rem;
+}
+
+.resultList {
+  display: flex;
+  gap: 2rem;
+
+  padding-top: 1rem;
+
+  overflow-x: scroll;
+}
+
+.emptyBox {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
+  font-size: 1.4rem;
+}

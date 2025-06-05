@@ -1,0 +1,117 @@
+.carouselWrapper {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 30px;
+}
+
+.carouselTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 15px;
+}
+
+.moreButton {
+  padding: 0.6rem 1.2rem;
+
+  background-color: transparent;
+
+  font-size: 1.2rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 2rem;
+
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.moreButton:hover {
+  background-color: #f0f0f0;
+}
+
+.carouselViewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselTrack {
+  display: flex;
+
+  transition: transform 0.4s ease-in-out;
+  will-change: transform;
+}
+
+.carouselSlide {
+  flex: 0 0 calc((100% - 4rem) / 4);
+
+  box-sizing: border-box;
+  margin: 0.5rem;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artistImage {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  object-fit: cover;
+
+  margin-bottom: 0.8rem;
+}
+
+.artistText {
+  text-align: center;
+}
+
+.name {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.field {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.prevButton,
+.nextButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.5);
+
+  color: black;
+
+  cursor: pointer;
+}
+
+.prevButton:hover,
+.nextButton:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.prevButton {
+  left: 1rem;
+}
+
+.nextButton {
+  right: 1rem;
+}

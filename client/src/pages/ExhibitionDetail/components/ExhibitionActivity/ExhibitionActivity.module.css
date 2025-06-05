@@ -1,0 +1,62 @@
+.activitySection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  width: 100%;
+}
+
+.activityTypeContainer {
+  display: flex;
+}
+
+.activedActivityTypeBox,
+.activityTypeBox {
+  width: 50%;
+  border-bottom: 0.2rem solid #eaeaea;
+
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.activedActivityTypeBox {
+  border-bottom: 0.2rem solid #020202;
+
+  font-weight: 500;
+}
+
+.artworkImage {
+  width: 30rem;
+  height: 30rem;
+}
+
+.activityItemList {
+  display: flex;
+  gap: 2rem;
+
+  min-height: 25rem;
+
+  overflow-x: scroll;
+}
+
+.activityImage {
+  width: 30rem;
+  height: 15rem;
+
+  object-fit: fill;
+}
+
+.activityItemInfoBox {
+  padding: 2rem 0;
+}
+
+.activityItemTitle {
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.activityItemSpan {
+  color: #666;
+  font-size: 1.4rem;
+}

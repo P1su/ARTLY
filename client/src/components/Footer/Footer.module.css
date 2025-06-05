@@ -1,0 +1,39 @@
+.footerLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  width: 100%;
+  padding: 3rem 0;
+  border-top: 0.1rem solid #e0e0e0;
+}
+
+.linkContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  font-size: 1.4rem;
+}
+
+.link {
+  color: #666666;
+  font-size: 1.4rem;
+}
+
+.divideSpan {
+  color: #cccccc;
+  font-size: 1.6rem;
+}
+
+.infoContainer {
+  color: #999999;
+  font-size: 1.2rem;
+  text-align: center;
+  vertical-align: center;
+}
+
+.infoContainer p {
+  line-height: 1.8;
+}

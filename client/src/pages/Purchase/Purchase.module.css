@@ -1,0 +1,105 @@
+.layout {
+  overflow: auto;
+  margin: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+p {
+  line-height: 1.6;
+}
+
+.backBtn {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.orderSection {
+  margin-bottom: 2rem;
+  padding: 1.6rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 1rem;
+}
+
+.userInfo {
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+
+.productBox {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.productImage {
+  width: 10rem;
+  height: 14rem;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+
+.productInfo {
+  margin: auto;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.paymentInfo,
+.discountInfo,
+.paymentMethod {
+  margin-bottom: 2rem;
+  padding: 1.6rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+}
+
+.total {
+  margin-top: 0.8rem;
+  color: #3f51b5;
+  font-weight: bold;
+}
+
+.paymentMethod {
+  margin-bottom: 2rem;
+  padding: 1.6rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 1rem;
+}
+
+.paymentMethod label {
+  display: block;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.kakao {
+  color: #ffbf00;
+}
+
+.naver {
+  color: #2db400;
+}
+.basic {
+  color: #000000;
+}
+
+.paymentButton {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: #3f51b5;
+  color: #fff;
+  font-size: 1.6rem;
+}

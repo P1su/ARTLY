@@ -1,0 +1,43 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.subtitleContainer {
+  display: flex;
+  align-items: center;
+
+  padding-bottom: 1rem;
+}
+
+.subtitleSpan {
+  padding: 0 1rem;
+
+  color: #888888;
+  font-size: 1.3rem;
+}
+
+.divider {
+  display: block;
+
+  height: 0.1rem;
+
+  background-color: #eeeeee;
+
+  flex: 1 1 0%;
+}
+
+.naverButton,
+.button {
+  height: 4.5rem;
+  border-radius: 1rem;
+
+  background-color: #fee500;
+}
+
+.naverButton {
+  background-color: #03cf5d;
+}

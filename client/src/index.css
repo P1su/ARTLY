@@ -9,13 +9,30 @@ body {
   padding: 0;
 }
 
+a {
+  color: #020202;
+  text-decoration: none;
+}
+
 ul,
 li {
   list-style-type: none;
 }
 
 button {
+  font-family: 'Noto-sans', sans-serif;
+  border: none;
+  background: transparent;
   cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
 #root,
@@ -25,7 +42,6 @@ html {
   margin: 0 auto;
   /* 버튼 클릭 시 색 제거 */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  overflow-x: hidden;
   color: black;
 
   /* 파이어폭스 스크롤바 숨김 */

@@ -1,0 +1,38 @@
+.container {
+  max-width: 120rem;
+  margin: 0px auto;
+  padding: 4rem 2rem;
+}
+
+.mainTitle {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+}
+
+.section {
+  margin-top: 32px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 12px;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;;
+  padding: 18px;
+  height: 270px;
+  overflow-y: auto;  /* 내부 스크롤 활성화 */
+}
+
+.content {
+  font-size: 12px;
+  font-family: 'Pretendard';
+  line-height: 18px;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}

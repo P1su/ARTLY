@@ -1,0 +1,123 @@
+.carouselContainer {
+  overflow: hidden;
+
+  position: relative;
+
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.sliderWrapper {
+  position: relative;
+}
+
+.slider {
+  display: flex;
+
+  width: 100%;
+
+  transition: transform 0.5s ease-in-out;
+}
+
+.carouselItem {
+  position: relative;
+
+  min-width: 100%;
+}
+
+.carouselImage {
+  object-fit: cover;
+
+  width: 100%;
+  height: 15rem;
+  border-radius: 0.8rem;
+}
+
+.captionBox {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+
+  color: white;
+  text-shadow: 0 0 5px black;
+}
+
+.title {
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.location,
+.date {
+  font-size: 1.2rem;
+  margin: 0.2rem 0;
+}
+
+.detailButton {
+  background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  color: #ffffff;                /* 흰색 텍스트 */
+  border: 1px solid #ffffff;     /* 흰색 테두리 */
+  border-radius: 6px;            /* 모서리 둥글게 */
+  padding: 8px 16px;             /* 버튼 내부 여백 */
+  font-size: 12px;               /* 글자 크기 */
+  cursor: pointer;              /* 마우스 커서 포인터 */
+  transition: background 0.3s ease;
+}
+
+.detailButton:hover {
+  background: rgba(255, 255, 255, 0.1); /* 호버 시 약간 밝게 */
+}
+
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 3rem;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.5);
+  color: black;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+
+}
+
+.arrowButton:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.left {
+  left: 1rem;
+}
+
+.right {
+  right: 1rem;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 1rem;
+}
+
+.dot {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  border: none;
+
+  background: gray;
+
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.dot.active {
+  background: black;
+  opacity: 1;
+}

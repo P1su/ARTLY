@@ -1,0 +1,18 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.itemImage {
+  width: 12.5rem;
+  height: 15rem;
+
+  object-fit: fill;
+}
+
+.itemSpan {
+  color: #222;
+  font-size: 1.4rem;
+  font-weight: 500;
+}

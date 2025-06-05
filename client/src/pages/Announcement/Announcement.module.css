@@ -1,0 +1,123 @@
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.heading {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.tabWrapper {
+  display: flex;
+  border-bottom: 0.1rem solid rgb(238, 238, 238);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 1.5rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 0.2rem solid transparent;
+  color: #666;
+  font-size: 1.6rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab:hover {
+  color: #000;
+}
+
+.active {
+  border-bottom: 0.2rem solid #000;
+  color: #000;
+  font-weight: 600;
+}
+
+
+.loading {
+  text-align: center;
+  color: #888;
+  padding: 2rem 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  border: 0.1rem solid #eee;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.cardHeader {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  transition: background-color 0.3s;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.arrow {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.cardBody {
+  margin-top: 0.75rem;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  overflow: hidden;
+  line-height: 1.5;
+  font-size: 1.6rem;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.cardBody p {
+  margin: 0.3rem 0;
+}
+
+.cardBody strong {
+  display: inline-block;
+}

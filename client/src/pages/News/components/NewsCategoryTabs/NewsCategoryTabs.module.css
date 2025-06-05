@@ -1,0 +1,20 @@
+.tabContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* 드롭다운 사이 간격 */
+  margin-bottom: 1.5rem;
+}
+
+.selectBox {
+  flex: 1;                        /* ✅ 각 드롭다운 동일 너비 */
+  max-width: 8rem;
+  padding: 0.6rem 1rem;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  appearance: none;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.4rem;
+}

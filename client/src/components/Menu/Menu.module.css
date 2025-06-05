@@ -1,0 +1,51 @@
+.menuLayout {
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 6rem;
+  right: 0;
+
+  width: 100%;
+  height: calc(100vh - 6rem);
+  padding: 2rem;
+
+  background-color: #ffffff;
+
+  color: #020202;
+  font-size: 1.6rem;
+  z-index: 2000;
+}
+
+.menuSection {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.menuTitle {
+  height: 2.1rem;
+
+  color: #666666;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: rgb(102, 102, 102);
+}
+
+.menuNav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menuSpan {
+  color: #333333;
+  font-size: 1.6rem;
+}
+
+.divider {
+  margin: 1.5rem 0;
+  border: 0.1rem solid #eeeeee;
+}

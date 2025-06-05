@@ -1,68 +1,63 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; 
 import styles from './Header.module.css';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import Menu from '../Menu/Menu';
+import SearchBar from '../SearchBar/SearchBar';
+import { FaQrcode, FaSearch } from 'react-icons/fa';
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [nickname, setNickname] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setNickname('아뜰리');
-    setIsMenuOpen(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setNickname('');
-    setIsMenuOpen(false);
+  const handleClose = () => {
+    setIsOpen(false);
+    document.body.style.overflow = 'unset';
   };
 
-  const handleToggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const handleHome = () => {
+    handleClose();
+    navigate('/');
   };
 
   return (
     <header className={styles.headerLayout}>
-      <h1 className={styles.logoBox}>
-        <Link to="/" className={styles.logoLink}>Artly</Link>
-      </h1>
-
-      <div className={styles.userContainer}>
-        {isLoggedIn ? (
-          <>
-            <div className={styles.nicknameWrapper} onClick={handleToggleMenu}>
-              <span>
-                <span className={styles.nicknameText}>{nickname}</span>
-                <span className={styles.nicknameSuffix}> 님</span>
-              </span>
-              <span className={styles.dropdownSpan}>▼</span>
-            </div>
-
-            <button type="button" className={styles.pageButton}>
-              마이페이지
-            </button>
-
-            {isMenuOpen && (
-              <div className={styles.dropdownBox}>
-                <button type="button" className={styles.logoutButton} onClick={handleLogout}>
-                  로그아웃
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <button type="button" className={styles.authButton} onClick={handleLogin}>
-              로그인
-            </button>
-            <button type="button" className={styles.authButton}>
-              회원가입
-            </button>
-          </>
-        )}
+      <span className={styles.logoSpan} onClick={handleHome}>
+        Artly
+      </span>
+      {isSearch && (
+        <SearchBar
+          onClose={() => {
+            setIsSearch((prev) => !prev);
+          }}
+        />
+      )}
+      <div className={styles.rightSection}>
+        <FaSearch
+          className={styles.icon}
+          onClick={() => {
+            setIsSearch((prev) => !prev);
+          }}
+        />
+        <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
+          <FaQrcode className={styles.icon} />
+        </Link>
+        <button
+          className={isOpen ? styles.menuOpen : styles.menuClosed}
+          onClick={isOpen ? handleClose : handleOpen}
+        >
+          <span className={styles.menuSpan} />
+          <span className={styles.menuSpan} />
+          <span className={styles.menuSpan} />
+        </button>
       </div>
+
+      {isOpen && <Menu onOpen={handleClose} />}
     </header>
   );
 }

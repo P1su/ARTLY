@@ -1,0 +1,77 @@
+.exhibitionItemContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.exhibitionImage {
+  width: 100%;
+  height: 20rem;
+  object-fit: fill;
+}
+
+.titleSpan {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.subSpan {
+  color: #878787;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  background: white;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.badge {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.예정 {
+  background-color: #ffd700;
+}
+
+.진행중 {
+  background-color: #4caf50;
+  color: white;
+}
+
+.종료 {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.info {
+  font-size: 14px;
+  color: #555;
+}
+
+.period,
+.organizer {
+  margin: 2px 0;
+}

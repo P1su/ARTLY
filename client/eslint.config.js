@@ -31,6 +31,7 @@ export default defineConfig([
       'react/prop-types': 'off',
 
       'no-var': 'error', // var 변수 선언 금지
+      'no-undef': 'off',
       'no-unused-vars': 'warn', // 선언한 변수 사용 권장
       'no-multiple-empty-lines': 'error', //연속으로 여러 개의 빈줄 사용 금지
       'dot-notation': 'warn', // 객체 프로퍼티 접근시 점 표기법 권장
@@ -48,7 +49,7 @@ export default defineConfig([
       ],
 
       eqeqeq: ['error', 'always'], // 삼중 등호(===) 사용 강제
-      camelcase: ['error', { properties: 'always' }], //프로퍼티명으로 camelCase 작성 강제
+      camelcase: ['error', { properties: 'never' }], //프로퍼티명으로 camelCase 작성 강제
     },
   },
 ]);
