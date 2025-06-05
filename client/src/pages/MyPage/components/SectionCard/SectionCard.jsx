@@ -99,7 +99,14 @@ export default function SectionCard({
             <span className={statusClass}>{statusLabel}</span>
 
             <div className={styles.action}>
-              <button className={styles.btn} onClick={onGoDetail}>
+              <button
+                className={styles.btn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onGoDetail();
+                }}
+              >
+                {' '}
                 전시정보
               </button>
 
@@ -107,11 +114,20 @@ export default function SectionCard({
                 <>
                   <button
                     className={styles.btn}
-                    onClick={() => onQR(item.exhibition_id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onQR(item.exhibition_id);
+                    }}
                   >
                     관람확인
                   </button>
-                  <button className={styles.cancel} onClick={onCancel}>
+                  <button
+                    className={styles.cancel}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCancel();
+                    }}
+                  >
                     취소
                   </button>
                 </>
