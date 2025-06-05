@@ -60,7 +60,7 @@ export default function Menu({ onOpen }) {
           <span
             className={styles.menuSpan}
             onClick={() => {
-              handleNavigate('/notice');
+              handleNavigate('/announcement');
             }}
           >
             NOTICE & FAQ
