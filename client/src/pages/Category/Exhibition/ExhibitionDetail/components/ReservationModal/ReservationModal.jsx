@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaTimes, FaCheck } from 'react-icons/fa';
 import styles from './ReservationModal.module.css';
-import { instance } from '../../../../apis/instance';
+import { instance } from '../../../../../../apis/instance';
 export default function ReservationModal({
   exhibition: propExhibition,
   onClose,

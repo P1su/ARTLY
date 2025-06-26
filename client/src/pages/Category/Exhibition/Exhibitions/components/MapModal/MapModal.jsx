@@ -1,6 +1,6 @@
 import styles from './MapModal.module.css';
 import { FaXmark } from 'react-icons/fa6';
-import useMap from '../../../Nearby/hooks/useMap';
+import useMap from '../../../../../Nearby/hooks/useMap';
 
 export default function MapModal({ item, onClose }) {
   const {

@@ -1,7 +1,7 @@
 import styles from './NewsDetail.module.css';
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance } from '../../apis/instance.js';
+import { instance } from '../../../../apis/instance.js';
 import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection.jsx';
 
 export default function NewsDetail() {
@@ -82,7 +82,5 @@ export default function NewsDetail() {
         </Link>
       </div>
     </section>
-
-    
   );
 }

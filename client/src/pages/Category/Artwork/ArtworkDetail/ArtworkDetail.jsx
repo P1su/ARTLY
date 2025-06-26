@@ -1,7 +1,7 @@
 import styles from './ArtworkDetail.module.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { instance, userInstance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaHeart, FaShare, FaQrcode } from 'react-icons/fa';
 
 export default function ArtworkDetail() {

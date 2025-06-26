@@ -2,7 +2,7 @@ import styles from './ExhibitionCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FaHeart, FaLocationDot } from 'react-icons/fa6';
-import { userInstance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../../../apis/instance.js';
 import MapModal from '../MapModal/MapModal';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {

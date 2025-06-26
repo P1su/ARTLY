@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { instance } from '../../apis/instance.js';
-import Pagination from '../../components/Pagination/Pagination.jsx';
-import usePagination from '../../hooks/usePagination.jsx';
+import { instance } from '../../../../apis/instance.js';
+import Pagination from '../../../../components/Pagination/Pagination.jsx';
+import usePagination from '../../../../hooks/usePagination.jsx';
 import styles from './News.module.css';
-import ListHeader from '../../components/List/ListHeader/ListHeader';
-import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
-import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
-import { newsFilter } from '../../utils/filters/newsFilter.js';
+import ListHeader from '../../../../components/List/ListHeader/ListHeader';
+import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
+import DropdownContainer from '../../../../components/List/DropdownContainer/DropdownContainer';
+import { newsFilter } from '../../../../utils/filters/newsFilter.js';
 import NewsCard from './components/NewsCard/NewsCard';
 
 export default function News() {

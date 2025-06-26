@@ -1,13 +1,13 @@
 import styles from './Artists.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { instance } from '../../apis/instance.js';
-import ListHeader from '../../components/List/ListHeader/ListHeader';
-import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
-import { artistFilter } from '../../utils/filters/artisFilter.js';
-import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
-import Pagination from '../../components/Pagination/Pagination';
-import usePagination from '../../hooks/usePagination';
+import { instance } from '../../../../apis/instance.js';
+import ListHeader from '../../../../components/List/ListHeader/ListHeader';
+import DropdownContainer from '../../../../components/List/DropdownContainer/DropdownContainer';
+import { artistFilter } from '../../../../utils/filters/artisFilter.js';
+import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
+import Pagination from '../../../../components/Pagination/Pagination';
+import usePagination from '../../../../hooks/usePagination';
 import ArtistCard from './components/ArtistCard/ArtistCard';
 
 export default function Artists() {

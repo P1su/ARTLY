@@ -1,14 +1,11 @@
 import styles from './ArtworkList.module.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { instance } from '../../apis/instance.js';
-import { artworkFilter } from '../../utils/filters/artworkFilter.js';
+import { instance } from '../../../../apis/instance.js';
 import ArtworkCard from './components/ArtworkCard/ArtworkCard';
-import ListHeader from '../../components/List/ListHeader/ListHeader';
-import DropdownContainer from '../../components/List/DropdownContainer/DropdownContainer';
-import TotalCounts from '../../components/List/TotalCounts/TotalCounts';
-import Pagination from '../../components/Pagination/Pagination';
-import usePagination from '../../hooks/usePagination';
+import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
+import Pagination from '../../../../components/Pagination/Pagination';
+import usePagination from '../../../../hooks/usePagination';
 
 export default function ArtworkList() {
   const [artworks, setArtworks] = useState([]);

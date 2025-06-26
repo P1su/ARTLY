@@ -1,7 +1,7 @@
 import styles from './GalleryDetail.module.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import {
   FaPhoneFlip,
   FaLocationDot,
@@ -10,7 +10,7 @@ import {
   FaHeart,
 } from 'react-icons/fa6';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
-import useMap from '../Nearby/hooks/useMap';
+import useMap from '../../../Nearby/hooks/useMap';
 
 export default function GalleryDetail() {
   const { galleryId } = useParams();

@@ -1,7 +1,7 @@
 import styles from './ExhibitionDetail.module.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 

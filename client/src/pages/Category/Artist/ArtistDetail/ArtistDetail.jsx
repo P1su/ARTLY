@@ -1,7 +1,7 @@
 import styles from './ArtistDetail.module.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import ArtistActivity from './components/ArtistActivity/ArtistActivity';
 import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
 
