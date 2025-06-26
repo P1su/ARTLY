@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
-import { instance } from '../../../../../apis/instance';
+import { instance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import { useNavigate } from 'react-router-dom';
 

@@ -9,10 +9,10 @@ import Artists from '../pages/Category/Artist/Artists/Artists';
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Category/Gallery/Galleries/Galleries';
 import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
-import Login from '../pages/Login/Login';
-import Register from '../pages/Register/Register';
-import Mypage from '../pages/MyPage/MyPage';
-import EditProfile from '../pages/EditProfile/EditProfile';
+import Login from '../pages/Auth/Login/Login';
+import Register from '../pages/Auth/Register/Register';
+import Mypage from '../pages/Auth/MyPage/MyPage';
+import EditProfile from '../pages/Auth/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
 import Purchase from '../pages/Purchase/Purchase';
 import News from '../pages/Category/News/News/News';
@@ -23,8 +23,7 @@ import Catalog from '../pages/Catalog/Catalog';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
-import Test from '../pages/Test/Test';
-import Find from '../pages/Find/Find';
+import Find from '../pages/Auth/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
@@ -51,7 +50,6 @@ const router = createBrowserRouter([
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
-      { path: '/test', element: <Test /> },
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },

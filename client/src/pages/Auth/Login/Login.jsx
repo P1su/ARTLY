@@ -1,10 +1,10 @@
 import styles from './Login.module.css';
-import { instance } from '../../apis/instance.js';
+import { instance } from '../../../apis/instance.js';
 import { useNavigate, useLocation } from 'react-router-dom';
-import useInput from '../../hooks/useInput';
-import InputContainer from '../../components/Input/InputConatiner/InputContainer';
-import InputText from '../../components/Input/InputText/InputText';
-import BtnPrimary from '../../components/BtnPrimary/BtnPrimary';
+import useInput from '../../../hooks/useInput';
+import InputContainer from '../../../components/Input/InputConatiner/InputContainer';
+import InputText from '../../../components/Input/InputText/InputText';
+import BtnPrimary from '../../../components/BtnPrimary/BtnPrimary';
 import SocialLoginSection from './components/SocialLoginSection/SocialLoginSection';
 import SupportSection from './components/SupportSection/SupportSection';
 

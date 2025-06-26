@@ -1,6 +1,6 @@
 import styles from './Find.module.css';
-import InputText from '../../components/Input/InputText/InputText';
-import useInput from '../../hooks/useInput';
+import InputText from '../../../components/Input/InputText/InputText';
+import useInput from '../../../hooks/useInput';
 
 export default function Find() {
   const { data: idDatas, handleChange: handleLoginChange } = useInput({

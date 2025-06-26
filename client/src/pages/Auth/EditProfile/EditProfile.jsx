@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './EditProfile.module.css';
 import { FaCog } from 'react-icons/fa';
-import { instance } from '../../apis/instance';
+import { instance } from '../../../apis/instance';
 import PwModal from './PwModal/PwModal';
 import { useNavigate } from 'react-router-dom';
 

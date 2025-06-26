@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { instance } from '../../../../../apis/instance';
+import { instance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import styles from './TabPurchased.module.css';
 import { useNavigate } from 'react-router-dom';

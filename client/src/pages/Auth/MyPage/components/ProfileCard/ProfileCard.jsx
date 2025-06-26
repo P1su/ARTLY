@@ -3,7 +3,7 @@ import styles from './ProfileCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCog, FaHeart, FaChevronDown } from 'react-icons/fa';
 
-import { instance } from '../../../../apis/instance';
+import { instance } from '../../../../../apis/instance';
 import defaultProfileImg from '../../mock/userProfile.png';
 
 export default function ProfileCard() {
