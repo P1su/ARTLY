@@ -1,12 +1,16 @@
-# React + Vite
+# 아뜰리 프론트엔드
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 참여 인원
 
-Currently, two official plugins are available:
+- 홍유진 2018125072
+- 박영권 2020125024
+- 송필수 2020125037
+- 지현석 2022125059
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 실행 방법
 
-## Expanding the ESLint configuration
+1. `git clone` 을 통하여 프로젝트 복사
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. `client` 디렉토리에서 `npm install`을 통한 의존성 설치
+
+3. `npm run dev` 를 통해 localhost:5173 혹은 포트 번호로 접속
