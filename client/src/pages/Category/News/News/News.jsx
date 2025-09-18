@@ -3,9 +3,9 @@ import { instance } from '../../../../apis/instance.js';
 import Pagination from '../../../../components/Pagination/Pagination.jsx';
 import usePagination from '../../../../hooks/usePagination.jsx';
 import styles from './News.module.css';
-import ListHeader from '../../../../components/List/ListHeader/ListHeader';
-import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
-import DropdownContainer from '../../../../components/List/DropdownContainer/DropdownContainer';
+import ListHeader from '../../components/ListHeader/ListHeader';
+import TotalCounts from '../../components/TotalCounts/TotalCounts';
+import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { newsFilter } from '../../../../utils/filters/newsFilter.js';
 import NewsCard from './components/NewsCard/NewsCard';
 

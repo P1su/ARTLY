@@ -1,21 +1,18 @@
 import styles from './ArtworkList.module.css';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { instance } from '../../../../apis/instance.js';
 import ArtworkCard from './components/ArtworkCard/ArtworkCard';
-import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
+import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 
 export default function ArtworkList() {
   const [artworks, setArtworks] = useState([]);
-  const [isFav, setIsFav] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
     10,
     artworks,
   );
-  const navigate = useNavigate();
   const [artworkFilters, setArtworkFilters] = useState({
     type: '',
   });
@@ -36,11 +33,6 @@ export default function ArtworkList() {
 
     getGalleies();
   }, [artworkFilters]);
-
-  const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
-    setIsFav((prev) => !prev);
-  };
 
   return (
     <div className={styles.layout}>

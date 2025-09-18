@@ -2,11 +2,11 @@ import styles from './Galleries.module.css';
 import { instance } from '../../../../apis/instance.js';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ListHeader from '../../../../components/List/ListHeader/ListHeader';
-import DropdownContainer from '../../../../components/List/DropdownContainer/DropdownContainer';
+import ListHeader from '../../components/ListHeader/ListHeader';
+import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { galleryFilter } from '../../../../utils/filters/galleryFilter.js';
 import GalleryCard from '../../../Nearby/components/GalleryCard/GalleryCard';
-import TotalCounts from '../../../../components/List/TotalCounts/TotalCounts';
+import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 
