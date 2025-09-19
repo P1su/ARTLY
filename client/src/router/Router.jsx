@@ -3,28 +3,27 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Layout';
 import AuthRoute from '../layouts/AuthRoute';
 import Main from '../pages/Main/Main';
-import Exhibitions from '../pages/Exhibitions/Exhibitions';
-import ExhibitionDetail from '../pages/ExhibitionDetail/ExhibitionDetail';
-import Artists from '../pages/Artists/Artists';
-import ArtistDetail from '../pages/ArtistDetail/ArtistDetail';
-import Galleries from '../pages/Galleries/Galleries';
-import GalleryDetail from '../pages/GalleryDetail/GalleryDetail';
-import Login from '../pages/Login/Login';
-import Register from '../pages/Register/Register';
-import Mypage from '../pages/MyPage/MyPage';
-import EditProfile from '../pages/EditProfile/EditProfile';
+import Exhibitions from '../pages/Category/Exhibition/Exhibitions/Exhibitions';
+import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
+import Artists from '../pages/Category/Artist/Artists/Artists';
+import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
+import Galleries from '../pages/Category/Gallery/Galleries/Galleries';
+import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
+import Login from '../pages/Auth/Login/Login';
+import Register from '../pages/Auth/Register/Register';
+import Mypage from '../pages/Auth/MyPage/MyPage';
+import EditProfile from '../pages/Auth/EditProfile/EditProfile';
 import Search from '../pages/Search/Search';
 import Purchase from '../pages/Purchase/Purchase';
-import News from '../pages/News/News';
-import NewsDetail from '../pages/NewsDetail/NewsDetail';
+import News from '../pages/Category/News/News/News';
+import NewsDetail from '../pages/Category/News/NewsDetail/NewsDetail';
 import Artwork from '../pages/Artwork/Artwork';
-import ArtworkList from '../pages/ArtworkList/ArtworkList';
+import ArtworkList from '../pages/Category/Artwork/ArtworkList/ArtworkList';
 import Catalog from '../pages/Catalog/Catalog';
 import QrScanner from '../pages/QrScanner/QrScanner';
 import Nearby from '../pages/Nearby/Nearby';
-import ArtworkDetail from '../pages/ArtworkDetail/ArtworkDetail';
-import Test from '../pages/Test/Test';
-import Find from '../pages/Find/Find';
+import ArtworkDetail from '../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
+import Find from '../pages/Auth/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
@@ -51,7 +50,6 @@ const router = createBrowserRouter([
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
-      { path: '/test', element: <Test /> },
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },

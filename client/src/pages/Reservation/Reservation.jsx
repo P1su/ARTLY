@@ -2,7 +2,7 @@ import styles from './Reservation.module.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { userInstance } from '../../apis/instance.js';
-import { FaTimes, FaCheck } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 
 export default function Reservation() {
   const { reservationId } = useParams();
