@@ -19,7 +19,9 @@ export default function Layout() {
       <ScrollToTop />
       <Header />
       <NavBar />
-      <Outlet />
+      <div style={{ flex: 1 }}>
+        <Outlet />
+      </div>
       {showChatbot && <ChatbotWidget />}
 
       <Footer />
