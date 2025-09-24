@@ -7,7 +7,6 @@ import Footer from '../components/Footer/Footer';
 import ChatbotWidget from '../components/ChatbotWidget/ChatbotWidget';
 
 export default function Layout() {
-  useMobile();
   const location = useLocation();
 
   const excludedPaths = ['/login', '/register', '/mypage', '/mypage/edit'];
