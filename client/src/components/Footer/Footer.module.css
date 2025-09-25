@@ -7,7 +7,7 @@
   height: 20rem;
   padding: 1.7rem 2.3rem 1.7rem 1.7rem;
 
-  background-color: #000;
+  background-color: var(--black01);
   color: #fff;
 }
 
