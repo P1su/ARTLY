@@ -59,7 +59,7 @@ export default function Header() {
         </button>
       </div>
 
-      {isOpen && <Menu onOpen={handleClose} />}
+      {isOpen && <Menu onOpen={handleClose} isOpen={isOpen} />}
     </header>
   );
 }

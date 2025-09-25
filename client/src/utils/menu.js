@@ -4,5 +4,7 @@ export const menuList = [
   { label: '작품', path: '/artworks' },
   { label: '작가', path: '/artists' },
   { label: '공고', path: '/notices' },
-  { label: '주변 갤러리', path: '/nearby-galleries' },
+  {
+    /* label: '주변 갤러리', path: '/nearby-galleries' */
+  },
 ];

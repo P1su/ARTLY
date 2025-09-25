@@ -9,7 +9,7 @@ const useMobile = () => {
       window.innerWidth ||
       document.documentElement.clientWidth ||
       document.body.clientWidth;
-    const maxWidth = Math.min(1280, windowWidth);
+    const maxWidth = Math.min(360, windowWidth);
     document.documentElement.style.setProperty('max-width', `${maxWidth}px`);
   };
 
