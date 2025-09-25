@@ -14,9 +14,9 @@ export default function Footer() {
         </Link>
       </div>
       <div className={styles.infoContainer}>
-        <span>(주)오드레몬오리진</span>
-        <span>사업자등록번호 : 477-88-01191</span>
-        <span>contact us : oddlemon@oddlemon.co.kr</span>
+        <p>(주)오드레몬오리진</p>
+        <p>사업자등록번호 : 477-88-01191</p>
+        <p>contact us : oddlemon@oddlemon.co.kr</p>
       </div>
       <p>
         © All rights reserved by{' '}
