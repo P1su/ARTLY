@@ -7,19 +7,24 @@
   align-items: center;
 
   height: 6rem;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 3rem;
+  border-bottom: 2px solid var(--blue01);
 
-  background-color: #000000;
+  background-color: var(--white01);
   color: white;
 
   z-index: 2000;
 }
 
 .logoSpan {
-  color: white;
+  color: var(--blue01);
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: 0.2rem;
+}
+
+.logoSpan:hover {
+  cursor: pointer;
 }
 
 .closeButton {
@@ -37,70 +42,8 @@
   gap: 1rem;
 }
 
-.qrCode {
-  width: 2rem;
-  height: 2rem;
-}
-
 .icon {
   width: 2rem;
   height: 2rem;
   color: white;
-}
-
-.menuClosed,
-.menuOpen {
-  display: block;
-
-  position: relative;
-
-  width: 2.4rem;
-  height: 2rem;
-  padding: 0.5rem;
-}
-
-.menuClosed {
-  span:nth-child(1) {
-    top: 0;
-    transform: rotate(0deg);
-  }
-  span:nth-child(2) {
-    top: 0.9rem;
-    opacity: 1;
-  }
-  span:nth-child(3) {
-    top: 1.8rem;
-    transform: rotate(0deg);
-  }
-}
-
-.menuOpen {
-  span:nth-child(1) {
-    top: 0.9rem;
-    transform: rotate(135deg);
-  }
-  span:nth-child(2) {
-    top: 0.9rem;
-    opacity: 0;
-  }
-  span:nth-child(3) {
-    top: 0.9rem;
-    transform: rotate(-135deg);
-  }
-}
-
-.menuSpan {
-  display: block;
-
-  position: absolute;
-  opacity: 1;
-  left: 0;
-
-  width: 100%;
-  height: 0.2rem;
-  background-color: rgb(255, 255, 255);
-  border-radius: 0.2rem;
-
-  transform: rotate(0deg);
-  transition: 0.25s ease-in-out;
 }

@@ -16,7 +16,7 @@ export default function NavBar() {
             <NavLink
               to={path}
               className={({ isActive }) =>
-                isActive ? styles.activeLink : undefined
+                isActive ? styles.activeLink : styles.defaultLink
               }
             >
               {label}
