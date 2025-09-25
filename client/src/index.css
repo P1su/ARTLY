@@ -1,10 +1,22 @@
 @font-face {
   font-family: 'Pretendard-Variable';
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: 0.5px;
   font-display: swap;
   src: url('./assets/font/PretendardVariable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Segoe-UI';
+  src: url('./assets/font/SegoeUI-Bold.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LeeSunSinDotum';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/YiSunShinDotumM.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
 }
 
 body {

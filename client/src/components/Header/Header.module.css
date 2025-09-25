@@ -17,10 +17,9 @@
 }
 
 .logoSpan {
+  font-family: 'Segoe-UI';
   color: var(--blue01);
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 0.2rem;
+  font-size: 2.5rem;
 }
 
 .logoSpan:hover {
