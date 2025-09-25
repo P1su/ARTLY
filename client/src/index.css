@@ -1,6 +1,17 @@
+@font-face {
+  font-family: 'Pretendard-Variable';
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.5px;
+  font-display: swap;
+  src: url('./assets/font/PretendardVariable.woff2') format('woff2');
+}
+
 body {
   width: 100%;
   min-height: 100vh;
+
+  font-family: 'Pretendard-Variable', 'Noto-sans', sans-serif;
 }
 
 * {
@@ -20,7 +31,7 @@ li {
 }
 
 button {
-  font-family: 'Noto-sans', sans-serif;
+  font-family: 'Pretendard-Variable', 'Noto-sans', sans-serif;
   border: none;
   background: transparent;
   cursor: pointer;
