@@ -27,6 +27,12 @@ import Find from '../pages/Auth/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
+import LayoutAdmin from '../layouts/LayoutAdmin';
+import AdminMain from '../pages/Admin/AdminMain/AdminMain';
+import AdminGallery from '../pages/Admin/AdminGallery/AdminGallery';
+import AdminExhibition from '../pages/Admin/AdminExhibition/AdminExhibition';
+import AdminLikeBoard from '../pages/Admin/AdminLikeBoard/AdminLikeBoard';
+import AdminArtwork from '../pages/Admin/AdminArtwork/AdminArtwork';
 
 const router = createBrowserRouter([
   {
@@ -64,12 +70,21 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
-    path: '/scan',
-    element: <QrScanner />,
+    path: '/admin',
+    element: <LayoutAdmin />,
+    children: [
+      { path: '/admin', element: <AdminMain /> },
+      { path: '/admin/gallery', element: <AdminGallery /> },
+      { path: '/admin/exhibition', element: <AdminExhibition /> },
+      { path: '/admin/artwork', element: <AdminArtwork /> },
+      { path: '/admin/likeboard', element: <AdminLikeBoard /> },
+    ],
   },
+
   {
-    path: '/scan/:id',
+    path: '/scan/:id?',
     element: <QrScanner />,
   },
 ]);
