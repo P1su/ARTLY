@@ -1,8 +1,10 @@
 export const menuList = [
-  { label: 'EXHIBITION', path: '/exhibitions' },
-  { label: 'NEWS', path: '/notices' },
-  { label: 'ART', path: '/artworks' },
-  { label: 'ARTIST', path: '/artists' },
-  { label: 'GALLERY', path: '/galleries' },
-  { label: 'NEARBY', path: '/nearby-galleries' },
+  { label: '전시회', path: '/exhibitions' },
+  { label: '갤러리', path: '/galleries' },
+  { label: '작품', path: '/artworks' },
+  { label: '작가', path: '/artists' },
+  { label: '공고', path: '/notices' },
+  {
+    /* label: '주변 갤러리', path: '/nearby-galleries' */
+  },
 ];

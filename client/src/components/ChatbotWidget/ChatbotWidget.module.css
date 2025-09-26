@@ -5,15 +5,17 @@
   z-index: 1501;
 }
 
-.chatbotOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+@media (max-width: 767px) {
+  .chatbotOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 
-  background-color: rgba(0, 0, 0, 0.572);
-  z-index: 1499;
+    background-color: rgba(0, 0, 0, 0.572);
+    z-index: 1499;
+  }
 }
 
 .chatbotButton {
@@ -38,15 +40,31 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 3rem;
+  bottom: 9rem;
   width: 33rem;
   height: 52rem;
   border-radius: 3rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
   background-color: #f0f5ff;
   z-index: 1500;
+}
+
+@media (max-width: 767px) {
+  .popupContainer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 33rem;
+    height: 52rem;
+    border-radius: 3rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 20px;
+    background-color: #f0f5ff;
+    z-index: 1500;
+  }
 }
 
 .headerContainer {

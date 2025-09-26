@@ -1,20 +1,92 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(39, 46, 58, 0.2);
+  z-index: 9998;
+
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
 .menuLayout {
   display: flex;
   flex-direction: column;
 
   position: fixed;
-  top: 6rem;
-  right: 0;
+  top: 0;
+  right: -23.5rem;
 
-  width: 100%;
-  height: calc(100vh - 6rem);
-  padding: 2rem;
+  width: 23.5rem;
+  height: 100vh;
+  padding: 5.5rem 1.5rem 0;
 
   background-color: #ffffff;
 
   color: #020202;
   font-size: 1.6rem;
   z-index: 2000;
+
+  transition: right 0.3s ease;
+}
+
+.menuVisible {
+  right: 0;
+}
+
+.menuHidden {
+  right: -23.5rem;
+}
+
+.closeContainer {
+  display: block;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3000;
+
+  width: 30rem;
+  height: 5.4rem;
+  padding-left: 2rem;
+  border-radius: 1.6rem 0 0 1.6rem;
+  background-color: var(--white01);
+
+  transition: right 0.3 ease;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-contents: center;
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+
+.closeButton::before {
+  transform: rotate(45deg);
+}
+
+.closeButton::after {
+  transform: rotate(-45deg);
+}
+
+.closeButton::before,
+.closeButton::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background: #666666;
+  border-radius: 1px;
 }
 
 .menuSection {
@@ -24,25 +96,35 @@
   width: 100%;
 }
 
-.menuTitle {
-  height: 2.1rem;
-
-  color: #666666;
-  font-size: 1.4rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-  color: rgb(102, 102, 102);
+.userNickname {
+  color: var(--black01);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 33px;
+  letter-spacing: -0.5px;
+  margin-bottom: 2.3rem;
 }
 
-.menuNav {
+.sidebarMenu {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
 .menuSpan {
-  color: #333333;
-  font-size: 1.6rem;
+  color: var(--black01);
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.1px;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.menuSpan:hover {
+  color: var(--blue01);
 }
 
 .divider {
