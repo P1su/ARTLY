@@ -34,7 +34,7 @@ export default function Menu({ onOpen, isOpen }) {
             <span
               className={styles.menuSpan}
               onClick={() => {
-                alert('갤러리 관리 페이지 주소 작성 예정');
+                handleNavigate('/admin');
               }}
             >
               갤러리 관리
