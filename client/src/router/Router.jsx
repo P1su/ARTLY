@@ -27,12 +27,9 @@ import Find from '../pages/Auth/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
-import LayoutAdmin from '../layouts/LayoutAdmin';
-import AdminMain from '../pages/Admin/AdminMain/AdminMain';
-import AdminGallery from '../pages/Admin/AdminGallery/AdminGallery';
-import AdminExhibition from '../pages/Admin/AdminExhibition/AdminExhibition';
-import AdminLikeBoard from '../pages/Admin/AdminLikeBoard/AdminLikeBoard';
-import AdminArtwork from '../pages/Admin/AdminArtwork/AdminArtwork';
+import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
+import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
+import LayoutConsole from '../layouts/LayoutConsole';
 
 const router = createBrowserRouter([
   {
@@ -72,14 +69,11 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/admin',
-    element: <LayoutAdmin />,
+    path: '/console',
+    element: <LayoutConsole />,
     children: [
-      { path: '/admin', element: <AdminMain /> },
-      { path: '/admin/gallery', element: <AdminGallery /> },
-      { path: '/admin/exhibition', element: <AdminExhibition /> },
-      { path: '/admin/artwork', element: <AdminArtwork /> },
-      { path: '/admin/likeboard', element: <AdminLikeBoard /> },
+      { path: '/console/main', element: <ConsoleMain /> },
+      { path: '/console/detail', element: <ConsoleDetail /> },
     ],
   },
 

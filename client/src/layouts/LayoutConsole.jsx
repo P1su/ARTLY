@@ -1,9 +1,8 @@
-import useMobile from '../hooks/useMobile';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import Header from '../components/Header/Header';
 
-export default function LayoutAdmin() {
+export default function LayoutConsole() {
   return (
     <>
       <ScrollToTop />
