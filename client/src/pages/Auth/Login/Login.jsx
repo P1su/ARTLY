@@ -11,11 +11,9 @@ export default function Login() {
     <div className={styles.layout}>
       <h1 className={styles.logo}>ARTLY</h1>
       <p className={styles.loginParagraph}>아뜰리 계정으로 로그인하세요</p>
-      <div className={styles.buttonContainer}>
-        <button className={styles.loginButton} onClick={handleNavigate}>
-          보유 계정으로 로그인
-        </button>
-      </div>
+      <button className={styles.loginButton} onClick={handleNavigate}>
+        보유 계정으로 로그인
+      </button>
       <Link className={styles.registerLink} to='/register'>
         빠른 회원가입
       </Link>
