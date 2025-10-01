@@ -17,7 +17,7 @@ export default function Layout() {
     <>
       <ScrollToTop />
       <Header />
-      <div style={{ flex: 1 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
         <Outlet />
       </div>
       {showChatbot && <ChatbotWidget />}

@@ -49,27 +49,22 @@ export default function LoginDetail() {
       <h1 className={styles.loginTitle}>로그인</h1>
       <p className={styles.subParagraph}>아뜰리 계정으로 로그인하세요</p>
       <div className={styles.contentContainer}>
-        <form className={styles.form} action={postLogin}>
-          <InputContainer title='아이디'>
-            <InputText
-              placeholder='ID (6 ~ 20자 영문, 숫자)'
-              name='login_id'
-              onChange={handleChange}
-              value={loginDatas.login_id}
-            />
-          </InputContainer>
-          <InputContainer title='비밀번호'>
-            <InputText
-              placeholder='Password (8 ~ 16자 영문+숫자+특수문자)'
-              name='login_pwd'
-              onChange={handleChange}
-              value={loginDatas.login_pwd}
-            />
-          </InputContainer>
-          <BtnPrimary label='로그인' />
+        <form className={styles.loginForm} action={postLogin}>
+          <InputText
+            placeholder='ID (6 ~ 20자 영문, 숫자)'
+            name='login_id'
+            onChange={handleChange}
+            value={loginDatas.login_id}
+          />
+          <InputText
+            placeholder='Password (8 ~ 16자 영문+숫자+특수문자)'
+            name='login_pwd'
+            onChange={handleChange}
+            value={loginDatas.login_pwd}
+          />
+          <button className={styles.submitButton}>회원 로그인</button>
         </form>
         <SupportSection />
-        <SocialLoginSection />
       </div>
     </div>
   );

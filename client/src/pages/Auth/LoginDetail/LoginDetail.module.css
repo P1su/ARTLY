@@ -1,11 +1,10 @@
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1rem;
+  padding: 8rem 2rem 7rem 2rem;
 
-  padding: 2rem;
-  background-color: #f9f9f9;
+  width: 36rem;
 }
 
 .loginTitle {
@@ -24,20 +23,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
 
-  max-width: 48rem;
-  padding: 3rem;
+  width: 100%;
   border-radius: 0.8rem;
-  box-shadow: rgba(0, 0, 0, 0.05) 0rem 0.2rem 1.5rem;
-
-  background-color: #ffffff;
 }
 
-.form {
+.submitButton {
+  display: flex;
+  width: 300px;
+  height: 30px;
+  padding: 7px 30px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  border-radius: 20px;
+  background-color: var(--blue01);
+
+  color: var(--white01);
+}
+
+.loginForm {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.6rem;
 
-  width: 27.5rem;
+  width: 100%;
 }
