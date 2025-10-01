@@ -5,7 +5,7 @@ import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
-export default function ExhibitionDetail() {
+export default function ExhibitionDetail({ showUserActions = true }) {
   const { exhibitionId } = useParams();
   const navigate = useNavigate();
   const [exhibitionData, setExhibitionData] = useState([]);
@@ -142,16 +142,22 @@ export default function ExhibitionDetail() {
         alt='전시회 대표 이미지'
       />
 
-      <div className={styles.buttonContainer}>
-        {buttons.map(({ label, icon, action }) => (
-          <button className={styles.buttonBox} key={label} onClick={action}>
-            {icon}
-            {label}
-          </button>
-        ))}
-      </div>
+      {showUserActions && (
+        <div className={styles.userActionContainer}>
+          {buttons.map(({ label, icon, action }) => (
+            <button
+              className={styles.userActionButton}
+              key={label}
+              onClick={action}
+            >
+              {icon}
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {isModalOpen && (
+      {showUserActions && isModalOpen && (
         <ReservationModal // 모달 컴포넌트 렌더링
           exhibitionId={exhibitionId}
           onClose={closeModal}
@@ -208,9 +214,11 @@ export default function ExhibitionDetail() {
         )}
       </div>
 
-      <Link className={styles.backButton} to='/exhibitions'>
-        목록으로 돌아가기
-      </Link>
+      {showUserActions && (
+        <Link className={styles.backButton} to='/exhibitions'>
+          목록으로 돌아가기
+        </Link>
+      )}
     </div>
   );
 }

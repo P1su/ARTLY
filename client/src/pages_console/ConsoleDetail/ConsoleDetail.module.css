@@ -1,0 +1,119 @@
+.layout {
+  /* layout 자체의 padding은 제거하여 자식 요소가 화면 너비를 100% 사용하도록 함 */
+  width: 100%;
+}
+
+.header,
+.content {
+  width: 100%;
+  max-width: 1200px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 0 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  height: 6rem;
+  background-color: #fff;
+}
+
+.headerTitle {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.backNavButton {
+  position: absolute;
+  left: 2rem;
+
+  border: none;
+  background: none;
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+/* 탭 메뉴 네비게이션 바 */
+.adminTabNav {
+  display: flex;
+  justify-content: space-around;
+
+  position: sticky;
+  top: 6rem; /* header의 높이만큼 아래에 위치 */
+  z-index: 10;
+
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #fff;
+}
+
+/* 탭 메뉴 개별 버튼 */
+.adminTabButton {
+  flex-grow: 1;
+  padding: 1.5rem 0;
+
+  border: none;
+  background-color: transparent;
+
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+/* 탭 버튼에 마우스 호버 또는 활성화 시 효과 (활성화 로직은 추후 추가) */
+.adminTabButton:hover,
+.adminTabButton.active {
+  color: #007bff;
+  box-shadow: inset 0 -2px 0 #007bff;
+}
+
+/* 실제 컨텐츠 영역 */
+.content {
+  /* 두 개의 sticky 헤더 높이 합만큼 상단 패딩을 주어 컨텐츠가 가려지지 않도록 함 */
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+/* --- Tablet (1024px 이하) --- */
+@media (max-width: 1024px) {
+  .header,
+  .content {
+    padding: 0 3rem;
+  }
+  .backNavButton {
+    left: 3rem;
+  }
+}
+
+/* --- Mobile (767px 이하) --- */
+@media (max-width: 767px) {
+  .header,
+  .content {
+    padding: 0 1.5rem;
+  }
+
+  .backNavButton {
+    left: 1.5rem;
+  }
+
+  .headerTitle {
+    font-size: 1.8rem;
+  }
+
+  .adminTabButton {
+    font-size: 1.4rem;
+  }
+}

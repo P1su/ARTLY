@@ -73,7 +73,7 @@ const router = createBrowserRouter([
     element: <LayoutConsole />,
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/detail', element: <ConsoleDetail /> },
+      { path: '/console/detail/:exhibitionId', element: <ConsoleDetail /> },
     ],
   },
 

@@ -61,7 +61,7 @@
   display: inline-block;
 }
 
-.buttonBox {
+.userActionButton {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,7 +118,7 @@
   fill: #e57373;
 }
 
-.buttonContainer {
+.userActionContainer {
   display: flex;
   gap: 2rem;
 }
