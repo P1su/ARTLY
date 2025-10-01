@@ -9,7 +9,6 @@ import Artists from '../pages/Category/Artist/Artists/Artists';
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Category/Gallery/Galleries/Galleries';
 import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
-import Login from '../pages/Auth/Login/Login';
 import Register from '../pages/Auth/Register/Register';
 import Mypage from '../pages/Auth/MyPage/MyPage';
 import EditProfile from '../pages/Auth/EditProfile/EditProfile';
@@ -30,6 +29,8 @@ import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import LayoutConsole from '../layouts/LayoutConsole';
+import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
+import Login from './../pages/Auth/Login/Login';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: '/catalog/:catalogId', element: <Catalog /> },
       { path: '/nearby-galleries', element: <Nearby /> },
       { path: '/login', element: <Login /> },
+      { path: '/login-detail', element: <LoginDetail /> },
       { path: '/register', element: <Register /> },
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement /> },
