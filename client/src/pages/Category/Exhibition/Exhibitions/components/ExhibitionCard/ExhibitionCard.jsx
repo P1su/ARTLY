@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { FaHeart, FaLocationDot } from 'react-icons/fa6';
 import { userInstance } from '../../../../../../apis/instance.js';
 import MapModal from '../MapModal/MapModal';
+import IcFav from './../../../../../../assets/svg/IcFav';
+import IcUnFav from './../../../../../../assets/svg/IcUnFav';
+import IcLocation from './../../../../../../assets/svg/IcLocation';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   const {
@@ -53,40 +56,37 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   };
 
   return (
-    <>
+    <div className={styles.exhibitionCardLayout}>
       {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
+        <div />
         <div className={styles.imageBox}>
           <img
             className={styles.exhibitionImage}
             src={poster || '/placeholder.jpg'}
             alt='전시 대표 이미지'
           />
-          <div className={styles.buttonField}>
-            <button
-              className={styles.iconButton}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleLike();
-              }}
-            >
-              <FaHeart
-                className={`${styles.icHeart} ${isLike === true && styles.isClicked} `}
-              />
-            </button>
-            <button
-              className={styles.iconButton}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleOpen();
-              }}
-            >
-              <FaLocationDot className={styles.icLoc} />
-            </button>
-          </div>
         </div>
+        <button
+          className={styles.favButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleLike();
+          }}
+        >
+          {isLike ? <IcFav /> : <IcUnFav />}
+        </button>
+        <button
+          className={styles.locButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleOpen();
+          }}
+        >
+          <IcLocation />
+        </button>
         <div className={styles.infoContainer}>
           <h3 className={styles.exhibitionTitle}>{title}</h3>
           <p className={styles.subParagraph}>
@@ -97,6 +97,6 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
           </p>
         </div>
       </Link>
-    </>
+    </div>
   );
 }

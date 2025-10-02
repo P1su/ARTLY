@@ -13,9 +13,9 @@ export default function Pagination({
     <div className={styles.paginationContainer}>
       {currentPage > 1 && (
         <>
-          <button onClick={() => onPageChange(1)} className={styles.pageButton}>
+          {/*<button onClick={() => onPageChange(1)} className={styles.pageButton}>
             &lt;&lt;
-          </button>
+          </button>*/}
           <button
             onClick={() => onPageChange(currentPage - 1)}
             className={styles.pageButton}
@@ -43,12 +43,13 @@ export default function Pagination({
           >
             &gt;
           </button>
-          <button
-            onClick={() => onPageChange(totalPages)}
-            className={styles.pageButton}
-          >
-            &gt;&gt;
-          </button>
+          {/*
+            <button
+              onClick={() => onPageChange(totalPages)}
+              className={styles.pageButton}
+            >
+              &gt;&gt;
+            </button>*/}
         </>
       )}
     </div>

@@ -1,5 +1,6 @@
 import styles from './ListHeader.module.css';
 import { FaHeart, FaSearch } from 'react-icons/fa';
+import IcSearch from './../../../../assets/svg/IcSearch';
 
 export default function ListHeader({
   title,
@@ -33,7 +34,7 @@ export default function ListHeader({
           value={value}
         />
         <button className={styles.formButton}>
-          <FaSearch />
+          <IcSearch />
         </button>
       </form>
     </div>
