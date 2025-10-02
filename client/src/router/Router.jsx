@@ -28,7 +28,7 @@ import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
-import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
+import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleExhibitionDetail';
 import LayoutConsole from '../layouts/LayoutConsole';
 
 const router = createBrowserRouter([
@@ -73,7 +73,12 @@ const router = createBrowserRouter([
     element: <LayoutConsole />,
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/detail/:exhibitionId', element: <ConsoleDetail /> },
+      {
+        path: '/console/exhibitions/:id',
+        element: <ConsoleExhibitionDetail />,
+      },
+      { path: '/console/galleries/:id', element: <ConsoleGalleryDetail /> },
+      { path: '/console/artworks/:id', element: <ConsoleArtworkDetail /> },
     ],
   },
 

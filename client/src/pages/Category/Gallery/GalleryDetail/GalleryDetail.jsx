@@ -105,6 +105,7 @@ export default function GalleryDetail() {
             src={image}
             alt='갤러리 대표 이미지'
           />
+
           <button className={styles.favButton} onClick={handleLike}>
             <FaHeart
               className={`${styles.icHeart} ${galleryData.is_liked === true && styles.isClicked} `}

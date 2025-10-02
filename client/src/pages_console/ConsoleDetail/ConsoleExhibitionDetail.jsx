@@ -3,12 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import useResponsive from '../../hooks/useResponsive';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 
-export default function ConsoleDetail() {
+export default function ConsoleExhibitionDetail() {
   const { id: exhibitionId } = useParams();
   const navigate = useNavigate();
   useResponsive();
 
   console.log('Current Exhibition ID:', exhibitionId);
+  console.log('Current Gallery ID:', exhibitionId);
 
   const handleGoBack = () => navigate(-1);
   const handleEdit = () => alert('정보 수정 페이지로 이동합니다.');
