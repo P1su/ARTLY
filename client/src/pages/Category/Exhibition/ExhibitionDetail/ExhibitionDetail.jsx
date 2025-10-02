@@ -5,8 +5,7 @@ import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
-export default function ExhibitionDetail({ showUserActions = true }) {
-  const { exhibitionId } = useParams();
+export default function ExhibitionDetail({ showUserActions = true, id }) {
   const navigate = useNavigate();
   const [exhibitionData, setExhibitionData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +28,7 @@ export default function ExhibitionDetail({ showUserActions = true }) {
 
   const getExhibitionDetail = async () => {
     try {
-      const response = await instance.get(`/api/exhibitions/${exhibitionId}`);
+      const response = await instance.get(`/api/exhibitions/${id}`);
 
       setExhibitionData(response.data);
     } catch (error) {
@@ -39,7 +38,7 @@ export default function ExhibitionDetail({ showUserActions = true }) {
 
   useEffect(() => {
     getExhibitionDetail();
-  }, [exhibitionId]);
+  }, [id]);
 
   const handleLike = async () => {
     !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
@@ -47,13 +46,13 @@ export default function ExhibitionDetail({ showUserActions = true }) {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {
           data: {
-            liked_id: exhibitionId,
+            liked_id: id,
             liked_type: 'exhibition',
           },
         });
       } else {
         await userInstance.post('/api/likes', {
-          liked_id: exhibitionId,
+          liked_id: id,
           liked_type: 'exhibition',
         });
       }

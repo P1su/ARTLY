@@ -12,14 +12,13 @@ import {
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
 import GalleryMap from './components/GalleryMap.jsx';
 
-export default function GalleryDetail({ showUserActions = true }) {
-  const { galleryId } = useParams();
+export default function GalleryDetail({ showUserActions = true, id }) {
   const [galleryData, setGalleryData] = useState(null); // 빈 객체 -> null로 변경
   const navigate = useNavigate();
 
   const getGalleryDetail = async () => {
     try {
-      const response = await instance.get(`/api/galleries/${galleryId}`);
+      const response = await instance.get(`/api/galleries/${id}`);
       setGalleryData(response.data);
     } catch (error) {
       throw new Error(error);
@@ -27,10 +26,10 @@ export default function GalleryDetail({ showUserActions = true }) {
   };
 
   useEffect(() => {
-    if (galleryId) {
+    if (id) {
       getGalleryDetail();
     }
-  }, [galleryId]);
+  }, [id]);
 
   const handleLike = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) {
@@ -61,7 +60,7 @@ export default function GalleryDetail({ showUserActions = true }) {
 
   // 이 아래 코드는 galleryData가 로드된 후에만 실행
   const {
-    id,
+    gallery_id,
     exhibitions,
     gallery_address: address,
     gallery_category: category,
@@ -128,11 +127,15 @@ export default function GalleryDetail({ showUserActions = true }) {
         <div>
           <section className={styles.descriptionSection} />
           {exhibitions && <GalleryExhibitions exhibitions={exhibitions} />}
+          {/* 갤러리맵 컴포넌트 생성 후 유저페에지에서만 호출 */}
           <GalleryMap galleryData={galleryData} />
 
           <div className={styles.mapContainer}>
             <h3 className={styles.mapTitle}>찾아오시는 길</h3>
-            <div id={`gallery-${id}-map`} className={styles.galleryMap} />
+            <div
+              id={`gallery-${gallery_id}-map`}
+              className={styles.galleryMap}
+            />
           </div>
           <Link className={styles.backButton} to='/galleries'>
             목록으로 돌아가기

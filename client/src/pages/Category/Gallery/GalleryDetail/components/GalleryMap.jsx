@@ -10,7 +10,6 @@ export default function GalleryMap({ galleryData }) {
     gallery_longitude: lng,
   } = galleryData;
 
-  // 이 컴포넌트가 렌더링될 때만 useMap hook이 호출됩니다.
   useMap({ lat, lng, id: `gallery-${id}-map`, title: name, location: address });
 
   return (

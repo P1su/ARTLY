@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaHeart, FaShare, FaQrcode } from 'react-icons/fa';
 
-export default function ArtworkDetail({ showUserActions = true }) {
-  const { artworkId } = useParams();
+export default function ArtworkDetail({ showUserActions = true, id }) {
   const [artworkData, setArtworkData] = useState([]);
   const [isLike, setIsLike] = useState('false');
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ export default function ArtworkDetail({ showUserActions = true }) {
   useEffect(() => {
     const getArtworkDetail = async () => {
       try {
-        const response = await instance.get(`/api/arts/${artworkId}`);
+        const response = await instance.get(`/api/arts/${id}`);
 
         setArtworkData(response.data);
       } catch (error) {
@@ -28,7 +27,7 @@ export default function ArtworkDetail({ showUserActions = true }) {
     const postArtistLike = async () => {
       try {
         await userInstance.post('/api/likes', {
-          liked_id: artworkId,
+          liked_id: id,
           liked_type: 'art',
         });
       } catch (error) {
@@ -39,7 +38,7 @@ export default function ArtworkDetail({ showUserActions = true }) {
     const deleteArtistLike = async () => {
       try {
         await userInstance.delete('/api/likes', {
-          liked_id: artworkId,
+          liked_id: id,
           liked_type: 'art',
         });
       } catch (error) {

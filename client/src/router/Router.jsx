@@ -29,9 +29,7 @@ import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
-import ConsoleGalleryDetail from '../pages_console/ConsoleDetail/ConsoleGalleryDetail';
-import ConsoleExhibitionDetail from '../pages_console/ConsoleDetail/ConsoleExhibitionDetail';
-import ConsoleArtworkDetail from '../pages_console/ConsoleDetail/ConsoleArtworkDetail';
+import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +43,7 @@ const router = createBrowserRouter([
       { path: '/artworks', element: <ArtworkList /> },
       { path: '/search', element: <Search /> },
       { path: '/notices', element: <News /> },
-      { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
+      { path: '/exhibitions/:id', element: <ExhibitionDetail /> },
       { path: '/galleries/:galleryId', element: <GalleryDetail /> },
       { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
@@ -76,16 +74,16 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
       {
-        path: '/console/exhibitions/:exhibitionId',
-        element: <ConsoleExhibitionDetail />,
+        path: '/console/exhibitions/:id',
+        element: <ConsoleDetail type='exhibition' />,
       },
       {
-        path: '/console/galleries/:galleryId',
-        element: <ConsoleGalleryDetail />,
+        path: '/console/galleries/:id',
+        element: <ConsoleDetail type='gallery' />,
       },
       {
-        path: '/console/artworks/:artworkId',
-        element: <ConsoleArtworkDetail />,
+        path: '/console/artworks/:id',
+        element: <ConsoleDetail type='artwork' />,
       },
     ],
   },
