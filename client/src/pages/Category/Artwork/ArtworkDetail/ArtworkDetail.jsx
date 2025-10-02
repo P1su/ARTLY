@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaHeart, FaShare, FaQrcode } from 'react-icons/fa';
 
-export default function ArtworkDetail() {
+export default function ArtworkDetail({ showUserActions = true }) {
   const { artworkId } = useParams();
   const [artworkData, setArtworkData] = useState([]);
   const [isLike, setIsLike] = useState('false');
@@ -81,19 +81,23 @@ export default function ArtworkDetail() {
         src={artworkData.art_image}
         alt='작가 대표 이미지'
       />
-      <div className={styles.buttonContainer}>
-        {buttons.map(({ label, icon, action }) => (
-          <button className={styles.subButton} key={label} onClick={action}>
-            {icon}
-            <span>{label}</span>
-          </button>
-        ))}
-      </div>
+      {showUserActions && (
+        <div className={styles.buttonContainer}>
+          {buttons.map(({ label, icon, action }) => (
+            <button className={styles.subButton} key={label} onClick={action}>
+              {icon}
+              <span>{label}</span>
+            </button>
+          ))}
+        </div>
+      )}
       <h1 className={styles.artworkTitle}>{artworkData.art_title}</h1>
       <p className={styles.artworkParagraph}>{artworkData.art_description}</p>
-      <Link className={styles.backButton} to='/artworks'>
-        목록으로 돌아가기
-      </Link>
+      {showUserActions && (
+        <Link className={styles.backButton} to='/artworks'>
+          목록으로 돌아가기
+        </Link>
+      )}
     </div>
   );
 }

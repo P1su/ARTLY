@@ -181,43 +181,45 @@ export default function ExhibitionDetail({ showUserActions = true }) {
         ※ 아뜰리에 등록된 이미지와 글의 저작권은 각 작가와 필자에게 있습니다.
       </span>
 
-      <h2 className={styles.subTitle}> 관련 전시 </h2>
-
-      <div className={styles.relatedExhibitionGrid}>
-        {relatedExhibitions?.length > 0 ? (
-          relatedExhibitions.map((exhibition) => (
-            <Link
-              to={`/exhibitions/${exhibition.id}`}
-              key={exhibition.id}
-              className={styles.relatedExhibitionCard}
-            >
-              <img
-                src={exhibition.poster}
-                alt={exhibition.title}
-                className={styles.relatedExhibitionImage}
-              />
-              <div className={styles.relatedExhibitionInfo}>
-                <h4 className={styles.relatedExhibitionTitle}>
-                  {exhibition.title}
-                </h4>
-                <p className={styles.relatedExhibitionPar}>
-                  {exhibition.organization}
-                </p>
-                <p className={styles.relatedExhibitionSubPar}>
-                  {exhibition.start_date} - {exhibition.end_date}
-                </p>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <p>관련 전시가 없습니다.</p>
-        )}
-      </div>
-
       {showUserActions && (
-        <Link className={styles.backButton} to='/exhibitions'>
-          목록으로 돌아가기
-        </Link>
+        <section>
+          <h2 className={styles.subTitle}> 관련 전시 </h2>
+
+          <div className={styles.relatedExhibitionGrid}>
+            {relatedExhibitions?.length > 0 ? (
+              relatedExhibitions.map((exhibition) => (
+                <Link
+                  to={`/exhibitions/${exhibition.id}`}
+                  key={exhibition.id}
+                  className={styles.relatedExhibitionCard}
+                >
+                  <img
+                    src={exhibition.poster}
+                    alt={exhibition.title}
+                    className={styles.relatedExhibitionImage}
+                  />
+                  <div className={styles.relatedExhibitionInfo}>
+                    <h4 className={styles.relatedExhibitionTitle}>
+                      {exhibition.title}
+                    </h4>
+                    <p className={styles.relatedExhibitionPar}>
+                      {exhibition.organization}
+                    </p>
+                    <p className={styles.relatedExhibitionSubPar}>
+                      {exhibition.start_date} - {exhibition.end_date}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p>관련 전시가 없습니다.</p>
+            )}
+          </div>
+
+          <Link className={styles.backButton} to='/exhibitions'>
+            목록으로 돌아가기
+          </Link>
+        </section>
       )}
     </div>
   );
