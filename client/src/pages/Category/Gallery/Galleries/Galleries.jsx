@@ -14,7 +14,7 @@ export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
-    10,
+    12,
     galleries,
   );
   const [galleryFilters, setGalleryFilters] = useState({
@@ -80,9 +80,13 @@ export default function Galleries() {
       <TotalCounts num={galleries.length} label='갤러리' />
       {isLoading && <div>갤러리 데이터 조회 중..</div>}
       {galleries.length === 0 && <div>조회된 데이터가 없습니다.</div>}
-      {pageItems.map((item) => (
-        <GalleryCard key={item.id} galleryItem={item} />
-      ))}
+
+      <div className={styles.gridContainer}>
+        {pageItems.map((item) => (
+          <GalleryCard key={item.id} galleryItem={item} />
+        ))}
+      </div>
+
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}

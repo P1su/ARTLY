@@ -1,6 +1,7 @@
 export const galleryFilter = [
   {
     key: 'status',
+    label: '전시 상태',
     options: [
       { label: '전체', value: '' },
       { label: '현재 전시 중', value: 'onExhibition' },
@@ -8,6 +9,7 @@ export const galleryFilter = [
   },
   {
     key: 'regions',
+    label: '지역',
     options: [
       { label: '전체', value: '' },
       { label: '서울', value: '서울' },
@@ -22,6 +24,7 @@ export const galleryFilter = [
   },
   {
     key: 'type',
+    label: '분류',
     options: [
       { label: '전체', value: '' },
       { label: '미술관', value: '미술관' },
