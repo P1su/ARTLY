@@ -14,7 +14,7 @@ export default function Exhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
-    10,
+    12,
     exhibitions,
   );
   const [exhibitionFilters, setExhibitionFilters] = useState({
