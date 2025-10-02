@@ -1,0 +1,71 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+/* 폼 컨테이너 (실제 입력 필드가 들어갈 영역) */
+.formContainer {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+.bottomButtonContainer {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 1px solid #e5e5e5;
+}
+
+.button {
+  flex-grow: 1;
+  padding: 1.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelButton {
+  background-color: #fff;
+  color: #555;
+  border-color: #ccc;
+}
+
+.cancelButton:hover {
+  background-color: #f8f9fa;
+}
+
+.saveButton {
+  background-color: #007bff; /* Primary color */
+  color: #fff;
+  border-color: #007bff;
+}
+
+.saveButton:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 767px) {
+  .header,
+  .bottomButtonContainer {
+    padding: 0 1.5rem;
+  }
+
+  .header button {
+    left: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}

@@ -6,7 +6,7 @@ import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDet
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 
 const DETAIL_CONFIG = {
-  gallery: {
+  galleries: {
     Component: GalleryDetail,
     tabs: [
       { label: '정보수정' },
@@ -14,7 +14,7 @@ const DETAIL_CONFIG = {
       { label: '리플렛/도록' },
     ],
   },
-  exhibition: {
+  exhibitions: {
     Component: ExhibitionDetail,
     tabs: [
       { label: '정보수정' },
@@ -22,7 +22,7 @@ const DETAIL_CONFIG = {
       { label: '리플렛/도록' },
     ],
   },
-  artwork: {
+  artworks: {
     Component: ArtworkDetail,
     tabs: [{ label: '정보수정' }, { label: 'QR코드' }, { label: '도슨트' }],
   },
@@ -30,13 +30,15 @@ const DETAIL_CONFIG = {
 
 export default function ConsoleDetail({ type }) {
   const { id } = useParams();
+  const navigate = useNavigate();
   useResponsive();
 
   const config = DETAIL_CONFIG[type];
   const { Component, tabs } = config;
 
   const handleTabClick = (label) => {
-    alert(`${label} 페이지로 이동합니다. ID: ${id}`);
+    if (label === '정보수정') navigate(`/console/${type}/edit/${id}`);
+    else alert(`${label} 페이지로 이동합니다. ID: ${id}`);
   };
 
   return (

@@ -12,7 +12,10 @@ import {
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
 import GalleryMap from './components/GalleryMap.jsx';
 
-export default function GalleryDetail({ showUserActions = true, id }) {
+export default function GalleryDetail({ showUserActions = true, id: propId }) {
+  const { galleryId } = useParams(); // 유저 페이지에서 열릴 때
+  const id = propId || galleryId;
+
   const [galleryData, setGalleryData] = useState(null); // 빈 객체 -> null로 변경
   const navigate = useNavigate();
 
@@ -39,11 +42,11 @@ export default function GalleryDetail({ showUserActions = true, id }) {
     try {
       if (galleryData.is_liked === true) {
         await userInstance.delete('/api/likes', {
-          data: { liked_id: galleryId, liked_type: 'gallery' },
+          data: { liked_id: id, liked_type: 'gallery' },
         });
       } else {
         await userInstance.post('/api/likes', {
-          liked_id: galleryId,
+          liked_id: id,
           liked_type: 'gallery',
         });
       }

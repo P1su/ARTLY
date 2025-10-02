@@ -177,3 +177,19 @@
   font-size: 1.2rem;
   color: #888;
 }
+
+@media (max-width: 1024px) {
+  .content {
+    padding: 0 3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    padding: 0 1.5rem;
+  }
+
+  .adminTabButton {
+    font-size: 1.4rem;
+  }
+}

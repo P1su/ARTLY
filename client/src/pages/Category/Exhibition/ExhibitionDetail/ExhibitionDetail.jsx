@@ -5,10 +5,36 @@ import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
-export default function ExhibitionDetail({ showUserActions = true, id }) {
+export default function ExhibitionDetail({
+  showUserActions = true,
+  id: propId,
+}) {
+  const { exhibitionId } = useParams(); // 유저 페이지에서 열릴 때
+  const id = propId || exhibitionId;
+
   const navigate = useNavigate();
-  const [exhibitionData, setExhibitionData] = useState([]);
+  const [exhibitionData, setExhibitionData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const getExhibitionDetail = async () => {
+    try {
+      const response = await instance.get(`/api/exhibitions/${id}`);
+
+      setExhibitionData(response.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getExhibitionDetail();
+    }
+  }, [id]);
+
+  if (!exhibitionData) {
+    return <div>로딩 중...</div>;
+  }
 
   const {
     exhibition_title: title,
@@ -25,20 +51,6 @@ export default function ExhibitionDetail({ showUserActions = true, id }) {
     related_exhibitions: relatedExhibitions,
     is_liked: isLike,
   } = exhibitionData;
-
-  const getExhibitionDetail = async () => {
-    try {
-      const response = await instance.get(`/api/exhibitions/${id}`);
-
-      setExhibitionData(response.data);
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  useEffect(() => {
-    getExhibitionDetail();
-  }, [id]);
 
   const handleLike = async () => {
     !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
@@ -158,7 +170,7 @@ export default function ExhibitionDetail({ showUserActions = true, id }) {
 
       {showUserActions && isModalOpen && (
         <ReservationModal // 모달 컴포넌트 렌더링
-          exhibitionId={exhibitionId}
+          exhibitionId={id}
           onClose={closeModal}
         />
       )}
