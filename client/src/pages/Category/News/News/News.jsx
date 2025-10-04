@@ -25,13 +25,6 @@ export default function News() {
     setQuery(e.target.value);
   };
 
-  const handleFav = () => {
-    setNewsFilters((prev) => ({
-      ...prev,
-      liked_only: !prev.liked_only,
-    }));
-  };
-
   const getNews = async () => {
     try {
       setIsLoading(true);
@@ -59,8 +52,8 @@ export default function News() {
   return (
     <div className={styles.layout}>
       <ListHeader
-        title='뉴스'
-        placeholder='뉴스 제목 검색'
+        title='공고'
+        placeholder='공고 검색'
         onEvent={getNews}
         onSearch={handleSearch}
         value={query}
