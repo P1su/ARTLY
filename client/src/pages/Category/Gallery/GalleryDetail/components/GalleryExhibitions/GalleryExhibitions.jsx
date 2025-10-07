@@ -1,5 +1,5 @@
 import styles from './GalleryExhibitions.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const STATUS_CONFIG = {
   exhibited: { text: '전시중', className: styles.statusOn },
@@ -9,17 +9,24 @@ const STATUS_CONFIG = {
 };
 
 export default function GalleryExhibitions({ exhibitions }) {
+  const location = useLocation();
+  const isConsolePage = location.pathname.includes('/console');
+
   return (
     <section className={styles.exhibitionList}>
       {exhibitions.map(
         ({ id, poster, title, status, organization, start_date, end_date }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 
+          const destinationPath = isConsolePage
+            ? `/console/exhibitions/${id}`
+            : `/exhibitions/${id}`;
+
           return (
             <Link
               className={styles.exhibitionCard}
               key={id}
-              to={`/exhibitions/${id}`}
+              to={destinationPath}
             >
               <div className={styles.imageContainer}>
                 <img

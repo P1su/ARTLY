@@ -16,6 +16,7 @@ const GalleryArtworks = ({ artworks }) => {
   return <div>작품 목록</div>;
 };
 
+// 분리 필요
 function MapModalContent({ galleryData }) {
   const {
     id,
@@ -42,7 +43,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const [galleryData, setGalleryData] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(null); // 'map' or 'like'
+  const [modalType, setModalType] = useState(null);
   const navigate = useNavigate();
 
   const getGalleryDetail = async () => {
@@ -57,14 +58,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const handleShowMap = () => {
     setModalType('map');
     setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsClosing(true); // 1. 닫기 애니메이션 시작
-    setTimeout(() => {
-      setShowModal(false); // 2. 300ms 후에 실제로 모달을 닫음
-      setIsClosing(false); // 3. 다음을 위해 애니메이션 상태 초기화
-    }, 300); // CSS 애니메이션 시간과 동일하게 설정
   };
 
   useEffect(() => {
@@ -139,13 +132,11 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   return (
     <div className={styles.layout}>
-      {/* 제목 */}
       <section className={styles.titleSection}>
         <h1 className={styles.galleryTitle}>{name}</h1>
         <p className={styles.gallerySubTitle}>{nameEn || 'Gallery Name'}</p>
       </section>
 
-      {/* 대표 이미지 + 버튼 */}
       <div className={`${styles.card} ${styles.profileCard}`}>
         <img
           className={styles.galleryImage}
@@ -177,7 +168,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           </div>
         )}
 
-        {/* 태그 */}
         <div className={styles.tagContainer}>
           {category?.split(',').map((tag) => (
             <span key={tag} className={styles.tag}>
@@ -186,7 +176,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           ))}
         </div>
 
-        {/* 정보 목록 */}
         <section className={styles.infoList}>
           {infoItems.map(({ label, content }) => (
             <div className={styles.infoRow} key={label}>
@@ -197,7 +186,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         </section>
       </div>
 
-      {/* 탭 */}
       <nav className={styles.tabNav}>
         <button
           className={`${styles.tabButton} ${
@@ -225,7 +213,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         </button>
       </nav>
 
-      {/* 탭 내용 */}
       <section className={styles.tabContent}>
         {activeTab === 'info' && (
           <p className={styles.descriptionParagraph}>{description}</p>
@@ -241,7 +228,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           ))}
       </section>
 
-      {/* 모달 */}
       {showModal && (
         <div
           className={styles.modalOverlay}
@@ -270,7 +256,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         </div>
       )}
 
-      {/* 뒤로가기 버튼 */}
       {showUserActions && (
         <button
           className={styles.backButton}
