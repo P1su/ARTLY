@@ -1,130 +1,239 @@
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-
-  padding: 2rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
 }
 
-.infoSection {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.card {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 0.2rem 1.5rem rgba(0, 0, 0, 0.1);
+  margin-bottom: 4rem;
+  overflow: hidden;
+}
+
+.profileCard {
+  padding: 1.5rem;
+}
+
+.titleSection {
+  text-align: center;
+  margin: 2rem 0;
 }
 
 .galleryTitle {
-  padding-bottom: 1rem;
-
-  color: #333;
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 600;
-  text-align: center;
+  color: #222;
 }
 
-.imageBox {
-  position: relative;
+.gallerySubTitle {
+  font-size: 1.6rem;
+  color: #666;
+  margin-top: 0.5rem;
 }
 
 .galleryImage {
-  top: 0;
   width: 100%;
-  height: 33.5rem;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   border-radius: 0.8rem;
-
-  object-fit: fill;
+  margin-bottom: 2rem;
 }
 
-.favButton {
+.actionButtonContainer {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-
-  width: 5rem;
-  height: 5rem;
-
-  border-radius: 50%;
-
-  background-color: #fff;
-}
-
-.isClicked {
-  fill: #e57373;
-}
-
-.icHeart {
-  width: 3rem;
-  height: 3rem;
-  color: #333;
-}
-
-.categorySpan {
-  display: inline-block;
-  align-self: flex-start;
-
-  padding: 0.5rem 1rem;
-  border-radius: 0.4rem;
-
-  background-color: #f5f5f5;
-  color: #333;
-
-  font-size: 1.4rem;
-}
-
-.descriptionParagraph {
-  color: #333;
-  font-size: 1.6rem;
-  line-height: 1.7;
-  white-space: pre-wrap;
-}
-
-.infoItemContainer {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-
+  justify-content: space-around;
   width: 100%;
-  height: 2.1rem;
-}
-
-.icon {
-  width: 1.6rem;
-  height: 1.6rem;
-
-  color: #666;
-}
-
-.infoParagraph {
-  color: #333;
-
-  font-size: 1.4rem;
-}
-
-.mapContainer {
-  width: 100%;
-}
-
-.mapTitle {
-  padding-bottom: 0.5rem;
+  padding: 1.5rem 0;
+  border-top: 0.1rem solid #eee;
   border-bottom: 0.1rem solid #eee;
-  color: #333;
+  margin-bottom: 2rem;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.actionIcon {
   font-size: 2rem;
 }
 
-.galleryMap {
+.actionIcon.isClicked {
+  color: #e57373;
+}
+
+.tagContainer {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5rem;
+  border: solid 0.1rem #666;
+  background-color: none;
+  color: #666;
+  font-size: 1.5rem;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   width: 100%;
-  height: 30rem;
+  margin-bottom: 3rem;
+}
+
+.infoRow {
+  display: flex;
+  font-size: 1.4rem;
+}
+
+.infoLabel {
+  width: 8rem;
+  flex-shrink: 0;
+  color: #888;
+}
+
+.infoContent {
+  color: #444;
+  word-break: break-all;
+}
+
+.infoContent a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.tabNav {
+  display: flex;
+  width: 100%;
+  padding-top: 1rem;
+  border-bottom: 0.5rem solid #eeeeeed3;
+  margin-bottom: 2rem;
+  background-color: #f7f8facf;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 2rem 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #888;
+  border: none;
+  cursor: pointer;
+
+  margin-bottom: -1px;
+}
+
+.tabButton:hover {
+  color: #333;
+}
+
+.activeTab {
+  color: #007bff;
+  border-bottom: none;
+  border-radius: 2rem 2rem 0 0;
+  background-color: white;
+  box-shadow:
+    0 -2px 4px rgba(0, 0, 0, 0.1),
+    2px 0 4px rgba(0, 0, 0, 0.05),
+    -2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.tabContent {
+  width: 100%;
+  background-color: white;
+
+  min-height: 10rem;
+  padding: 2rem 0;
+  margin-top: -2.4rem;
+}
+
+.descriptionParagraph {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #888;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.likeModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.likeIcon {
+  font-size: 3rem;
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+
+.likeMessage {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.likeSubMessage {
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .backButton {
-  padding: 1rem 2rem;
-  margin-top: 2rem;
+  display: inline-block;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  margin-top: 3rem;
   border: 0.1rem solid #ddd;
-  border-radius: 0.4rem;
-  color: #666;
-  font-size: 1.4rem;
+  border-radius: 0.8rem;
+  color: #333;
+  font-size: 1.6rem;
   font-weight: 500;
+  text-align: center;
+  text-decoration: none;
 }
