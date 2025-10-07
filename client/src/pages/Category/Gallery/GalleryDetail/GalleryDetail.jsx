@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaHeart, FaLocationDot, FaShare } from 'react-icons/fa6';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
-import GalleryMap from './components/GalleryMap.jsx';
+import useMap from '../../../Nearby/hooks/useMap.jsx';
 
 // 작품 탭 임시 컴포넌트
 const GalleryArtworks = ({ artworks }) => {
@@ -15,6 +15,26 @@ const GalleryArtworks = ({ artworks }) => {
   }
   return <div>작품 목록</div>;
 };
+
+function MapModalContent({ galleryData }) {
+  const {
+    id,
+    gallery_name: name,
+    gallery_address: address,
+    gallery_latitude: lat,
+    gallery_longitude: lng,
+  } = galleryData;
+
+  useMap({ lat, lng, id: `gallery-${id}-map`, title: name, location: address });
+
+  return (
+    <>
+      <h3>{name}</h3>
+      <p>{galleryData.gallery_name_en || 'Gallery Name'}</p>
+      <div id={`gallery-${id}-map`} className={styles.galleryMap} />
+    </>
+  );
+}
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
@@ -34,9 +54,24 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  const handleShowMap = () => {
+    setModalType('map');
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsClosing(true); // 1. 닫기 애니메이션 시작
+    setTimeout(() => {
+      setShowModal(false); // 2. 300ms 후에 실제로 모달을 닫음
+      setIsClosing(false); // 3. 다음을 위해 애니메이션 상태 초기화
+    }, 300); // CSS 애니메이션 시간과 동일하게 설정
+  };
+
   useEffect(() => {
     if (id) getGalleryDetail();
   }, [id]);
+
+  if (!galleryData) return <div>로딩 중...</div>;
 
   const handleLike = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) {
@@ -53,7 +88,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           liked_id: id,
           liked_type: 'gallery',
         });
-        // 관심 등록 후 모달 표시
         setModalType('like');
         setShowModal(true);
       }
@@ -62,13 +96,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
       console.error(error);
     }
   };
-
-  const handleShowMap = () => {
-    setModalType('map');
-    setShowModal(true);
-  };
-
-  if (!galleryData) return <div>로딩 중...</div>;
 
   const {
     exhibitions,
@@ -81,6 +108,8 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     gallery_start_time: startTime,
     gallery_image: image,
     gallery_name: name,
+    gallery_latitude: lat,
+    gallery_longitude: lng,
     gallery_name_en: nameEn,
     gallery_phone: phone,
     gallery_email: email,
@@ -212,14 +241,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           ))}
       </section>
 
-      {/* 지도 섹션 */}
-      {showUserActions && (
-        <div className={styles.mapContainer}>
-          <h3 className={styles.mapTitle}>찾아오시는 길</h3>
-          <GalleryMap galleryData={galleryData} />
-        </div>
-      )}
-
       {/* 모달 */}
       {showModal && (
         <div
@@ -231,12 +252,9 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
             onClick={(e) => e.stopPropagation()}
           >
             {modalType === 'map' && (
-              <>
-                <h3>{name}</h3>
-                <p>{nameEn}</p>
-                <GalleryMap galleryData={galleryData} />
-              </>
+              <MapModalContent galleryData={galleryData} />
             )}
+
             {modalType === 'like' && (
               <div className={styles.likeModal}>
                 <FaHeart className={styles.likeIcon} />

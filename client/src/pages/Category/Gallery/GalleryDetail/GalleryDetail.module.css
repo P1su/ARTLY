@@ -208,6 +208,44 @@
   align-items: center;
 }
 
+.mapContainer {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.mapTitle {
+  padding-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.galleryMap {
+  width: 100%;
+  height: 30rem;
+  border-radius: 8px;
+}
+
+/* 지도 로드 실패 시 보여줄 오류 메시지 스타일 */
+.mapError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30rem; /* .galleryMap과 동일한 높이 */
+  background-color: #f8f9fa;
+  border: 1px dashed #ced4da;
+  border-radius: 8px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.mapError p {
+  margin: 0.5rem 0;
+  font-size: 1.4rem;
+}
+
 .likeIcon {
   font-size: 3rem;
   color: #007bff;
