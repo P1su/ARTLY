@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tiptap/react": "^3.6.5",
+    "@tiptap/starter-kit": "^3.6.5",
     "axios": "^1.9.0",
     "html5-qrcode": "^2.3.8",
     "install": "^0.13.0",
