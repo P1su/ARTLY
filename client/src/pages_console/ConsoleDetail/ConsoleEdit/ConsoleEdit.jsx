@@ -1,30 +1,25 @@
 import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { instance } from '../../../apis/instance.js';
+
+// 분리된 폼 컴포넌트들을 import
+import GalleryEditForm from './forms/GalleryEditForm.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
+    title: '갤러리 수정',
     fetchUrl: (id) => `/api/galleries/${id}`,
     updateUrl: (id) => `/api/galleries/${id}`,
   },
-  exhibitions: {
-    fetchUrl: (id) => `/api/exhibitions/${id}`,
-    updateUrl: (id) => `/api/exhibitions/${id}`,
-  },
-  artworks: {
-    fetchUrl: (id) => `/api/artworks/${id}`,
-    updateUrl: (id) => `/api/artworks/${id}`,
-  },
+  // ...
 };
 
-const GalleryEditForm = ({ data, setData }) => <div>갤러리 수정 폼</div>;
-const ExhibitionEditForm = ({ data, setData }) => <div>전시회 수정 폼</div>;
-const ArtworkEditForm = ({ data, setData }) => <div>작품 수정 폼</div>;
-
+// 폼 컴포넌트 매핑
 const FORM_COMPONENTS = {
   galleries: GalleryEditForm,
-  exhibitions: ExhibitionEditForm,
-  artworks: ArtworkEditForm,
+  // exhibitions: ExhibitionEditForm, // 추후 분리 후 추가
+  // artworks: ArtworkEditForm,
 };
 
 export default function ConsoleEdit({ type }) {
@@ -37,13 +32,17 @@ export default function ConsoleEdit({ type }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const response = await instance.get(config.fetchUrl(id));
-      // setData(response.data);
-      console.log(`${config} (ID: ${id})의 기존 데이터를 불러옵니다.`);
-      setData({}); // 임시 데이터 설정
+      try {
+        const response = await instance.get(config.fetchUrl(id));
+        setData(response.data);
+      } catch (error) {
+        console.error('데이터 로딩 실패:', error);
+        // 에러 처리 (예: setData({}))
+      }
     };
-    fetchData();
-  }, [id, type, config]);
+    if (config) fetchData();
+    console.log('effect 후:', data);
+  }, [id, config]);
 
   const handleCancel = () => {
     if (
@@ -56,17 +55,25 @@ export default function ConsoleEdit({ type }) {
   const handleSave = () => {
     console.log('수정된 데이터를 서버에 저장합니다:', data);
     alert('저장되었습니다.');
-    navigate(`/console/${type}s/${id}`);
+    navigate(`/console/${type}/${id}`);
   };
 
-  if (!data) {
-    return <div>데이터 로딩 중...</div>;
-  }
+  console.log('effect 전:', data);
+
+  if (!data) return <div>데이터 로딩 중...</div>;
 
   return (
     <div className={styles.layout}>
+      <header className={styles.header}>
+        <button className={styles.backButton} onClick={handleCancel}>
+          {'<'}
+        </button>
+        <h1 className={styles.title}>{config.title}</h1>
+      </header>
+
       <main className={styles.formContainer}>
-        <FormComponent data={data} setData={setData} />
+        {/* FormComponent가 유효할 때만 렌더링 */}
+        {FormComponent && <FormComponent data={data} setData={setData} />}
       </main>
 
       <div className={styles.bottomButtonContainer}>
