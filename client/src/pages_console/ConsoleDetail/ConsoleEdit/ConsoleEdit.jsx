@@ -2,8 +2,6 @@ import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { instance } from '../../../apis/instance.js';
-
-// 분리된 폼 컴포넌트들을 import
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 
 const EDIT_CONFIG = {
@@ -15,7 +13,6 @@ const EDIT_CONFIG = {
   // ...
 };
 
-// 폼 컴포넌트 매핑
 const FORM_COMPONENTS = {
   galleries: GalleryEditForm,
   // exhibitions: ExhibitionEditForm, // 추후 분리 후 추가
@@ -37,7 +34,7 @@ export default function ConsoleEdit({ type }) {
         setData(response.data);
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
-        // 에러 처리 (예: setData({}))
+        setData({});
       }
     };
     if (config) fetchData();
@@ -72,22 +69,21 @@ export default function ConsoleEdit({ type }) {
       </header>
 
       <main className={styles.formContainer}>
-        {/* FormComponent가 유효할 때만 렌더링 */}
         {FormComponent && <FormComponent data={data} setData={setData} />}
       </main>
 
       <div className={styles.bottomButtonContainer}>
         <button
-          className={`${styles.button} ${styles.cancelButton}`}
-          onClick={handleCancel}
-        >
-          취소
-        </button>
-        <button
           className={`${styles.button} ${styles.saveButton}`}
           onClick={handleSave}
         >
           저장
+        </button>
+        <button
+          className={`${styles.button} ${styles.cancelButton}`}
+          onClick={handleCancel}
+        >
+          취소
         </button>
       </div>
     </div>

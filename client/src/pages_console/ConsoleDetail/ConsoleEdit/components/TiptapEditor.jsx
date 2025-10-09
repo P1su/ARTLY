@@ -1,16 +1,14 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image'; // 이미지 확장 기능 import
+import Image from '@tiptap/extension-image';
 import styles from './TiptapEditor.module.css';
 import { useCallback } from 'react';
 
-// 에디터 상단의 메뉴바
 const MenuBar = ({ editor }) => {
   if (!editor) {
     return null;
   }
 
-  // 이미지 추가 핸들러
   const addImage = useCallback(() => {
     const url = window.prompt('이미지 URL을 입력하세요');
 
@@ -21,7 +19,6 @@ const MenuBar = ({ editor }) => {
 
   return (
     <div className={styles.menuBar}>
-      {/* 기본 스타일 버튼 */}
       <button
         type='button'
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -46,7 +43,6 @@ const MenuBar = ({ editor }) => {
 
       <div className={styles.divider}></div>
 
-      {/* 헤딩 버튼 */}
       <button
         type='button'
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -77,20 +73,17 @@ const MenuBar = ({ editor }) => {
 
       <div className={styles.divider}></div>
 
-      {/* 이미지 추가 버튼 */}
       <button type='button' onClick={addImage}>
-        이미지
+        사진
       </button>
     </div>
   );
 };
 
-// 메인 에디터 컴포넌트
 export default function TiptapEditor({ content, onChange }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        // heading 레벨을 1, 2, 3만 사용하도록 설정
         heading: {
           levels: [1, 2, 3],
         },

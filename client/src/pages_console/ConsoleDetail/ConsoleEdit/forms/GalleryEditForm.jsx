@@ -1,12 +1,12 @@
 import styles from './GalleryEditForm.module.css';
 import { useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
+import GalleryExhibitions from '../../../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
 
 export default function GalleryEditForm({ data, setData }) {
   const [activeTab, setActiveTab] = useState('info');
-  const [tagInput, setTagInput] = useState(''); // 태그 입력을 위한 state
+  const [tagInput, setTagInput] = useState('');
 
-  // --- 태그 관련 핸들러 ---
   const handleTagKeyDown = (e) => {
     if (e.key === 'Enter' && tagInput.trim() !== '') {
       e.preventDefault();
@@ -18,7 +18,7 @@ export default function GalleryEditForm({ data, setData }) {
         const updatedTags = [...currentTags, newTag].join(', ');
         setData((prev) => ({ ...prev, gallery_category: updatedTags }));
       }
-      setTagInput(''); // 입력 필드 초기화
+      setTagInput('');
     }
   };
 
@@ -38,25 +38,20 @@ export default function GalleryEditForm({ data, setData }) {
   const handleCheckboxChange = (e) => {
     const { value: day, checked } = e.target;
 
-    // 현재 휴관일 문자열을 배열로 변환합니다. (null이나 undefined일 경우 빈 배열로 시작)
     const currentClosedDays = data.gallery_closed_day
       ? data.gallery_closed_day.split(',').map((d) => d.trim())
       : [];
 
     let newClosedDays;
     if (checked) {
-      // 체크된 경우, 중복되지 않게 요일을 추가합니다.
       newClosedDays = [...new Set([...currentClosedDays, day])];
     } else {
-      // 체크 해제된 경우, 해당 요일을 배열에서 제거합니다.
       newClosedDays = currentClosedDays.filter((d) => d !== day);
     }
 
-    // 요일 순서에 맞게 정렬합니다 (선택 사항).
     const daysOrder = ['월', '화', '수', '목', '금', '토', '일'];
     newClosedDays.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
 
-    // 배열을 다시 쉼표로 구분된 문자열로 합쳐 상태를 업데이트합니다.
     setData((prev) => ({
       ...prev,
       gallery_closed_day: newClosedDays.join(','),
@@ -67,7 +62,6 @@ export default function GalleryEditForm({ data, setData }) {
     setData((prev) => ({ ...prev, gallery_description: newDescription }));
   };
 
-  // 시간 데이터 파싱 (예: "10:00:00" -> { hour: "10", minute: "00" })
   const parseTime = (timeStr) => {
     if (!timeStr) return { hour: '00', minute: '00' };
     const [hour, minute] = timeStr.split(':');
@@ -93,11 +87,12 @@ export default function GalleryEditForm({ data, setData }) {
         />
         <input
           className={`${styles.input} ${styles.gallerySubNameInput}`}
-          name='gallery_name_en' // 영문 이름 필드명
+          name='gallery_name_en' // 영문 이름 필드명 추가 필요
           value={data.gallery_name_en || ''}
           onChange={handleInputChange}
           placeholder='갤러리 영문명 (선택)'
         />
+
         <div className={styles.imageUploadBox}>
           {data.gallery_image ? (
             <img
@@ -109,6 +104,7 @@ export default function GalleryEditForm({ data, setData }) {
             <p>+ 대표 이미지를 업로드 해주세요</p>
           )}
         </div>
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>태그</label>
           <div className={styles.tagInputContainer}>
@@ -136,7 +132,6 @@ export default function GalleryEditForm({ data, setData }) {
         </div>
 
         <div className={styles.formGrid}>
-          {/* --- 관람 시간 입력 UI --- */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>관람시간</label>
             <div className={styles.timeInputContainer}>
@@ -167,7 +162,6 @@ export default function GalleryEditForm({ data, setData }) {
                     type='checkbox'
                     name='closedDays'
                     value={day}
-                    // gallery_closed_day 문자열에 해당 요일이 포함되어 있는지 확인
                     checked={data.gallery_closed_day[0]?.includes(day)}
                     onChange={handleCheckboxChange}
                   />{' '}
@@ -176,12 +170,13 @@ export default function GalleryEditForm({ data, setData }) {
               ))}
             </div>
           </div>
+
           <div className={styles.inputGroup}>
             <label className={styles.label}>전화번호</label>
             <input
               className={styles.input}
               name='gallery_phone'
-              value={data.gallery_phone || ''}
+              value={data.gallery_phone || ''} // 전화번호 필드 추가
               onChange={handleInputChange}
             />
           </div>
@@ -200,7 +195,7 @@ export default function GalleryEditForm({ data, setData }) {
               className={styles.input}
               type='email'
               name='gallery_email'
-              value={data.gallery_email || ''}
+              value={data.gallery_email || ''} // 이메일 필드 추가
               onChange={handleInputChange}
             />
           </div>
@@ -210,7 +205,7 @@ export default function GalleryEditForm({ data, setData }) {
               className={styles.input}
               type='url'
               name='gallery_homepage'
-              value={data.gallery_homepage || ''}
+              value={data.gallery_homepage || ''} // 홈페이지 필드 추가
               onChange={handleInputChange}
             />
           </div>
@@ -224,7 +219,7 @@ export default function GalleryEditForm({ data, setData }) {
             className={styles.input}
             placeholder='Instagram 주소'
             name='sns_instagram'
-            value={data.sns_instagram || ''}
+            value={data.sns_instagram || ''} // sns 관련 필드 추가
             onChange={handleInputChange}
           />
           <input
@@ -273,11 +268,14 @@ export default function GalleryEditForm({ data, setData }) {
               onChange={handleDescriptionChange}
             />
           )}
-          {activeTab === 'exhibitions' && (
-            <div className={styles.emptyContent}>
-              전시 목록을 관리하는 UI가 표시됩니다.
-            </div>
-          )}
+          {activeTab === 'exhibitions' &&
+            (data.exhibitions?.length > 0 ? (
+              <GalleryExhibitions exhibitions={data.exhibitions} />
+            ) : (
+              <p className={styles.emptyContent}>
+                현재 진행중인 전시가 없습니다.
+              </p>
+            ))}
         </div>
       </div>
     </>

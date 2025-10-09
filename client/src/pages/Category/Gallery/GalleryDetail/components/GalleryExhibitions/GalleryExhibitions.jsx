@@ -11,6 +11,7 @@ const STATUS_CONFIG = {
 export default function GalleryExhibitions({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
+  const isEditPage = location.pathname.includes('/edit');
 
   return (
     <section className={styles.exhibitionList}>
@@ -18,9 +19,11 @@ export default function GalleryExhibitions({ exhibitions }) {
         ({ id, poster, title, status, organization, start_date, end_date }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 
-          const destinationPath = isConsolePage
-            ? `/console/exhibitions/${id}`
-            : `/exhibitions/${id}`;
+          const destinationPath = isEditPage
+            ? `/console/exhibitions/edit/${id}`
+            : isConsolePage
+              ? `/console/exhibitions/${id}`
+              : `/exhibitions/${id}`;
 
           return (
             <Link
