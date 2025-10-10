@@ -8,11 +8,8 @@
 }
 
 .gridContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  grid-auto-rows: auto;
-  grid-auto-columns: auto;
+  column-count: 4;
+  column-gap: 10rem;
 }
 
 @media (max-width: 1500px) {
