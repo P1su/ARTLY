@@ -11,12 +11,6 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        '/api': {
-          target: env.VITE_SERVER_URL,
-          changeOrigin: true,
-          secure: false,
-          ws: true,
-        },
         '/v2': {
           target: 'https://maps.apigw.ntruss.com/map-geocode',
           changeOrigin: true,

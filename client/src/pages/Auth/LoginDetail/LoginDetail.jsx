@@ -62,14 +62,7 @@ export default function LoginDetail() {
             onChange={handleChange}
             value={loginDatas.login_pwd}
           />
-          <button
-            className={styles.submitButton}
-            disabled={
-              loginDatas.login_id.length < 6 || loginDatas.login_pwd.length < 8
-            }
-          >
-            회원 로그인
-          </button>
+          <button className={styles.submitButton}>회원 로그인</button>
         </form>
         <SupportSection />
       </div>
