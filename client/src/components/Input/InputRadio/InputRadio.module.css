@@ -19,7 +19,7 @@
 }
 
 .radioInput[type='radio']:checked {
-  background-color: #5a4fcf;
+  background-color: var(--blue01);
   border: 0.2rem solid #ffffff;
-  box-shadow: 0 0 0 0.2rem #5a4fcf;
+  box-shadow: 0 0 0 0.2rem var(--blue01);
 }
