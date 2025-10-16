@@ -6,8 +6,20 @@ import GalleryExhibitions from '../../../../pages/Category/Gallery/GalleryDetail
 export default function GalleryEditForm({ data, setData }) {
   const [activeTab, setActiveTab] = useState('info');
   const [tagInput, setTagInput] = useState('');
+  const [isKoreanComposing, setIsKoreanComposing] = useState(false);
+
+  const handleComposition = (e) => {
+    if (e.type === 'compositionstart') {
+      setIsKoreanComposing(true);
+    }
+    if (e.type === 'compositionend') {
+      setIsKoreanComposing(false);
+    }
+  };
 
   const handleTagKeyDown = (e) => {
+    if (isKoreanComposing) return; // 한글 조합 중이면 Enter 무시
+
     if (e.key === 'Enter' && tagInput.trim() !== '') {
       e.preventDefault();
       const newTag = tagInput.trim();
@@ -21,6 +33,7 @@ export default function GalleryEditForm({ data, setData }) {
       setTagInput('');
     }
   };
+  console.log(isKoreanComposing);
 
   const handleRemoveTag = (tagToRemove) => {
     const currentTags = data.gallery_category.split(',').map((t) => t.trim());
@@ -126,6 +139,8 @@ export default function GalleryEditForm({ data, setData }) {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
+              onCompositionStart={handleComposition}
+              onCompositionEnd={handleComposition}
               placeholder='태그 추가'
             />
           </div>

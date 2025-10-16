@@ -55,8 +55,6 @@ export default function ConsoleEdit({ type }) {
     navigate(`/console/${type}/${id}`);
   };
 
-  console.log('effect 전:', data);
-
   if (!data) return <div>데이터 로딩 중...</div>;
 
   return (
