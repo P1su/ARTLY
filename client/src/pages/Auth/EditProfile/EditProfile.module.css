@@ -1,11 +1,13 @@
 .container {
   max-width: 120rem;
   margin: 0 auto;
-  padding: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 3rem clamp(1rem, 4vw, 2rem) 6rem;
 }
 
 .pageTitle {
-  font-size: 2.4rem;
+  font-size: clamp(2rem, 3vw, 2.4rem);
   font-weight: 600;
   margin-bottom: 2rem;
 }
@@ -17,20 +19,20 @@
   overflow: hidden;
   margin-bottom: 2rem;
   padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
 }
 
 .profileImageSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 2rem;
-  border-bottom: 0.1rem solid #eee;
-  margin-bottom: 2rem;
 }
 
 .profileImage {
-  width: 8rem;
-  height: 8rem;
+  width: clamp(6rem, 8vw, 8rem);
+  height: clamp(6rem, 8vw, 8rem);
   border-radius: 50%;
   background-color: #f0f0f0;
   display: flex;
@@ -78,7 +80,7 @@
 }
 
 .profileName {
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.6rem);
   font-weight: 500;
 }
 
@@ -93,19 +95,22 @@
 }
 
 .infoLabel {
-  width: 8rem;
-  font-size: 1.4rem;
+  width: clamp(7rem, 12vw, 10rem);
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   color: #666;
 }
 
 .infoValue {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   flex-grow: 1;
 }
 
 .input {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   flex-grow: 1;
+  padding: 0.6rem 0.8rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.6rem;
 }
 
 .changeButton {
@@ -113,7 +118,7 @@
   border: 0.1rem solid #ddd;
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 2vw, 1.2rem);
   color: #666;
   cursor: pointer;
 }
@@ -132,7 +137,7 @@
 }
 
 .sectionTitle {
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.6rem);
   font-weight: 500;
   margin-bottom: 1.5rem;
 }
@@ -146,7 +151,7 @@
 }
 
 .statsItem {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
 }
 
 .profileDetailsCard {
@@ -169,11 +174,11 @@
 }
 
 .detailsLabel {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
 }
 
 .detailsValue {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   color: #666;
 }
 
@@ -182,7 +187,7 @@
   border: 0.1rem solid #ddd;
   border-radius: 1.5rem;
   padding: 0.3rem 0.8rem;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 2vw, 1.2rem);
   color: #666;
   cursor: pointer;
 }
@@ -191,19 +196,44 @@
   background-color: #f5f5f5;
 }
 
+.buttonField {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
 .backBtn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background-color: #3cb371;
+  width: 40rem;
+  background-color: #333;
   color: white;
   border: none;
   border-radius: 3rem;
   padding: 1rem 2rem;
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   cursor: pointer;
   box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
 }
 .backBtn:hover {
-  background-color: #38a169;
+  background-color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .profileCard {
+    grid-template-columns: 1fr;
+  }
+  .profileImageSection {
+    padding-bottom: 2rem;
+    border-bottom: 0.1rem solid #eee;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .backBtn {
+    position: static;
+    margin-top: 1.5rem;
+    width: 100%;
+    text-align: center;
+  }
 }
