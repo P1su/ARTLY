@@ -19,11 +19,13 @@ export default function NearbyGalleries({ results }) {
       {pageItems.map((item) => (
         <GalleryCard key={item.id} galleryItem={item} />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={results.length}
-      />
+      <div className={styles.paginationRow}>
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={results.length}
+        />
+      </div>
     </section>
   );
 }
