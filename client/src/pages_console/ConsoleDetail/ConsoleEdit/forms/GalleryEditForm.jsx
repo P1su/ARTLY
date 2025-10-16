@@ -16,7 +16,7 @@ export default function GalleryEditForm({ data, setData }) {
       setIsKoreanComposing(false);
     }
   };
-
+  console.log(data);
   const handleTagKeyDown = (e) => {
     if (isKoreanComposing) return; // 한글 조합 중이면 Enter 무시
 
@@ -33,7 +33,6 @@ export default function GalleryEditForm({ data, setData }) {
       setTagInput('');
     }
   };
-  console.log(isKoreanComposing);
 
   const handleRemoveTag = (tagToRemove) => {
     const currentTags = data.gallery_category.split(',').map((t) => t.trim());
