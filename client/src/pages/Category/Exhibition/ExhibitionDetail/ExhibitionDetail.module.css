@@ -1,181 +1,186 @@
+/* 전체 배경색과 레이아웃 */
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-
-  position: relative;
-
-  min-height: calc(100vh - 9rem);
-  padding: 2rem;
-
-  font-size: 1.2rem;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  background-color: #f0f2f5;
+  min-height: 100vh;
 }
 
-.titleSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 0.5rem;
-}
-
-.title {
-  padding-bottom: 1rem;
-  color: #333;
-  font-size: 2.4rem;
-}
-
-.exhibitionImage {
-  width: 100%;
-  height: 50rem;
-
-  object-fit: fill;
-}
-
-.infoSection {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  width: 100%;
-}
-
-.infoContainer {
-  display: flex;
-  gap: 1rem;
-
-  color: #333;
-  font-size: 1.6rem;
-  white-space: pre-wrap;
-}
-
-.infoSpan {
-  width: 7rem;
-
-  color: #555;
-  font-weight: 500;
-}
-
-.infoParagraph {
-  display: inline-block;
-}
-
-.userActionButton {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-
-  width: 7rem;
-  height: 7rem;
-
-  border: 1px solid #ddd;
-  border-radius: 0.8rem;
-
-  background-color: #fff;
-
-  color: #666;
-  font-size: 1.2rem;
-}
-
-.subTitle {
-  width: 100%;
-  padding-bottom: 1rem;
-  border-bottom: 0.1rem solid #e5e5e5;
-
-  color: #333;
-  font-size: 2rem;
-}
-
-.subParagraph {
-  width: 100%;
-
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.subSpan {
-  margin: 2rem 0;
-  color: #666;
-  font-size: 1.2rem;
-}
-
-.divider {
-  width: 100%;
-
-  border: none;
-  border-top: 0.1rem solid #e5e5e5;
-}
-
-.icon {
-  width: 2rem;
-  height: 2rem;
-}
-
-.icHeart {
-  fill: #e57373;
-}
-
-.userActionContainer {
-  display: flex;
-  gap: 2rem;
-}
-
-.backButton {
-  padding: 1rem 2rem;
-  margin-top: 2rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.4rem;
-  color: #666;
-  font-size: 1.4rem;
-  font-weight: 500;
-}
-
-.relatedExhibitionGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 1rem;
-}
-
-.relatedExhibitionCard {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
+/* 카드 공통 스타일 */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-.relatedExhibitionImage {
+.profileCard {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infoCard,
+.tabCard {
+  padding: 2rem;
+}
+
+/* 전시 포스터 이미지 */
+.exhibitionImage {
   width: 100%;
-  height: 40rem;
-  border-radius: 0.8rem;
-
-  object-fit: fill;
+  max-width: 350px; /* 최대 너비 제한 */
+  height: auto;
+  aspect-ratio: 2 / 3; /* 세로가 긴 포스터 비율 */
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.relatedExhibitionInfo {
-  padding: 1.5rem 1rem;
-  color: #333;
+/* 제목 섹션 */
+.titleSection {
+  text-align: center;
+  margin: 2.5rem 0;
 }
 
-.relatedExhibitionTitle {
-  margin-bottom: 0.5rem;
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1c1e21;
+}
+
+/* 사용자 액션 버튼 */
+.actionButtonContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #65676b;
+  font-weight: 600;
+}
+
+.actionIcon {
+  font-size: 2rem;
+}
+
+.actionIcon.isClicked {
+  color: #e57373;
+}
+
+/* 상세 정보 목록 */
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.infoRow {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.infoLabel {
+  width: 9rem;
+  flex-shrink: 0;
+  color: #65676b;
+  font-weight: 600;
+}
+
+.infoContent {
+  color: #1c1e21;
+  word-break: break-all;
+}
+
+.infoContent a {
+  color: #1877f2;
+  text-decoration: none;
+}
+.infoContent a:hover {
+  text-decoration: underline;
+}
+
+/* 탭 네비게이션 */
+.tabNav {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 2rem;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 1.2rem 0;
   font-size: 1.6rem;
-  font-weight: 500;
-}
-
-.relatedExhibitionPar {
-  margin: 0;
-  font-size: 1.4rem;
-  color: #666;
-}
-
-.relatedExhibitionSubPar {
-  margin: 0;
-  font-size: 1.2rem;
+  font-weight: 600;
   color: #888;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+
+.activeTab {
+  color: #007bff;
+  border-bottom-color: #007bff;
+}
+
+/* 탭 컨텐츠 */
+.tabContent {
+  width: 100%;
+  min-height: 10rem;
+}
+
+.descriptionParagraph {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #1c1e21;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.descriptionParagraph :global(img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #8a8d91;
+}
+
+/* 목록으로 돌아가기 버튼 */
+.backButton {
+  display: block;
+  width: 100%;
+  padding: 1.2rem;
+  margin-top: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #e4e6eb;
+  color: #1c1e21;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

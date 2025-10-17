@@ -4,11 +4,8 @@ import Layout from '../layouts/Layout';
 import AuthRoute from '../layouts/AuthRoute';
 import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Category/Exhibition/Exhibitions/Exhibitions';
-import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import Artists from '../pages/Category/Artist/Artists/Artists';
-import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Category/Gallery/Galleries/Galleries';
-import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import Login from '../pages/Auth/Login/Login';
 import Register from '../pages/Auth/Register/Register';
 import Mypage from '../pages/Auth/MyPage/MyPage';
@@ -31,6 +28,7 @@ import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
+import CommonDetail from '../pages/Category/CommonDetail/CommonDetail';
 
 const router = createBrowserRouter([
   {
@@ -44,9 +42,14 @@ const router = createBrowserRouter([
       { path: '/artworks', element: <ArtworkList /> },
       { path: '/search', element: <Search /> },
       { path: '/notices', element: <News /> },
-      { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
-      { path: '/galleries/:galleryId', element: <GalleryDetail /> },
-      { path: '/artists/:artistId', element: <ArtistDetail /> },
+
+      { path: '/galleries/:id', element: <CommonDetail type='galleries' /> },
+      {
+        path: '/exhibitions/:id',
+        element: <CommonDetail type='exhibitions' />,
+      },
+      { path: '/artists/:id', element: <CommonDetail type='artworks' /> },
+
       { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/artworks/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },
