@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 const DETAIL_CONFIG = {
   galleries: {
+    title: '갤러리',
     Component: GalleryDetail,
     tabs: [
       { label: '정보수정' },
@@ -17,6 +18,7 @@ const DETAIL_CONFIG = {
     ],
   },
   exhibitions: {
+    title: '전시회',
     Component: ExhibitionDetail,
     tabs: [
       { label: '정보수정' },
@@ -25,6 +27,7 @@ const DETAIL_CONFIG = {
     ],
   },
   artworks: {
+    title: '작품',
     Component: ArtworkDetail,
     tabs: [{ label: '정보수정' }, { label: 'QR코드' }, { label: '도슨트' }],
   },
@@ -70,6 +73,12 @@ export default function ConsoleDetail({ type }) {
 
   return (
     <div className={styles.layout}>
+      <header className={styles.header}>
+        <button className={styles.backButton} onClick={() => navigate(-1)}>
+          {'<'}
+        </button>
+        <h1 className={styles.title}>{config.title}</h1>
+      </header>
       <nav className={styles.adminTabNav}>
         {tabs.map(({ label }) => (
           <button
