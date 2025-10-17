@@ -28,7 +28,9 @@ import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
-import CommonDetail from '../pages/Category/CommonDetail/CommonDetail';
+import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
+import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
+import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 
 const router = createBrowserRouter([
   {
@@ -42,14 +44,9 @@ const router = createBrowserRouter([
       { path: '/artworks', element: <ArtworkList /> },
       { path: '/search', element: <Search /> },
       { path: '/notices', element: <News /> },
-
-      { path: '/galleries/:id', element: <CommonDetail type='galleries' /> },
-      {
-        path: '/exhibitions/:id',
-        element: <CommonDetail type='exhibitions' />,
-      },
-      { path: '/artists/:id', element: <CommonDetail type='artworks' /> },
-
+      { path: '/exhibitions/:exhibitionId', element: <ExhibitionDetail /> },
+      { path: '/galleries/:galleryId', element: <GalleryDetail /> },
+      { path: '/artists/:artistId', element: <ArtistDetail /> },
       { path: '/notices/:noticeId', element: <NewsDetail /> },
       { path: '/artworks/:artworkId', element: <ArtworkDetail /> },
       { path: '/art/:artId', element: <Artwork /> },

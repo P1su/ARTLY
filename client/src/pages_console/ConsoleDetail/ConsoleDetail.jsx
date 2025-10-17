@@ -40,6 +40,7 @@ export default function ConsoleDetail({ type }) {
   const [showQrModal, setShowQrModal] = useState(false);
 
   useResponsive();
+  console.log('console', data);
 
   useEffect(() => {
     // 임시 데이터 사용

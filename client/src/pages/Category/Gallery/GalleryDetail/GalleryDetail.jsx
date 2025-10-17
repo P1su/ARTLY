@@ -4,38 +4,8 @@ import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaHeart, FaLocationDot, FaShare } from 'react-icons/fa6';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
-import useMap from '../../../Nearby/hooks/useMap.jsx';
-
-// 작품 탭 임시 컴포넌트
-const GalleryArtworks = ({ artworks }) => {
-  if (!artworks || artworks.length === 0) {
-    return (
-      <p className={styles.emptyContent}>현재 진행중인 작품이 없습니다.</p>
-    );
-  }
-  return <div>작품 목록</div>;
-};
-
-// 분리 필요
-function MapModalContent({ galleryData }) {
-  const {
-    id,
-    gallery_name: name,
-    gallery_address: address,
-    gallery_latitude: lat,
-    gallery_longitude: lng,
-  } = galleryData;
-
-  useMap({ lat, lng, id: `gallery-${id}-map`, title: name, location: address });
-
-  return (
-    <>
-      <h3>{name}</h3>
-      <p>{galleryData.gallery_name_en || 'Gallery Name'}</p>
-      <div id={`gallery-${id}-map`} className={styles.galleryMap} />
-    </>
-  );
-}
+import GalleryArtworks from './components/GalleryArtworks/GalleryArtorks.jsx';
+import MapModalContent from './components/MapModalContent/MapModalContent.jsx';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
@@ -46,7 +16,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const [modalType, setModalType] = useState(null);
   const navigate = useNavigate();
 
-  const getGalleryDetail = async () => {
+  const fetchGalleryDetail = async () => {
     try {
       const response = await instance.get(`/api/galleries/${id}`);
       setGalleryData(response.data);
@@ -61,7 +31,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   };
 
   useEffect(() => {
-    if (id) getGalleryDetail();
+    if (id) fetchGalleryDetail();
   }, [id]);
 
   if (!galleryData) return <div>로딩 중...</div>;
@@ -84,9 +54,40 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         setModalType('like');
         setShowModal(true);
       }
-      await getGalleryDetail();
+      await fetchGalleryDetail();
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleShare = () => {
+    const { gallery_name: name } = galleryData;
+    const url = window.location.href;
+
+    if (navigator.share) {
+      // Web Share API 지원 시
+      navigator
+        .share({
+          title: `ARTLY: ${name}`,
+          text: `${name} 갤러리 정보를 확인해보세요!`,
+          url: url,
+        })
+        .catch((error) => console.error('공유 실패:', error));
+    } else {
+      // 미지원 시 클립보드 복사
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('링크가 클립보드에 복사되었습니다.');
+      } catch (err) {
+        console.error('클립보드 복사 실패:', err);
+        alert('링크 복사에 실패했습니다.');
+      }
+      document.body.removeChild(textArea);
     }
   };
 
@@ -158,10 +159,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
               <FaLocationDot className={styles.actionIcon} />
               위치보기
             </button>
-            <button
-              className={styles.actionButton}
-              onClick={() => alert('공유하기 기능 구현 예정')}
-            >
+            <button className={styles.actionButton} onClick={handleShare}>
               <FaShare className={styles.actionIcon} />
               공유하기
             </button>
