@@ -123,7 +123,8 @@
 .tabNav {
   display: flex;
   width: 100%;
-  padding-top: 1rem;
+  padding-top: 2rem;
+  box-shadow: 0 -0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   border-bottom: 0.5rem solid #eeeeeed3;
   margin-bottom: 2rem;
   background-color: #f7f8facf;
@@ -138,7 +139,7 @@
   border: none;
   cursor: pointer;
 
-  margin-bottom: -1px;
+  margin-bottom: -0.1rem;
 }
 
 .tabButton:hover {
@@ -166,17 +167,33 @@
 }
 
 .descriptionParagraph {
+  padding: 1rem;
   font-size: 1.5rem;
   line-height: 1.7;
   color: #333;
   white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.descriptionParagraph :global(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+.descriptionParagraph :global(p:empty)::before {
+  content: ' ';
+  white-space: pre;
 }
 
 .emptyContent {
   text-align: center;
   padding: 4rem 0;
   font-size: 1.5rem;
-  color: #888;
+  color: #8a8d91;
 }
 
 .modalOverlay {
@@ -197,7 +214,7 @@
   border-radius: 1rem;
   padding: 1.5rem;
   width: 80%;
-  max-width: 400px;
+  max-width: 40rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
   text-align: center;
 }

@@ -215,7 +215,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
       <section className={styles.tabContent}>
         {activeTab === 'info' && (
-          <p className={styles.descriptionParagraph}>{description}</p>
+          <div
+            className={styles.descriptionParagraph}
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         )}
         {activeTab === 'artworks' && <GalleryArtworks artworks={artworks} />}
         {activeTab === 'exhibitions' &&
