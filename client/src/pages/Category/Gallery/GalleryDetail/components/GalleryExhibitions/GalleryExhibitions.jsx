@@ -8,27 +8,19 @@ const STATUS_CONFIG = {
   default: { text: '기타', className: styles.statusDefault },
 };
 
-export default function GalleryExhibitions({ exhibitions, filter }) {
+// filter prop을 제거하여 범용 목록 컴포넌트로 변경
+export default function GalleryExhibitions({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
 
-  const targetStatus = filter === 'ongoing' ? 'exhibited' : 'scheduled';
-
-  const filteredExhibitions = exhibitions.filter(
-    (item) => item.status === targetStatus,
-  );
-
-  if (!filteredExhibitions || filteredExhibitions.length === 0) {
-    const message =
-      filter === 'ongoing'
-        ? '현재 진행중인 전시가 없습니다.'
-        : '예정된 전시가 없습니다.';
-    return <p className={styles.emptyContent}>{message}</p>;
+  if (!exhibitions || exhibitions.length === 0) {
+    return <p className={styles.emptyContent}>전시가 없습니다.</p>;
   }
 
   return (
     <section className={styles.exhibitionList}>
-      {filteredExhibitions.map(
+      {/* 이제 전체 exhibitions 배열을 그대로 map으로 렌더링합니다. */}
+      {exhibitions.map(
         ({ id, poster, title, status, organization, start_date, end_date }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 

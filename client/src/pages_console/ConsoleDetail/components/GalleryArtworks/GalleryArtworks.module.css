@@ -1,0 +1,74 @@
+/* 작품 목록 그리드 레이아웃 */
+.artworkGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 그리드 */
+  gap: 1.5rem; /* 카드 사이 간격 */
+  width: 100%;
+}
+
+/* 개별 작품 카드 */
+.artworkCard {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.artworkCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.artworkImage {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* 정사각형 비율 */
+  object-fit: cover;
+}
+
+.artworkInfo {
+  padding: 1.2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #212529;
+  /* 텍스트가 너무 길면 ...으로 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem;
+}
+
+.materials {
+  font-size: 1.3rem;
+  color: #495057;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.details {
+  font-size: 1.2rem;
+  color: #868e96;
+  margin-top: 0.5rem;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #aaa;
+}
+
+/* 화면 너비가 좁아지면 1열로 변경 (반응형) */
+@media (max-width: 480px) {
+  .artworkGrid {
+    grid-template-columns: 1fr;
+  }
+}

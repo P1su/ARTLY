@@ -76,6 +76,71 @@
   padding-bottom: 5rem;
 }
 
+.descriptionParagraph {
+  padding: 1rem;
+  margin-bottom: 4rem;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.descriptionParagraph :global(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+.descriptionParagraph :global(p:empty)::before {
+  content: ' ';
+  white-space: pre;
+}
+
+.addButton {
+  display: block;
+  margin: auto;
+  width: 40%;
+  padding: 1.2rem 0;
+  margin-top: 2rem;
+  background-color: var(--blue01);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.addButton:hover {
+  background-color: color-mix(in srgb, var(--blue01), black 15%);
+  transform: translateY(-1px);
+}
+
+.addButton:active {
+  background-color: color-mix(in srgb, var(--blue01), black 15%);
+  transform: translateY(0);
+}
+
+.addButton:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #8a8d91;
+}
+
 @media (max-width: 1024px) {
   .content {
     padding: 0 3rem;
