@@ -1,20 +1,29 @@
 import styles from './GalleryDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../../../apis/instance.js';
-import { FaHeart, FaLocationDot, FaShare } from 'react-icons/fa6';
-import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions';
-import GalleryArtworks from './components/GalleryArtworks/GalleryArtorks.jsx';
+import { instance } from '../../../../apis/instance.js';
+import { FaHeart, FaShare } from 'react-icons/fa6';
 import MapModalContent from './components/MapModalContent/MapModalContent.jsx';
+import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
+import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions.jsx';
+import useMap from '../../../Nearby/hooks/useMap.jsx';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
-  const [galleryData, setGalleryData] = useState(null);
-  const [activeTab, setActiveTab] = useState('info');
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(null);
   const navigate = useNavigate();
+
+  const [galleryData, setGalleryData] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const [activeTab, setActiveTab] = useState('ongoing');
+
+  useMap({
+    lat: galleryData?.gallery_latitude,
+    lng: galleryData?.gallery_longitude,
+    id: `gallery-${galleryId}-map`,
+    title: galleryData?.gallery_name,
+    location: galleryData?.gallery_address,
+  });
 
   const fetchGalleryDetail = async () => {
     try {
@@ -25,13 +34,23 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
-  const handleShowMap = () => {
-    setModalType('map');
-    setShowModal(true);
+  const fetchUserLikes = async () => {
+    if (!localStorage.getItem('ACCESS_TOKEN')) return;
+    try {
+      const res = await instance.get('/api/users/me/likes');
+      const likedGalleries = res.data.like_galleries || [];
+      const liked = likedGalleries.some((g) => g.id === Number(id));
+      setIsLiked(liked);
+    } catch (error) {
+      console.error('좋아요 상태 조회 실패:', error);
+    }
   };
 
   useEffect(() => {
-    if (id) fetchGalleryDetail();
+    if (id) {
+      fetchGalleryDetail();
+      fetchUserLikes();
+    }
   }, [id]);
 
   if (!galleryData) return <div>로딩 중...</div>;
@@ -42,18 +61,17 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
       return;
     }
     try {
-      if (galleryData.is_liked) {
-        await userInstance.delete('/api/likes', {
+      if (isLiked) {
+        await instance.delete('/api/likes', {
           data: { liked_id: id, liked_type: 'gallery' },
         });
       } else {
-        await userInstance.post('/api/likes', {
+        await instance.post('/api/likes', {
           liked_id: id,
           liked_type: 'gallery',
         });
-        setModalType('like');
-        setShowModal(true);
       }
+      setIsLiked(!isLiked);
       await fetchGalleryDetail();
     } catch (error) {
       console.error(error);
@@ -63,7 +81,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const handleShare = () => {
     const { gallery_name: name } = galleryData;
     const url = window.location.href;
-
     if (navigator.share) {
       // Web Share API 지원 시
       navigator
@@ -93,7 +110,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   const {
     exhibitions,
-    artworks,
     gallery_address: address,
     gallery_category: category,
     gallery_closed_day: closedDay,
@@ -110,7 +126,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     gallery_homepage: homepage,
   } = galleryData;
 
-  const infoItems = [
+  const inputItems = [
     { label: '관람시간', content: `${startTime} - ${endTime}` },
     { label: '휴관일', content: closedDay },
     { label: '전화번호', content: phone || '정보 없음' },
@@ -119,151 +135,99 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
       label: '이메일',
       content: email ? <a href={`mailto:${email}`}>{email}</a> : '정보 없음',
     },
-    {
-      label: '홈페이지',
-      content: homepage ? (
-        <a href={homepage} target='_blank' rel='noopener noreferrer'>
-          {homepage}
-        </a>
-      ) : (
-        '정보 없음'
-      ),
-    },
+  ];
+
+  const galleryPageTabs = [
+    { key: 'ongoing', label: '현재 전시' },
+    { key: 'upcoming', label: '예정 전시' },
   ];
 
   return (
     <div className={styles.layout}>
+      {showUserActions && (
+        <div className={styles.breadcrumb}>갤러리 &gt; {name}</div>
+      )}
+
       <section className={styles.titleSection}>
         <h1 className={styles.galleryTitle}>{name}</h1>
         <p className={styles.gallerySubTitle}>{nameEn || 'Gallery Name'}</p>
       </section>
 
-      <div className={`${styles.card} ${styles.profileCard}`}>
+      <div className={styles.card}>
         <img
           className={styles.galleryImage}
           src={image}
           alt='갤러리 대표 이미지'
         />
 
-        {showUserActions && (
-          <div className={styles.actionButtonContainer}>
-            <button className={styles.actionButton} onClick={handleLike}>
-              <FaHeart
-                className={`${styles.actionIcon} ${
-                  galleryData.is_liked && styles.isClicked
-                }`}
-              />
-              관심있어요
-            </button>
-            <button className={styles.actionButton} onClick={handleShowMap}>
-              <FaLocationDot className={styles.actionIcon} />
-              위치보기
-            </button>
-            <button className={styles.actionButton} onClick={handleShare}>
-              <FaShare className={styles.actionIcon} />
-              공유하기
-            </button>
+        <div className={styles.containerLayout}>
+          <div className={styles.tagContainer}>
+            {category?.split(',').map((tag) => (
+              <span key={tag} className={styles.tag}>
+                {tag.trim()}
+              </span>
+            ))}
           </div>
-        )}
-
-        <div className={styles.tagContainer}>
-          {category?.split(',').map((tag) => (
-            <span key={tag} className={styles.tag}>
-              {tag.trim()}
-            </span>
-          ))}
+          {showUserActions && (
+            <div className={styles.btnLayout}>
+              <button className={styles.likeButton} onClick={handleLike}>
+                <FaHeart className={isLiked ? styles.likedIcon : styles.icon} />
+                좋아요
+              </button>
+              <button className={styles.likeButton} onClick={handleShare}>
+                <FaShare className={styles.icon} />
+                공유하기
+              </button>
+            </div>
+          )}
         </div>
 
         <section className={styles.infoList}>
-          {infoItems.map(({ label, content }) => (
+          {inputItems.map(({ label, content }) => (
             <div className={styles.infoRow} key={label}>
               <span className={styles.infoLabel}>{label}</span>
               <div className={styles.infoContent}>{content}</div>
             </div>
           ))}
+
+          <button
+            disabled={!homepage}
+            className={styles.homepageButton}
+            onClick={() => window.open(homepage, '_blank')}
+          >
+            {homepage ? '홈페이지' : '홈페이지 정보 없음'}
+          </button>
         </section>
       </div>
 
-      <nav className={styles.tabNav}>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === 'info' && styles.activeTab
-          }`}
-          onClick={() => setActiveTab('info')}
-        >
-          정보
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === 'artworks' && styles.activeTab
-          }`}
-          onClick={() => setActiveTab('artworks')}
-        >
-          작품({artworks?.length || 0})
-        </button>
-        <button
-          className={`${styles.tabButton} ${
-            activeTab === 'exhibitions' && styles.activeTab
-          }`}
-          onClick={() => setActiveTab('exhibitions')}
-        >
-          전시({exhibitions?.length || 0})
-        </button>
-      </nav>
-
-      <section className={styles.tabContent}>
-        {activeTab === 'info' && (
+      {showUserActions && (
+        <>
           <div
             className={styles.descriptionParagraph}
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{
+              __html: description,
+            }}
           />
-        )}
-        {activeTab === 'artworks' && <GalleryArtworks artworks={artworks} />}
-        {activeTab === 'exhibitions' &&
-          (exhibitions?.length > 0 ? (
-            <GalleryExhibitions exhibitions={exhibitions} />
-          ) : (
-            <p className={styles.emptyContent}>
-              현재 진행중인 전시가 없습니다.
-            </p>
-          ))}
-      </section>
 
-      {showModal && (
-        <div
-          className={styles.modalOverlay}
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
+          <DetailTabs
+            tabs={galleryPageTabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           >
-            {modalType === 'map' && (
-              <MapModalContent galleryData={galleryData} />
-            )}
+            <GalleryExhibitions exhibitions={exhibitions} filter={activeTab} />
+          </DetailTabs>
 
-            {modalType === 'like' && (
-              <div className={styles.likeModal}>
-                <FaHeart className={styles.likeIcon} />
-                <p className={styles.likeMessage}>
-                  관심있는 갤러리로 추가 완료!
-                </p>
-                <p className={styles.likeSubMessage}>
-                  나의 관심 목록은 마이페이지에서 확인할 수 있어요.
-                </p>
-              </div>
-            )}
+          <div className={styles.mapSection}>
+            <p className={styles.sectionTitle}>찾아오시는 길</p>
+            <div id={`gallery-${galleryId}-map`} className={styles.map}></div>
           </div>
-        </div>
-      )}
-
-      {showUserActions && (
-        <button
-          className={styles.backButton}
-          onClick={() => navigate('/galleries')}
-        >
-          목록으로 돌아가기
-        </button>
+          <button
+            className={styles.backButton}
+            onClick={() => navigate('/galleries')}
+          >
+            목록으로 돌아가기
+          </button>
+        </>
       )}
     </div>
   );

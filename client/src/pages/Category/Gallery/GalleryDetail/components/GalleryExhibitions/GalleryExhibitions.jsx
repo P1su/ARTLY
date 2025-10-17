@@ -4,26 +4,37 @@ import { Link, useLocation } from 'react-router-dom';
 const STATUS_CONFIG = {
   exhibited: { text: '전시중', className: styles.statusOn },
   scheduled: { text: '전시예정', className: styles.statusScheduled },
-  done: { text: '전시종료', className: styles.statusDone },
+  ended: { text: '전시종료', className: styles.statusDone },
   default: { text: '기타', className: styles.statusDefault },
 };
 
-export default function GalleryExhibitions({ exhibitions }) {
+export default function GalleryExhibitions({ exhibitions, filter }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
-  const isEditPage = location.pathname.includes('/edit');
+
+  const targetStatus = filter === 'ongoing' ? 'exhibited' : 'scheduled';
+
+  const filteredExhibitions = exhibitions.filter(
+    (item) => item.status === targetStatus,
+  );
+
+  if (!filteredExhibitions || filteredExhibitions.length === 0) {
+    const message =
+      filter === 'ongoing'
+        ? '현재 진행중인 전시가 없습니다.'
+        : '예정된 전시가 없습니다.';
+    return <p className={styles.emptyContent}>{message}</p>;
+  }
 
   return (
     <section className={styles.exhibitionList}>
-      {exhibitions.map(
+      {filteredExhibitions.map(
         ({ id, poster, title, status, organization, start_date, end_date }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 
-          const destinationPath = isEditPage
-            ? `/console/exhibitions/edit/${id}`
-            : isConsolePage
-              ? `/console/exhibitions/${id}`
-              : `/exhibitions/${id}`;
+          const destinationPath = isConsolePage
+            ? `/console/exhibitions/${id}`
+            : `/exhibitions/${id}`;
 
           return (
             <Link
