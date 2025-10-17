@@ -4,6 +4,7 @@ import styles from './ChatbotWidget.module.css';
 import { BsChatFill } from 'react-icons/bs';
 import { IoCloseSharp } from 'react-icons/io5';
 import chatbotProfile from './mock/chatbotProfile.png';
+import IcMessage from '../../assets/svg/IcMessage.jsx';
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -157,7 +158,7 @@ export default function ChatbotWidget() {
           <div className={styles.chatbotOverlay} />
           <div className={styles.popupContainer}>
             <div className={styles.headerContainer}>
-              <h3 className={styles.headerTitle}>Artly에게 물어봐!</h3>
+              <h3 className={styles.headerTitle}>Artly 챗봇</h3>
               <button className={styles.closeButton} onClick={handleToggleChat}>
                 <IoCloseSharp />
               </button>
@@ -176,13 +177,9 @@ export default function ChatbotWidget() {
                 >
                   {msg.sender === 'bot' ? (
                     <>
-                      <img
-                        src={chatbotProfile}
-                        alt='챗봇 프로필'
-                        className={styles.botProfile}
-                      />
+                      <div className={styles.botProfile}>A</div>
                       <div className={styles.botContent}>
-                        <p className={styles.botName}>Artly</p>
+                        <p className={styles.botName}>아뜰리 챗봇</p>
                         <div className={styles.botBubble}>
                           <p>{parseBold(msg.text)}</p>
                         </div>
@@ -199,13 +196,9 @@ export default function ChatbotWidget() {
               ))}
               {isLoading && (
                 <div className={styles.botMessageContainer} ref={currentChat}>
-                  <img
-                    src={chatbotProfile}
-                    alt='챗봇 프로필'
-                    className={styles.botProfile}
-                  />
+                  <div className={styles.botProfile}>A</div>
                   <div className={styles.botContent}>
-                    <p className={styles.botName}>Artly</p>
+                    <p className={styles.botName}>아뜰리 챗봇</p>
                     <div className={styles.botBubble}>
                       <p>챗봇이 답변을 생성하고 있어요. 잠시만 기다려주세요</p>
                     </div>
@@ -221,10 +214,10 @@ export default function ChatbotWidget() {
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyPress={keyPressHanlder}
-                placeholder='챗봇에게 물어보세요'
+                placeholder='질문을 입력해 주세요'
               />
               <button className={styles.sendButton} onClick={handleSendMessage}>
-                전송
+                <IcMessage />
               </button>
             </div>
           </div>
