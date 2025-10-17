@@ -36,21 +36,20 @@ const DETAIL_CONFIG = {
 export default function ConsoleDetail({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState(null); // 상세 페이지 데이터
-  const [showQrModal, setShowQrModal] = useState(false); // QR 모달 표시 상태
+  const [data, setData] = useState(null);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   useResponsive();
 
   useEffect(() => {
-    // API로부터 상세 데이터를 가져오는 로직 (임시 데이터 사용)
+    // 임시 데이터 사용
     const fetchData = async () => {
       // const response = await instance.get(DETAIL_CONFIG[type].fetchUrl(id));
       // setData(response.data);
       setData({
         gallery_name: '대림미술관',
         gallery_name_en: 'DAELIM MUSEUM',
-        leafletUrl: 'https://artly-nine.vercel.app/', // 리플렛이 있다고 가정
-        // leafletUrl: null // 리플렛이 없다고 가정
+        leafletUrl: 'https://dev.bitlworks.co.kr/artly/admin.php',
       });
     };
     fetchData();
@@ -63,7 +62,7 @@ export default function ConsoleDetail({ type }) {
     if (label === '정보수정') {
       navigate(`/console/${type}/edit/${id}`);
     } else if (label === 'QR코드') {
-      setShowQrModal(true); // QR코드 탭 클릭 시 모달 열기
+      setShowQrModal(true);
     } else {
       alert(`${label} 페이지로 이동합니다. ID: ${id}`);
     }
@@ -74,7 +73,11 @@ export default function ConsoleDetail({ type }) {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => navigate(-1)}>
+        <button
+          className={styles.backButton}
+          onClick={() => navigate(`/console/${type}`)}
+        >
+          {/* 필요시 라우터 변경 */}
           {'<'}
         </button>
         <h1 className={styles.title}>{config.title}</h1>

@@ -51,7 +51,7 @@ export default function ConsoleEdit({ type }) {
     if (
       window.confirm('수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.')
     ) {
-      navigate(-1);
+      navigate(`/console/${type}/${id}`);
     }
   };
 

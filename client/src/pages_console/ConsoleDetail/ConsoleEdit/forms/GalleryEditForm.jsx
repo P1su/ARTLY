@@ -18,7 +18,7 @@ export default function GalleryEditForm({ data, setData }) {
   };
   console.log(data);
   const handleTagKeyDown = (e) => {
-    if (isKoreanComposing) return; // 한글 조합 중이면 Enter 무시
+    if (isKoreanComposing) return;
 
     if (e.key === 'Enter' && tagInput.trim() !== '') {
       e.preventDefault();
@@ -47,6 +47,16 @@ export default function GalleryEditForm({ data, setData }) {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const daysOfWeek = [
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일',
+    '일요일',
+  ];
+
   const handleCheckboxChange = (e) => {
     const { value: day, checked } = e.target;
 
@@ -61,12 +71,20 @@ export default function GalleryEditForm({ data, setData }) {
       newClosedDays = currentClosedDays.filter((d) => d !== day);
     }
 
-    const daysOrder = ['월', '화', '수', '목', '금', '토', '일'];
+    const daysOrder = [
+      '월요일',
+      '화요일',
+      '수요일',
+      '목요일',
+      '금요일',
+      '토요일',
+      '일요일',
+    ];
     newClosedDays.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
 
     setData((prev) => ({
       ...prev,
-      gallery_closed_day: newClosedDays.join(','),
+      gallery_closed_day: newClosedDays.join(', '),
     }));
   };
 
@@ -74,18 +92,9 @@ export default function GalleryEditForm({ data, setData }) {
     setData((prev) => ({ ...prev, gallery_description: newDescription }));
   };
 
-  const parseTime = (timeStr) => {
-    if (!timeStr) return { hour: '00', minute: '00' };
-    const [hour, minute] = timeStr.split(':');
-    return { hour, minute };
-  };
-
   const currentTags = data.gallery_category
     ? data.gallery_category.split(',').map((t) => t.trim())
     : [];
-  const startTime = parseTime(data.gallery_start_time);
-  const endTime = parseTime(data.gallery_end_time);
-  const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
 
   return (
     <>
@@ -176,7 +185,7 @@ export default function GalleryEditForm({ data, setData }) {
                     type='checkbox'
                     name='closedDays'
                     value={day}
-                    checked={data.gallery_closed_day[0]?.includes(day)}
+                    checked={data.gallery_closed_day?.includes(day)}
                     onChange={handleCheckboxChange}
                   />{' '}
                   {day}
