@@ -28,6 +28,12 @@
   color: #878787;
 }
 
+.newsListSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 @media (max-width: 1500px) {
   .layout {
     padding: 4rem 10rem 6rem;

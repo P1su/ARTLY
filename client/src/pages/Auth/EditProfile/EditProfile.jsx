@@ -101,7 +101,7 @@ const EditProfile = () => {
               className={styles.changeButtonSmall}
               onClick={handleOpenModal}
             >
-              비밀번호 변경
+              아이디 변경
             </button>
           </div>
 

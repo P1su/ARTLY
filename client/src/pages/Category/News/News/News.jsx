@@ -67,7 +67,7 @@ export default function News() {
       {isLoading && <div>뉴스 데이터 조회 중..</div>}
       {news.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
-      <section className={styles.exhibitionListSection}>
+      <section className={styles.newsListSection}>
         {pageItems.map((item) => (
           <NewsCard key={item.id} newsItem={item} />
         ))}
