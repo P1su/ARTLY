@@ -32,11 +32,7 @@ export default function TabLike() {
           likeType: 'gallery',
         }));
         const artists = data.like_artists.map((item) => ({
-          id: item.id,
-          name: item.artist_name,
-          field: item.artist_field,
-          imageUrl: item.artist_image,
-          nation: item.artist_nation,
+          ...item,
           likeType: 'artist',
         }));
 
