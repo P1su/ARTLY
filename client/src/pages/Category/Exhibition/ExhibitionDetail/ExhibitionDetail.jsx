@@ -3,13 +3,13 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
-import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
+// import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
 export default function ExhibitionDetail() {
   const { exhibitionId } = useParams();
   const navigate = useNavigate();
   const [exhibitionData, setExhibitionData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     exhibition_title: title,
@@ -64,12 +64,16 @@ export default function ExhibitionDetail() {
     }
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
+
+  const openReservation = () => {
+    navigate(`/reservation/${exhibitionId}`);
   };
 
   const infos = [
@@ -116,7 +120,7 @@ export default function ExhibitionDetail() {
     {
       label: '관람예약',
       icon: <FaCalendar className={styles.icon} />,
-      action: openModal,
+      action: openReservation,
     },
     {
       label: '공유하기',
@@ -151,12 +155,12 @@ export default function ExhibitionDetail() {
         ))}
       </div>
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <ReservationModal // 모달 컴포넌트 렌더링
           exhibitionId={exhibitionId}
           onClose={closeModal}
         />
-      )}
+      )} */}
 
       <hr className={styles.divider} />
 
