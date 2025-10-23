@@ -1,7 +1,10 @@
-.container {
-  max-width: 120rem;
-  margin: 0 auto;
-  padding: 4rem 2rem;
+.announcementLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  width: 100%;
+  padding: 4rem 30rem 6rem;
 }
 
 .heading {
@@ -12,18 +15,16 @@
 
 .tabWrapper {
   display: flex;
-  border-bottom: 0.1rem solid rgb(238, 238, 238);
-  margin-bottom: 2rem;
+  background: #f8f8f8;
 }
 
 .tab {
+  width: 100%;
   padding: 1.5rem 2rem;
   background: none;
   border: none;
-  border-bottom: 0.2rem solid transparent;
   color: #666;
   font-size: 1.6rem;
-  font-weight: 400;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -33,11 +34,12 @@
 }
 
 .active {
-  border-bottom: 0.2rem solid #000;
-  color: #000;
-  font-weight: 600;
+  color: var(--blue01);
+  font-weight: 500;
+  border-radius: 20px 20px 0 0;
+  background: #fff;
+  box-shadow: 2px -3px 6px 0 rgba(0, 0, 0, 0.12);
 }
-
 
 .loading {
   text-align: center;
@@ -45,10 +47,25 @@
   padding: 2rem 0;
 }
 
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.listItem {
+  padding: 1rem 1.2rem;
+}
+
+.buttonField {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid var(--color-grey-74, #bdbdbd);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.contentContainer {
+  font-size: 1.2rem;
+  white-space: pre-wrap;
+  padding: 1rem 0;
 }
 
 .card {
@@ -62,62 +79,23 @@
 
 .cardHeader {
   width: 100%;
-  border: none;
-  background: none;
-  padding: 0;
-  text-align: left;
-  cursor: pointer;
+  padding: 4rem 30rem 6rem;
 }
 
-.cardHeaderRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  cursor: pointer;
-  background-color: rgb(255, 255, 255);
-  transition: background-color 0.3s;
+@media (max-width: 1500px) {
+  .announcementLayout {
+    padding: 4rem 10rem 6rem;
+  }
 }
 
-.title {
-  font-size: 1.6rem;
-  font-weight: 500;
-  margin: 0px;
+@media (max-width: 1072px) {
+  .announcementLayout {
+    padding: 4rem 5rem 6rem;
+  }
 }
 
-.right {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.date {
-  font-size: 0.875rem;
-  color: #888;
-}
-
-.arrow {
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.cardBody {
-  margin-top: 0.75rem;
-  border-radius: 1rem;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  overflow: hidden;
-  line-height: 1.5;
-  font-size: 1.6rem;
-  color: #444;
-  white-space: pre-wrap;
-}
-
-.cardBody p {
-  margin: 0.3rem 0;
-}
-
-.cardBody strong {
-  display: inline-block;
+@media (max-width: 700px) {
+  .announcementLayout {
+    padding: 4rem 2rem 6rem;
+  }
 }
