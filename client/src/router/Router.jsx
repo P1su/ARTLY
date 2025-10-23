@@ -25,7 +25,7 @@ import ArtworkDetail from '../pages/Category/Artwork/ArtworkDetail/ArtworkDetail
 import Find from '../pages/Auth/Find/Find';
 import Announcement from '../pages/Announcement/Announcement';
 import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
-import Reservation from '../pages/Reservation/Reservation';
+import ReservationConfirm from '../pages/ReservationConfirm/ReservationConfirm';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import LayoutConsole from '../layouts/LayoutConsole';
@@ -58,7 +58,10 @@ const router = createBrowserRouter([
       { path: '/find', element: <Find /> },
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
-      { path: '/reservation/:reservationId', element: <Reservation /> },
+      {
+        path: '/reservationconfirm/:reservationId',
+        element: <ReservationConfirm />,
+      },
       {
         element: <AuthRoute />,
         children: [
