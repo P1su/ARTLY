@@ -1,8 +1,8 @@
 import styles from './ExhibitionCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { FaHeart, FaLocationDot } from 'react-icons/fa6';
 import { userInstance } from '../../../../../../apis/instance.js';
+import { getExhibitionStatus } from '../../../utils/getExhibitionStatus.js';
 import MapModal from '../MapModal/MapModal';
 import IcFav from './../../../../../../assets/svg/IcFav';
 import IcUnFav from './../../../../../../assets/svg/IcUnFav';
@@ -21,6 +21,15 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   } = exhibitionItem;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const exhibitionStatus = getExhibitionStatus(startDate, endDate);
+
+  const statusLabel =
+    exhibitionStatus === 'ongoing'
+      ? '전시 중'
+      : exhibitionStatus === 'upcoming'
+        ? '전시 예정'
+        : '전시 종료';
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -59,7 +68,11 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     <div className={styles.exhibitionCardLayout}>
       {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
-        <div />
+        <div
+          className={`${styles.statusContainer} ${exhibitionStatus === 'ongoing' && styles.ongoing}`}
+        >
+          {statusLabel}
+        </div>
         <div className={styles.imageBox}>
           <img
             className={styles.exhibitionImage}
