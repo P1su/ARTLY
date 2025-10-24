@@ -31,8 +31,9 @@
 }
 
 .infoImage {
-  height: 40rem;
-  object-fit: fill;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .textContainer {
