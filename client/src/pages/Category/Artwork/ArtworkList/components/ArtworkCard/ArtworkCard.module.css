@@ -1,20 +1,32 @@
 .layout {
+  width: 100%;
+  padding: 8px 8px 10px 8px;
+
+  gap: 10px;
   margin-bottom: 2rem;
+
+  border-radius: 16px;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+
+  break-inside: avoid;
 }
 
 .artworkImage {
   width: 100%;
-  height: 33.5rem;
+  height: auto;
   margin-bottom: 2rem;
 
-  transition: transform 0.3s;
-  object-fit: fill;
+  border-radius: 8px;
 }
 
 .artworkTitle {
   margin: 0;
-  color: #333333;
-  font-size: 1.6rem;
+
+  color: var(--black02);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px; /* 128.571% */
+  letter-spacing: -0.2px;
 }
 
 .subParagraph {

@@ -3,7 +3,15 @@ import styles from './NewsCard.module.css';
 
 export default function NewsCard({ newsItem }) {
   const navigate = useNavigate();
-  const { id, title, start_datetime, end_datetime, organizer } = newsItem;
+  const {
+    id,
+    title,
+    start_datetime,
+    end_datetime,
+    organizer,
+    category,
+    announcement_status: status,
+  } = newsItem;
 
   // ✅ 카드 내부에 formatDate 정의
   const formatDate = (dateString) =>
@@ -18,17 +26,38 @@ export default function NewsCard({ newsItem }) {
     return '진행중';
   };
 
-  const status = getStatusByDate(start_datetime, end_datetime);
+  const formatStatus = (status) => {
+    switch (status) {
+      case 'ongoing':
+        return '진행중';
+      case 'scheduled':
+        return '예정';
+      case 'ended':
+        return '종료';
+      default:
+        return '';
+    }
+  };
 
   const handleClick = () => {
     navigate(`/notices/${id}`);
   };
 
   return (
-    <div className={styles.card} onClick={handleClick} role="button" tabIndex={0}>
-      <div className={styles.header}>
-        <span className={`${styles.badge} ${styles[status]}`}>{status}</span>
-      </div>
+    <div
+      className={styles.card}
+      onClick={handleClick}
+      role='button'
+      tabIndex={0}
+    >
+      {
+        <div className={styles.header}>
+          <span className={`${styles.badge}`}>{category}</span>
+          <span className={`${styles.badge} ${styles[formatStatus(status)]}`}>
+            {formatStatus(status)}
+          </span>
+        </div>
+      }
       <h3 className={styles.title}>{title}</h3>
       <div className={styles.info}>
         <p className={styles.period}>

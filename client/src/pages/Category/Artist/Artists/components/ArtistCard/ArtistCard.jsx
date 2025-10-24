@@ -2,7 +2,13 @@ import styles from './ArtistCard.module.css';
 import { Link } from 'react-router-dom';
 
 export default function ArtistCard({ artistItem }) {
-  const { id, name, field, imageUrl, nation } = artistItem;
+  const {
+    id,
+    artist_name: name,
+    artist_category: field,
+    artist_image: imageUrl,
+    artist_nation: nation,
+  } = artistItem;
 
   return (
     <Link className={styles.layout} to={`/artists/${id}`}>

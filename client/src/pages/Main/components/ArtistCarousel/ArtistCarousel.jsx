@@ -25,11 +25,11 @@ export default function ArtistCarousel({ title }) {
           },
         });
         const parsed = response.data
-          .map(({ id, name, field, imageUrl }) => ({
+          .map(({ id, artist_name, artist_category, artist_image }) => ({
             id,
-            name,
-            field,
-            imageUrl,
+            artist_name,
+            artist_category,
+            artist_image,
           }))
           .slice(0, 10);
         setArtists(parsed);
@@ -115,23 +115,27 @@ export default function ArtistCarousel({ title }) {
           {artists.map((item) => (
             <Link
               to={`/artists/${item?.id}`}
-              key={`${item?.name}-${item?.id}`}
+              key={`${item?.artist_name}-${item?.id}`}
               className={styles.carouselSlide}
             >
               <img
-                src={item?.imageUrl || '/default.jpg'}
-                alt={item?.name ? `${item.name} 이미지` : '작가 이미지'}
+                src={item?.artist_image || '/default.jpg'}
+                alt={
+                  item?.artist_name
+                    ? `${item.artist_name} 이미지`
+                    : '작가 이미지'
+                }
                 className={styles.artistImage}
               />
               <div className={styles.artistText}>
                 <h3 className={styles.name}>
-                  {item?.name && item.name.trim() !== ''
-                    ? item.name
+                  {item?.artist_name && item.artist_name.trim() !== ''
+                    ? item.artist_name
                     : '이름 없음'}
                 </h3>
                 <p className={styles.field}>
-                  {item?.field && item.field.trim() !== ''
-                    ? item.field
+                  {item?.artist_category && item.artist_category.trim() !== ''
+                    ? item.artist_category
                     : '장르 없음'}
                 </p>
               </div>

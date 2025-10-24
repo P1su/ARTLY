@@ -5,6 +5,7 @@ import ArtworkCard from './components/ArtworkCard/ArtworkCard';
 import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
+import ListHeader from './../../components/ListHeader/ListHeader';
 
 export default function ArtworkList() {
   const [artworks, setArtworks] = useState([]);
@@ -36,13 +37,16 @@ export default function ArtworkList() {
 
   return (
     <div className={styles.layout}>
-      <h1 className={styles.listTitle}>작품</h1>
+      <ListHeader title='작품' isArtworks />
 
       <TotalCounts num={artworks.length} label='작품' />
       {isLoading && <div>작품 리스트 불러오는 중</div>}
-      {pageItems.map((item) => (
-        <ArtworkCard key={item.id} artworkItems={item} />
-      ))}
+      <div className={styles.gridContainer}>
+        {pageItems.map((item) => (
+          <ArtworkCard key={item.id} artworkItems={item} />
+        ))}
+      </div>
+
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}

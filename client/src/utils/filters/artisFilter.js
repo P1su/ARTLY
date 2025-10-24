@@ -1,6 +1,7 @@
 export const artistFilter = [
   {
     key: 'category',
+    label: '전시 상태',
     options: [
       { label: '전체', value: '' },
       { label: '현재 전시 중', value: 'onExhibition' },
@@ -8,6 +9,7 @@ export const artistFilter = [
   },
   {
     key: 'nation',
+    label: '국가',
     options: [
       { label: '전체', value: '' },
       { label: '대한민국', value: '대한민국' },
@@ -19,9 +21,11 @@ export const artistFilter = [
       { label: '유럽', value: '유럽' },
       { label: '기타', value: '기타' },
     ],
-  },
+  } /*
   {
+    
     key: 'decade',
+    label: '년도',
     options: [
       { label: '전체', value: '' },
       { label: '1920년대', value: '1920년대' },
@@ -34,5 +38,5 @@ export const artistFilter = [
       { label: '1990년대', value: '1990년대' },
       { label: '2000년대', value: '2000년대' },
     ],
-  },
+  },*/,
 ];

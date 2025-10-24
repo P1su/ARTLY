@@ -1,0 +1,59 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.navigateLink {
+  display: flex;
+  justify-content: start;
+
+  padding-bottom: 4rem;
+
+  color: var(--gray02);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 19px; /* 135.714% */
+  letter-spacing: -0.1px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.termParagraph {
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 19px; /* 135.714% */
+  letter-spacing: -0.1px;
+}
+
+.termLink {
+  color: var(--blue01);
+}
+
+.registerButton {
+  display: flex;
+  width: 100%;
+  padding: 9px 30px 7px 30px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 8px;
+  border: 1px solid var(--blue01);
+
+  color: var(--blue01);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; /* 150% */
+}

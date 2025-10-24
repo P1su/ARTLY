@@ -1,5 +1,6 @@
 export const newsFilter = [
   {
+    label: '정렬',
     key: 'sort',
     options: [
       { label: '최신순', value: 'latest' },
@@ -7,6 +8,7 @@ export const newsFilter = [
     ],
   },
   {
+    label: '유형',
     key: 'category',
     options: [
       { label: '전체', value: '' },
@@ -16,6 +18,7 @@ export const newsFilter = [
     ],
   },
   {
+    label: '진행 상태',
     key: 'status',
     options: [
       { label: '진행중', value: 'ongoing' },

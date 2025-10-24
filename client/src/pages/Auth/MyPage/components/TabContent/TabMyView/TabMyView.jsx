@@ -149,7 +149,7 @@ export default function TabMyView() {
                 item={item}
                 status={item.reservation_status === 'reserved'}
                 onReservation={() => {
-                  navigate(`/reservation/${item.id}`);
+                  navigate(`/reservationconfirm/${item.id}`);
                 }}
                 onGoDetail={() => handleGoDetail(item.exhibition_id)}
                 onCancel={() => handleStatusChange(item.id)}

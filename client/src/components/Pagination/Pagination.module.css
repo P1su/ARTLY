@@ -2,20 +2,19 @@
   display: flex;
   justify-content: center;
 
-  gap: 0.5rem;
+  gap: 5rem;
   margin-top: 2rem;
 }
 
 .pageButton {
-  border: 0.1rem solid #ddd;
-  border-radius: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  border-radius: 6rem;
+  width: 3.5rem;
+  height: 3.5rem;
 
-  background-color: white;
-
-  color: #333;
-  font-size: 1rem;
+  background-color: var(--white01);
+  font-size: 2.2rem;
+  line-height: 30px; /* 136.364% */
+  letter-spacing: 0.5px;
 
   cursor: pointer;
   transition: all 0.2s;
@@ -28,13 +27,12 @@
 }
 
 .active {
-  background-color: black;
-  
+  color: var(--white01);
+  background-color: var(--blue01);
+
   color: white;
-  font-weight: bold;
 }
 
 .disabled {
-  color: #ccc;
   cursor: default;
 }
