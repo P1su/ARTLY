@@ -57,19 +57,7 @@ export default function Announcement() {
               </span>
             </div>
             {openItems[index] && (
-              <div className={styles.contentContainer}>
-                {item.content.split('\n').map((line, lineIndex) => {
-                  const uniqueKey = `${item.id}-${line}-${lineIndex}`;
-                  return (
-                    <React.Fragment key={uniqueKey}>
-                      {line}
-                      {lineIndex < item.content.split('\n').length - 1 && (
-                        <br />
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+              <div className={styles.contentContainer}>{item.content}</div>
             )}
           </li>
         ))}
