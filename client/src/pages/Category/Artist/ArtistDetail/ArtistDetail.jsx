@@ -78,12 +78,12 @@ export default function ArtistDetail() {
       <section className={styles.infoSection}>
         <img
           className={styles.artistImage}
-          src={artistData.imageUrl}
+          src={artistData.artist_image}
           alt='작가 대표 이미지'
         />
-        <h3 className={styles.artistTitle}>{artistData.name}</h3>
+        <h3 className={styles.artistTitle}>{artistData.artist_name}</h3>
         <span className={styles.subSpan}>
-          {artistData.nation} | {artistData.field}
+          {artistData.artist_nation} | {artistData.artist_category}
         </span>
       </section>
       <div className={styles.buttonContainer}>
@@ -95,7 +95,7 @@ export default function ArtistDetail() {
         ))}
       </div>
       <ArtistActivity
-        description={artistData.description}
+        description={artistData.artist_description}
         artworks={artistData?.artworks}
         exhibitions={artistData?.exhibitions}
       />

@@ -58,12 +58,12 @@
   width: 100%;
   padding-bottom: 1rem;
   border-bottom: 0.5px solid var(--color-grey-74, #bdbdbd);
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   font-weight: 500;
 }
 
 .contentContainer {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   white-space: pre-wrap;
   padding: 1rem 0;
 }
