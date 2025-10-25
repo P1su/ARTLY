@@ -14,7 +14,7 @@ export default function Exhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
-    10,
+    12,
     exhibitions,
   );
   const [exhibitionFilters, setExhibitionFilters] = useState({
@@ -62,6 +62,8 @@ export default function Exhibitions() {
     getExhibitions();
   }, [exhibitionFilters]);
 
+  const labelList = ['정렬', '지역', '분야', '전시상태'];
+
   return (
     <div className={styles.layout}>
       <ListHeader
@@ -75,6 +77,7 @@ export default function Exhibitions() {
       />
 
       <DropdownContainer
+        labels={labelList}
         filterList={exhibitionFilter}
         onSetFilter={setExhibitionFilters}
       />
@@ -84,13 +87,15 @@ export default function Exhibitions() {
       {isLoading && <div>전시회 데이터 조회 중..</div>}
       {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
-      {pageItems.map((item) => (
-        <ExhibitionCard
-          key={item.id}
-          exhibitionItem={item}
-          onEvent={getExhibitions}
-        />
-      ))}
+      <div className={styles.gridContainer}>
+        {pageItems.map((item) => (
+          <ExhibitionCard
+            key={item.id}
+            exhibitionItem={item}
+            onEvent={getExhibitions}
+          />
+        ))}
+      </div>
 
       <Pagination
         currentPage={currentPage}

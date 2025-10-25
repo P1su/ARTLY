@@ -1,13 +1,18 @@
 import styles from './Header.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
+import useResponsive from '../../hooks/useResponsive';
 import Menu from '../Menu/Menu';
+import NavBar from '../NavBar/NavBar';
 import SearchBar from '../SearchBar/SearchBar';
-import { FaQrcode, FaSearch } from 'react-icons/fa';
+import IcQR from '../../assets/svg/IcQR';
+import IcMenu from '../../assets/svg/IcMenu';
+import IcSearch from '../../assets/svg/IcSearch';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  const { isDesktop } = useResponsive();
   const navigate = useNavigate();
 
   const handleOpen = () => {
@@ -28,36 +33,33 @@ export default function Header() {
   return (
     <header className={styles.headerLayout}>
       <span className={styles.logoSpan} onClick={handleHome}>
-        Artly
+        ARTLY
       </span>
-      {isSearch && (
-        <SearchBar
-          onClose={() => {
-            setIsSearch((prev) => !prev);
-          }}
-        />
-      )}
+      {isDesktop && <NavBar />}
       <div className={styles.rightSection}>
-        <FaSearch
-          className={styles.icon}
+        {isSearch && (
+          <SearchBar
+            onClose={() => {
+              setIsSearch((prev) => !prev);
+            }}
+          />
+        )}
+        <button
           onClick={() => {
             setIsSearch((prev) => !prev);
           }}
-        />
-        <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
-          <FaQrcode className={styles.icon} />
-        </Link>
-        <button
-          className={isOpen ? styles.menuOpen : styles.menuClosed}
-          onClick={isOpen ? handleClose : handleOpen}
         >
-          <span className={styles.menuSpan} />
-          <span className={styles.menuSpan} />
-          <span className={styles.menuSpan} />
+          <IcSearch />
+        </button>
+        <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
+          <IcQR />
+        </Link>
+        <button onClick={isOpen ? handleClose : handleOpen}>
+          <IcMenu />
         </button>
       </div>
 
-      {isOpen && <Menu onOpen={handleClose} />}
+      {isOpen && <Menu onOpen={handleClose} isOpen={isOpen} />}
     </header>
   );
 }

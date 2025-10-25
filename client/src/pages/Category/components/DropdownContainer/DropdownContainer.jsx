@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 
 export default function DropdownContainer({
+  labels,
   filterList,
   onSetFilter,
   shape = 'round',
@@ -17,6 +18,7 @@ export default function DropdownContainer({
       {filterList.map((item, idx) => (
         <Dropdown
           key={item.key}
+          title={item.label}
           dropdownItems={item.options}
           filterKey={item.key}
           isOpen={idx === itemIndex}

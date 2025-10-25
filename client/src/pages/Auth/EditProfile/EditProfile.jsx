@@ -91,18 +91,6 @@ const EditProfile = () => {
       <h2 className={styles.pageTitle}>내정보</h2>
 
       <div className={styles.profileCard}>
-        <div className={styles.profileImageSection}>
-          <div className={styles.profileImage}>
-            <img src={userInfo.user_img} alt='프로필 이미지' />
-            <div className={styles.profileBadge}>
-              <FaCog />
-            </div>
-          </div>
-          <h3 className={styles.profileName}>
-            {userInfo.user_name || '닉네임'}
-          </h3>
-        </div>
-
         <div className={styles.profileInfoDetails}>
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>아이디</span>
@@ -113,7 +101,7 @@ const EditProfile = () => {
               className={styles.changeButtonSmall}
               onClick={handleOpenModal}
             >
-              비밀번호 변경
+              아이디 변경
             </button>
           </div>
 
@@ -184,7 +172,7 @@ const EditProfile = () => {
       </div>
 
       <div className={styles.profileStatsCard}>
-        <h3 className={styles.sectionTitle}>고객혜택</h3>
+        <h3 className={styles.sectionTitle}>고객센터</h3>
         <div className={styles.statsRow}>
           <span className={styles.statsItem}>1:1 문의</span>
         </div>
@@ -206,15 +194,16 @@ const EditProfile = () => {
           <span className={styles.detailsLabel}>회원 탈퇴</span>
         </div>
       </div>
-
+      <div className={styles.buttonField}>
+        <button className={styles.backBtn} onClick={() => navigate('/mypage')}>
+          마이페이지로 돌아가기
+        </button>
+      </div>
       <PwModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         userInfo={userInfo}
       />
-      <button className={styles.backBtn} onClick={() => navigate('/mypage')}>
-        마이페이지로 돌아가기
-      </button>
     </div>
   );
 };

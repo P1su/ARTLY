@@ -13,7 +13,7 @@ import ArtistCard from './components/ArtistCard/ArtistCard';
 export default function Artists() {
   const [artists, setArtists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { currentPage, setCurrentPage, pageItems } = usePagination(10, artists);
+  const { currentPage, setCurrentPage, pageItems } = usePagination(12, artists);
   const [artistFilters, setArtistFilters] = useState({
     category: '',
     nation: '',
@@ -79,11 +79,11 @@ export default function Artists() {
       {isLoading && <div>작가 데이터 조회 중..</div>}
       {artists.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
-      <section className={styles.artistListSection}>
+      <div className={styles.gridContainer}>
         {pageItems.map((item) => (
           <ArtistCard key={item.id} artistItem={item} />
         ))}
-      </section>
+      </div>
       <Pagination
         currentPage={currentPage}
         onPageChange={setCurrentPage}

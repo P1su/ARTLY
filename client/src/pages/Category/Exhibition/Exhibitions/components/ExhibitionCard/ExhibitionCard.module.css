@@ -1,7 +1,41 @@
+.exhibitionCardLayout {
+  width: 31.6rem;
+  height: 27rem;
+
+  position: relative;
+  padding: 8px 8px 24px 8px;
+  gap: 10px;
+
+  border-radius: 16px;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+}
+
 .exhibitionItemContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.statusContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+
+  width: 5rem;
+  height: 1.9rem;
+
+  font-size: 0.9rem;
+  color: var(--white01);
+  border-radius: 10px;
+  background: var(--light-gray01);
+  z-index: 5;
+}
+
+.ongoing {
+  background: var(--blue01);
 }
 
 .imageBox {
@@ -9,8 +43,8 @@
 }
 
 .exhibitionImage {
-  width: 100%;
-  height: 40rem;
+  width: 300px;
+  height: 169px;
   border-radius: 0.8rem;
 
   object-fit: fill;
@@ -28,17 +62,26 @@
   top: 1rem;
 }
 
-.iconButton {
+.favButton {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 
-  width: 3rem;
-  height: 3rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
 
-  border-radius: 50%;
+.locButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
-  background-color: #fff;
+  position: absolute;
+  right: 2.4rem;
+  top: 20rem;
 }
 
 .isClicked {

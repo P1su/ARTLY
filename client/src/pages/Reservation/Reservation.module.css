@@ -1,54 +1,309 @@
-.layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+.container {
+  width: 100%;
+  padding: 4rem 30rem 6rem;
+  background-color: white;
+  min-height: 100vh;
+}
 
-  padding: 2rem 3rem 6rem;
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
 }
 
 .title {
-  color: #333;
-  font-size: 2.8rem;
-  align-self: flex-start;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.posterImage {
-  width: 100%;
-  height: 40rem;
-  border-radius: 0.8rem;
+.loading,
+.error,
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  font-size: 1.6rem;
 }
 
-.completionIcon {
-  width: 6rem;
-  height: 6rem;
-  background-color: #4caf50;
+.error {
+  color: #e57373;
+}
+
+.exhibitionInfo {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: #fff;
+
+  /* shadow */
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.exhibitionInfo strong {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.exhibitionInfo p {
+  font-size: 1.4rem;
+  color: #666;
+  margin: 0;
+}
+
+.calendarContainer {
+  margin-bottom: 2rem;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.monthNavigator {
+  display: flex;
+  align-items: center;
+}
+
+.currentMonth {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0 1rem;
+}
+
+.monthButton {
+  background: none;
+  border: 1px solid #ddd;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 2.4rem;
 }
 
-.completionTitle {
+.monthButton:hover {
+  background-color: #f5f5f5;
+}
+
+.weekdaysRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 1rem;
+}
+
+.weekdayCell {
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 0.5rem;
   color: #333;
-  font-size: 2rem;
+}
+
+.weekdayCell.weekend {
+  color: #e57373;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.dateCell {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.dateCell.disabled {
+  cursor: default;
+  color: #ccc;
+  background-color: transparent;
+}
+
+.dateCell.selected {
+  color: white;
+  background-color: #4285f4;
+}
+
+.dateCell.today {
+  background-color: #e8f0fe;
+}
+
+.visitorCount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.countLabel {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.countControls {
+  display: flex;
+  align-items: center;
+}
+
+.countButton {
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.countButton:hover {
+  background-color: #f5f5f5;
+}
+
+.countDisplay {
+  margin: 0 1.5rem;
+  font-size: 1.6rem;
+  min-width: 4rem;
+  text-align: center;
+}
+
+.reservationInfo {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.infoRow:last-child {
+  margin-bottom: 0;
+}
+
+.infoLabel {
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.infoValue {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.actionButton {
+  flex: 1;
+  padding: 1.2rem;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  background-color: #3367d6;
+}
+
+.backButton {
+  flex: 1;
+  padding: 1.2rem;
+  background-color: #f5f5f5;
+  color: #333;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background-color: #e8e8e8;
+}
+
+.reservationForm {
+  margin-top: 2rem;
+}
+
+.formTitle {
+  font-size: 1.8rem;
   font-weight: 600;
-  margin: 0 0 1rem 0;
+  margin: 0 0 2rem 0;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.formInput {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #4285f4;
 }
 
 .reservationSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-grey-74, #bdbdbd);
+  background: #fff;
+
+  /* shadow */
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.summaryImage {
   width: 100%;
-  padding: 1.5rem;
-  background-color: #f8f8f8;
-  border-radius: 0.8rem;
+  border-radius: 16px;
+}
+
+.summaryTitle {
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .summaryRow {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  gap: 2rem;
 }
 
 .summaryRow:last-child {
@@ -56,8 +311,11 @@
 }
 
 .summaryLabel {
+  width: 5rem;
+  text-align: left;
   font-size: 1.4rem;
-  color: #666;
+  font-weight: 500;
+  color: var(--black01);
 }
 
 .summaryValue {
@@ -75,29 +333,212 @@
   padding: 2rem 0;
 }
 
-.buttonField {
-  display: flex;
-  gap: 1rem;
-}
-
-.exhibitionLink,
-.mypageLink {
+.completionIcon {
+  width: 6rem;
+  height: 6rem;
+  background-color: #4caf50;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 15rem;
-  height: 5rem;
-  border-radius: 0.8rem;
-
-  background-color: #f5f5f5;
-  color: #333;
-
-  font-size: 1.6rem;
-  font-weight: 500;
+  margin: 0 auto 2rem;
+  color: white;
+  font-size: 2.4rem;
 }
 
-.exhibitionLink {
-  background-color: #4285f4;
-  color: #fff;
+.completionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.completionMessage {
+  font-size: 1.4rem;
+  color: #666;
+  margin: 0 0 3rem 0;
+}
+
+/* 반응형 미디어 쿼리 */
+@media (max-width: 1500px) {
+  .container {
+    padding: 4rem 10rem 6rem;
+  }
+}
+
+@media (max-width: 1072px) {
+  .container {
+    padding: 4rem 5rem 6rem;
+  }
+
+  .calendarGrid {
+    gap: 0.3rem;
+  }
+
+  .dateCell {
+    padding: 0.8rem;
+    font-size: 1.3rem;
+  }
+
+  .monthButton {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .countButton {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 4rem 2rem 6rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .exhibitionInfo {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .exhibitionInfo strong {
+    font-size: 1.4rem;
+  }
+
+  .exhibitionInfo p {
+    font-size: 1.2rem;
+  }
+
+  .calendarContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .currentMonth {
+    font-size: 1.4rem;
+  }
+
+  .monthButton {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .weekdayCell {
+    font-size: 1.2rem;
+    padding: 0.3rem;
+  }
+
+  .calendarGrid {
+    gap: 0.2rem;
+  }
+
+  .dateCell {
+    padding: 0.6rem;
+    font-size: 1.2rem;
+  }
+
+  .visitorCount {
+    margin-bottom: 1.5rem;
+  }
+
+  .countLabel {
+    font-size: 1.4rem;
+  }
+
+  .countDisplay {
+    font-size: 1.4rem;
+    margin: 0 1rem;
+  }
+
+  .countButton {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .reservationInfo {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .infoRow {
+    margin-bottom: 0.8rem;
+  }
+
+  .infoLabel,
+  .infoValue {
+    font-size: 1.2rem;
+  }
+
+  .formTitle {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .formLabel {
+    font-size: 1.2rem;
+  }
+
+  .formInput {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .reservationSummary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+  }
+
+  .summaryTitle {
+    font-size: 1.6rem;
+  }
+
+  .summaryLabel,
+  .summaryValue {
+    font-size: 1.2rem;
+  }
+
+  .summaryRow {
+  }
+
+  .completionScreen {
+    padding: 1rem 0;
+  }
+
+  .completionIcon {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .completionTitle {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .completionMessage {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .buttonsContainer {
+    margin-top: 2rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .actionButton,
+  .backButton {
+    padding: 1rem;
+    font-size: 1.4rem;
+  }
 }

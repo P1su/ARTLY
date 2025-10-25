@@ -1,6 +1,7 @@
 export const exhibitionFilter = [
   {
     key: 'sort',
+    label: '정렬',
     options: [
       { label: '최신순', value: 'latest' },
       { label: '오래된순', value: 'ending' },
@@ -9,6 +10,7 @@ export const exhibitionFilter = [
   },
   {
     key: 'region',
+    label: '지역',
     options: [
       { label: '전체', value: '' },
       { label: '서울', value: '서울' },
@@ -21,6 +23,7 @@ export const exhibitionFilter = [
   },
   {
     key: 'category',
+    label: '분야',
     options: [
       { label: '전체', value: '' },
       { label: '사진', value: '사진' },
@@ -36,6 +39,7 @@ export const exhibitionFilter = [
   },
   {
     key: 'status',
+    label: '전시 상태',
     options: [
       { label: '현재전시', value: 'exhibited' },
       { label: '종료전시', value: 'ended' },

@@ -12,13 +12,8 @@ export default function Register() {
   const { data: formDatas, handleChange } = useInput({
     login_id: '',
     login_pwd: '',
-    user_age: '',
     user_email: '',
-    user_gender: '',
-    user_img: '',
-    user_keyword: '',
     user_name: '',
-    user_phone: '',
     admin_flag: 0,
     gallery_id: 0,
   });
@@ -45,7 +40,7 @@ export default function Register() {
         <InputContainer title='아이디'>
           <InputText
             name='login_id'
-            placeholder='아이디를 입력해주세요'
+            placeholder='아이디 (6~20자 영문, 숫자)'
             onChange={handleChange}
             value={formDatas.login_id}
           />
@@ -53,7 +48,7 @@ export default function Register() {
         <InputContainer title='비밀번호'>
           <InputText
             name='login_pwd'
-            placeholder='비밀번호를 입력해주세요'
+            placeholder='비밀번호 (8~16자 영문+숫자+특수문자)'
             type='password'
             onChange={handleChange}
             value={formDatas.login_pwd}
@@ -67,42 +62,12 @@ export default function Register() {
             value={formDatas.user_name}
           />
         </InputContainer>
-        <InputContainer title='휴대폰 번호'>
-          <InputText
-            name='user_phone'
-            placeholder='010-XXXX-XXXX'
-            onChange={handleChange}
-            value={formDatas.user_phone}
-          />
-        </InputContainer>
         <InputContainer title='이메일'>
           <InputText
             name='user_email'
             placeholder='이메일을 입력해주세요'
             onChange={handleChange}
             value={formDatas.user_email}
-          />
-        </InputContainer>
-        <InputContainer title='나이'>
-          <InputText
-            name='user_age'
-            placeholder='나이를 입력해주세요'
-            onChange={handleChange}
-            value={formDatas.user_age}
-          />
-        </InputContainer>
-        <InputContainer title='성별'>
-          <InputRadio
-            label='남'
-            name='user_gender'
-            value='M'
-            onChange={handleChange}
-          />
-          <InputRadio
-            label='여'
-            name='user_gender'
-            value='F'
-            onChange={handleChange}
           />
         </InputContainer>
         <InputContainer title='갤러리 관리자인가요?'>
@@ -119,40 +84,7 @@ export default function Register() {
             onChange={handleChange}
           />
         </InputContainer>
-        <InputContainer title='프로필'>
-          <InputImage
-            name='user_img'
-            onChange={handleChange}
-            file={formDatas.user_img}
-          />
-        </InputContainer>
-        <div className={styles.keywordBox}>
-          <label className={styles.keywordLabel}>관심 키워드</label>
-          <div className={styles.keywords}>
-            {[
-              '회화',
-              '서양화',
-              '유화',
-              '수채화',
-              '모노톤',
-              '단조로움',
-              '선',
-              '풍경화',
-              '모던',
-              '디지털',
-            ].map((word) => (
-              <input
-                className={`${styles.keywordBtn} ${formDatas.user_keyword === word ? styles.active : ''}`}
-                name='user_keyword'
-                key={word}
-                type='button'
-                onClick={handleChange}
-                value={word}
-              />
-            ))}
-          </div>
-        </div>
-        <BtnPrimary label='회원가입' />
+        <button className={styles.submitButton}>회원가입</button>
       </form>
     </div>
   );

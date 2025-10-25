@@ -2,8 +2,6 @@ import styles from './Artwork.module.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
-import ArtworkDetailSection from './components/ArtworkDetailSection/ArtworkDetailSection';
-import DocentScript from './components/ArtworkDetailSection/DocentScript/DocentScript';
 import DocentSection from './components/DocentSection/DocentSection';
 
 const paginateScript = (script, maxLength = 300) => {
@@ -23,21 +21,6 @@ export default function Artwork() {
   } = artwork;
   const { artId } = useParams();
   const scriptPages = paginateScript(script);
-  const [pageIndex, setPageIndex] = useState(0);
-
-  const goToNextPage = () => {
-    setPageIndex((prevIndex) => {
-      if (prevIndex < scriptPages.length - 1) return prevIndex + 1;
-      return prevIndex;
-    });
-  };
-
-  const goToPreviousPage = () => {
-    setPageIndex((prevIndex) => {
-      if (prevIndex > 0) return prevIndex - 1;
-      return prevIndex;
-    });
-  };
 
   useEffect(() => {
     const getArtwork = async () => {
@@ -54,40 +37,18 @@ export default function Artwork() {
   }, []);
 
   return (
-    <main className={styles.pageContainer}>
-      <section className={styles.mainContent}>
-        <h2 className={styles.title}>Description</h2>
-        {pageIndex === 0 ? (
-          <ArtworkDetailSection
-            title={title}
-            image={image}
-            artist={artist}
-            info={info}
-            script={scriptPages[pageIndex]}
-          />
-        ) : (
-          <DocentScript script={scriptPages[pageIndex]} />
-        )}
-      </section>
+    <main className={styles.layout}>
+      <h2 className={styles.title}>{title}</h2>
 
-      <section className={styles.bottomContainer}>
-        <DocentSection script={script} />
-        <div className={styles.buttonContainer}>
-          <button
-            className={styles.navButton}
-            onClick={goToPreviousPage}
-            disabled={pageIndex === 0}
-          >
-            ← 이전 페이지
-          </button>
-          <button
-            className={styles.navButton}
-            onClick={goToNextPage}
-            disabled={pageIndex === scriptPages.length - 1}
-          >
-            다음 페이지 →
-          </button>
+      <section className={styles.mainContent}>
+        <img src={image} alt={`${title} 이미지`} className={styles.infoImage} />
+        <div className={styles.textContainer}>
+          <div className={styles.textBox}>
+            <strong>작가</strong>
+            <span className={styles.text}>{artist}</span>
+          </div>
         </div>
+        <DocentSection script={script} />
       </section>
     </main>
   );
