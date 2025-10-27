@@ -32,7 +32,7 @@ export default function LoginDetail() {
       if (pathname === '/register') {
         navigate('/');
       } else {
-        navigate(-1);
+        navigate(-2);
       }
     } catch (error) {
       console.log(error);
