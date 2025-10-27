@@ -4,6 +4,6 @@ export default function AuthRoute() {
   return localStorage.getItem('ACCESS_TOKEN') ? (
     <Outlet />
   ) : (
-    <Navigate to='/login' />
+    <Navigate to='/login' replace={true} />
   );
 }
