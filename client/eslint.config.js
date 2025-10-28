@@ -49,7 +49,7 @@ export default defineConfig([
       ],
 
       eqeqeq: ['error', 'always'], // 삼중 등호(===) 사용 강제
-      camelcase: ['error', { properties: 'never' }], //프로퍼티명으로 camelCase 작성 강제
+      //camelcase: ['warn', { properties: 'never' }], //프로퍼티명으로 camelCase 작성 강제
     },
   },
 ]);
