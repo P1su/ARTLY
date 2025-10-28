@@ -60,7 +60,7 @@ export default function Menu({ onOpen, isOpen }) {
           <span
             className={styles.menuSpan}
             onClick={() => {
-              handleNavigate('/qrscan');
+              handleNavigate('/scan');
             }}
           >
             도슨트 듣기
