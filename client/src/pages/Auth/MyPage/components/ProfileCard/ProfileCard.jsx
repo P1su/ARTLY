@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './ProfileCard.module.css';
 import { Link } from 'react-router-dom';
 
-import { instance } from '../../../../../apis/instance';
+import { userInstance } from '../../../../../apis/instance';
 
 export default function ProfileCard() {
   const [userData, setUserData] = useState({
@@ -16,7 +16,7 @@ export default function ProfileCard() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await instance.get('api/users/me');
+        const res = await userInstance.get('api/users/me');
         setUserData({
           user_img: res.data.user_img,
           user_name: res.data.user_name,

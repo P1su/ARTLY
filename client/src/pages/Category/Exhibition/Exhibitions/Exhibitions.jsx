@@ -1,7 +1,7 @@
 import styles from './Exhibitions.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { instance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../apis/instance.js';
 import ListHeader from '../../components/ListHeader/ListHeader';
 import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { exhibitionFilter } from '../../../../utils/filters/exhibitionFilter.js';
@@ -47,7 +47,7 @@ export default function Exhibitions() {
         search: query,
       };
 
-      const response = await instance.get('/api/exhibitions', {
+      const response = await userInstance.get('/api/exhibitions', {
         params: updatedFilters, // ✅ 키 일치 → 바로 사용 가능
       });
       setExhibitions(response.data);
