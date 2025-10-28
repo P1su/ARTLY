@@ -1,5 +1,5 @@
 import styles from './ListHeader.module.css';
-import { FaHeart, FaSearch } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 import IcSearch from './../../../../assets/svg/IcSearch';
 
 export default function ListHeader({
