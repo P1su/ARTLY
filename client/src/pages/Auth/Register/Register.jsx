@@ -4,9 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import useInput from '../../../hooks/useInput';
 import InputText from '../../../components/Input/InputText/InputText';
 import InputRadio from '../../../components/Input/InputRadio/InputRadio';
-import InputImage from '../../../components/Input/InputImage/InputImage';
 import InputContainer from '../../../components/Input/InputConatiner/InputContainer';
-import BtnPrimary from '../../../components/BtnPrimary/BtnPrimary';
 
 export default function Register() {
   const { data: formDatas, handleChange } = useInput({
