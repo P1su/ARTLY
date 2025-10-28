@@ -4,14 +4,14 @@ import { useState } from 'react';
 import useResponsive from '../../hooks/useResponsive';
 import Menu from '../Menu/Menu';
 import NavBar from '../NavBar/NavBar';
-import SearchBar from '../SearchBar/SearchBar';
 import IcQR from '../../assets/svg/IcQR';
 import IcMenu from '../../assets/svg/IcMenu';
-import IcSearch from '../../assets/svg/IcSearch';
+//import SearchBar from '../SearchBar/SearchBar';
+//import IcSearch from '../../assets/svg/IcSearch';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSearch, setIsSearch] = useState(false);
+  //const [isSearch, setIsSearch] = useState(false);
   const { isDesktop } = useResponsive();
   const navigate = useNavigate();
 
@@ -37,20 +37,22 @@ export default function Header() {
       </span>
       {isDesktop && <NavBar />}
       <div className={styles.rightSection}>
-        {isSearch && (
+        {/*isSearch && (
           <SearchBar
             onClose={() => {
               setIsSearch((prev) => !prev);
             }}
           />
-        )}
-        <button
-          onClick={() => {
-            setIsSearch((prev) => !prev);
-          }}
-        >
-          <IcSearch />
-        </button>
+        )*/}
+        {/*
+          <button
+            onClick={() => {
+              setIsSearch((prev) => !prev);
+            }}
+          >
+            <IcSearch />
+          </button>
+        */}
         <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
           <IcQR />
         </Link>
