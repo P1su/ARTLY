@@ -1,5 +1,5 @@
 .exhibitionCardLayout {
-  width: 31.6rem;
+  width: 100%;
   height: 27rem;
 
   position: relative;
@@ -43,7 +43,7 @@
 }
 
 .exhibitionImage {
-  width: 300px;
+  width: 100%;
   height: 169px;
   border-radius: 0.8rem;
 
