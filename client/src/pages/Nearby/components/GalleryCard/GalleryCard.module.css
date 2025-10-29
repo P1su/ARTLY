@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
 
-  padding: 0.8rem 0.8rem 2rem 0.8rem;
+  padding: 0.8rem;
   border-radius: 16px;
 
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
@@ -22,6 +22,9 @@
   aspect-ratio: 16 / 9;
 
   border-radius: 12px;
+  aspect-ratio: 16 / 9;
+
+  border-radius: 12px;
 
   object-fit: cover;
 }
@@ -32,9 +35,9 @@
 
 .galleryTitle {
   margin: 0;
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   color: var(--black01);
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 600;
   line-height: 18px; /* 75% */
   letter-spacing: -0.2px;
@@ -42,7 +45,7 @@
 
 .addressParagraph {
   color: #666666;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 126%; /* 22.68px */
   letter-spacing: -0.2px;
 }
@@ -57,10 +60,18 @@
 }
 
 @media (max-width: 600px) {
+  .linkContainer {
+    display: flex;
+  }
+  .galleryImage {
+    width: 40%;
+    height: 11rem;
+  }
+
   .galleryTitle {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
   .addressParagraph {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 }

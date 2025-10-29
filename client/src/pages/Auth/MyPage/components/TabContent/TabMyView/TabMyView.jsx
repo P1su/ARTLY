@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styles from './TabMyView.module.css';
-import { instance } from '../../../../../../apis/instance';
+import { userInstance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import DropdownContainer from '../../../../../Category/components/DropdownContainer/DropdownContainer';
 import tabMyViewFilter from '../../../../../../utils/filters/tabMyViewFilter';
@@ -54,7 +54,7 @@ export default function TabMyView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await instance.get('/api/users/me/exhibitions');
+        const res = await userInstance.get('/api/users/me/exhibitions');
         const { data } = res;
 
         setReservations(data);
