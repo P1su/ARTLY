@@ -6,10 +6,10 @@ import { menuList } from '../../utils/menu.js';
 
 export default function Menu({ onOpen, isOpen }) {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
 
   const handleLogout = () => {
-    localStorage.removeItem('ACCESS_TOKEN');
+    logout();
     onOpen();
     navigate('/');
   };
@@ -31,19 +31,23 @@ export default function Menu({ onOpen, isOpen }) {
         </div>
         <section className={styles.menuSection}>
           {/* 전역 데이터로 유저 이름 관리 */}
-          <h3 className={styles.userNickname}>아뜰리님</h3>
+          <h3 className={styles.userNickname}>
+            {user ? `${user.user_name} 님` : '로그인 해주세요'}
+          </h3>
 
           {/* 유저 타입(role)에 따라 조건부 처리 필요 */}
           <div className={styles.sidebarMenu}>
-            <span
-              className={styles.menuSpan}
-              onClick={() => {
-                alert('콘솔 페이지는 개발 중에 있습니다.');
-                //handleNavigate('/console');
-              }}
-            >
-              갤러리 관리
-            </span>
+            {user && user.admin_flag && (
+              <span
+                className={styles.menuSpan}
+                onClick={() => {
+                  alert('콘솔 페이지는 개발 중에 있습니다.');
+                  //handleNavigate('/console');
+                }}
+              >
+                갤러리 관리
+              </span>
+            )}
           </div>
           <hr className={styles.divider} />
           <div className={styles.sidebarMenu}>
