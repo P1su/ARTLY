@@ -12,11 +12,13 @@ export default function ListHeader({
   value,
   isNews = false,
   isArtworks = false,
+  isArtworks = false,
 }) {
   return (
     <div className={styles.layout}>
       <div className={styles.titleContainer}>
         <h1 className={styles.listTitle}>{title}</h1>
+        {!isNews && !isArtworks && (
         {!isNews && !isArtworks && (
           <button
             className={`${styles.favButton} ${isFav && styles.clickedFavButton}`}
@@ -27,6 +29,19 @@ export default function ListHeader({
           </button>
         )}
       </div>
+      {!isArtworks && (
+        <form className={styles.searchForm} action={onEvent}>
+          <input
+            className={styles.searchInput}
+            placeholder={placeholder}
+            onChange={onSearch}
+            value={value}
+          />
+          <button className={styles.formButton}>
+            <IcSearch />
+          </button>
+        </form>
+      )}
       {!isArtworks && (
         <form className={styles.searchForm} action={onEvent}>
           <input

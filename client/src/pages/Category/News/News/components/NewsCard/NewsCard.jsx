@@ -38,6 +38,18 @@ export default function NewsCard({ newsItem }) {
         return '';
     }
   };
+  const formatStatus = (status) => {
+    switch (status) {
+      case 'ongoing':
+        return '진행중';
+      case 'scheduled':
+        return '예정';
+      case 'ended':
+        return '종료';
+      default:
+        return '';
+    }
+  };
 
   const handleClick = () => {
     navigate(`/notices/${id}`);

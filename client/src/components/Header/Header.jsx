@@ -2,6 +2,7 @@ import styles from './Header.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import useResponsive from '../../hooks/useResponsive';
+import useResponsive from '../../hooks/useResponsive';
 import Menu from '../Menu/Menu';
 import NavBar from '../NavBar/NavBar';
 import IcQR from '../../assets/svg/IcQR';
@@ -34,6 +35,7 @@ export default function Header() {
     <header className={styles.headerLayout}>
       <span className={styles.logoSpan} onClick={handleHome}>
         ARTLY
+        ARTLY
       </span>
       {isDesktop && <NavBar />}
       <div className={styles.rightSection}>
@@ -55,12 +57,16 @@ export default function Header() {
         */}
         <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
           <IcQR />
+          <IcQR />
         </Link>
+        <button onClick={isOpen ? handleClose : handleOpen}>
+          <IcMenu />
         <button onClick={isOpen ? handleClose : handleOpen}>
           <IcMenu />
         </button>
       </div>
 
+      {isOpen && <Menu onOpen={handleClose} isOpen={isOpen} />}
       {isOpen && <Menu onOpen={handleClose} isOpen={isOpen} />}
     </header>
   );

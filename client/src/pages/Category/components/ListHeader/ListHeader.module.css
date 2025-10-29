@@ -20,6 +20,11 @@
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.5px;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.5px;
 }
 
 .clickedFavButton,
@@ -56,12 +61,20 @@
   position: relative;
   width: 60rem;
   height: 5rem;
+  position: relative;
+  width: 60rem;
+  height: 5rem;
 }
 
 .searchInput {
   flex: 1 1 0%;
   flex-shrink: 0;
+  flex-shrink: 0;
   padding: 1rem 1.5rem;
+  border-radius: 2.6rem;
+  border: none;
+
+  background-color: var(--white02);
   border-radius: 2.6rem;
   border: none;
 
@@ -76,6 +89,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  position: absolute;
+  right: 0;
 
   position: absolute;
   right: 0;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProfileCard.module.css';
 import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { userInstance } from '../../../../../apis/instance';
 
@@ -37,6 +38,10 @@ export default function ProfileCard() {
 
   return (
     <div className={styles.layout}>
+      <h1 className={styles.pageTitle}>마이페이지</h1>
+      <Link className={styles.editLink} to='/mypage/edit'>
+        {userData.user_name} 님, 안녕하세요
+      </Link>
       <h1 className={styles.pageTitle}>마이페이지</h1>
       <Link className={styles.editLink} to='/mypage/edit'>
         {userData.user_name} 님, 안녕하세요

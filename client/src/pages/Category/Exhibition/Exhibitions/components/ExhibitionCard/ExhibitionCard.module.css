@@ -38,6 +38,28 @@
   background: var(--blue01);
 }
 
+.statusContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+
+  width: 5rem;
+  height: 1.9rem;
+
+  font-size: 0.9rem;
+  color: var(--white01);
+  border-radius: 10px;
+  background: var(--light-gray01);
+  z-index: 5;
+}
+
+.ongoing {
+  background: var(--blue01);
+}
+
 .imageBox {
   position: relative;
 }
@@ -63,9 +85,26 @@
 }
 
 .favButton {
+.favButton {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.locButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  position: absolute;
+  right: 2.4rem;
+  top: 20rem;
   gap: 1rem;
 
   position: absolute;
