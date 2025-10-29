@@ -7,10 +7,20 @@ export default function GalleryCard({ galleryItem }) {
     gallery_name: name,
     gallery_image: image,
     gallery_address: address,
+    gallery_start_time: startTime,
+    gallery_end_time: endTime,
   } = galleryItem;
+
+  const formatTime = (time) => {
+    if (time) {
+      const parsedTime = time.slice(0, 5);
+      return parsedTime;
+    }
+  };
+
   return (
     <div className={styles.layout}>
-      <Link to={`/galleries/${id}`}>
+      <Link className={styles.linkContainer} to={`/galleries/${id}`}>
         <img
           className={styles.galleryImage}
           src={image}
@@ -19,6 +29,9 @@ export default function GalleryCard({ galleryItem }) {
         <div className={styles.infoContainer}>
           <h3 className={styles.galleryTitle}>{name}</h3>
           <p className={styles.addressParagraph}>{address}</p>
+          <p className={styles.addressParagraph}>
+            {formatTime(startTime)} ~ {formatTime(endTime)}
+          </p>
         </div>
       </Link>
     </div>

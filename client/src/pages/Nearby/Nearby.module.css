@@ -3,8 +3,10 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-
-  padding: 3rem 2rem 6rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 3rem clamp(1rem, 4vw, 2rem) 6rem;
 }
 
 .title {
@@ -14,7 +16,8 @@
 
 .galleryWrapper {
   width: 100%;
-  height: 40rem;
+  max-width: 100%;
+  height: clamp(24rem, 40vw, 40rem);
 }
 
 .searchForm {
@@ -25,7 +28,7 @@
 }
 
 .searchInput {
-  width: 80%;
+  width: min(800px, 100%);
   height: 3rem;
   padding: 1rem;
 
@@ -33,4 +36,20 @@
   border-radius: 0.8rem;
 
   outline: none;
+}
+
+@media (max-width: 900px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2rem;
+  }
+  .searchInput {
+    height: 2.8rem;
+    padding: 0.8rem;
+  }
 }

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
-import { instance } from '../../../../../../apis/instance';
-import SectionCard from '../../SectionCard/SectionCard';
-import { useNavigate } from 'react-router-dom';
+import { userInstance } from '../../../../../../apis/instance';
+// no direct navigation here; cards handle their own links
+import ExhibitionCard from '../../../../../Category/Exhibition/Exhibitions/components/ExhibitionCard/ExhibitionCard';
+import GalleryCard from '../../../../../Nearby/components/GalleryCard/GalleryCard';
+import ArtistCard from '../../../../../Category/Artist/Artists/components/ArtistCard/ArtistCard';
 
 const TABS = [
   { label: '전시회', key: 'exhibition' },
@@ -15,29 +17,10 @@ export default function TabLike() {
   const [likedItems, setLikedItems] = useState([]);
   const [activeTab, setActiveTab] = useState('exhibition');
 
-  const navigate = useNavigate();
-
-  const handleGoDetail = (item) => {
-    switch (item.likeType) {
-      case 'exhibition':
-        navigate(`/exhibitions/${item.id}`);
-        break;
-      case 'gallery':
-        navigate(`/galleries/${item.id}`);
-        break;
-      case 'artist':
-        navigate(`/artists/${item.id}`);
-        break;
-      default:
-        console.warn('알 수 없는 likeType:', item.likeType);
-        break;
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const likeRes = await instance.get('/api/users/me/likes');
+        const likeRes = await userInstance.get('/api/users/me/likes');
         const { data } = likeRes;
 
         const exhibitions = data.like_exhibitions.map((item) => ({
@@ -92,14 +75,24 @@ export default function TabLike() {
       <section className={styles.cardListSection}>
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
-            filteredItems.map((item) => (
-              <SectionCard
-                key={`${item.likeType}-${item.id}`}
-                item={item}
-                type='like'
-                onGoDetail={() => handleGoDetail(item)}
-              />
-            ))
+            activeTab === 'exhibition' ? (
+              filteredItems.map((item) => (
+                <ExhibitionCard
+                  key={`exhibition-${item.id}`}
+                  exhibitionItem={item}
+                />
+              ))
+            ) : activeTab === 'gallery' ? (
+              filteredItems.map((item) => (
+                <GalleryCard key={`gallery-${item.id}`} galleryItem={item} />
+              ))
+            ) : activeTab === 'artist' ? (
+              filteredItems.map((item) => (
+                <ArtistCard key={`artist-${item.id}`} artistItem={item} />
+              ))
+            ) : (
+              <p className={styles.emptyText}>해당 탭은 준비 중입니다.</p>
+            )
           ) : (
             <p className={styles.emptyText}>
               좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가

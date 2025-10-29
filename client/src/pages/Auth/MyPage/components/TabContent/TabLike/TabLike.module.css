@@ -1,7 +1,4 @@
 .header {
-  /* display: flex; 삭제 */
-  justify-content: space-between; /* 삭제 */
-  align-items: center; /* 삭제 */
   margin-bottom: 1.5rem;
 }
 
@@ -49,8 +46,8 @@
 }
 
 .cardList {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.6rem;
 }
 
@@ -59,4 +56,28 @@
   color: #999;
   text-align: center;
   margin-top: 3.2rem;
+}
+
+@media (max-width: 700px) {
+  .tabButtonContainer {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 1280px) {
+  .cardList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .cardList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .cardList {
+    grid-template-columns: 1fr;
+  }
 }

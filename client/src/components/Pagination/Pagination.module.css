@@ -1,21 +1,15 @@
 .paginationContainer {
   display: flex;
-  justify-content: center;
-
-  gap: 0.5rem;
-  margin-top: 2rem;
+  align-items: center;
 }
 
 .pageButton {
-  border: 0.1rem solid #ddd;
-  border-radius: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
 
-  background-color: white;
-
-  color: #333;
-  font-size: 1rem;
+  background-color: var(--white01);
+  font-size: 1.5rem;
 
   cursor: pointer;
   transition: all 0.2s;
@@ -28,13 +22,22 @@
 }
 
 .active {
-  background-color: black;
-  
+  color: var(--white01);
+  background-color: var(--blue01);
+
+  color: var(--white01);
+  background-color: var(--blue01);
+
   color: white;
-  font-weight: bold;
 }
 
 .disabled {
-  color: #ccc;
   cursor: default;
+}
+
+@media (min-width: 756px) {
+  .paginationContainer {
+    width: 50rem;
+    margin: auto;
+  }
 }

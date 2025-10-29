@@ -1,7 +1,9 @@
 import styles from './Dropdown.module.css';
 import { useState } from 'react';
+import useResponsive from './../../../../hooks/useResponsive';
 
 export default function Dropdown({
+  title,
   dropdownItems,
   isOpen,
   filterKey,
@@ -10,7 +12,7 @@ export default function Dropdown({
   shape = 'round',
 }) {
   const [label, setLabel] = useState(dropdownItems[0].label);
-
+  const { isMobile } = useResponsive();
   const handleCategory = (category) => {
     setLabel(category.label);
 
@@ -27,7 +29,12 @@ export default function Dropdown({
         className={`${styles.dropdownButton} ${isOpen && styles.clickedButton} ${shape === 'rect' ? styles.rectButton : ''}`}
         onClick={onOpen}
       >
-        {label}
+        {!isMobile && `${title} - `}
+        <span
+          className={`${label !== dropdownItems[0].label && styles.clickedLabel}`}
+        >
+          {label}
+        </span>
       </button>
       <ul
         className={`${isOpen && styles.clickedDropdownList} ${isOpen && styles.undisplay}`}

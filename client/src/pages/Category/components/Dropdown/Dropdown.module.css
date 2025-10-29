@@ -3,14 +3,16 @@
   position: relative;
 }
 
+.clickedLabel {
+  color: var(--blue01);
+}
+
 .dropdownButton {
   min-width: 0.7rem;
   height: 3.1rem;
   padding: 0.6rem 1rem;
   border: 0.1rem solid #dddddd;
   border-radius: 2rem;
-
-  background-color: #eeeeee;
 
   font-size: 1.2rem;
 

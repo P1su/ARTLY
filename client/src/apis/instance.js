@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const instance = axios.create({
-  baseURL: '', // 서버 주소 작성 예정
+  baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,7 +19,7 @@ export const mapInstance = axios.create({
 });
 
 export const userInstance = axios.create({
-  baseURL: '', // 서버 주소 작성 예정
+  baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -27,7 +27,7 @@ export const userInstance = axios.create({
   withCredentials: true,
 });
 
-instance.interceptors.request.use(
+userInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');
     if (token) {

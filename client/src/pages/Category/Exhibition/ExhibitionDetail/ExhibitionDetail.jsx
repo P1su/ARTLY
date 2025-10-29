@@ -3,9 +3,13 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
+<<<<<<< HEAD
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 import GalleryArtworks from '../../../../pages_console/ConsoleDetail/components/GalleryArtworks/GalleryArtworks.jsx';
 import GalleryExhibitions from '../../Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
+=======
+// import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
+>>>>>>> develop
 
 // 임시 컴포넌트
 const ExhibitionArtworks = ({ artworks }) => (
@@ -23,6 +27,7 @@ export default function ExhibitionDetail({
   const id = propId || exhibitionId;
 
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [exhibitionData, setExhibitionData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
@@ -48,6 +53,10 @@ export default function ExhibitionDetail({
   if (!exhibitionData) {
     return <div>로딩 중...</div>;
   }
+=======
+  const [exhibitionData, setExhibitionData] = useState([]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+>>>>>>> develop
 
   const {
     exhibition_title: title,
@@ -69,6 +78,58 @@ export default function ExhibitionDetail({
     is_liked: isLike,
   } = exhibitionData;
 
+<<<<<<< HEAD
+=======
+  const getExhibitionDetail = async () => {
+    try {
+      const response = await instance.get(`/api/exhibitions/${exhibitionId}`);
+
+      setExhibitionData(response.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  useEffect(() => {
+    getExhibitionDetail();
+  }, [exhibitionId]);
+
+  const handleLike = async () => {
+    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    try {
+      if (isLike === true) {
+        await userInstance.delete('/api/likes', {
+          data: {
+            liked_id: exhibitionId,
+            liked_type: 'exhibition',
+          },
+        });
+      } else {
+        await userInstance.post('/api/likes', {
+          liked_id: exhibitionId,
+          liked_type: 'exhibition',
+        });
+      }
+
+      await getExhibitionDetail();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
+
+  const openReservation = () => {
+    navigate(`/reservation/${exhibitionId}`);
+  };
+
+>>>>>>> develop
   const infos = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
     { label: '전시장소', content: organization },
@@ -105,8 +166,13 @@ export default function ExhibitionDetail({
     },
     {
       label: '관람예약',
+<<<<<<< HEAD
       icon: <FaCalendar className={styles.actionIcon} />,
       action: openModal,
+=======
+      icon: <FaCalendar className={styles.icon} />,
+      action: openReservation,
+>>>>>>> develop
     },
     {
       label: '공유하기',
@@ -122,6 +188,7 @@ export default function ExhibitionDetail({
 
   return (
     <div className={styles.layout}>
+<<<<<<< HEAD
       {/* 카드 1: 전시 포스터 및 기본 정보 */}
       <div className={`${styles.card} ${styles.profileCard}`}>
         <img
@@ -144,6 +211,39 @@ export default function ExhibitionDetail({
                 {label}
               </button>
             ))}
+=======
+      <h1 className={styles.title}>{title}</h1>
+
+      <img
+        className={styles.exhibitionImage}
+        src={poster}
+        alt='전시회 대표 이미지'
+      />
+
+      <div className={styles.buttonContainer}>
+        {buttons.map(({ label, icon, action }) => (
+          <button className={styles.buttonBox} key={label} onClick={action}>
+            {icon}
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* {isModalOpen && (
+        <ReservationModal // 모달 컴포넌트 렌더링
+          exhibitionId={exhibitionId}
+          onClose={closeModal}
+        />
+      )} */}
+
+      <hr className={styles.divider} />
+
+      <section className={styles.infoSection}>
+        {infos.map(({ key, label, content }) => (
+          <div className={styles.infoContainer} key={key}>
+            <span className={styles.infoSpan}>{label}</span>
+            <p className={styles.infoParagraph}>{content}</p>
+>>>>>>> develop
           </div>
         )}
       </div>

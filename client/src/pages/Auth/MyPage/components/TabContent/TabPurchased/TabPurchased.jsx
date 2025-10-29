@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { instance } from '../../../../../../apis/instance';
+import { userInstance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import styles from './TabPurchased.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -23,13 +23,13 @@ export default function TabPurchased() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await instance.get('/api/users/me/purchases');
+        const res = await userInstance.get('/api/users/me/purchases');
         const purchases = res.data;
 
         const detailedPurchases = await Promise.all(
           purchases.map(async (item) => {
             try {
-              const bookDetailRes = await instance.get(
+              const bookDetailRes = await userInstance.get(
                 `/api/books/${item.book_id}`,
               );
               return {

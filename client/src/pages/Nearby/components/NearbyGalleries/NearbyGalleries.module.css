@@ -1,7 +1,8 @@
 .layout {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 2rem;
+  width: 100%;
 }
 
 .searchTitle {
@@ -16,4 +17,31 @@
 .highlightSpan {
   color: #5a4fcf;
   font-weight: 600;
+}
+
+/* title + count full-width row */
+.layout > div:first-child {
+  grid-column: 1 / -1;
+}
+
+.paginationRow {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1280px) {
+  .layout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
 }

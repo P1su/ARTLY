@@ -1,7 +1,7 @@
 import styles from './Exhibitions.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { instance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../apis/instance.js';
 import ListHeader from '../../components/ListHeader/ListHeader';
 import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { exhibitionFilter } from '../../../../utils/filters/exhibitionFilter.js';
@@ -14,7 +14,7 @@ export default function Exhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
-    10,
+    12,
     exhibitions,
   );
   const [exhibitionFilters, setExhibitionFilters] = useState({
@@ -47,7 +47,7 @@ export default function Exhibitions() {
         search: query,
       };
 
-      const response = await instance.get('/api/exhibitions', {
+      const response = await userInstance.get('/api/exhibitions', {
         params: updatedFilters, // ✅ 키 일치 → 바로 사용 가능
       });
       setExhibitions(response.data);
@@ -62,6 +62,8 @@ export default function Exhibitions() {
     getExhibitions();
   }, [exhibitionFilters]);
 
+  const labelList = ['정렬', '지역', '분야', '전시상태'];
+
   return (
     <div className={styles.layout}>
       <ListHeader
@@ -75,6 +77,7 @@ export default function Exhibitions() {
       />
 
       <DropdownContainer
+        labels={labelList}
         filterList={exhibitionFilter}
         onSetFilter={setExhibitionFilters}
       />
@@ -84,13 +87,15 @@ export default function Exhibitions() {
       {isLoading && <div>전시회 데이터 조회 중..</div>}
       {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
-      {pageItems.map((item) => (
-        <ExhibitionCard
-          key={item.id}
-          exhibitionItem={item}
-          onEvent={getExhibitions}
-        />
-      ))}
+      <div className={styles.gridContainer}>
+        {pageItems.map((item) => (
+          <ExhibitionCard
+            key={item.id}
+            exhibitionItem={item}
+            onEvent={getExhibitions}
+          />
+        ))}
+      </div>
 
       <Pagination
         currentPage={currentPage}

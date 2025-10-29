@@ -7,6 +7,7 @@
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+  width: 100%;
 }
 .cardContainer:hover {
   transform: translateY(-0.5rem);
@@ -14,7 +15,7 @@
 }
 
 .imgContainer {
-  width: 12rem;
+  width: clamp(9rem, 14vw, 12rem);
   flex-shrink: 0;
 }
 .image {
@@ -25,8 +26,8 @@
 
 .artistImage {
   margin: 1rem;
-  width: 10rem;
-  height: 10rem;
+  width: clamp(7rem, 12vw, 10rem);
+  height: clamp(7rem, 12vw, 10rem);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -39,13 +40,13 @@
 }
 
 .title {
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.6rem);
   font-weight: 500;
   margin: 0 0 1rem 0;
 }
 
 .info {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   color: #666;
   margin: 0 0 auto 0;
   line-height: 1.5;
@@ -59,14 +60,14 @@
 }
 
 .statusCompleted {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
   font-weight: 500;
   color: #3cb371;
   margin-top: 1rem;
 }
 
 .statusReserved {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
   font-weight: 500;
   color: #1a73e8;
   white-space: nowrap;
@@ -74,7 +75,7 @@
 }
 
 .statusCanceled {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
   font-weight: 500;
   color: #dc3545;
   margin-top: 1rem;
@@ -89,7 +90,7 @@
   background-color: #fff;
   color: #dc3545;
   border-radius: 0.4rem;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -110,7 +111,7 @@
   background-color: #fff;
   color: #000;
   border-radius: 0.4rem;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -121,7 +122,23 @@
 }
 
 .catalogRegisteredDate {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
   color: #999;
   margin: 1rem 0 0 0;
+}
+
+@media (max-width: 700px) {
+  .cardContainer {
+    flex-direction: column;
+  }
+  .imgContainer {
+    width: 100%;
+  }
+  .image {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .artistImage {
+    margin: 1rem auto;
+  }
 }
