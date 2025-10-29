@@ -2,12 +2,10 @@
 .layout {
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
-  gap: 1.2rem;
+  /* gap: 1.2rem;
   padding: 1.2rem;
   background-color: #f0f2f5;
-  min-height: 100vh;
-=======
+  min-height: 100vh; */
   align-items: center;
   gap: 2rem;
 
@@ -18,7 +16,6 @@
   padding: 2rem;
 
   font-size: 1.2rem;
->>>>>>> develop
 }
 
 /* 카드 공통 스타일 */
@@ -140,7 +137,6 @@
   font-size: 1.6rem;
   font-weight: 600;
   color: #888;
-<<<<<<< HEAD
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
@@ -211,6 +207,4 @@
   .adminTabButton {
     font-size: 1.4rem;
   }
-=======
->>>>>>> develop
 }
