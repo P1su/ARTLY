@@ -34,7 +34,8 @@ export default function Menu({ onOpen, isOpen }) {
             <span
               className={styles.menuSpan}
               onClick={() => {
-                handleNavigate('/admin');
+                alert('콘솔 페이지는 개발 중에 있습니다.');
+                //handleNavigate('/console');
               }}
             >
               갤러리 관리
