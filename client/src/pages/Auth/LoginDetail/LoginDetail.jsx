@@ -1,4 +1,6 @@
 import styles from './LoginDetail.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../../store/UserProvider.jsx';
 import { instance } from '../../../apis/instance.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useInput from '../../../hooks/useInput';
@@ -14,18 +16,14 @@ export default function LoginDetail() {
   const location = useLocation();
   const pathname = location.state?.from;
 
+  const { login } = useContext(UserContext);
+
   const postLogin = async () => {
     try {
       const response = await instance.post('/api/auth/login', loginDatas);
-      localStorage.setItem('ACCESS_TOKEN', response.data.jwt);
-      /*
-      window.dispatchEvent(
-        new StorageEvent('storage', {
-          key: 'ACCESS_TOKEN',
-          newValue: response.data.jwt,
-        }),
-      );
-*/
+      login(response.data.data, response.data.jwt);
+      console.log(response.data);
+
       if (pathname === '/register') {
         navigate('/');
       } else {

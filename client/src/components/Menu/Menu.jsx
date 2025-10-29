@@ -1,9 +1,12 @@
 import styles from './Menu.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../store/UserProvider.jsx';
 import { useNavigate } from 'react-router-dom';
 import { menuList } from '../../utils/menu.js';
 
 export default function Menu({ onOpen, isOpen }) {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const handleLogout = () => {
     localStorage.removeItem('ACCESS_TOKEN');
@@ -16,6 +19,7 @@ export default function Menu({ onOpen, isOpen }) {
     navigate(path);
   };
 
+  console.log(user);
   return (
     <div className={styles.overlay}>
       {/* 애니메이션 수정 */}
