@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 export default function GalleryArtworks({ artworks }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
-
+  console.log(artworks);
   if (!artworks || artworks.length === 0) {
     return <p className={styles.emptyContent}>현재 등록된 작품이 없습니다.</p>;
   }
@@ -14,8 +14,9 @@ export default function GalleryArtworks({ artworks }) {
       {artworks.map(
         ({
           id,
-          artwork_image,
-          artwork_name,
+          image_url,
+          title,
+          artist_name,
           artwork_materials,
           artwork_size,
           artwork_year,
@@ -29,11 +30,11 @@ export default function GalleryArtworks({ artworks }) {
             <Link className={styles.artworkCard} key={id} to={destinationPath}>
               <img
                 className={styles.artworkImage}
-                src={artwork_image}
-                alt={artwork_name}
+                src={image_url}
+                alt={title}
               />
               <div className={styles.artworkInfo}>
-                <h4 className={styles.title}>{artwork_name}</h4>
+                <h4 className={styles.title}>{title}</h4>
                 <p className={styles.materials}>{artwork_materials}</p>
                 <p
                   className={styles.details}

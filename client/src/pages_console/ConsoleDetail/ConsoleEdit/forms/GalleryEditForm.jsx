@@ -7,6 +7,7 @@ export default function GalleryEditForm({ data, setData }) {
   const [activeTab, setActiveTab] = useState('info');
   const [tagInput, setTagInput] = useState('');
   const [isKoreanComposing, setIsKoreanComposing] = useState(false);
+  const [uploading, setUploading] = useState(false); // 업로드 상태 추가
 
   const handleComposition = (e) => {
     if (e.type === 'compositionstart') {
@@ -16,6 +17,19 @@ export default function GalleryEditForm({ data, setData }) {
       setIsKoreanComposing(false);
     }
   };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result; // data:image/png;base64,xxxxx
+      setData((prev) => ({ ...prev, gallery_image: base64String }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   console.log(data);
   const handleTagKeyDown = (e) => {
     if (isKoreanComposing) return;
@@ -122,7 +136,19 @@ export default function GalleryEditForm({ data, setData }) {
               className={styles.previewImage}
             />
           ) : (
-            <p>+ 대표 이미지를 업로드 해주세요</p>
+            <>
+              <p>+ 대표 이미지를 업로드 해주세요</p>
+
+              <label className={styles.uploadButton}>
+                {uploading ? '업로드 중...' : '이미지 선택'}
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </>
           )}
         </div>
 

@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
+import GalleryArtworks from '../../../../pages_console/ConsoleDetail/components/GalleryArtworks/GalleryArtworks.jsx';
+import GalleryExhibitions from '../../Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
 
 // 임시 컴포넌트
 const ExhibitionArtworks = ({ artworks }) => (
-  <div className={styles.emptyContent}>작품 정보가 없습니다.</div>
+  <div className={styles.emptyContent}></div>
 );
 const RelatedExhibitions = ({ exhibitions }) => (
   <div className={styles.emptyContent}>관련 전시 정보가 없습니다.</div>
@@ -187,11 +189,9 @@ export default function ExhibitionDetail({
               dangerouslySetInnerHTML={{ __html: description }}
             />
           )}
-          {activeTab === 'artworks' && (
-            <ExhibitionArtworks artworks={artworks} />
-          )}
+          {activeTab === 'artworks' && <GalleryArtworks artworks={artworks} />}
           {activeTab === 'exhibitions' && (
-            <RelatedExhibitions exhibitions={relatedExhibitions} />
+            <RelatedExhibitions exhibitions={relatedExhibitions || []} />
           )}
         </section>
       </div>

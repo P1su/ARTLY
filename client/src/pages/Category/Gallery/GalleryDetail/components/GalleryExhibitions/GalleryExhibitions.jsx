@@ -12,7 +12,7 @@ const STATUS_CONFIG = {
 export default function GalleryExhibitions({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
-
+  console.log('전시회', exhibitions);
   if (!exhibitions || exhibitions.length === 0) {
     return <p className={styles.emptyContent}>전시가 없습니다.</p>;
   }
@@ -21,7 +21,15 @@ export default function GalleryExhibitions({ exhibitions }) {
     <section className={styles.exhibitionList}>
       {/* 이제 전체 exhibitions 배열을 그대로 map으로 렌더링합니다. */}
       {exhibitions.map(
-        ({ id, poster, title, status, organization, start_date, end_date }) => {
+        ({
+          exhibition_id: id,
+          exhibition_poster: poster,
+          exhibition_title: title,
+          exhibition_status: status,
+          organization,
+          start_date,
+          end_date,
+        }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 
           const destinationPath = isConsolePage

@@ -29,6 +29,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     try {
       const response = await instance.get(`/api/galleries/${id}`);
       setGalleryData(response.data);
+      console.log('갤러리', response.data);
     } catch (error) {
       console.error(error);
     }
@@ -214,7 +215,15 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           >
-            <GalleryExhibitions exhibitions={exhibitions} filter={activeTab} />
+            <GalleryExhibitions
+              exhibitions={exhibitions?.filter((ex) => {
+                if (activeTab === 'ongoing')
+                  return ex.exhibition_status === 'exhibited';
+                if (activeTab === 'upcoming')
+                  return ex.exhibition_status === 'scheduled';
+                return true; // 혹시 다른 탭이 추가될 경우 대비
+              })}
+            />
           </DetailTabs>
 
           <div className={styles.mapSection}>
