@@ -93,24 +93,6 @@ export default function TabLike() {
             ) : (
               <p className={styles.emptyText}>해당 탭은 준비 중입니다.</p>
             )
-            activeTab === 'exhibition' ? (
-              filteredItems.map((item) => (
-                <ExhibitionCard
-                  key={`exhibition-${item.id}`}
-                  exhibitionItem={item}
-                />
-              ))
-            ) : activeTab === 'gallery' ? (
-              filteredItems.map((item) => (
-                <GalleryCard key={`gallery-${item.id}`} galleryItem={item} />
-              ))
-            ) : activeTab === 'artist' ? (
-              filteredItems.map((item) => (
-                <ArtistCard key={`artist-${item.id}`} artistItem={item} />
-              ))
-            ) : (
-              <p className={styles.emptyText}>해당 탭은 준비 중입니다.</p>
-            )
           ) : (
             <p className={styles.emptyText}>
               좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
