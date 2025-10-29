@@ -1,11 +1,10 @@
 import styles from './LoginDetail.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../../store/UserProvider.jsx';
 import { instance } from '../../../apis/instance.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useInput from '../../../hooks/useInput';
-import InputContainer from '../../../components/Input/InputConatiner/InputContainer';
 import InputText from '../../../components/Input/InputText/InputText';
-import BtnPrimary from '../../../components/BtnPrimary/BtnPrimary';
-import SocialLoginSection from './components/SocialLoginSection/SocialLoginSection';
 import SupportSection from './components/SupportSection/SupportSection';
 
 export default function LoginDetail() {
@@ -17,22 +16,18 @@ export default function LoginDetail() {
   const location = useLocation();
   const pathname = location.state?.from;
 
+  const { login } = useContext(UserContext);
+
   const postLogin = async () => {
     try {
       const response = await instance.post('/api/auth/login', loginDatas);
-      localStorage.setItem('ACCESS_TOKEN', response.data.jwt);
-      /*
-      window.dispatchEvent(
-        new StorageEvent('storage', {
-          key: 'ACCESS_TOKEN',
-          newValue: response.data.jwt,
-        }),
-      );
-*/
+      login(response.data.data, response.data.jwt);
+      console.log(response.data);
+
       if (pathname === '/register') {
         navigate('/');
       } else {
-        navigate(-1);
+        navigate(-2);
       }
     } catch (error) {
       console.log(error);

@@ -10,7 +10,12 @@ export default function Pagination({
   const pageNumbers = getPageNumbers(currentPage, totalPages, 5);
 
   return (
-    <div className={styles.paginationContainer}>
+    <div
+      className={styles.paginationContainer}
+      style={{
+        justifyContent: pageNumbers.length === 1 ? 'center' : 'space-between',
+      }}
+    >
       {currentPage > 1 && (
         <>
           {/*<button onClick={() => onPageChange(1)} className={styles.pageButton}>

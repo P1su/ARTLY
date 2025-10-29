@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
-import { instance } from '../../../../../../apis/instance';
+import { userInstance } from '../../../../../../apis/instance';
 // no direct navigation here; cards handle their own links
 import ExhibitionCard from '../../../../../Category/Exhibition/Exhibitions/components/ExhibitionCard/ExhibitionCard';
 import GalleryCard from '../../../../../Nearby/components/GalleryCard/GalleryCard';
@@ -20,7 +20,7 @@ export default function TabLike() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const likeRes = await instance.get('/api/users/me/likes');
+        const likeRes = await userInstance.get('/api/users/me/likes');
         const { data } = likeRes;
 
         const exhibitions = data.like_exhibitions.map((item) => ({

@@ -27,7 +27,7 @@ export const userInstance = axios.create({
   withCredentials: true,
 });
 
-instance.interceptors.request.use(
+userInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');
     if (token) {
