@@ -1,8 +1,6 @@
 .paginationContainer {
   display: flex;
   align-items: center;
-
-  margin-top: 2rem;
 }
 
 .pageButton {
@@ -32,4 +30,11 @@
 
 .disabled {
   cursor: default;
+}
+
+@media (min-width: 756px) {
+  .paginationContainer {
+    width: 50rem;
+    margin: auto;
+  }
 }

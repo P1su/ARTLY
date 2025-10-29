@@ -34,7 +34,7 @@
   margin: 0;
   padding-bottom: 0.5rem;
   color: var(--black01);
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 600;
   line-height: 18px; /* 75% */
   letter-spacing: -0.2px;
@@ -42,7 +42,7 @@
 
 .addressParagraph {
   color: #666666;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 126%; /* 22.68px */
   letter-spacing: -0.2px;
 }
