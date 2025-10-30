@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// 지도 api 키 발급시 리팩토링 필요
 const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
   const mapRef = useRef(null);
   const navigate = useNavigate();
@@ -46,36 +47,31 @@ const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
 
   useEffect(() => {
     // 네이버 기능이 실행 가능하거나 위도, 경도가 있을 경우에만 동작작
-    if (!window.naver || !lat || !lng) {
-      return;
+
+    const mapElement = document.getElementById(id);
+    if (!window.naver?.maps || !mapElement || lat == null || lng == null) {
+      return; // 하나라도 준비되지 않았다면, 아무것도 하지 않고 즉시 종료
     }
 
-    // 지도 초기 설정
-    const mapOptions = {
+    const map = new naver.maps.Map(mapElement, {
       center: new naver.maps.LatLng(lat, lng),
       zoom: zoomLevel,
-    };
+    });
+    mapRef.current = map;
 
-    if (!mapRef.current) {
-      // 지도 요소가 없을 경우 새롭게 지도 인스턴스 생성
-      mapRef.current = new naver.maps.Map(id, mapOptions);
-    } else {
-      // 지도 요소가 이미 존재하는데 위, 경도 값이 바꼈을 경우 지도 이동
-      mapRef.current.panTo(new naver.maps.LatLng(lat, lng));
-    }
+    // --- 마커 관리 로직 개선 ---
+    // 1. 기존에 있던 모든 마커를 지도에서 제거
+    markersRef.current.forEach((marker) => marker.setMap(null));
+    markersRef.current = []; // 마커 배열 초기화
 
-    // 현재 유저의 위치 마커
+    // 2. 새로운 마커들을 생성하고 ref에 추가
     if (title && location) {
-      // title 존재할 경우 갤러리 혹은 전시회 마커
-      const currentMarker = new naver.maps.Marker({
+      new naver.maps.Marker({
         position: new naver.maps.LatLng(lat, lng),
-        map: mapRef.current,
+        map: map,
         title: title,
-        icon: {
-          content: markerStyle(title, location),
-        },
+        icon: { content: markerStyle(title, location) },
       });
-      markersRef.current.push(currentMarker);
     } else {
       // title 이 없을 경우 유저 위치 마커
       const currentMarker = new naver.maps.Marker({
@@ -116,14 +112,17 @@ const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
         },
       );
     }
-
-    // 클린업으로 기존 마커들을 삭제
     return () => {
-      markersRef.current.forEach((marker) => marker.setMap(null));
-      markersRef.current = [];
-    };
-  }, [lat, lng, results]);
+      const mapInstance = mapRef.current;
 
+      // 1. 파괴할 지도 인스턴스가 존재하는가?
+      // 2. 그 지도가 붙어있던 DOM 요소(map.getElement())가 아직 존재하는가?
+      if (mapInstance && mapInstance.getElement()) {
+        mapInstance.destroy();
+      }
+      mapRef.current = null;
+    };
+  }, [id, lat, lng, results, navigate, zoomLevel, title, location]);
   return mapRef;
 };
 

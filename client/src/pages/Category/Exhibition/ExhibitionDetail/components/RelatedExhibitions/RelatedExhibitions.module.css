@@ -1,0 +1,103 @@
+.relatedSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* 카드 */
+.card {
+  position: relative;
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.3s ease;
+}
+
+.card:hover .image {
+  scale: 1.03;
+}
+
+/* 하단 정보 */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.meta {
+  font-size: 1.6rem;
+  color: #666;
+}
+
+.date {
+  font-size: 1.6rem;
+  color: #8a8d91;
+}
+
+.locButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  position: absolute;
+  right: 2rem;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #aaa;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .overlayText {
+    font-size: 1.2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .meta,
+  .date {
+    font-size: 1.3rem;
+  }
+}

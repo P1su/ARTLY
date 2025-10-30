@@ -1,0 +1,85 @@
+.artworkGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.8rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* 반응형: 태블릿 이상 2열 */
+@media (min-width: 600px) {
+  .artworkGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 반응형: 데스크탑 이상 3열 */
+@media (min-width: 1024px) {
+  .artworkGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.artworkCard {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.artworkCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.artworkImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background-color: #f5f5f5;
+}
+
+.artworkInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.2rem 1.4rem 1.6rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.materials {
+  font-size: 1.3rem;
+  color: #777;
+}
+
+.details {
+  font-size: 1.3rem;
+  color: #999;
+}
+
+/* “등록된 작품 없음” 문구 */
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #8a8d91;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #aaa;
+}

@@ -1,0 +1,30 @@
+.actionButtonContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 1.5rem 0;
+  border-top: 0.1rem solid #eee;
+  border-bottom: 0.1rem solid #eee;
+  margin-bottom: 2rem;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.actionIcon {
+  font-size: 2rem;
+}
+
+.actionIcon.isClicked {
+  color: #e57373;
+}
