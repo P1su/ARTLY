@@ -22,6 +22,8 @@ export default function ChatbotWidget() {
     ? userInstance
     : instance;
 
+  const inputContainerRef = useRef(null);
+  
   const getNextId = () => messages[messages.length - 1].id + 1;
 
   useEffect(() => {
@@ -145,6 +147,15 @@ export default function ChatbotWidget() {
     setInputValue('');
   };
 
+  const handleInputFocus = (e) => { // event 객체 받기
+      setTimeout(() => {
+        e.target.scrollIntoView({ // input 요소 직접 스크롤
+          behavior: 'smooth',
+          block: 'nearest' // 옵션 변경 시도
+        });
+      }, 300); // 시간 조절 시도
+    };
+  
   return (
     <>
       <div className={styles.chatbotContainer}>
@@ -214,6 +225,7 @@ export default function ChatbotWidget() {
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyPress={keyPressHanlder}
+                onFocus={handleInputFocus}
                 placeholder='질문을 입력해 주세요'
               />
               <button className={styles.sendButton} onClick={handleSendMessage}>
