@@ -31,9 +31,9 @@
 
 .content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 100rem;
   margin: 1rem auto;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .adminTabNav {

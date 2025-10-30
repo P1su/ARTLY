@@ -7,22 +7,21 @@
   justify-content: center;
   gap: 2rem;
   position: relative;
-  min-height: calc(100vh - 9rem);
   padding: 1.5rem;
+  margin: 1rem auto;
+
   max-width: 100rem;
 }
 
 .card {
   width: 100%;
 
-  margin: 0 auto;
-
   background-color: #ffffff;
   border-radius: 1.5rem;
   padding: 1.5rem;
   box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .header {
@@ -165,8 +164,8 @@
 
 /* 설명 */
 .description {
-  margin-top: 0.8rem;
-  font-size: 1.4rem;
+  margin-top: 1rem;
+  font-size: 1.5rem;
   color: #555;
   line-height: 1.6;
   padding: 0.8rem;

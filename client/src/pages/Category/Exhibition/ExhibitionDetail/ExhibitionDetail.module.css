@@ -1,11 +1,7 @@
 .layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin: 1rem auto;
   gap: 2rem;
   position: relative;
-  min-height: calc(100vh - 9rem);
   padding: 1.5rem;
   max-width: 100rem;
 }
@@ -20,7 +16,7 @@
   padding: 1.5rem;
   box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .profileCard {
