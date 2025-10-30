@@ -32,6 +32,7 @@ import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import LayoutConsole from '../layouts/LayoutConsole';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
+import Leaflet from '../pages_console/Leaflet/Leaflet';
 
 const router = createBrowserRouter([
   {
@@ -81,6 +82,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
+      { path: '/console/leaflet', element: <Leaflet /> },
     ],
   },
 
