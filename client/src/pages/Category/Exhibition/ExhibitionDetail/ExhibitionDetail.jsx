@@ -1,19 +1,18 @@
 import styles from './ExhibitionDetail.module.css';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, data } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../../../apis/instance.js';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 import GalleryArtworks from '../../../../pages_console/ConsoleDetail/components/GalleryArtworks/GalleryArtworks.jsx';
 import GalleryExhibitions from '../../Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
+import { userInstance } from '../../../../apis/instance.js';
+import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
+import ReservationConfirm from '../../../ReservationConfirm/ReservationConfirm.jsx';
 // import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
 // 임시 컴포넌트
 const ExhibitionArtworks = ({ artworks }) => (
   <div className={styles.emptyContent}></div>
-);
-const RelatedExhibitions = ({ exhibitions }) => (
-  <div className={styles.emptyContent}>관련 전시 정보가 없습니다.</div>
 );
 
 export default function ExhibitionDetail({
@@ -25,32 +24,96 @@ export default function ExhibitionDetail({
 
   const navigate = useNavigate();
   const [exhibitionData, setExhibitionData] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('info');
+  const [isLiked, setIsLiked] = useState(false);
 
+  const getExhibitionDetail = async () => {
+    try {
+      const response = await userInstance.get(`/api/exhibitions/${id}`);
+      setExhibitionData(response.data);
+      console.log('전시회', response.data);
+    } catch (error) {
+      console.error('데이터 로딩 실패:', error);
+    }
+  };
+
+  const getUserLikes = async () => {
+    if (!localStorage.getItem('ACCESS_TOKEN')) return;
+    try {
+      const res = await userInstance.get('/api/users/me/likes');
+      const likeExhibitions = res.data.like_exhibitions || [];
+      const liked = likeExhibitions.some((g) => g.id === Number(id));
+      setIsLiked(liked);
+    } catch (error) {
+      console.error('좋아요 상태 조회 실패:', error);
+    }
+  };
   useEffect(() => {
-    const getExhibitionDetail = async () => {
-      try {
-        const response = await instance.get(`/api/exhibitions/${id}`);
-        setExhibitionData(response.data);
-      } catch (error) {
-        console.error('데이터 로딩 실패:', error);
-      }
-    };
-    if (id) getExhibitionDetail();
+    if (id) {
+      getExhibitionDetail();
+      getUserLikes();
+    }
   }, [id]);
 
   const handleLike = async () => {
-    /* ... 이전과 동일 ... */
+    if (!localStorage.getItem('ACCESS_TOKEN')) {
+      navigate('/login');
+      return;
+    }
+    try {
+      if (isLiked) {
+        await userInstance.delete('/api/likes', {
+          data: { liked_id: id, liked_type: 'exhibition' },
+        });
+      } else {
+        await userInstance.post('/api/likes', {
+          liked_id: id,
+          liked_type: 'exhibition',
+        });
+      }
+      setIsLiked(!isLiked);
+      await getExhibitionDetail();
+    } catch (error) {
+      console.error(error);
+    }
   };
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  const openReservation = () => {
+    navigate(`/reservation/${exhibitionId}`);
+  };
+
+  const handleShare = () => {
+    const { exhibition_name: name } = exhibitionData;
+    const url = window.location.href;
+    if (navigator.share) {
+      // Web Share API 지원 시
+      navigator
+        .share({
+          title: `ARTLY: ${name}`,
+          text: `${name} 갤러리 정보를 확인해보세요!`,
+          url: url,
+        })
+        .catch((error) => console.error('공유 실패:', error));
+    } else {
+      // 미지원 시 클립보드 복사
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('링크가 클립보드에 복사되었습니다.');
+      } catch (err) {
+        console.error('클립보드 복사 실패:', err);
+        alert('링크 복사에 실패했습니다.');
+      }
+      document.body.removeChild(textArea);
+    }
+  };
 
   if (!exhibitionData) {
     return <div>로딩 중...</div>;
   }
-  // const [exhibitionData, setExhibitionData] = useState([]);
-  // // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     exhibition_title: title,
@@ -72,61 +135,12 @@ export default function ExhibitionDetail({
     is_liked: isLike,
   } = exhibitionData;
 
-  // const getExhibitionDetail = async () => {
-  //   try {
-  //     const response = await instance.get(`/api/exhibitions/${exhibitionId}`);
-
-  //     setExhibitionData(response.data);
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getExhibitionDetail();
-  // }, [exhibitionId]);
-
-  // const handleLike = async () => {
-  //   !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
-  //   try {
-  //     if (isLike === true) {
-  //       await userInstance.delete('/api/likes', {
-  //         data: {
-  //           liked_id: exhibitionId,
-  //           liked_type: 'exhibition',
-  //         },
-  //       });
-  //     } else {
-  //       await userInstance.post('/api/likes', {
-  //         liked_id: exhibitionId,
-  //         liked_type: 'exhibition',
-  //       });
-  //     }
-
-  //     await getExhibitionDetail();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // // const openModal = () => {
-  // //   setIsModalOpen(true);
-  // // };
-
-  // // const closeModal = () => {
-  // //   setIsModalOpen(false);
-  // // };
-
-  // const openReservation = () => {
-  //   navigate(`/reservation/${exhibitionId}`);
-  // };
-
   const infos = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
     { label: '전시장소', content: organization },
     {
       label: '관람시간',
-      content: `${startTime?.slice(0, 5)} ~ ${endTime?.slice(0, 5)}`,
+      content: `${startTime} ~ ${endTime}`,
     },
     { label: '휴관일', content: closedDay },
     { label: '입장료', content: `${price} (원)` },
@@ -158,14 +172,12 @@ export default function ExhibitionDetail({
     {
       label: '관람예약',
       icon: <FaCalendar className={styles.actionIcon} />,
-      action: openModal,
-      // icon: <FaCalendar className={styles.icon} />,
-      // action: openReservation,
+      action: openReservation,
     },
     {
       label: '공유하기',
       icon: <FaShare className={styles.actionIcon} />,
-      action: () => alert('구현 예정'),
+      action: handleShare,
     },
     {
       label: '도슨트',
@@ -186,6 +198,7 @@ export default function ExhibitionDetail({
         <div className={styles.titleSection}>
           <h1 className={styles.title}>{title}</h1>
         </div>
+
         {showUserActions && (
           <div className={styles.actionButtonContainer}>
             {actionButtons.map(({ label, icon, action }) => (
@@ -198,37 +211,6 @@ export default function ExhibitionDetail({
                 {label}
               </button>
             ))}
-            {/* <h1 className={styles.title}>{title}</h1>
-
-      <img
-        className={styles.exhibitionImage}
-        src={poster}
-        alt='전시회 대표 이미지'
-      />
-
-      <div className={styles.buttonContainer}>
-        {buttons.map(({ label, icon, action }) => (
-          <button className={styles.buttonBox} key={label} onClick={action}>
-            {icon}
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {isModalOpen && ( 주석
-        <ReservationModal // 모달 컴포넌트 렌더링
-          exhibitionId={exhibitionId}
-          onClose={closeModal}
-        />
-      )}
-
-      <hr className={styles.divider} />
-
-      <section className={styles.infoSection}>
-        {infos.map(({ key, label, content }) => (
-          <div className={styles.infoContainer} key={key}>
-            <span className={styles.infoSpan}>{label}</span>
-            <p className={styles.infoParagraph}>{content}</p> */}
           </div>
         )}
       </div>
@@ -246,49 +228,30 @@ export default function ExhibitionDetail({
       </div>
 
       {/* 카드 3: 탭 및 콘텐츠 */}
-      <div className={`${styles.card} ${styles.tabCard}`}>
-        <nav className={styles.tabNav}>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'info' && styles.activeTab}`}
-            onClick={() => setActiveTab('info')}
-          >
-            정보
-          </button>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'artworks' && styles.activeTab}`}
-            onClick={() => setActiveTab('artworks')}
-          >
-            작품({artworks?.length || 0})
-          </button>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'exhibitions' && styles.activeTab}`}
-            onClick={() => setActiveTab('exhibitions')}
-          >
-            전시({relatedExhibitions?.length || 0})
-          </button>
-        </nav>
-        <section className={styles.tabContent}>
-          {activeTab === 'info' && (
-            <div
-              className={styles.descriptionParagraph}
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
-          )}
-          {activeTab === 'artworks' && <GalleryArtworks artworks={artworks} />}
-          {activeTab === 'exhibitions' && (
-            <RelatedExhibitions exhibitions={relatedExhibitions || []} />
-          )}
-        </section>
-      </div>
-
-      {showUserActions && isModalOpen && (
-        <ReservationModal exhibitionId={id} onClose={closeModal} />
-      )}
-
       {showUserActions && (
-        <Link className={styles.backButton} to='/exhibitions'>
-          목록으로 돌아가기
-        </Link>
+        <>
+          {' '}
+          <div className={`${styles.card} ${styles.tabCard}`}>
+            <h3 className={styles.sectionTitle}>전시 정보</h3>
+
+            {description ? (
+              <div
+                className={styles.descriptionParagraph}
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            ) : (
+              <p className={styles.emptyContent}>
+                현재 등록된 전시 정보가 없습니다.
+              </p>
+            )}
+
+            <h3 className={styles.sectionTitle}>관련 전시</h3>
+            <RelatedExhibitions exhibitions={relatedExhibitions || []} />
+          </div>
+          <Link className={styles.backButton} to='/exhibitions'>
+            목록으로 돌아가기
+          </Link>
+        </>
       )}
     </div>
   );

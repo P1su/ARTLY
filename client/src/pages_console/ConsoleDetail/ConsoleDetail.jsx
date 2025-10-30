@@ -6,7 +6,7 @@ import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDet
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import { useEffect, useState } from 'react';
 import DetailTabs from '../../components/DetailTabs/DetailTabs';
-import { instance } from '../../apis/instance';
+import { userInstance } from '../../apis/instance';
 import GalleryExhibitions from '../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions';
 import QrModal from './QrModal/QrModal';
 import GalleryArtworks from './components/GalleryArtworks/GalleryArtworks';
@@ -20,7 +20,7 @@ const DETAIL_CONFIG = {
       { label: 'QR코드' },
       { label: '리플렛/도록' },
     ],
-    fetchUrl: (id) => `/api/galleries/${id}`,
+    fetchUrl: (id) => `/api/console/galleries/${id}`,
   },
   exhibitions: {
     title: '전시회',
@@ -51,7 +51,7 @@ export default function ConsoleDetail({ type }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await instance.get(config.fetchUrl(id));
+      const response = await userInstance.get(config.fetchUrl(id));
       setData(response.data);
     };
     fetchData();
@@ -110,14 +110,19 @@ export default function ConsoleDetail({ type }) {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         >
-          {activeTab === 'info' && (
-            <div
-              className={styles.descriptionParagraph}
-              dangerouslySetInnerHTML={{
-                __html: data.gallery_description,
-              }}
-            />
-          )}
+          {activeTab === 'info' &&
+            (data.gallery_description ? (
+              <div
+                className={styles.descriptionParagraph}
+                dangerouslySetInnerHTML={{
+                  __html: data.gallery_description,
+                }}
+              />
+            ) : (
+              <p className={styles.emptyContent}>
+                현재 등록된 정보가 없습니다.
+              </p>
+            ))}
           {activeTab === 'artworks' && <GalleryArtworks />}
           {activeTab === 'exhibitions' && (
             <>

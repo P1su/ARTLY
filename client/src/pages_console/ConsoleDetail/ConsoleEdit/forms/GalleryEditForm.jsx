@@ -1,13 +1,14 @@
 import styles from './GalleryEditForm.module.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
 import GalleryExhibitions from '../../../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
 
-export default function GalleryEditForm({ data, setData }) {
+export default function GalleryEditForm({ data, setData, onFileChange }) {
   const [activeTab, setActiveTab] = useState('info');
   const [tagInput, setTagInput] = useState('');
   const [isKoreanComposing, setIsKoreanComposing] = useState(false);
-  const [uploading, setUploading] = useState(false); // 업로드 상태 추가
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleComposition = (e) => {
     if (e.type === 'compositionstart') {
@@ -18,19 +19,8 @@ export default function GalleryEditForm({ data, setData }) {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  console.log(data); //
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result; // data:image/png;base64,xxxxx
-      setData((prev) => ({ ...prev, gallery_image: base64String }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  console.log(data);
   const handleTagKeyDown = (e) => {
     if (isKoreanComposing) return;
 
@@ -85,15 +75,8 @@ export default function GalleryEditForm({ data, setData }) {
       newClosedDays = currentClosedDays.filter((d) => d !== day);
     }
 
-    const daysOrder = [
-      '월요일',
-      '화요일',
-      '수요일',
-      '목요일',
-      '금요일',
-      '토요일',
-      '일요일',
-    ];
+    const daysOrder = daysOfWeek;
+
     newClosedDays.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
 
     setData((prev) => ({
@@ -109,6 +92,27 @@ export default function GalleryEditForm({ data, setData }) {
   const currentTags = data.gallery_category
     ? data.gallery_category.split(',').map((t) => t.trim())
     : [];
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // 부모로 파일 객체 전달
+      onFileChange(file);
+
+      // base64 대신 Object URL로 미리보기 생성
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(previewUrl);
+    }
+    // 동일 파일 다시 선택 가능하도록 초기화
+    event.target.value = '';
+  };
+
+  // 기존 data에 이미지가 있을 경우 표시
+  useEffect(() => {
+    if (data.gallery_image && typeof data.gallery_image === 'string') {
+      setImagePreviewUrl(data.gallery_image);
+    }
+  }, [data.gallery_image]);
 
   return (
     <>
@@ -128,27 +132,28 @@ export default function GalleryEditForm({ data, setData }) {
           placeholder='갤러리 영문명 (선택)'
         />
 
-        <div className={styles.imageUploadBox}>
-          {data.gallery_image ? (
+        {/* 숨겨진 파일 input */}
+        <input
+          type='file'
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          accept='image/*'
+          style={{ display: 'none' }}
+        />
+
+        {/* 클릭으로 업로드 트리거 */}
+        <div
+          className={styles.imageUploadBox}
+          onClick={() => fileInputRef.current.click()}
+        >
+          {imagePreviewUrl ? (
             <img
-              src={data.gallery_image}
+              src={imagePreviewUrl}
               alt='갤러리 대표 이미지'
               className={styles.previewImage}
             />
           ) : (
-            <>
-              <p>+ 대표 이미지를 업로드 해주세요</p>
-
-              <label className={styles.uploadButton}>
-                {uploading ? '업로드 중...' : '이미지 선택'}
-                <input
-                  type='file'
-                  accept='image/*'
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </>
+            <p>+ 대표 이미지를 업로드 해주세요</p>
           )}
         </div>
 

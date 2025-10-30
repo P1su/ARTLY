@@ -1,13 +1,14 @@
 import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { instance } from '../../../apis/instance.js';
+import { userInstance } from '../../../apis/instance.js';
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
     title: '갤러리 수정',
     apiUrl: (id) => `/api/galleries/${id}`, // fetchUrl과 updateUrl을 apiUrl로 통합
+    consoleApiUrl: (id) => `/api/console/galleries/${id}`, // fetchUrl과 updateUrl을 apiUrl로 통합
   },
   exhibitions: {
     title: '전시회 정보 수정',
@@ -29,6 +30,7 @@ export default function ConsoleEdit({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const config = EDIT_CONFIG[type];
@@ -37,7 +39,7 @@ export default function ConsoleEdit({ type }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await instance.get(config.apiUrl(id));
+        const response = await userInstance.get(config.consoleApiUrl(id));
         setData(response.data);
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
@@ -57,11 +59,13 @@ export default function ConsoleEdit({ type }) {
 
   const handleSave = async () => {
     if (isSaving) return;
-
     setIsSaving(true);
-    try {
-      await instance.put(config.apiUrl(id), data);
 
+    try {
+      const jsonData = { ...data };
+      await userInstance.put(config.apiUrl(id), jsonData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       alert('저장되었습니다.');
       navigate(`/console/${type}/${id}`);
     } catch (error) {
@@ -84,7 +88,13 @@ export default function ConsoleEdit({ type }) {
       </header>
 
       <main className={styles.formContainer}>
-        {FormComponent && <FormComponent data={data} setData={setData} />}
+        {FormComponent && (
+          <FormComponent
+            data={data}
+            setData={setData}
+            onFileChange={setSelectedImageFile}
+          />
+        )}
       </main>
 
       <div className={styles.bottomButtonContainer}>

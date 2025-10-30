@@ -12,9 +12,9 @@ const STATUS_CONFIG = {
 export default function GalleryExhibitions({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
-  console.log('전시회', exhibitions);
+  console.log('갤러리 전시회', exhibitions);
   if (!exhibitions || exhibitions.length === 0) {
-    return <p className={styles.emptyContent}>전시가 없습니다.</p>;
+    return <p className={styles.emptyContent}>현재 등록된 전시가 없습니다.</p>;
   }
 
   return (

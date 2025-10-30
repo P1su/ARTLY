@@ -1,12 +1,11 @@
 import styles from './GalleryDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance } from '../../../../apis/instance.js';
 import { FaHeart, FaShare } from 'react-icons/fa6';
-import MapModalContent from './components/MapModalContent/MapModalContent.jsx';
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions.jsx';
 import useMap from '../../../Nearby/hooks/useMap.jsx';
+import { userInstance } from '../../../../apis/instance.js';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
@@ -25,9 +24,9 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     location: galleryData?.gallery_address,
   });
 
-  const fetchGalleryDetail = async () => {
+  const getGalleryDetail = async () => {
     try {
-      const response = await instance.get(`/api/galleries/${id}`);
+      const response = await userInstance.get(`/api/galleries/${id}`);
       setGalleryData(response.data);
       console.log('갤러리', response.data);
     } catch (error) {
@@ -35,10 +34,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
-  const fetchUserLikes = async () => {
+  const getUserLikes = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) return;
     try {
-      const res = await instance.get('/api/users/me/likes');
+      const res = await userInstance.get('/api/users/me/likes');
       const likedGalleries = res.data.like_galleries || [];
       const liked = likedGalleries.some((g) => g.id === Number(id));
       setIsLiked(liked);
@@ -49,8 +48,8 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   useEffect(() => {
     if (id) {
-      fetchGalleryDetail();
-      fetchUserLikes();
+      getGalleryDetail();
+      getUserLikes();
     }
   }, [id]);
 
@@ -63,17 +62,17 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
     try {
       if (isLiked) {
-        await instance.delete('/api/likes', {
+        await userInstance.delete('/api/likes', {
           data: { liked_id: id, liked_type: 'gallery' },
         });
       } else {
-        await instance.post('/api/likes', {
+        await userInstance.post('/api/likes', {
           liked_id: id,
           liked_type: 'gallery',
         });
       }
       setIsLiked(!isLiked);
-      await fetchGalleryDetail();
+      await getGalleryDetail();
     } catch (error) {
       console.error(error);
     }
