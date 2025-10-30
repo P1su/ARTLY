@@ -4,11 +4,8 @@ import Layout from '../layouts/Layout';
 import AuthRoute from '../layouts/AuthRoute';
 import Main from '../pages/Main/Main';
 import Exhibitions from '../pages/Category/Exhibition/Exhibitions/Exhibitions';
-import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import Artists from '../pages/Category/Artist/Artists/Artists';
-import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import Galleries from '../pages/Category/Gallery/Galleries/Galleries';
-import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import Register from '../pages/Auth/Register/Register';
 import Mypage from '../pages/Auth/MyPage/MyPage';
 import EditProfile from '../pages/Auth/EditProfile/EditProfile';
@@ -28,8 +25,12 @@ import TermsPolicy from '../pages/TermsPolicy/TermsPolicy';
 import ReservationConfirm from '../pages/ReservationConfirm/ReservationConfirm';
 import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
-import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
 import LayoutConsole from '../layouts/LayoutConsole';
+import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
+import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
+import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
+import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
+import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
@@ -83,6 +84,30 @@ const router = createBrowserRouter([
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
       { path: '/console/leaflet', element: <Leaflet /> },
+      {
+        path: '/console/exhibitions/:id',
+        element: <ConsoleDetail type='exhibitions' />,
+      },
+      {
+        path: '/console/galleries/:id',
+        element: <ConsoleDetail type='galleries' />,
+      },
+      {
+        path: '/console/artworks/:id',
+        element: <ConsoleDetail type='artworks' />,
+      },
+      {
+        path: '/console/galleries/edit/:id',
+        element: <ConsoleEdit type='galleries' />,
+      },
+      {
+        path: '/console/exhibitions/edit/:id',
+        element: <ConsoleEdit type='exhibitions' />,
+      },
+      {
+        path: '/console/artworks/edit/:id',
+        element: <ConsoleEdit type='artworks' />,
+      },
     ],
   },
 

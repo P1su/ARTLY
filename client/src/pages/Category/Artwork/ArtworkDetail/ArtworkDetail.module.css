@@ -1,57 +1,297 @@
+/* 전체 레이아웃 */
+
 .layout {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
+  position: relative;
+  padding: 1.5rem;
+  margin: 1rem auto;
 
-  padding: 2rem;
+  max-width: 100rem;
 }
 
-.artworkImage {
+.card {
   width: 100%;
-  hieght: 33.5rem;
 
-  object-fit: fill;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.3rem 1.5rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
 }
 
-.artworkTitle {
-  color: #333;
-  font-size: 2.4rem;
-  font-weight: 600;
+.header {
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #222;
 }
 
-.artworkParagraph {
-  color: #333;
-  font-size: 1.6rem;
-}
-
-.icon {
-  width: 1.6rem;
-  height: 1.6rem;
-}
-
-.icHeart {
-  fill: #e57373;
-}
-
-.buttonContainer {
-  display: flex;
-  gap: 2rem;
-}
-
-.subButton {
+/* 메인 카드 */
+.artworkCard {
+  background-color: #fff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mainImage {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* 액션 버튼 */
+
+.actionButtonContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #65676b;
+  font-weight: 600;
+}
+
+.actionIcon {
+  font-size: 2rem;
+}
+
+.actionIcon.isClicked {
+  color: #e57373;
+}
+
+/* 작품 설명 카드 */
+/* 작품 정보 카드 */
+.infoCard {
+  width: 100%;
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 1.8rem;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* 작가 헤더 */
+.artistHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.artistImage {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+.artistName {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+/* 정보 리스트 */
+.detailList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 0.8rem;
+  column-gap: 1rem;
+  font-size: 1.4rem;
+}
+
+.detailList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
+}
+
+.label {
+  color: #222;
+  font-weight: 500;
+}
+
+.value {
+  color: #666;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* 설명 */
+.description {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.6;
+  padding: 0.8rem;
+}
+
+/* AI 도슨트 */
+.docent {
+  margin-top: 0.6rem;
+  font-size: 1.5rem;
+  color: #333;
+  background-color: #efefefd7;
+  padding: 1.5rem;
+  border-radius: 0.6rem;
+  line-height: 1.5;
+}
+
+.docentTitle {
+  margin: 1rem 0;
+}
+
+.docentDesc {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+/* 추천 작품 */
+.relatedSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+.relatedCard {
+  background-color: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease;
+}
+
+.relatedCard:hover {
+  transform: translateY(-3px);
+}
+
+.relatedImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.relatedInfo {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.relatedTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.relatedSub {
+  font-size: 1.3rem;
+  color: #666;
+}
+
+.relatedMeta {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #aaa;
 }
 
 .backButton {
-  padding: 1rem 2rem;
+  display: inline-block;
+  width: 100%;
+  padding: 1.5rem 2rem;
   margin-top: 2rem;
   border: 0.1rem solid #ddd;
-  border-radius: 0.4rem;
-  color: #666;
-  font-size: 1.4rem;
+  border-radius: 0.8rem;
+  color: #333;
+  font-size: 1.6rem;
   font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+}
+.backButton:hover {
+  background-color: #f0f0f0;
+}
+
+/* 반응형 */
+@media (min-width: 768px) {
+  .layout {
+    max-width: 700px;
+  }
+
+  .detailList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    max-width: 900px;
+  }
+
+  .detailList {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
