@@ -1,7 +1,6 @@
 import styles from './ConsoleDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import useResponsive from '../../hooks/useResponsive';
-import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
 import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import { useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ import { userInstance } from '../../apis/instance';
 import GalleryExhibitions from '../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions';
 import QrModal from './QrModal/QrModal';
 import GalleryArtworks from './components/GalleryArtworks/GalleryArtworks';
+import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
 
 const DETAIL_CONFIG = {
   galleries: {
@@ -36,7 +36,7 @@ const DETAIL_CONFIG = {
     title: '작품',
     Component: ArtworkDetail,
     tabs: [{ label: '정보수정' }, { label: 'QR코드' }, { label: '도슨트' }],
-    fetchUrl: (id) => `/api/artworks/${id}`,
+    fetchUrl: (id) => `/api/arts/${id}`,
   },
 };
 
@@ -55,6 +55,7 @@ export default function ConsoleDetail({ type }) {
       setData(response.data);
     };
     fetchData();
+    setActiveTab('info');
   }, [id, type]);
 
   const config = DETAIL_CONFIG[type];
@@ -124,7 +125,10 @@ export default function ConsoleDetail({ type }) {
               </p>
             ))}
           {activeTab === 'artworks' && (
-            <GalleryArtworks artworks={data.artworks} />
+            <>
+              <GalleryArtworks artworks={data.artworks} />
+              <button className={styles.addButton}>+ 작품 등록</button>
+            </>
           )}
           {activeTab === 'exhibitions' && (
             <>

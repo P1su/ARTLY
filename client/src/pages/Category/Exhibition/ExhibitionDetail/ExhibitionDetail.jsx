@@ -230,7 +230,6 @@ export default function ExhibitionDetail({
       {/* 카드 3: 탭 및 콘텐츠 */}
       {showUserActions && (
         <>
-          {' '}
           <div className={`${styles.card} ${styles.tabCard}`}>
             <h3 className={styles.sectionTitle}>전시 정보</h3>
 
