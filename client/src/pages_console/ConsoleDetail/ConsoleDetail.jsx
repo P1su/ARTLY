@@ -123,7 +123,9 @@ export default function ConsoleDetail({ type }) {
                 현재 등록된 정보가 없습니다.
               </p>
             ))}
-          {activeTab === 'artworks' && <GalleryArtworks />}
+          {activeTab === 'artworks' && (
+            <GalleryArtworks artworks={data.artworks} />
+          )}
           {activeTab === 'exhibitions' && (
             <>
               <GalleryExhibitions exhibitions={data.exhibitions} />

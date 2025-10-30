@@ -1,62 +1,80 @@
-/* 작품 목록 그리드 레이아웃 */
 .artworkGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2열 그리드 */
-  gap: 1.5rem; /* 카드 사이 간격 */
+  grid-template-columns: 1fr;
+  gap: 1.8rem;
   width: 100%;
+  margin-top: 1rem;
 }
 
-/* 개별 작품 카드 */
+/* 반응형: 태블릿 이상 2열 */
+@media (min-width: 600px) {
+  .artworkGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 반응형: 데스크탑 이상 3열 */
+@media (min-width: 1024px) {
+  .artworkGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .artworkCard {
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.08);
   transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .artworkCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.15);
 }
 
 .artworkImage {
   width: 100%;
-  aspect-ratio: 1 / 1; /* 정사각형 비율 */
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  background-color: #f5f5f5;
 }
 
 .artworkInfo {
-  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.2rem 1.4rem 1.6rem;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #212529;
-  /* 텍스트가 너무 길면 ...으로 표시 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 0.5rem;
+  color: #222;
 }
 
 .materials {
   font-size: 1.3rem;
-  color: #495057;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #777;
 }
 
 .details {
-  font-size: 1.2rem;
-  color: #868e96;
-  margin-top: 0.5rem;
+  font-size: 1.3rem;
+  color: #999;
+}
+
+/* “등록된 작품 없음” 문구 */
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #8a8d91;
 }
 
 .emptyContent {
@@ -64,11 +82,4 @@
   padding: 4rem 0;
   font-size: 1.5rem;
   color: #aaa;
-}
-
-/* 화면 너비가 좁아지면 1열로 변경 (반응형) */
-@media (max-width: 480px) {
-  .artworkGrid {
-    grid-template-columns: 1fr;
-  }
 }
