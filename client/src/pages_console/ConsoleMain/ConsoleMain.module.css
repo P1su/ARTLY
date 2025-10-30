@@ -1,0 +1,388 @@
+/* 1. Display - 모바일 우선 */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.tabSection {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 0.1rem solid #e2e8f0;
+}
+
+.content {
+  display: block;
+  padding: 1rem; /* 모바일용 패딩 */
+  flex: 1;
+  overflow-x: hidden;
+}
+
+/* 데스크탑 (768px 이상) */
+@media (min-width: 768px) {
+  .content {
+    padding: 2rem;
+  }
+  
+  .cardContent {
+    flex-direction: row; /* 데스크탑용 가로 배치 */
+  }
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column; /* 모바일용 세로 배치 */
+  gap: 1rem;
+}
+
+.cardInfo {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cardFooter {
+  display: flex;
+  gap: 1rem;
+}
+
+.tableContainer {
+  display: block;
+  overflow: hidden;
+}
+
+.tableFilters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.table {
+  display: table;
+}
+
+.tableHeader {
+  display: table-header-group;
+}
+
+.tableRow {
+  display: table-row;
+}
+
+.tableCell {
+  display: table-cell;
+}
+
+.artworkCard {
+  display: block;
+}
+
+.artworkContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.artworkInfo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* 2. Position */
+
+/* 3. Box */
+.layout {
+  min-height: 100vh;
+}
+
+.tabSection {
+  width: 100%;
+  border-bottom: 0.1rem solid #e9ecef;
+}
+
+.content {
+  width: 100%;
+  padding: 1.5rem 1rem;
+}
+
+.leftColumn {
+  width: 100%;
+}
+
+.rightColumn {
+  width: 100%;
+  padding: 1.5rem;
+  border: 0.1rem solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+
+.galleryCard {
+  padding: 1rem;
+  border: 0.1rem solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.galleryImage {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.375rem;
+  flex-shrink: 0;
+}
+
+.cardHeader {
+  margin-bottom: 0.5rem;
+}
+
+.deleteButton {
+  padding: 0.25rem;
+  border: none;
+}
+
+.galleryAddress {
+  margin-bottom: 0.25rem;
+}
+
+.galleryFloor {
+  margin-bottom: 0.75rem;
+}
+
+.cardFooter {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 0.1rem solid #e5e7eb;
+}
+
+.searchDescription {
+  margin-bottom: 0.5rem;
+}
+
+.tableContainer {
+  width: 100%;
+  border: 0.1rem solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.tableFilters {
+  padding: 0.5rem;
+  border-bottom: 0.1rem solid #e5e7eb;
+}
+
+.filterButton {
+  padding: 0.25rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+}
+
+.table {
+  width: 100%;
+}
+
+.tableHeaderCell {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.tableHeaderCellCheckbox {
+  width: 3rem;
+}
+
+.tableRow {
+  border-bottom: 0.1rem solid #e5e7eb;
+}
+
+.tableCell {
+  padding: 0.75rem;
+}
+
+.artworkCard {
+  padding: 1rem;
+  border: 0.1rem solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.artworkImage {
+  width: 100%;
+  height: 12rem;
+  border-radius: 0.375rem;
+}
+
+/* 4. Background */
+.layout {
+  background-color: #f9fafb;
+}
+
+.tabSection {
+  background-color: #f8f9fa;
+}
+
+.rightColumn {
+  background-color: white;
+}
+
+.galleryCard {
+  background-color: white;
+}
+
+.deleteButton {
+  background: none;
+}
+
+.tableContainer {
+  background-color: white;
+}
+
+.filterButton {
+  background: none;
+}
+
+.filterButtonActive {
+  background-color: #f3f4f6;
+}
+
+.filterButton:hover {
+  background-color: #f9fafb;
+}
+
+.tableHeader {
+  background-color: #2563eb;
+}
+
+.tableRow:hover {
+  background-color: #f9fafb;
+}
+
+.artworkCard {
+  background-color: white;
+}
+
+/* 5. Font */
+.galleryTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.deleteButton {
+  color: #ef4444;
+}
+
+.deleteButton:hover {
+  color: #dc2626;
+}
+
+.galleryAddress {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.galleryFloor {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.galleryTime {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.cardFooter {
+  font-size: 1rem;
+  color: #374151;
+}
+
+.separator {
+  color: #d1d5db;
+}
+
+.searchDescription {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.tableFilters {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.tableHeader {
+  color: white;
+}
+
+.tableHeaderCell {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.tableCell {
+  font-size: 1rem;
+}
+
+.tableCellGray {
+  color: #6b7280;
+}
+
+.artworkTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.artworkArtist {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* 6. Animation */
+.galleryCard {
+  transition: box-shadow 0.2s ease;
+}
+
+.galleryCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton {
+  transition: color 0.2s ease;
+}
+
+.filterButton {
+  transition: background-color 0.2s ease;
+}
+
+.tableRow {
+  transition: background-color 0.2s ease;
+}
+
+.artworkCard {
+  transition: box-shadow 0.2s ease;
+}
+
+.artworkCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* 7. 기타 속성 */
+.galleryImage {
+  object-fit: cover;
+}
+
+.deleteButton {
+  cursor: pointer;
+}
+
+.filterButton {
+  cursor: pointer;
+}
+
+.artworkImage {
+  object-fit: cover;
+}

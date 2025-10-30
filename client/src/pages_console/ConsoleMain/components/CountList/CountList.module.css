@@ -1,0 +1,27 @@
+/* 1. Display */
+.countText {
+  display: inline-block;
+}
+
+/* 2. Position */
+
+/* 3. Box */
+
+/* 4. Background */
+
+/* 5. Font - 모바일 최적화 */
+.countText {
+  font-size: 1.25rem; /* 모바일용 작은 폰트 */
+  color: #6b7280;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .countText {
+    font-size: 1.5rem; /* 태블릿 이상에서는 큰 폰트 */
+  }
+}
+
+/* 6. Animation */
+
+/* 7. 기타 속성 */
