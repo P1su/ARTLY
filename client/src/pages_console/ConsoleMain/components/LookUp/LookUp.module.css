@@ -41,6 +41,30 @@
 .dropdownItem {
   display: block;
   cursor: pointer;
+  padding: 0.875rem 1rem; /* 모바일용 패딩 */
+  min-height: 2.5rem; /* 모바일용 최소 높이 */
+  border-bottom: 0.1rem solid #f3f4f6;
+  font-size: 0.875rem; /* 모바일용 폰트 */
+  color: #374151;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdownItemActive {
+  background-color: #2563eb;
+  color: white;
+}
+
+.dropdownItemActive:hover {
+  background-color: #1d4ed8;
 }
 
 /* 2. Position */
@@ -80,8 +104,9 @@
   }
   
   .dropdownItem {
-    padding: 1.5rem 1.75rem; /* 태블릿 이상에서는 더 큰 패딩 */
-    font-size: 1.125rem; /* 태블릿 이상에서는 더 큰 폰트 */
+    padding: 1.125rem 1.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
+    min-height: 3.5rem; /* 태블릿 이상에서는 더 큰 최소 높이 */
+    font-size: 1rem; /* 태블릿 이상에서는 더 큰 폰트 */
   }
   
   .chevron {
@@ -96,52 +121,16 @@
   cursor: pointer;
 }
 
-/* 위의 .dropdownList 블록에 통합됨 */
-
-.dropdownItem {
-  padding: 0.5rem 0.75rem; /* 모바일용 작은 패딩 */
-  border-bottom: 0.1rem solid #f3f4f6;
-}
-
-/* (중복 미디어쿼리 삭제) */
-
-.dropdownItem:last-child {
-  border-bottom: none;
-}
-
-/* 4. Background */
-
-
-.dropdownItem:hover {
-  background-color: #f3f4f6;
-}
-
-.dropdownItemActive {
-  background-color: #2563eb;
-  color: white;
-}
-
-.dropdownItemActive:hover {
-  background-color: #1d4ed8;
-}
-
-/* 5. Font - 모바일 최적화 */
-.dropdownItem {
-  font-size: 0.75rem; /* 모바일용 작은 폰트 */
-  color: #374151;
-  font-weight: 500;
-}
-
-.dropdownItemActive {
-  color: white;
+/* 데스크톱 (1200px 이상) */
+@media (min-width: 1200px) {
+  .dropdownItem {
+    padding: 1.25rem 1.75rem; /* 데스크톱에서는 더 큰 패딩 */
+    min-height: 4rem; /* 데스크톱에서는 더 큰 최소 높이 */
+    font-size: 1.125rem; /* 데스크톱에서는 더 큰 폰트 */
+  }
 }
 
 /* 6. Animation */
-
-.dropdownItem {
-  transition: background-color 0.2s ease;
-}
-
 .chevron {
   transition: transform 0.2s ease;
 }

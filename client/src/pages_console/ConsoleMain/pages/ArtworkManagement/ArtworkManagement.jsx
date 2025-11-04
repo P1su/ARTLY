@@ -63,14 +63,29 @@ export default function ArtworkManagement({
 
 
   // 갤러리 옵션에 "갤러리 전체" 추가
-  const galleryOptions = [
-    { id: 'all', name: '갤러리 전체', value: '갤러리 전체' },
-    ...galleryList.map(gallery => ({
-      id: gallery.id,
-      name: gallery.name,
-      value: gallery.name
-    }))
-  ];
+  // 실제로 작품이 있는 갤러리만 필터링
+  const galleryOptions = useMemo(() => {
+    const options = [
+      { id: 'all', name: '갤러리 전체', value: '갤러리 전체' }
+    ];
+    
+    // 작품 목록에서 실제로 사용되는 갤러리 ID/이름 추출
+    const usedGalleryIds = new Set(artworkList.map(art => art.gallery_id).filter(Boolean));
+    const usedGalleryNames = new Set(artworkList.map(art => art.gallery_name).filter(Boolean));
+    
+    // galleryList에서 실제로 작품이 있는 갤러리만 필터링
+    galleryList.forEach(gallery => {
+      if (usedGalleryIds.has(gallery.id) || usedGalleryNames.has(gallery.name)) {
+        options.push({
+          id: gallery.id,
+          name: gallery.name,
+          value: gallery.name
+        });
+      }
+    });
+    
+    return options;
+  }, [galleryList, artworkList]);
 
   if (filteredArtworkList.length > 0) {
     return (
