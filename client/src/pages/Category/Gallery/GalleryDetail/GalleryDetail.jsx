@@ -227,7 +227,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
           <div className={styles.mapSection}>
             <p className={styles.sectionTitle}>찾아오시는 길</p>
-            <div id={`gallery-${galleryId}-map`} className={styles.map}></div>
+            <div id={`gallery-${galleryId}-map`} className={styles.map} />
           </div>
           <button
             className={styles.backButton}

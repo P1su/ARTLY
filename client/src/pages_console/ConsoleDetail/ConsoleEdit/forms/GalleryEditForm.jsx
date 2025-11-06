@@ -85,6 +85,21 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
     }));
   };
 
+  const updateSnsField = (type, newUrl) => {
+    setData((prev) => {
+      const snsList = prev.gallery_sns ? [...prev.gallery_sns] : [];
+      const existingIndex = snsList.findIndex((sns) => sns.type === type);
+
+      if (existingIndex !== -1) {
+        snsList[existingIndex].url = newUrl;
+      } else {
+        snsList.push({ type, url: newUrl });
+      }
+
+      return { ...prev, gallery_sns: snsList };
+    });
+  };
+
   const handleDescriptionChange = (newDescription) => {
     setData((prev) => ({ ...prev, gallery_description: newDescription }));
   };
@@ -96,18 +111,13 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // 부모로 파일 객체 전달
       onFileChange(file);
-
-      // base64 대신 Object URL로 미리보기 생성
       const previewUrl = URL.createObjectURL(file);
       setImagePreviewUrl(previewUrl);
     }
-    // 동일 파일 다시 선택 가능하도록 초기화
     event.target.value = '';
   };
 
-  // 기존 data에 이미지가 있을 경우 표시
   useEffect(() => {
     if (data.gallery_image && typeof data.gallery_image === 'string') {
       setImagePreviewUrl(data.gallery_image);
@@ -129,10 +139,9 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           name='gallery_name_en' // 영문 이름 필드명 추가 필요
           value={data.gallery_name_en || ''}
           onChange={handleInputChange}
-          placeholder='갤러리 영문명 (선택)'
+          placeholder='갤러리 영문명'
         />
 
-        {/* 숨겨진 파일 input */}
         <input
           type='file'
           ref={fileInputRef}
@@ -141,7 +150,6 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           style={{ display: 'none' }}
         />
 
-        {/* 클릭으로 업로드 트리거 */}
         <div
           className={styles.imageUploadBox}
           onClick={() => fileInputRef.current.click()}
@@ -153,7 +161,9 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
               className={styles.previewImage}
             />
           ) : (
-            <p>+ 대표 이미지를 업로드 해주세요</p>
+            <p className={styles.previewImageDesc}>
+              + 대표 이미지를 업로드 해주세요
+            </p>
           )}
         </div>
 
@@ -230,7 +240,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
             <input
               className={styles.input}
               name='gallery_phone'
-              value={data.gallery_phone || ''} // 전화번호 필드 추가
+              value={data.gallery_phone || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -249,7 +259,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
               className={styles.input}
               type='email'
               name='gallery_email'
-              value={data.gallery_email || ''} // 이메일 필드 추가
+              value={data.gallery_email || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -269,37 +279,27 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
       <div className={`${styles.card} ${styles.snsCard}`}>
         <label className={styles.label}>SNS</label>
         <div className={styles.snsInputGroup}>
-          <input
-            className={styles.input}
-            placeholder='Instagram 주소'
-            name='sns_instagram'
-            value={data.sns_instagram || ''} // sns 관련 필드 추가
-            onChange={handleInputChange}
-          />
-          <input
-            className={styles.input}
-            placeholder='Twitter 주소'
-            name='sns_twitter'
-            value={data.sns_twitter || ''}
-            onChange={handleInputChange}
-          />
-          <input
-            className={styles.input}
-            placeholder='Facebook 주소'
-            name='sns_facebook'
-            value={data.sns_facebook || ''}
-            onChange={handleInputChange}
-          />
-          <input
-            className={styles.input}
-            placeholder='YouTube 주소'
-            name='sns_youtube'
-            value={data.sns_youtube || ''}
-            onChange={handleInputChange}
-          />
+          {[
+            { type: 'instagram', placeholder: 'Instagram 주소' },
+            { type: 'twitter', placeholder: 'Twitter 주소' },
+            { type: 'facebook', placeholder: 'Facebook 주소' },
+            { type: 'youtube', placeholder: 'YouTube 주소' },
+          ].map(({ type, placeholder }) => {
+            const currentValue =
+              data.gallery_sns?.find((sns) => sns.type === type)?.url || '';
+
+            return (
+              <input
+                key={type}
+                className={styles.input}
+                placeholder={placeholder}
+                value={currentValue}
+                onChange={(e) => updateSnsField(type, e.target.value)}
+              />
+            );
+          })}
         </div>
       </div>
-
       <div className={styles.tabContainer}>
         <nav className={styles.tabNav}>
           <button

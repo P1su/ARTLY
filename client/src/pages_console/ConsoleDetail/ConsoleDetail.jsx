@@ -20,7 +20,7 @@ const DETAIL_CONFIG = {
       { label: 'QR코드' },
       { label: '리플렛/도록' },
     ],
-    fetchUrl: (id) => `/api/console/galleries/${id}`,
+    fetchUrl: (id) => `/api/galleries/${id}`,
   },
   exhibitions: {
     title: '전시회',
@@ -84,7 +84,7 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() => navigate(`/console/${type}`)}
+          onClick={() => navigate('/console/main')}
         >
           {'<'}
         </button>

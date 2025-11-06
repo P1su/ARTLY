@@ -64,6 +64,10 @@
   object-fit: cover;
 }
 
+.previewImageDesc {
+  font-size: 1.4rem;
+}
+
 .inputGroup {
   display: flex;
   flex-direction: column;
@@ -142,12 +146,12 @@
 .snsCard .label {
   font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 1.5rem;
 }
 .snsInputGroup {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .tabContainer {

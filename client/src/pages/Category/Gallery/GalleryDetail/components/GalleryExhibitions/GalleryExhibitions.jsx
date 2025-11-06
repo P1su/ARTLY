@@ -8,7 +8,6 @@ const STATUS_CONFIG = {
   default: { text: '기타', className: styles.statusDefault },
 };
 
-// filter prop을 제거하여 범용 목록 컴포넌트로 변경
 export default function GalleryExhibitions({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
@@ -19,7 +18,6 @@ export default function GalleryExhibitions({ exhibitions }) {
 
   return (
     <section className={styles.exhibitionList}>
-      {/* 이제 전체 exhibitions 배열을 그대로 map으로 렌더링합니다. */}
       {exhibitions.map(
         ({
           exhibition_id: id,
@@ -27,8 +25,8 @@ export default function GalleryExhibitions({ exhibitions }) {
           exhibition_title: title,
           exhibition_status: status,
           organization,
-          start_date,
-          end_date,
+          exhibition_start_date: start_date,
+          exhibition_end_date: end_date,
         }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
 
@@ -58,7 +56,7 @@ export default function GalleryExhibitions({ exhibitions }) {
               <div className={styles.infoContainer}>
                 <h4 className={styles.title}>{title}</h4>
                 <p className={styles.organization}>{organization}</p>
-                <p className={styles.date}>{`${start_date} - ${end_date}`}</p>
+                <p className={styles.date}>{`${start_date} ~ ${end_date}`}</p>
               </div>
             </Link>
           );

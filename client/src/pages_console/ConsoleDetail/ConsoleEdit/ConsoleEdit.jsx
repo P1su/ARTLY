@@ -7,15 +7,14 @@ import GalleryEditForm from './forms/GalleryEditForm.jsx';
 const EDIT_CONFIG = {
   galleries: {
     title: '갤러리 수정',
-    apiUrl: (id) => `/api/galleries/${id}`, // fetchUrl과 updateUrl을 apiUrl로 통합
-    consoleApiUrl: (id) => `/api/console/galleries/${id}`, // fetchUrl과 updateUrl을 apiUrl로 통합
+    apiUrl: (id) => `/api/galleries/${id}`,
   },
   exhibitions: {
-    title: '전시회 정보 수정',
+    title: '전시회 수정',
     apiUrl: (id) => `/api/exhibitions/${id}`,
   },
   artworks: {
-    title: '작품 정보 수정',
+    title: '작품 수정',
     apiUrl: (id) => `/api/artworks/${id}`,
   },
 };
@@ -39,7 +38,7 @@ export default function ConsoleEdit({ type }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await userInstance.get(config.consoleApiUrl(id));
+        const response = await userInstance.get(config.apiUrl(id));
         setData(response.data);
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
@@ -58,14 +57,28 @@ export default function ConsoleEdit({ type }) {
   };
 
   const handleSave = async () => {
-    if (isSaving) return;
+    if (isSaving || !data) return;
     setIsSaving(true);
 
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        // 객체나 배열은 JSON 문자열로 변환
+        if (typeof value === 'object' && !(value instanceof File)) {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value);
+        }
+      }
+    });
+
+    if (selectedImageFile) {
+      formData.set('gallery_image', selectedImageFile);
+    }
+
     try {
-      const jsonData = { ...data };
-      await userInstance.put(config.apiUrl(id), jsonData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      await userInstance.put(config.apiUrl(id), formData);
       alert('저장되었습니다.');
       navigate(`/console/${type}/${id}`);
     } catch (error) {
@@ -74,6 +87,10 @@ export default function ConsoleEdit({ type }) {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleFileChange = (file) => {
+    setSelectedImageFile(file);
   };
 
   if (!data) return <div>데이터 로딩 중...</div>;
@@ -92,7 +109,7 @@ export default function ConsoleEdit({ type }) {
           <FormComponent
             data={data}
             setData={setData}
-            onFileChange={setSelectedImageFile}
+            onFileChange={handleFileChange}
           />
         )}
       </main>
