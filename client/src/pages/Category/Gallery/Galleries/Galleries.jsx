@@ -83,7 +83,7 @@ export default function Galleries() {
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
-          <GalleryCard key={item.id} galleryItem={item} />
+          <GalleryCard key={item.id} galleryItem={item} onEvent={getGalleies} />
         ))}
       </div>
 
