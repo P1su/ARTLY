@@ -1,0 +1,55 @@
+/* 1. Display - 모바일 우선 */
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 모바일용 작은 간격 */
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .contentContainer {
+    gap: 1.5rem; /* 태블릿 이상에서는 큰 간격 */
+  }
+}
+
+.emptyStateContainer {
+  display: block;
+  width: 100%;
+  padding: 1rem; /* 모바일용 작은 패딩 */
+  border: 0.1rem solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .emptyStateContainer {
+    padding: 1.5rem;
+  }
+}
+
+/* 5. 레이아웃 */
+.searchContainer {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.countAndButtonContainer {
+  display: flex;
+  padding: 0rem 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .searchContainer {
+    margin-bottom: 1.5rem;
+  }
+  
+  .countAndButtonContainer {
+    padding: 0rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+}

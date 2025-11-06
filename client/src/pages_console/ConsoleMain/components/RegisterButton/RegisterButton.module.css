@@ -1,0 +1,56 @@
+/* 1. Display */
+.registerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. Position */
+
+/* 3. Box - 모바일 최적화 */
+.registerButton {
+  padding: 0.875rem 1.5rem; /* 모바일용 작은 패딩 */
+  border: none;
+  border-radius: 0.6rem; /* 모바일용 작은 둥근 모서리 */
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .registerButton {
+    padding: 1.2rem 2.0rem; /* 태블릿 이상에서는 큰 패딩 */
+    border-radius: 0.8rem; /* 태블릿 이상에서는 큰 둥근 모서리 */
+  }
+}
+
+/* 4. Background */
+.registerButton {
+  background-color: #2563eb;
+}
+
+.registerButton:hover {
+  background-color: #1d4ed8;
+}
+
+/* 5. Font - 모바일 최적화 */
+.registerButton {
+  font-size: 1.25rem; /* 모바일용 작은 폰트 */
+  color: white;
+  font-weight: 600;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .registerButton {
+    font-size: 1.5rem; /* 태블릿 이상에서는 큰 폰트 */
+  }
+}
+
+/* 6. Animation */
+.registerButton {
+  transition: background-color 0.2s ease;
+}
+
+/* 7. 기타 속성 */
+.registerButton {
+  cursor: pointer;
+}

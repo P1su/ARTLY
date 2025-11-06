@@ -1,0 +1,152 @@
+/* 1. Display */
+.dropdownWrapper {
+  display: block;
+  position: relative;
+}
+
+.inputContainer {
+  display: block;
+  padding: 0.625rem 1rem; /* 모바일용 작은 패딩 */
+  border-radius: 0.5rem; /* 모바일용 작은 둥근 모서리 */
+  background-color: #f3f4f6;
+}
+
+.dropdownContainer {
+  display: block;
+  position: relative;
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdownList {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 20rem;
+  overflow-y: auto;
+  border: 0.1rem solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownItem {
+  display: block;
+  cursor: pointer;
+  padding: 0.875rem 1rem; /* 모바일용 패딩 */
+  min-height: 2.5rem; /* 모바일용 최소 높이 */
+  border-bottom: 0.1rem solid #f3f4f6;
+  font-size: 0.875rem; /* 모바일용 폰트 */
+  color: #374151;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdownItemActive {
+  background-color: #2563eb;
+  color: white;
+}
+
+.dropdownItemActive:hover {
+  background-color: #1d4ed8;
+}
+
+/* 2. Position */
+
+/* 3. Box - 모바일 최적화 */
+.title {
+  margin-bottom: 0.25rem; /* 모바일용 작은 여백 */
+  padding: 0;
+  font-size: 0.75rem; /* 모바일용 작은 폰트 */
+  font-weight: 500;
+  color: #374151;
+}
+
+.inputField {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.875rem; /* 모바일용 작은 폰트 */
+  font-weight: 500;
+  background: transparent;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .title {
+    margin-bottom: 1rem; /* 태블릿 이상에서는 더 큰 여백 */
+    font-size: 1.125rem; /* 태블릿 이상에서는 더 큰 폰트 */
+  }
+  
+  .inputContainer {
+    padding: 1.5rem 2rem; /* 태블릿 이상에서는 더 큰 패딩 */
+    border-radius: 0.875rem; /* 태블릿 이상에서는 더 큰 둥근 모서리 */
+  }
+  
+  .inputField {
+    font-size: 1.25rem; /* 태블릿 이상에서는 더 큰 폰트 */
+  }
+  
+  .dropdownItem {
+    padding: 1.125rem 1.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
+    min-height: 3.5rem; /* 태블릿 이상에서는 더 큰 최소 높이 */
+    font-size: 1rem; /* 태블릿 이상에서는 더 큰 폰트 */
+  }
+  
+  .chevron {
+    font-size: 1.6rem; /* 태블릿 */
+  }
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+/* 데스크톱 (1200px 이상) */
+@media (min-width: 1200px) {
+  .dropdownItem {
+    padding: 1.25rem 1.75rem; /* 데스크톱에서는 더 큰 패딩 */
+    min-height: 4rem; /* 데스크톱에서는 더 큰 최소 높이 */
+    font-size: 1.125rem; /* 데스크톱에서는 더 큰 폰트 */
+  }
+}
+
+/* 6. Animation */
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* 7. 기타 속성 */
+/* 반응형 아이콘 크기 */
+.chevron {
+  font-size: 1.2rem; /* 모바일 기본 */
+}
+
+@media (min-width: 1200px) {
+  .chevron {
+    font-size: 1.8rem; /* 데스크톱 */
+  }
+}
