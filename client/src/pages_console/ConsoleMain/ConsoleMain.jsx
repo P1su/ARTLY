@@ -10,6 +10,7 @@ import styles from './ConsoleMain.module.css';
 export default function ConsoleMain() {
   const [activeTab, setActiveTab] = useState('갤러리관리');
   const [selectedGallery, setSelectedGallery] = useState('갤러리 전체');
+  const [gallerySearchValue, setGallerySearchValue] = useState(''); // ← 추가!
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -50,6 +51,8 @@ export default function ConsoleMain() {
             loadGalleries={loadGalleries}
             isLoading={isLoading}
             error={error}
+            searchValue={gallerySearchValue}           // ← 추가!
+            onSearchChange={setGallerySearchValue}     // ← 추가!
           />
         )}
         {activeTab === '전시회관리' && (

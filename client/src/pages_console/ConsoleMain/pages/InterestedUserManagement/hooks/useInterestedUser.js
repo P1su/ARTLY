@@ -12,7 +12,12 @@ export default function useInterestedUser() {
   const loadInterestedUsers = async (likedType = 'gallery', search = '') => {
     try {
       setIsLoading(true);
-      const response = await instance.get(`/api/console/users/likes?liked_type=${likedType}${search ? `&search=${search}` : ''}`);
+      const token = localStorage.getItem('ACCESS_TOKEN');
+      const response = await instance.get(`/api/users/console/likes?liked_type=${likedType}${search ? `&search=${search}` : ''}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       console.log('관심유저 API 응답:', response.data); // 디버깅용
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
@@ -57,9 +62,9 @@ export default function useInterestedUser() {
       try {
         setIsLoading(true);
         const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          instance.get(`/api/console/users/likes?liked_type=gallery${query ? `&search=${query}` : ''}`),
-          instance.get(`/api/console/users/likes?liked_type=exhibition${query ? `&search=${query}` : ''}`),
-          instance.get(`/api/console/users/likes?liked_type=art${query ? `&search=${query}` : ''}`)
+          instance.get(`/api/users/console/likes?liked_type=gallery${query ? `&search=${query}` : ''}`),
+          instance.get(`/api/users/console/likes?liked_type=exhibition${query ? `&search=${query}` : ''}`),
+          instance.get(`/api/users/console/likes?liked_type=art${query ? `&search=${query}` : ''}`)
         ]);
         
         const allUsers = [
@@ -132,9 +137,9 @@ export default function useInterestedUser() {
       try {
         setIsLoading(true);
         const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          instance.get('/api/console/users/likes?liked_type=gallery'),
-          instance.get('/api/console/users/likes?liked_type=exhibition'),
-          instance.get('/api/console/users/likes?liked_type=art')
+          instance.get('/api/users/console/likes?liked_type=gallery'),
+          instance.get('/api/users/console/likes?liked_type=exhibition'),
+          instance.get('/api/users/console/likes?liked_type=art')
         ]);
         
         const allUsers = [

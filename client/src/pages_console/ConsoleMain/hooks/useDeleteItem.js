@@ -15,9 +15,9 @@ export default function useDeleteItem() {
       // 실제 API 호출 (방법 1 + /api/galleries 경로)
       const params = new URLSearchParams();
       if (search) {
-        params.append('gallery_name', search); // 파라미터명 gallery_name으로 변경
+        params.append('search', search);
       }
-      const url = `/api/console/galleries${params.toString() ? `?${params.toString()}` : ''}`;
+      const url = `/api/galleries${params.toString() ? `?${params.toString()}` : ''}`;
       const response = await instance.get(url);
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
@@ -50,7 +50,7 @@ export default function useDeleteItem() {
     try {
       setIsLoading(true);
       // 실제 API 호출
-      const urlBase = '/api/console/exhibitions';
+      const urlBase = '/api/exhibitions';
       let url = urlBase;
       if (galleryId && galleryId !== '갤러리 전체') url += `?gallery_id=${galleryId}`;
       
@@ -63,7 +63,7 @@ export default function useDeleteItem() {
         period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
         image: item.exhibition_poster || null, // API에 없을 경우 null
         gallery_name: item.exhibition_organization?.name || '갤러리 정보 없음',
-        gallery_id: item.exhibition_organization?.id || null, // 갤러리 ID 추가
+        gallery_id: item.gallery_id || null, // 갤러리 ID 추가 (최상위 레벨)
         value: item.exhibition_organization?.name || '갤러리 정보 없음'
       })) : [];
       
@@ -86,16 +86,16 @@ export default function useDeleteItem() {
       if (galleryId && galleryId !== '갤러리 전체') {
         params.append('gallery_id', galleryId);
       }
-      const url = `/api/console/arts${params.toString() ? `?${params.toString()}` : ''}`;
+      const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
       
       const response = await instance.get(url);
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const artworks = Array.isArray(response.data) ? response.data.map(item => {
-        // galleries 배열에서 첫 번째 갤러리 정보 가져오기
-        const firstGallery = item.galleries && item.galleries.length > 0 ? item.galleries[0] : null;
-        const galleryName = firstGallery ? firstGallery.gallery_name : '갤러리 정보 없음';
-        const galleryId = firstGallery ? firstGallery.id : null;
+        // exhibitions 배열에서 첫 번째 전시회의 갤러리 정보 추출
+        const firstExhibition = item.exhibitions && item.exhibitions.length > 0 ? item.exhibitions[0] : null;
+        const galleryName = firstExhibition?.gallery?.gallery_name || '갤러리 정보 없음';
+        const galleryId = firstExhibition?.gallery_id || firstExhibition?.gallery?.id || null;
         
         return {
           id: item.id,
@@ -127,13 +127,13 @@ export default function useDeleteItem() {
   const handleDelete = async (id, type) => {
     try {
       if (type === 'gallery') {
-        await instance.delete(`/api/console/galleries/${id}`);
+        await instance.delete(`/api/galleries/${id}`);
         setGalleryList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'exhibition') {
-        await instance.delete(`/api/console/exhibitions/${id}`);
+        await instance.delete(`/api/exhibitions/${id}`);
         setExhibitionList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'artwork') {
-        await instance.delete(`/api/console/arts/${id}`);
+        await instance.delete(`/api/arts/${id}`);
         setArtworkList(prev => prev.filter(item => item.id !== id));
       }
     } catch (err) {

@@ -11,14 +11,16 @@ export default function GalleryManagement({
   onDelete,
   loadGalleries,
   isLoading,
-  error
+  error,
+  searchValue,      // ← props로 받기
+  onSearchChange    // ← props로 받기
 }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState(''); ← 삭제!
   const searchTimeoutRef = useRef(null);
   
   // 검색어 변경 시 API 호출 (디바운스 적용)
   const handleSearchChange = (query) => {
-    setSearchQuery(query);
+    onSearchChange(query);  // ← 부모로 전달
     
     // 이전 타이머 취소
     if (searchTimeoutRef.current) {
@@ -73,7 +75,7 @@ export default function GalleryManagement({
     return (
       <div className={styles.contentContainer}>
         <LookUp 
-          value={searchQuery} 
+          value={searchValue}  
           onChange={handleSearchChange}
           placeholder="갤러리 검색"
           isInput={true}
@@ -127,7 +129,7 @@ export default function GalleryManagement({
     <>
       <div className={styles.searchContainer}>
         <LookUp 
-          value={searchQuery} 
+          value={searchValue}  
           onChange={handleSearchChange}
           placeholder="갤러리 검색"
           isInput={true}

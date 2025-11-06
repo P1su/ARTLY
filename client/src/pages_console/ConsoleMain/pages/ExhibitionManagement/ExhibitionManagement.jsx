@@ -36,10 +36,10 @@ export default function ExhibitionManagement({
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
       console.log('🎨 ExhibitionManagement - selectedGallery:', selectedGallery, 'galleryId:', galleryId);
-      loadExhibitions('', galleryId);
+      loadExhibitions(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
-      loadExhibitions('', '갤러리 전체');
+      loadExhibitions('갤러리 전체');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGallery, galleryList]);

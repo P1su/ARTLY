@@ -36,10 +36,10 @@ export default function ArtworkManagement({
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
       console.log('🎨 ArtworkManagement - selectedGallery:', selectedGallery, 'galleryId:', galleryId);
-      loadArtworks('', galleryId);
+      loadArtworks(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
-      loadArtworks('', '갤러리 전체');
+      loadArtworks('갤러리 전체');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGallery, galleryList]);

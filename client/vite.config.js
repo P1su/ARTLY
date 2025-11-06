@@ -1,6 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// https://vite.dev/config/
+// 프록시 해결하면 원상 복구
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -8,7 +11,6 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        // 네이버 지도 API 프록시
         '/v2': {
           target: 'https://maps.apigw.ntruss.com/map-geocode',
           changeOrigin: true,
