@@ -6,12 +6,10 @@ import Menu from '../Menu/Menu';
 import NavBar from '../NavBar/NavBar';
 import IcQR from '../../assets/svg/IcQR';
 import IcMenu from '../../assets/svg/IcMenu';
-// import SearchBar from '../SearchBar/SearchBar';
-// import IcSearch from '../../assets/svg/IcSearch';
+import IcBell from './../../assets/svg/IcBell';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  // const [isSearch, setIsSearch] = useState(false);
   const { isDesktop } = useResponsive();
   const navigate = useNavigate();
 
@@ -40,10 +38,7 @@ export default function Header() {
       {isDesktop && <NavBar />}
 
       <div className={styles.rightSection}>
-        {/* QR 버튼 */}
-        <Link className={styles.qrCode} onClick={() => navigate('/scan')}>
-          <IcQR />
-        </Link>
+        <IcBell />
 
         {/* 메뉴 버튼 */}
         <button onClick={isOpen ? handleClose : handleOpen}>
