@@ -1,10 +1,9 @@
 import styles from './Header.module.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useResponsive from '../../hooks/useResponsive';
 import Menu from '../Menu/Menu';
 import NavBar from '../NavBar/NavBar';
-import IcQR from '../../assets/svg/IcQR';
 import IcMenu from '../../assets/svg/IcMenu';
 import IcBell from './../../assets/svg/IcBell';
 
