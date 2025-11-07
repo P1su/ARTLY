@@ -1,5 +1,5 @@
 import styles from './GalleryCard.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import IcFav from './../../../../assets/svg/IcFav';
 import IcUnFav from './../../../../assets/svg/IcUnFav';
 import { userInstance } from './../../../../apis/instance';
@@ -21,6 +21,8 @@ export default function GalleryCard({ galleryItem, onEvent }) {
       return parsedTime;
     }
   };
+
+  const navigate = useNavigate();
 
   const handleLike = async () => {
     !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
