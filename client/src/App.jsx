@@ -1,16 +1,16 @@
 import router from './router/Router';
-import { UserProdiver } from './store/UserProvider';
+import { UserProvider } from './store/UserProvider';
 import { ToastProvider } from './store/ToastProvider';
 import './styles/style.css';
 import { RouterProvider } from 'react-router-dom';
 
 function App() {
   return (
-    <UserProdiver>
+    <UserProvider>
       <ToastProvider>
         <RouterProvider router={router} />
       </ToastProvider>
-    </UserProdiver>
+    </UserProvider>
   );
 }
 export default App;
