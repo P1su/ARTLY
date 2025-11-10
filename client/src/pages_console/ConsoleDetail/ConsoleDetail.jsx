@@ -85,7 +85,9 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() => navigate('/console/main')}
+          onClick={() =>
+            navigate('/console/main', { state: { activeTab: `${title}관리` } })
+          }
         >
           {'<'}
         </button>
