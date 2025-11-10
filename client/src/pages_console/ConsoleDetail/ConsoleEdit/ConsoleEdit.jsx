@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { userInstance } from '../../../apis/instance.js';
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
+import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
+import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
@@ -15,14 +17,14 @@ const EDIT_CONFIG = {
   },
   artworks: {
     title: '작품 수정',
-    apiUrl: (id) => `/api/artworks/${id}`,
+    apiUrl: (id) => `/api/arts/${id}`,
   },
 };
 
 const FORM_COMPONENTS = {
   galleries: GalleryEditForm,
-  // exhibitions: ExhibitionEditForm, // 추후 분리 후 추가
-  // artworks: ArtworkEditForm,
+  exhibitions: ExhibitionEditForm, // 추후 분리 후 추가
+  artworks: ArtworkEditForm,
 };
 
 export default function ConsoleEdit({ type }) {
@@ -39,7 +41,11 @@ export default function ConsoleEdit({ type }) {
     const fetchData = async () => {
       try {
         const response = await userInstance.get(config.apiUrl(id));
-        setData(response.data);
+        const resData =
+          typeof response.data === 'string'
+            ? JSON.parse(response.data)
+            : response.data;
+        setData(resData);
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
         setData({});
@@ -60,29 +66,46 @@ export default function ConsoleEdit({ type }) {
     if (isSaving || !data) return;
     setIsSaving(true);
 
+    // ✅ 타입별 이미지 필드명 매핑
+    const imageFieldMap = {
+      galleries: 'gallery_image',
+      exhibitions: 'exhibition_poster',
+      artworks: 'art_image',
+    };
+    const imageKey = imageFieldMap[type];
+
+    // ✅ 모든 필드 포함한 formData 구성
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        // 객체나 배열은 JSON 문자열로 변환
-        if (typeof value === 'object' && !(value instanceof File)) {
-          formData.append(key, JSON.stringify(value));
-        } else {
-          formData.append(key, value);
-        }
+      // 값이 null 또는 undefined라도 필드 자체는 유지 (초기화 방지 목적)
+      if (value === undefined) return;
+
+      if (typeof value === 'object' && !(value instanceof File)) {
+        formData.append(key, JSON.stringify(value));
+      } else {
+        formData.append(key, value ?? '');
       }
     });
 
+    // ✅ 선택된 새 이미지가 있을 경우에만 교체
     if (selectedImageFile) {
-      formData.set('gallery_image', selectedImageFile);
+      formData.set(imageKey, selectedImageFile);
+    } else if (data[imageKey]) {
+      // 기존 이미지가 존재하면 다시 세팅해서 유지
+      formData.set(imageKey, data[imageKey]);
     }
 
     try {
-      await userInstance.put(config.apiUrl(id), formData);
+      const response = await userInstance.put(config.apiUrl(id), formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      console.log('✅ 저장 성공:', response.data);
       alert('저장되었습니다.');
       navigate(`/console/${type}/${id}`);
     } catch (error) {
-      console.error('데이터 저장 실패:', error);
+      console.error('❌ 데이터 저장 실패:', error);
       alert('저장에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSaving(false);

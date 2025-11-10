@@ -67,7 +67,7 @@ export default function ConsoleDetail({ type }) {
     } else if (label === 'QR코드') {
       setShowQrModal(true);
     } else {
-      alert(`${label} 페이지로 이동합니다. ID: ${id}`);
+      // navigate(`/console/reaflet/${id}`);
     }
   };
 
@@ -106,37 +106,41 @@ export default function ConsoleDetail({ type }) {
       <main className={styles.content}>
         <Component showUserActions={false} id={id} />
 
-        <DetailTabs
-          tabs={contentTabs}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        >
-          {activeTab === 'info' &&
-            (data.gallery_description ? (
-              <div
-                className={styles.descriptionParagraph}
-                dangerouslySetInnerHTML={{
-                  __html: data.gallery_description,
-                }}
-              />
-            ) : (
-              <p className={styles.emptyContent}>
-                현재 등록된 정보가 없습니다.
-              </p>
-            ))}
-          {activeTab === 'artworks' && (
-            <>
-              <GalleryArtworks artworks={data.artworks} />
-              <button className={styles.addButton}>+ 작품 등록</button>
-            </>
-          )}
-          {activeTab === 'exhibitions' && (
-            <>
-              <GalleryExhibitions exhibitions={data.exhibitions} />
-              <button className={styles.addButton}>+ 전시회 등록</button>
-            </>
-          )}
-        </DetailTabs>
+        {type !== 'artworks' ? (
+          <DetailTabs
+            tabs={contentTabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          >
+            {activeTab === 'info' &&
+              (data.gallery_description ? (
+                <div
+                  className={styles.descriptionParagraph}
+                  dangerouslySetInnerHTML={{
+                    __html: data.gallery_description,
+                  }}
+                />
+              ) : (
+                <p className={styles.emptyContent}>
+                  현재 등록된 정보가 없습니다.
+                </p>
+              ))}
+            {activeTab === 'artworks' && (
+              <>
+                <GalleryArtworks artworks={data.artworks} />
+                <button className={styles.addButton}>+ 작품 등록</button>
+              </>
+            )}
+            {activeTab === 'exhibitions' && (
+              <>
+                <GalleryExhibitions exhibitions={data.exhibitions} />
+                <button className={styles.addButton}>+ 전시회 등록</button>
+              </>
+            )}
+          </DetailTabs>
+        ) : (
+          ''
+        )}
       </main>
 
       {showQrModal && (

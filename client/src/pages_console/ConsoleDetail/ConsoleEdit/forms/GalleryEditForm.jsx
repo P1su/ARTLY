@@ -1,4 +1,4 @@
-import styles from './GalleryEditForm.module.css';
+import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
 import GalleryExhibitions from '../../../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';

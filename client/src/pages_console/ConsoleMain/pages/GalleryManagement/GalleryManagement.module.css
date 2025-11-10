@@ -15,6 +15,7 @@
 
 .galleryCard {
   display: block;
+  cursor: pointer;
 }
 
 .cardContent {
@@ -176,45 +177,45 @@
   .contentContainer {
     gap: 1.5rem;
   }
-  
+
   .emptyStateContainer {
     padding: 1.5rem;
   }
-  
+
   .searchContainer {
     margin-bottom: 1.5rem;
   }
-  
+
   .galleryCard {
     padding: 0.8rem;
   }
-  
+
   .galleryImage {
     width: 12rem;
     height: 12rem;
   }
-  
+
   .galleryTitle {
     font-size: 1.6rem;
   }
-  
+
   .galleryAddress {
     font-size: 1.2rem;
   }
-  
+
   .galleryClosedDay {
     font-size: 1.2rem;
   }
-  
+
   .galleryTime {
     font-size: 1.2rem;
   }
-  
+
   .cardFooter {
     font-size: 1.6rem;
     padding: 1rem;
   }
-  
+
   .countAndButtonContainer {
     padding: 0rem 1rem;
     margin-bottom: 1.5rem;

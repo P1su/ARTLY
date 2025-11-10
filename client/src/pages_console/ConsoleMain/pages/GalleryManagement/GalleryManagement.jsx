@@ -5,34 +5,36 @@ import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import styles from './GalleryManagement.module.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function GalleryManagement({ 
-  galleryList, 
+export default function GalleryManagement({
+  galleryList,
   onDelete,
   loadGalleries,
   isLoading,
   error,
-  searchValue,      // ← props로 받기
-  onSearchChange    // ← props로 받기
+  searchValue, // ← props로 받기
+  onSearchChange, // ← props로 받기
 }) {
+  const navigate = useNavigate();
   // const [searchQuery, setSearchQuery] = useState(''); ← 삭제!
   const searchTimeoutRef = useRef(null);
-  
+
   // 검색어 변경 시 API 호출 (디바운스 적용)
   const handleSearchChange = (query) => {
-    onSearchChange(query);  // ← 부모로 전달
-    
+    onSearchChange(query); // ← 부모로 전달
+
     // 이전 타이머 취소
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
-    
+
     // 500ms 후에 API 호출 (디바운스)
     searchTimeoutRef.current = setTimeout(() => {
       loadGalleries(query);
     }, 500);
   };
-  
+
   // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
     return () => {
@@ -74,34 +76,37 @@ export default function GalleryManagement({
   if (filteredGalleryList.length > 0) {
     return (
       <div className={styles.contentContainer}>
-        <LookUp 
-          value={searchValue}  
+        <LookUp
+          value={searchValue}
           onChange={handleSearchChange}
-          placeholder="갤러리 검색"
-          isInput={true}
+          placeholder='갤러리 검색'
+          isInput
         />
-        
+
         <div className={styles.countAndButtonContainer}>
           <CountList count={filteredGalleryList.length} />
-          <RegisterButton 
-            buttonText="+갤러리 등록"
+          <RegisterButton
+            buttonText='+갤러리 등록'
             onButtonClick={() => alert('갤러리 등록')}
           />
         </div>
 
         <section className={styles.contentContainer}>
-          {filteredGalleryList.map(gallery => (
+          {filteredGalleryList.map((gallery) => (
             <div key={gallery.id} className={styles.galleryCard}>
-              <div className={styles.cardContent}>
-                <img 
-                  src={gallery.image} 
+              <div
+                className={styles.cardContent}
+                onClick={() => navigate(`/console/galleries/${gallery.id}`)}
+              >
+                <img
+                  src={gallery.image}
                   alt={gallery.name}
                   className={styles.galleryImage}
                 />
                 <div className={styles.cardInfo}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{gallery.name}</h3>
-                    <button 
+                    <button
                       onClick={() => handleDelete(gallery.id)}
                       className={styles.deleteButton}
                     >
@@ -109,7 +114,9 @@ export default function GalleryManagement({
                     </button>
                   </div>
                   <p className={styles.galleryAddress}>{gallery.address}</p>
-                  <p className={styles.galleryClosedDay}>휴관일 | {gallery.closedDay}</p>
+                  <p className={styles.galleryClosedDay}>
+                    휴관일 | {gallery.closedDay}
+                  </p>
                   <p className={styles.galleryTime}>{gallery.time}</p>
                 </div>
               </div>
@@ -128,26 +135,26 @@ export default function GalleryManagement({
   return (
     <>
       <div className={styles.searchContainer}>
-        <LookUp 
-          value={searchValue}  
+        <LookUp
+          value={searchValue}
           onChange={handleSearchChange}
-          placeholder="갤러리 검색"
-          isInput={true}
+          placeholder='갤러리 검색'
+          isInput
         />
       </div>
-      
+
       <div className={styles.countAndButtonContainer}>
         <CountList count={0} />
-        <RegisterButton 
-          buttonText="+갤러리 등록"
+        <RegisterButton
+          buttonText='+갤러리 등록'
           onButtonClick={() => alert('갤러리 등록')}
         />
       </div>
 
       <section className={styles.emptyStateContainer}>
-        <EmptyState 
-          message="등록된 갤러리가 없어요."
-          buttonText="+갤러리 등록"
+        <EmptyState
+          message='등록된 갤러리가 없어요.'
+          buttonText='+갤러리 등록'
         />
       </section>
     </>
