@@ -1,21 +1,37 @@
 .tabsLayout {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .tabNav {
   display: flex;
-  width: 100%;
-  padding-top: 15px;
-  box-shadow: 0 -0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-  border-bottom: 0.5rem solid #eeeeeed3;
+  width: 100vw;
+  max-width: 95rem;
+
   margin-bottom: 2rem;
+
+  padding-top: 1.3rem;
+  border-bottom: 0.5rem solid #eeeeee;
   background-color: #f7f8facf;
+  box-shadow: 0 -0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.tabContent {
+  width: 100vw;
+  max-width: 95rem;
+  margin-bottom: 4rem;
+  background-color: white;
+  min-height: 10rem;
+  padding: 2rem;
+  margin-top: -2.4rem;
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tabButton {
   flex: 1;
-  padding: 2rem 0;
+  padding: 1.6rem 0;
   font-size: 1.6rem;
   font-weight: 500;
   color: #888;
@@ -28,7 +44,8 @@
   color: #333;
 }
 
-.activeTab {
+.activeTab,
+.activeTab:hover {
   color: #007bff;
   border-bottom: none;
   border-radius: 2rem 2rem 0 0;
@@ -39,19 +56,23 @@
     -2px 0 4px rgba(0, 0, 0, 0.05);
 }
 
-.tabContent {
-  width: 100%;
-  background-color: white;
-  min-height: 10rem;
-  padding: 2rem;
-  margin-top: -2.5rem;
-  border-radius: 0 0 1.5rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+@media (max-width: 1500px) {
+  .tabNav,
+  .tabContent {
+    max-width: 85rem;
+  }
 }
 
-.emptyContent {
-  text-align: center;
-  padding: 4rem 0;
-  font-size: 1.5rem;
-  color: #8a8d91;
+@media (max-width: 1072px) {
+  .tabNav,
+  .tabContent {
+    max-width: 75rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .tabButton {
+    padding: 1.5rem 0;
+    font-size: 1.4rem;
+  }
 }

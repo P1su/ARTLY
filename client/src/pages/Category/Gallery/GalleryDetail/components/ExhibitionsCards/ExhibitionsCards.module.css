@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1.7rem;
   width: 100%;
+  margin-bottom: 3rem;
 }
 
 .exhibitionCard {
@@ -79,19 +80,57 @@
   text-overflow: ellipsis;
 }
 
-.organization {
-  font-size: 1.4rem;
+.location {
+  font-size: 1.5rem;
   color: #65676b;
 }
 
 .date {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #8a8d91;
 }
 
 .emptyContent {
   text-align: center;
   padding: 4rem 0;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #aaa;
+}
+
+@media (max-width: 1072px) {
+  .title {
+    font-size: 1.5rem;
+    font-weight: 650;
+  }
+
+  .location {
+    font-size: 1.4rem;
+  }
+
+  .date {
+    font-size: 1.4rem;
+  }
+
+  .emptyContent {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: 1.4rem;
+    font-weight: 650;
+  }
+
+  .location {
+    font-size: 1.3rem;
+  }
+
+  .date {
+    font-size: 1.3rem;
+  }
+
+  .emptyContent {
+    font-size: 1.4rem;
+  }
 }

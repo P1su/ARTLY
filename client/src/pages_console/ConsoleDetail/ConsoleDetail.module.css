@@ -71,11 +71,6 @@
   box-shadow: inset 0 -2px 0 #007bff;
 }
 
-.content {
-  padding-top: 2rem;
-  padding-bottom: 5rem;
-}
-
 .descriptionParagraph {
   padding: 1rem;
   margin-bottom: 4rem;
@@ -106,6 +101,8 @@
   width: 40%;
   padding: 1.2rem 0;
   margin-top: 2rem;
+  margin-bottom: 1rem;
+
   background-color: var(--blue01);
   color: #fff;
   font-size: 1.4rem;
@@ -139,20 +136,4 @@
   padding: 4rem 0;
   font-size: 1.5rem;
   color: #aaa;
-}
-
-@media (max-width: 1024px) {
-  .content {
-    padding: 0 3rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .content {
-    padding: 0;
-  }
-
-  .adminTabButton {
-    font-size: 1.4rem;
-  }
 }

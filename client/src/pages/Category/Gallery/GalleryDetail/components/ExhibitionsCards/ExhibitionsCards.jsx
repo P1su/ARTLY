@@ -24,7 +24,7 @@ export default function ExhibitionsCards({ exhibitions }) {
           exhibition_poster: poster,
           exhibition_title: title,
           exhibition_status: status,
-          organization,
+          exhibition_location: exhibitionLocation,
           exhibition_start_date: start_date,
           exhibition_end_date: end_date,
         }) => {
@@ -55,7 +55,7 @@ export default function ExhibitionsCards({ exhibitions }) {
 
               <div className={styles.infoContainer}>
                 <h4 className={styles.title}>{title}</h4>
-                <p className={styles.organization}>{organization}</p>
+                <p className={styles.location}>{exhibitionLocation}</p>
                 <p className={styles.date}>{`${start_date} ~ ${end_date}`}</p>
               </div>
             </Link>
