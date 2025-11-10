@@ -180,6 +180,12 @@
   cursor: pointer;
 }
 
+.errorMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+}
+
 .countAndButtonContainer {
     display: flex;
     padding: 0rem 0.5rem;
