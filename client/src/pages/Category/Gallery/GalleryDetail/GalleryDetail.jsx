@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FaHeart, FaShare } from 'react-icons/fa6';
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
-import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions.jsx';
 import useMap from '../../../Nearby/hooks/useMap.jsx';
 import { userInstance } from '../../../../apis/instance.js';
+import ExhibitionsCards from './components/ExhibitionsCards/ExhibitionsCards.jsx';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
@@ -214,7 +214,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           >
-            <GalleryExhibitions
+            <ExhibitionsCards
               exhibitions={exhibitions?.filter((ex) => {
                 if (activeTab === 'ongoing')
                   return ex.exhibition_status === 'exhibited';

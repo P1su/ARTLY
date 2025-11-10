@@ -27,12 +27,12 @@ import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
-import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
 import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
+import ConsoleEdit from '../pages_console/ConsoleEdit/ConsoleEdit';
 
 const router = createBrowserRouter([
   {

@@ -1,7 +1,7 @@
 import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { userInstance } from '../../../apis/instance.js';
+import { userInstance } from '../../apis/instance.js';
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
@@ -23,7 +23,7 @@ const EDIT_CONFIG = {
 
 const FORM_COMPONENTS = {
   galleries: GalleryEditForm,
-  exhibitions: ExhibitionEditForm, // 추후 분리 후 추가
+  exhibitions: ExhibitionEditForm,
   artworks: ArtworkEditForm,
 };
 

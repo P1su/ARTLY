@@ -1,7 +1,7 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import GalleryArtworks from '../../components/GalleryArtworks/GalleryArtworks.jsx';
+import ArtworksCards from '../../ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [activeTab, setActiveTab] = useState('info');
@@ -275,7 +275,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           )}
           {activeTab === 'artworks' &&
             (data.exhibitions?.length > 0 ? (
-              <GalleryArtworks artworks={data.artworks} />
+              <ArtworksCards artworks={data.artworks} />
             ) : (
               <p className={styles.emptyContent}>
                 현재 전시된 작품이 없습니다.

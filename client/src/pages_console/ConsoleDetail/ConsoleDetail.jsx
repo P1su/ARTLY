@@ -6,10 +6,10 @@ import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/E
 import { useEffect, useState } from 'react';
 import DetailTabs from '../../components/DetailTabs/DetailTabs';
 import { userInstance } from '../../apis/instance';
-import GalleryExhibitions from '../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions';
-import QrModal from './QrModal/QrModal';
-import GalleryArtworks from './components/GalleryArtworks/GalleryArtworks';
+import QrModal from './components/QrModal/QrModal';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
+import ArtworksCards from './components/ArtworksCards/ArtworksCards';
+import ExhibitionsCards from '../../pages/Category/Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards';
 
 const DETAIL_CONFIG = {
   galleries: {
@@ -127,13 +127,13 @@ export default function ConsoleDetail({ type }) {
               ))}
             {activeTab === 'artworks' && (
               <>
-                <GalleryArtworks artworks={data.artworks} />
+                <ArtworksCards artworks={data.artworks} />
                 <button className={styles.addButton}>+ 작품 등록</button>
               </>
             )}
             {activeTab === 'exhibitions' && (
               <>
-                <GalleryExhibitions exhibitions={data.exhibitions} />
+                <ExhibitionsCards exhibitions={data.exhibitions} />
                 <button className={styles.addButton}>+ 전시회 등록</button>
               </>
             )}

@@ -1,7 +1,7 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import GalleryExhibitions from '../../../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
+import ExhibitionsCards from '../../../pages/Category/Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards.jsx';
 
 export default function GalleryEditForm({ data, setData, onFileChange }) {
   const [activeTab, setActiveTab] = useState('info');
@@ -324,7 +324,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           )}
           {activeTab === 'exhibitions' &&
             (data.exhibitions?.length > 0 ? (
-              <GalleryExhibitions exhibitions={data.exhibitions} />
+              <ExhibitionsCards exhibitions={data.exhibitions} />
             ) : (
               <p className={styles.emptyContent}>
                 현재 진행중인 전시가 없습니다.

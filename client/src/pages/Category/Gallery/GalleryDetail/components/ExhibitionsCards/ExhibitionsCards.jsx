@@ -1,4 +1,4 @@
-import styles from './GalleryExhibitions.module.css';
+import styles from './ExhibitionsCards.module.css';
 import { Link, useLocation } from 'react-router-dom';
 
 const STATUS_CONFIG = {
@@ -8,7 +8,7 @@ const STATUS_CONFIG = {
   default: { text: '기타', className: styles.statusDefault },
 };
 
-export default function GalleryExhibitions({ exhibitions }) {
+export default function ExhibitionsCards({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
   console.log('갤러리 전시회', exhibitions);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { userInstance } from '../../../../../apis/instance';
+import { userInstance } from '../../../../apis/instance';
 import styles from './ArtistSelectModal.module.css';
 
 export default function ArtistSelectModal({ onClose, onSelect, setData }) {
