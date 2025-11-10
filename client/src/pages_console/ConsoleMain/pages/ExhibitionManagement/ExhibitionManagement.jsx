@@ -1,9 +1,11 @@
 import React, { useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
 import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
+import Spinner from '../../components/Spinner/Spinner';
 import styles from './ExhibitionManagement.module.css';
 
 export default function ExhibitionManagement({ 
@@ -16,6 +18,8 @@ export default function ExhibitionManagement({
   error,
   galleryList
 }) {
+  const navigate = useNavigate();
+  
   const handleDelete = (id) => {
     if (window.confirm('정말로 이 전시회를 삭제하시겠습니까?')) {
       onDelete(id, 'exhibition');
@@ -35,7 +39,6 @@ export default function ExhibitionManagement({
   useEffect(() => {
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
-      console.log('🎨 ExhibitionManagement - selectedGallery:', selectedGallery, 'galleryId:', galleryId);
       loadExhibitions(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
@@ -87,6 +90,24 @@ export default function ExhibitionManagement({
     return options;
   }, [galleryList, exhibitionList]);
 
+  if (isLoading) {
+    return (
+      <div className={styles.contentContainer}>
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.contentContainer}>
+        <div className={styles.errorMessage}>
+          오류가 발생했습니다: {error}
+        </div>
+      </div>
+    );
+  }
+
   if (filteredExhibitionList.length > 0) {
     return (
       <section className={styles.contentContainer}>
@@ -106,7 +127,11 @@ export default function ExhibitionManagement({
 
         <section className={styles.contentContainer}>
           {filteredExhibitionList.map(exhibition => (
-            <div key={exhibition.id} className={styles.galleryCard}>
+            <div 
+              key={exhibition.id} 
+              className={styles.galleryCard}
+              onClick={() => navigate(`/console/exhibitions/${exhibition.id}`)}
+            >
               <div className={styles.cardContent}>
                 <img 
                   src={exhibition.image} 

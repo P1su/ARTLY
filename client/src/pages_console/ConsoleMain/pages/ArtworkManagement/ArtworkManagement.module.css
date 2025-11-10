@@ -160,3 +160,9 @@
     margin-bottom: 1rem;
   }
 
+.errorMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+}
+

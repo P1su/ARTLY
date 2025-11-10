@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { instance } from '../../../../../apis/instance';
+import useDebounceSearch from '../../../hooks/useDebounceSearch';
 
 export default function useInterestedUser() {
   const [interestedUserList, setInterestedUserList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('all');
 
@@ -53,82 +54,7 @@ export default function useInterestedUser() {
     return dateB - dateA; // 내림차순 (최신순)
   });
 
-  const handleSearchChange = async (query) => {
-    setSearchQuery(query);
-    
-    // 검색어가 변경되면 현재 활성 탭에 대해 API 재호출
-    if (activeTab === 'all') {
-      // 전체 탭의 경우 모든 타입에 대해 검색
-      try {
-        setIsLoading(true);
-        const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          instance.get(`/api/users/console/likes?liked_type=gallery${query ? `&search=${query}` : ''}`),
-          instance.get(`/api/users/console/likes?liked_type=exhibition${query ? `&search=${query}` : ''}`),
-          instance.get(`/api/users/console/likes?liked_type=art${query ? `&search=${query}` : ''}`)
-        ]);
-        
-        const allUsers = [
-          ...(Array.isArray(galleryResponse.data) ? galleryResponse.data.map(item => ({
-            id: item.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.gallery?.gallery_name || '정보 없음',
-            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: item.gallery?.gallery_name || '갤러리 정보 없음',
-            exhibitionName: '전시회 정보 없음',
-            artworkName: '작품 정보 없음',
-            type: 'gallery'
-          })) : []),
-          ...(Array.isArray(exhibitionResponse.data) ? exhibitionResponse.data.map(item => ({
-            id: item.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.exhibition?.exhibition_title || '정보 없음',
-            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: '갤러리 정보 없음',
-            exhibitionName: item.exhibition?.exhibition_title || '전시회 정보 없음',
-            artworkName: '작품 정보 없음',
-            type: 'exhibition'
-          })) : []),
-          ...(Array.isArray(artResponse.data) ? artResponse.data.map(item => ({
-            id: item.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.art?.art_title || '정보 없음',
-            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: '갤러리 정보 없음',
-            exhibitionName: '전시회 정보 없음',
-            artworkName: item.art?.art_title || '작품 정보 없음',
-            type: 'art'
-          })) : [])
-        ];
-        
-        setInterestedUserList(allUsers);
-      } catch (err) {
-        setError(err.message);
-        console.error('검색 실패:', err);
-        setInterestedUserList([]);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      // 특정 타입 탭의 경우 해당 타입만 검색
-      await loadInterestedUsers(activeTab, query);
-    }
-  };
-
-  const clearSearch = async () => {
-    setSearchQuery('');
-    
-    // 검색어를 지우면 현재 활성 탭에 대해 API 재호출 (검색어 없이)
-    if (activeTab === 'all') {
-      await handleTabChange('all');
-    } else {
-      await loadInterestedUsers(activeTab, '');
-    }
-  };
-
-  // 탭 변경 핸들러
+  // 탭 변경 핸들러 (hook 사용 전에 정의 필요)
   const handleTabChange = async (tab) => {
     setActiveTab(tab);
     
@@ -192,6 +118,93 @@ export default function useInterestedUser() {
     }
   };
 
+  // 실제 검색 실행 함수
+  const performSearch = async (query) => {
+    setIsSearching(true);
+    
+    // 검색어가 변경되면 현재 활성 탭에 대해 API 재호출
+    if (activeTab === 'all') {
+      // 전체 탭의 경우 모든 타입에 대해 검색
+      try {
+        setIsLoading(true);
+        const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
+          instance.get(`/api/users/console/likes?liked_type=gallery&search=${query}`),
+          instance.get(`/api/users/console/likes?liked_type=exhibition&search=${query}`),
+          instance.get(`/api/users/console/likes?liked_type=art&search=${query}`)
+        ]);
+        
+        const allUsers = [
+          ...(Array.isArray(galleryResponse.data) ? galleryResponse.data.map(item => ({
+            id: item.id,
+            name: item.user?.user_name || '사용자 정보 없음',
+            category: item.gallery?.gallery_name || '정보 없음',
+            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
+            userName: item.user?.user_name || '사용자 정보 없음',
+            galleryName: item.gallery?.gallery_name || '갤러리 정보 없음',
+            exhibitionName: '전시회 정보 없음',
+            artworkName: '작품 정보 없음',
+            type: 'gallery'
+          })) : []),
+          ...(Array.isArray(exhibitionResponse.data) ? exhibitionResponse.data.map(item => ({
+            id: item.id,
+            name: item.user?.user_name || '사용자 정보 없음',
+            category: item.exhibition?.exhibition_title || '정보 없음',
+            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
+            userName: item.user?.user_name || '사용자 정보 없음',
+            galleryName: '갤러리 정보 없음',
+            exhibitionName: item.exhibition?.exhibition_title || '전시회 정보 없음',
+            artworkName: '작품 정보 없음',
+            type: 'exhibition'
+          })) : []),
+          ...(Array.isArray(artResponse.data) ? artResponse.data.map(item => ({
+            id: item.id,
+            name: item.user?.user_name || '사용자 정보 없음',
+            category: item.art?.art_title || '정보 없음',
+            date: item.create_dtm ? new Date(item.create_dtm).toLocaleDateString('ko-KR') : '날짜 정보 없음',
+            userName: item.user?.user_name || '사용자 정보 없음',
+            galleryName: '갤러리 정보 없음',
+            exhibitionName: '전시회 정보 없음',
+            artworkName: item.art?.art_title || '작품 정보 없음',
+            type: 'art'
+          })) : [])
+        ];
+        
+        setInterestedUserList(allUsers);
+      } catch (err) {
+        setError(err.message);
+        console.error('검색 실패:', err);
+        setInterestedUserList([]);
+      } finally {
+        setIsLoading(false);
+        setIsSearching(false);
+      }
+    } else {
+      // 특정 타입 탭의 경우 해당 타입만 검색
+      try {
+        setIsLoading(true);
+        await loadInterestedUsers(activeTab, query);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+  };
+
+  // 디바운스 검색 hook 사용
+  const { searchValue: searchQuery, handleSearchChange, clearSearch } = useDebounceSearch({
+    onSearch: performSearch,
+    onEmptySearch: () => handleTabChange(activeTab),
+    onClearSearch: async () => {
+      // 검색어를 지우면 현재 활성 탭에 대해 API 재호출 (검색어 없이)
+      if (activeTab === 'all') {
+        await handleTabChange('all');
+      } else {
+        await loadInterestedUsers(activeTab, '');
+      }
+    },
+    minLength: 2,
+    delay: 500
+  });
+
   // 컴포넌트 마운트 시 전체 관심유저 로드
   useEffect(() => {
     handleTabChange('all');
@@ -202,6 +215,7 @@ export default function useInterestedUser() {
     setInterestedUserList,
     searchQuery,
     isLoading,
+    isSearching,
     error,
     activeTab,
     loadInterestedUsers,
