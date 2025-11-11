@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './EditProfile.module.css';
 import { FaCog } from 'react-icons/fa';
 import { instance } from '../../../apis/instance';
 import PwModal from './PwModal/PwModal';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from './../../../store/UserProvider';
 
 const EditProfile = () => {
-  const [userInfo, setUserInfo] = useState({
-    user_name: '',
-    login_id: '',
-    user_email: '',
-    user_img: '',
-  });
+  const { user, setUser } = useContext(UserContext);
+
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const [editingName, setEditingName] = useState(false); // 닉네임 수정 상태
   const [editingEmail, setEditingEmail] = useState(false); // 이메일 수정 상태
@@ -19,20 +16,10 @@ const EditProfile = () => {
   const [newEmail, setNewEmail] = useState(''); // 새로운 이메일
 
   const navigate = useNavigate();
-  console.log(userInfo);
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await instance.get('/api/users/me');
-        setUserInfo(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('사용자 정보를 불러오는 데 실패했습니다.', error);
-      }
-    };
 
-    fetchUserInfo();
-  }, []);
+  if (!user) {
+    return <div>데이터 불러오는 중</div>;
+  }
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -44,12 +31,12 @@ const EditProfile = () => {
 
   const handleEditName = () => {
     setEditingName(true);
-    setNewName(userInfo.user_name);
+    setNewName(user.user_name);
   };
 
   const handleEditEmail = () => {
     setEditingEmail(true);
-    setNewEmail(userInfo.user_email);
+    setNewEmail(user.user_email);
   };
 
   const handleChangeName = (e) => {
@@ -63,10 +50,10 @@ const EditProfile = () => {
   const handleSaveName = async () => {
     try {
       await instance.put('/api/users/me', {
-        ...userInfo,
+        ...user,
         user_name: newName,
       });
-      setUserInfo({ ...userInfo, user_name: newName });
+      setUser({ ...user, user_name: newName });
       setEditingName(false);
     } catch (error) {
       console.error('닉네임 변경에 실패했습니다.', error);
@@ -76,10 +63,10 @@ const EditProfile = () => {
   const handleSaveEmail = async () => {
     try {
       await instance.put('/api/users/me', {
-        ...userInfo,
+        ...user,
         user_email: newEmail,
       });
-      setUserInfo({ ...userInfo, user_email: newEmail });
+      setUser({ ...user, user_email: newEmail });
       setEditingEmail(false);
     } catch (error) {
       console.error('이메일 변경에 실패했습니다.', error);
@@ -95,7 +82,7 @@ const EditProfile = () => {
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>아이디</span>
             <span className={styles.infoValue}>
-              {userInfo.login_id || '아이디'}
+              {user.login_id || '아이디'}
             </span>
             <button
               className={styles.changeButtonSmall}
@@ -125,7 +112,7 @@ const EditProfile = () => {
             ) : (
               <>
                 <span className={styles.infoValue}>
-                  {userInfo.user_name || '닉네임'}
+                  {user.user_name || '닉네임'}
                 </span>
                 <button
                   className={styles.changeButton}
@@ -157,7 +144,7 @@ const EditProfile = () => {
             ) : (
               <>
                 <span className={styles.infoValue}>
-                  {userInfo.user_email || 'email@email.com'}
+                  {user.user_email || 'email@email.com'}
                 </span>
                 <button
                   className={styles.changeButton}
@@ -202,7 +189,7 @@ const EditProfile = () => {
       <PwModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        userInfo={userInfo}
+        userInfo={user}
       />
     </div>
   );
