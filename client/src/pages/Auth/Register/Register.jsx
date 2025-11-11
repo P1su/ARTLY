@@ -74,6 +74,7 @@ export default function Register() {
           <InputText
             name='login_id'
             placeholder='아이디 (6~20자 영문, 숫자)'
+            placeholder='아이디 (6~20자 영문, 숫자)'
             onChange={handleChange}
             value={formDatas.login_id}
           />
@@ -89,6 +90,7 @@ export default function Register() {
         >
           <InputText
             name='login_pwd'
+            placeholder='비밀번호 (8~16자 영문+숫자+특수문자)'
             placeholder='비밀번호 (8~16자 영문+숫자+특수문자)'
             type='password'
             onChange={handleChange}

@@ -39,18 +39,16 @@ export default function Menu({ onOpen, isOpen }) {
           </h3>
 
           {/* 관리자 메뉴 */}
-          <div className={styles.sidebarMenu}>
-            {user && user.admin_flag === '1' && (
+          {user && user.admin_flag === '1' && (
+            <div className={styles.sidebarMenu}>
               <span
                 className={styles.menuSpan}
-                onClick={() => {
-                  handleNavigate('/console/main');
-                }}
+                onClick={() => handleNavigate('/console/main')}
               >
                 갤러리 관리
               </span>
-            )}
-          </div>
+            </div>
+          )}
         </section>
 
         <hr className={styles.divider} />
