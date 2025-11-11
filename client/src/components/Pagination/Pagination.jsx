@@ -10,68 +10,51 @@ export default function Pagination({
   const pageNumbers = getPageNumbers(currentPage, totalPages, 5);
 
   return (
-    <div
-      className={styles.paginationContainer}
-      style={{
-        justifyContent: pageNumbers.length === 1 ? 'center' : 'space-between',
-      }}
-    >
-      {currentPage > 1 && (
-        <>
-          {/*<button onClick={() => onPageChange(1)} className={styles.pageButton}>
-            &lt;&lt;
-          </button>*/}
-          <button
-            onClick={() => onPageChange(currentPage - 1)}
-            className={styles.pageButton}
-          >
-            &lt;
-          </button>
-        </>
-      )}
-
-      {pageNumbers.map((page) => (
+    <div className={styles.paginationContainer}>
+      <div className={styles.sideButtonContainer}>
         <button
-          key={page}
-          onClick={() => onPageChange(page)}
-          className={`${styles.pageButton} ${currentPage === page ? styles.active : ''}`}
+          onClick={() => onPageChange(currentPage - 1)}
+          className={styles.pageButton}
+          disabled={currentPage === 1}
         >
-          {page}
+          &lt;
         </button>
-      ))}
+      </div>
 
-      {currentPage < totalPages && (
-        <>
+      <div className={styles.pageNumbersContainer}>
+        {pageNumbers.map((page) => (
           <button
-            onClick={() => onPageChange(currentPage + 1)}
-            className={styles.pageButton}
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`${styles.pageButton} ${
+              currentPage === page ? styles.active : ''
+            }`}
           >
-            &gt;
+            {page}
           </button>
-          {/*
-            <button
-              onClick={() => onPageChange(totalPages)}
-              className={styles.pageButton}
-            >
-              &gt;&gt;
-            </button>*/}
-        </>
-      )}
+        ))}
+      </div>
+
+      <div className={styles.sideButtonContainer}>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          className={styles.pageButton}
+          disabled={currentPage === totalPages}
+        >
+          &gt;
+        </button>
+      </div>
     </div>
   );
 }
 
-const getPageNumbers = (currentPage, totalPages, maxVisible = 5) => {
+const getPageNumbers = (currentPage, totalPages, maxVisible) => {
   const half = Math.floor(maxVisible / 2);
-  let start = Math.max(1, currentPage - half);
-  let end = Math.min(totalPages, currentPage + half);
+  let start = Math.max(currentPage - half, 1);
+  let end = Math.min(start + maxVisible - 1, totalPages);
 
   if (end - start + 1 < maxVisible) {
-    if (start === 1) {
-      end = Math.min(totalPages, start + maxVisible - 1);
-    } else if (end === totalPages) {
-      start = Math.max(1, end - maxVisible + 1);
-    }
+    start = Math.max(end - maxVisible + 1, 1);
   }
 
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
