@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
 import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
+import Spinner from '../../components/Spinner/Spinner';
+import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
 
 export default function GalleryManagement({ 
@@ -11,36 +14,18 @@ export default function GalleryManagement({
   onDelete,
   loadGalleries,
   isLoading,
-  error,
-  searchValue,      // ← props로 받기
-  onSearchChange    // ← props로 받기
+  isSearching,
+  error
 }) {
-  // const [searchQuery, setSearchQuery] = useState(''); ← 삭제!
-  const searchTimeoutRef = useRef(null);
+  const navigate = useNavigate();
   
-  // 검색어 변경 시 API 호출 (디바운스 적용)
-  const handleSearchChange = (query) => {
-    onSearchChange(query);  // ← 부모로 전달
-    
-    // 이전 타이머 취소
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    
-    // 500ms 후에 API 호출 (디바운스)
-    searchTimeoutRef.current = setTimeout(() => {
-      loadGalleries(query);
-    }, 500);
-  };
-  
-  // 컴포넌트 언마운트 시 타이머 정리
-  useEffect(() => {
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, []);
+  // 디바운스 검색 hook 사용
+  const { searchValue, handleSearchChange } = useDebounceSearch({
+    onSearch: loadGalleries,
+    onEmptySearch: () => loadGalleries(''),
+    minLength: 2,
+    delay: 500
+  });
 
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
@@ -54,9 +39,7 @@ export default function GalleryManagement({
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          갤러리 목록을 불러오는 중...
-        </div>
+        <Spinner />
       </div>
     );
   }
@@ -64,7 +47,7 @@ export default function GalleryManagement({
   if (error) {
     return (
       <div className={styles.contentContainer}>
-        <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+        <div className={styles.errorMessage}>
           오류가 발생했습니다: {error}
         </div>
       </div>
@@ -91,7 +74,11 @@ export default function GalleryManagement({
 
         <section className={styles.contentContainer}>
           {filteredGalleryList.map(gallery => (
-            <div key={gallery.id} className={styles.galleryCard}>
+            <div 
+              key={gallery.id} 
+              className={styles.galleryCard}
+              onClick={() => navigate(`/console/galleries/${gallery.id}`)}
+            >
               <div className={styles.cardContent}>
                 <img 
                   src={gallery.image} 

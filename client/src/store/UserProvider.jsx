@@ -3,7 +3,7 @@ import { userInstance } from './../apis/instance';
 
 export const UserContext = createContext();
 
-export function UserProdiver({ children }) {
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null); // 사용자 정보 저장
 
   useEffect(() => {

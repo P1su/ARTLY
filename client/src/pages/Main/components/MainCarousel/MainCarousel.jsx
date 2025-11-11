@@ -1,11 +1,13 @@
 import styles from './MainCarousel.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { instance } from '../../../../apis/instance.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function MainCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [items, setItems] = useState([]);
   const timeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     resetAutoPlay();
@@ -89,6 +91,9 @@ export default function MainCarousel() {
                 src={item?.image}
                 alt={item?.title || item?.name}
                 className={styles.carouselImage}
+                onClick={() => {
+                  navigate(`/exhibitions/${item?.id}`);
+                }}
               />
               <div className={styles.captionBox}>
                 <h3 className={styles.title}>{item?.title}</h3>
@@ -99,7 +104,7 @@ export default function MainCarousel() {
                 <button
                   className={styles.detailButton}
                   onClick={() => {
-                    window.location.href = `/exhibitions/${item?.id}`;
+                    navigate(`/exhibitions/${item?.id}`);
                   }}
                 >
                   자세히 보기

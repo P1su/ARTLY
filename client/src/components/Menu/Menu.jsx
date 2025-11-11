@@ -22,9 +22,10 @@ export default function Menu({ onOpen, isOpen }) {
   console.log(user);
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} onClick={onOpen}>
       <div
         className={`${styles.menuLayout} ${isOpen ? styles.menuVisible : styles.menuHidden}`}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* 닫기 버튼 */}
         <div className={styles.closeContainer}>

@@ -6,12 +6,18 @@ export default function useDeleteItem() {
   const [exhibitionList, setExhibitionList] = useState([]);
   const [artworkList, setArtworkList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
 
   // 갤러리 목록 로드
   const loadGalleries = useCallback(async (search = '') => {
     try {
       setIsLoading(true);
+      // 검색어가 있으면 검색 중 상태로 표시
+      if (search.trim()) {
+        setIsSearching(true);
+      }
+      
       // 실제 API 호출 (방법 1 + /api/galleries 경로)
       const params = new URLSearchParams();
       if (search) {
@@ -42,6 +48,7 @@ export default function useDeleteItem() {
       setGalleryList([]);
     } finally {
       setIsLoading(false);
+      setIsSearching(false);
     }
   }, []);
 
@@ -152,6 +159,7 @@ export default function useDeleteItem() {
     loadExhibitions,
     loadArtworks,
     isLoading,
+    isSearching,
     error
   };
 }

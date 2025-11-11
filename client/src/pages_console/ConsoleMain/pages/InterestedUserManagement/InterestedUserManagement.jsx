@@ -4,6 +4,7 @@ import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import AlarmModal from '../../components/AlarmModal/AlarmModal';
+import Spinner from '../../components/Spinner/Spinner';
 import Table from './components/Table/Table';
 import useUserSelection from './hooks/useUserSelection';
 import useInterestedUser from './hooks/useInterestedUser';
@@ -23,6 +24,7 @@ export default function InterestedUserManagement() {
     interestedUserList,
     searchQuery,
     isLoading,
+    isSearching,
     error,
     activeTab,
     handleSearchChange,
@@ -39,6 +41,24 @@ export default function InterestedUserManagement() {
     setIsAlarmModalOpen(false);
     clearSelection();
   };
+
+  if (isLoading) {
+    return (
+      <div className={styles.contentContainer}>
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.contentContainer}>
+        <div className={styles.errorMessage}>
+          오류가 발생했습니다: {error}
+        </div>
+      </div>
+    );
+  }
 
   if (interestedUserList.length > 0) {
         return (

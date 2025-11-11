@@ -6,12 +6,14 @@ import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions.jsx';
 import useMap from '../../../Nearby/hooks/useMap.jsx';
 import { userInstance } from '../../../../apis/instance.js';
+import { useToastContext } from '../../../../store/ToastProvider';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
-
+  
+  const { addToast } = useToastContext();
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
   const [activeTab, setActiveTab] = useState('ongoing');
@@ -69,6 +71,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         await userInstance.post('/api/likes', {
           liked_id: id,
           liked_type: 'gallery',
+        });
+        addToast({
+          title: "좋아하는 갤러리로 추가 완료!",
+          message: "나의 좋아요 목록은 마이페이지에서 확인할 수 있어요."
         });
       }
       setIsLiked(!isLiked);
