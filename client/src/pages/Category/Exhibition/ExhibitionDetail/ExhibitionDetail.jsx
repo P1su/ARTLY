@@ -1,20 +1,13 @@
 import styles from './ExhibitionDetail.module.css';
-import { useParams, Link, useNavigate, data } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
-import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
-import GalleryArtworks from '../../../../pages_console/ConsoleDetail/components/GalleryArtworks/GalleryArtworks.jsx';
-import GalleryExhibitions from '../../Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions.jsx';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
-import ReservationConfirm from '../../../ReservationConfirm/ReservationConfirm.jsx';
+import { useToastContext } from '../../../../store/ToastProvider';
 // import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
 // 임시 컴포넌트
-const ExhibitionArtworks = ({ artworks }) => (
-  <div className={styles.emptyContent}></div>
-);
-
 export default function ExhibitionDetail({
   showUserActions = true,
   id: propId,
@@ -25,6 +18,7 @@ export default function ExhibitionDetail({
   const navigate = useNavigate();
   const [exhibitionData, setExhibitionData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const { addToast } = useToastContext();
 
   const getExhibitionDetail = async () => {
     try {
@@ -68,6 +62,10 @@ export default function ExhibitionDetail({
         await userInstance.post('/api/likes', {
           liked_id: id,
           liked_type: 'exhibition',
+        });
+        addToast({
+          title: '좋아하는 전시회로 추가 완료!',
+          message: '좋아요 목록은 마이페이지에서 확인할 수 있어요.',
         });
       }
       setIsLiked(!isLiked);

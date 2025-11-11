@@ -1,0 +1,110 @@
+/* 1. Display - 모바일 우선 */
+.actionContainer {
+  display: flex;
+  justify-content: space-between; /* 모바일에서는 좌우 꽉 채우기 */
+  gap: 0.25rem; /* 모바일용 작은 간격 */
+  overflow-x: auto;
+  padding: 0 0.5rem; /* 모바일용 작은 패딩 */
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+}
+
+.actionButton {
+  flex: 1; /* 모바일에서도 균등 분할 */
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .actionContainer {
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0;
+  }
+  
+  .actionButton {
+    flex: 1;
+  }
+}
+
+/* 2. Position */
+
+/* 3. Box - 모바일 최적화 */
+.actionButton {
+  padding: 0.75rem 0.5rem; /* 모바일용 더 작은 패딩 */
+  border: none;
+  border-bottom: 0.2rem solid transparent;
+  border-radius: 0;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .actionButton {
+    padding: 1.6rem;
+  }
+}
+
+/* 4. Background */
+.actionButton {
+  background: none;
+}
+
+/* 5. Font - 모바일 최적화 */
+.actionButton {
+  color: #666666;
+  font-size: 1rem; /* 모바일용 작은 폰트 */
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .actionButton {
+    font-size: 1.4rem;
+  }
+}
+
+.actionButtonActive {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.actionButtonInactive {
+  color: #6b7280;
+}
+
+/* 6. Animation */
+.actionButton {
+  transition: all 0.2s ease;
+}
+
+/* 7. 기타 속성 */
+.actionButton {
+  cursor: pointer;
+}
+
+.actionButtonActive {
+  border-bottom-color: #2563eb;
+}
+
+.actionButtonInactive:hover {
+  color: #111827;
+}
+
+/* 스크롤바 스타일링 */
+.actionContainer::-webkit-scrollbar {
+  height: 0.2rem;
+}
+
+.actionContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.actionContainer::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 0.1rem;
+}
+
+.actionContainer::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

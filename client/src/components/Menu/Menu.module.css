@@ -92,6 +92,7 @@
 .menuSection {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 
   width: 100%;
 }
@@ -102,13 +103,6 @@
   font-weight: 700;
   line-height: 33px;
   letter-spacing: -0.5px;
-  margin-bottom: 2.3rem;
-}
-
-.sidebarMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 
 .menuSpan {
