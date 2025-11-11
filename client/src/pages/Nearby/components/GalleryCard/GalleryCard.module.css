@@ -41,7 +41,7 @@
   gap: 1rem;
 
   position: absolute;
-  right: 1rem;
+  right: -1rem;
   top: 1rem;
 }
 
@@ -79,7 +79,9 @@
     width: 40%;
     height: 11rem;
   }
-
+  .infoContainer {
+    padding-top: 2rem;
+  }
   .galleryTitle {
     font-size: 1.4rem;
   }
