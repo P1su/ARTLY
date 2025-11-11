@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 
 export const UserContext = createContext();
 
-export function UserProdiver({ children }) {
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null); // 사용자 정보 저장
   const [token, setToken] = useState(null);
   const login = (userData, jwt) => {
