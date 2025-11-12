@@ -84,7 +84,7 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() => navigate(`/console/${type}`)}
+          onClick={() => navigate(`/console/main`)}
         >
           {'<'}
         </button>
