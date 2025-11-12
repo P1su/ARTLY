@@ -1,0 +1,114 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+
+.backButton {
+  margin-bottom: 16px;
+  color: #2563eb;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 960px;
+  gap: 32px;
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.label {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  height: 260px;
+  resize: none;
+  margin-bottom: 16px;
+}
+
+.generateButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.generateButton:hover {
+  background-color: #2563eb;
+}
+
+.resultSection {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 300px;
+  align-items: center;
+  justify-content: center;
+}
+
+.generatedImage {
+  width: 320px;
+  height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.downloadButton {
+  margin-top: 16px;
+  background-color: #22c55e;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #16a34a;
+}
+
+.imagePlaceholder {
+  width: 320px;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  color: #9ca3af;
+  border-radius: 8px;
+  text-align: center;
+}
