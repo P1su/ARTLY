@@ -33,6 +33,7 @@ import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
+import Poster from './../pages_console/Poster/Poster';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
+      { path: '/console/poster', element: <Poster /> },
       {
         path: '/console/exhibitions/:id',
         element: <ConsoleDetail type='exhibitions' />,

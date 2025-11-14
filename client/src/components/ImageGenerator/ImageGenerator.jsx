@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './ImageGenerator.module.css';
 
 export default function ImageGenerator() {
@@ -7,11 +6,7 @@ export default function ImageGenerator() {
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const gpt_model_extraction = 'gpt-5-nano';
-  const navigate = useNavigate();
 
-  const handleBack = () => {
-    navigate(-1);
-  };
   // 키워드 추출
   const extractKeywords = async (userText) => {
     console.log('Extracting keywords from userText:', userText);
@@ -208,10 +203,7 @@ export default function ImageGenerator() {
 
   return (
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={handleBack}>
-        ← 돌아가기
-      </button>
-      <h1 className={styles.title}>Image Generator Demo</h1>
+      <h1 className={styles.title}>전시회 포스터 이미지 생성</h1>
 
       <div className={styles.contentBox}>
         <div className={styles.inputSection}>

@@ -4,27 +4,17 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #f3f4f6;
-}
-
-.backButton {
-  margin-bottom: 16px;
-  color: #2563eb;
-  text-decoration: underline;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 500;
   margin-bottom: 32px;
 }
 
 .contentBox {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background: #fff;
   padding: 32px;
   border-radius: 12px;
