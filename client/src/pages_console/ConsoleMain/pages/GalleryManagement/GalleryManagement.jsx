@@ -9,22 +9,23 @@ import Spinner from '../../components/Spinner/Spinner';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
 
-export default function GalleryManagement({ 
-  galleryList, 
+export default function GalleryManagement({
+  galleryList,
   onDelete,
   loadGalleries,
   isLoading,
+
   isSearching,
-  error
+  error,
 }) {
   const navigate = useNavigate();
-  
+
   // 디바운스 검색 hook 사용
   const { searchValue, handleSearchChange } = useDebounceSearch({
     onSearch: loadGalleries,
     onEmptySearch: () => loadGalleries(''),
     minLength: 2,
-    delay: 500
+    delay: 500,
   });
 
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
@@ -47,9 +48,7 @@ export default function GalleryManagement({
   if (error) {
     return (
       <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>
-          오류가 발생했습니다: {error}
-        </div>
+        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
       </div>
     );
   }
@@ -57,38 +56,38 @@ export default function GalleryManagement({
   if (filteredGalleryList.length > 0) {
     return (
       <div className={styles.contentContainer}>
-        <LookUp 
-          value={searchValue}  
+        <LookUp
+          value={searchValue}
           onChange={handleSearchChange}
-          placeholder="갤러리 검색"
-          isInput={true}
+          placeholder='갤러리 검색'
+          isInput
         />
-        
+
         <div className={styles.countAndButtonContainer}>
           <CountList count={filteredGalleryList.length} />
-          <RegisterButton 
-            buttonText="+갤러리 등록"
+          <RegisterButton
+            buttonText='+갤러리 등록'
             onButtonClick={() => alert('갤러리 등록')}
           />
         </div>
 
         <section className={styles.contentContainer}>
-          {filteredGalleryList.map(gallery => (
-            <div 
-              key={gallery.id} 
+          {filteredGalleryList.map((gallery) => (
+            <div
+              key={gallery.id}
               className={styles.galleryCard}
               onClick={() => navigate(`/console/galleries/${gallery.id}`)}
             >
               <div className={styles.cardContent}>
-                <img 
-                  src={gallery.image} 
+                <img
+                  src={gallery.image}
                   alt={gallery.name}
                   className={styles.galleryImage}
                 />
                 <div className={styles.cardInfo}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{gallery.name}</h3>
-                    <button 
+                    <button
                       onClick={() => handleDelete(gallery.id)}
                       className={styles.deleteButton}
                     >
@@ -96,7 +95,9 @@ export default function GalleryManagement({
                     </button>
                   </div>
                   <p className={styles.galleryAddress}>{gallery.address}</p>
-                  <p className={styles.galleryClosedDay}>휴관일 | {gallery.closedDay}</p>
+                  <p className={styles.galleryClosedDay}>
+                    휴관일 | {gallery.closedDay}
+                  </p>
                   <p className={styles.galleryTime}>{gallery.time}</p>
                 </div>
               </div>
@@ -115,26 +116,26 @@ export default function GalleryManagement({
   return (
     <>
       <div className={styles.searchContainer}>
-        <LookUp 
-          value={searchValue}  
+        <LookUp
+          value={searchValue}
           onChange={handleSearchChange}
-          placeholder="갤러리 검색"
-          isInput={true}
+          placeholder='갤러리 검색'
+          isInput
         />
       </div>
-      
+
       <div className={styles.countAndButtonContainer}>
         <CountList count={0} />
-        <RegisterButton 
-          buttonText="+갤러리 등록"
+        <RegisterButton
+          buttonText='+갤러리 등록'
           onButtonClick={() => alert('갤러리 등록')}
         />
       </div>
 
       <section className={styles.emptyStateContainer}>
-        <EmptyState 
-          message="등록된 갤러리가 없어요."
-          buttonText="+갤러리 등록"
+        <EmptyState
+          message='등록된 갤러리가 없어요.'
+          buttonText='+갤러리 등록'
         />
       </section>
     </>

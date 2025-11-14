@@ -1,0 +1,254 @@
+/* 모달 배경 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 모달 본체 */
+.modal {
+  background: #fff;
+  width: 44rem;
+  max-height: 90vh;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.6rem 1.6rem rgba(0, 0, 0, 0.25);
+  padding: 2rem 2.4rem 2.8rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(2rem);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 상단 헤더 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.header p {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.closeBtn:hover {
+  color: #000;
+}
+
+/* 검색 영역 */
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.searchInput {
+  flex: 1;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.4rem;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.1);
+}
+
+.searchBtn {
+  background: #3f51b5;
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1.4rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.searchBtn:hover {
+  background: #2f3f9f;
+}
+
+/* 작가 리스트 */
+.artistList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-height: 38rem;
+  overflow-y: auto;
+  margin-top: 0.8rem;
+  padding-right: 0.4rem;
+}
+
+.artistItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.1rem solid #eee;
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.artistItem:hover {
+  background: #f9f9ff;
+  box-shadow: 0 0.2rem 0.6rem rgba(63, 81, 181, 0.08);
+}
+
+.artistInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.artistAvatar {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 0.1rem solid #ddd;
+  background: #fafafa;
+}
+
+.artistName {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #222;
+}
+
+.artistCategory {
+  font-size: 1.4rem;
+  color: #777;
+}
+
+/* 선택 버튼 */
+.selectBtn {
+  background: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: background 0.2s ease;
+}
+
+.selectBtn:hover {
+  background: #2c3e9f;
+}
+
+/* 결과 없음 박스 */
+.noResultBox {
+  text-align: center;
+  padding: 4rem 2rem;
+  border: 0.1rem dashed #bbb;
+  border-radius: 1rem;
+  margin-top: 3rem;
+  color: #555;
+  background: #fafafa;
+}
+
+/* 작가 추가 영역 */
+.addBox {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.addIcon {
+  font-size: 2.8rem;
+  color: #999;
+}
+
+.addInput {
+  width: 80%;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1rem;
+  font-size: 1.4rem;
+  transition: border-color 0.2s ease;
+}
+
+.addInput:focus {
+  outline: none;
+  border-color: #3f51b5;
+}
+
+.addBtn {
+  background: #3f51b5;
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: background 0.2s ease;
+}
+
+.addBtn:hover {
+  background: #2c3e9f;
+}
+
+/* 스크롤바 커스터마이징 */
+.artistList::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.artistList::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 0.4rem;
+}
+
+.artistList::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+.noResult {
+  font-size: 1.4rem;
+}

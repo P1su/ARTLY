@@ -27,12 +27,12 @@ import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
-import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
 import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
+import ConsoleEdit from '../pages_console/ConsoleEdit/ConsoleEdit';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
 import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
@@ -87,7 +87,8 @@ const router = createBrowserRouter([
     element: <LayoutConsole />,
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/detail', element: <ConsoleDetail /> },
+      { path: '/console/leaflet/:id', element: <Leaflet /> },
+
       {
         path: '/console/exhibitions/:id',
         element: <ConsoleDetail type='exhibitions' />,

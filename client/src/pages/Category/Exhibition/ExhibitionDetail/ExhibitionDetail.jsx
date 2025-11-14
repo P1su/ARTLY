@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
+import { FaHeadphones } from 'react-icons/fa6';
+// import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
+
 import { useToastContext } from '../../../../store/ToastProvider';
 // import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
-// 임시 컴포넌트
 export default function ExhibitionDetail({
   showUserActions = true,
   id: propId,
@@ -83,7 +85,6 @@ export default function ExhibitionDetail({
     const { exhibition_name: name } = exhibitionData;
     const url = window.location.href;
     if (navigator.share) {
-      // Web Share API 지원 시
       navigator
         .share({
           title: `ARTLY: ${name}`,
@@ -92,7 +93,6 @@ export default function ExhibitionDetail({
         })
         .catch((error) => console.error('공유 실패:', error));
     } else {
-      // 미지원 시 클립보드 복사
       const textArea = document.createElement('textarea');
       textArea.value = url;
       document.body.appendChild(textArea);
@@ -126,16 +126,18 @@ export default function ExhibitionDetail({
     exhibition_closed_day: closedDay,
     exhibition_description: description,
     related_exhibitions: relatedExhibitions,
-    artworks, // API에 artworks가 있다고 가정
-    exhibition_phone: phone, // 전화번호 추가 가정
-    exhibition_artist: artist, // 작가 추가 가정
-    exhibition_homepage: homepage, // 홈페이지 추가 가정
+    artworks,
+    exhibition_phone: phone,
+    exhibition_category: category,
+    artists,
+    // exhibition_homepage: homepage,
     is_liked: isLike,
+    gallery,
   } = exhibitionData;
 
   const infos = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
-    { label: '전시장소', content: organization },
+    { label: '전시장소', content: gallery.gallery_name },
     {
       label: '관람시간',
       content: `${startTime} ~ ${endTime}`,
@@ -144,16 +146,9 @@ export default function ExhibitionDetail({
     { label: '입장료', content: `${price} (원)` },
     { label: '전화번호', content: phone || '정보 없음' },
     { label: '주소', content: exhibitionLocation },
-    { label: '작가', content: artist || '정보 없음' },
     {
-      label: '홈페이지',
-      content: homepage ? (
-        <a href={homepage} target='_blank' rel='noopener noreferrer'>
-          {homepage}
-        </a>
-      ) : (
-        '정보 없음'
-      ),
+      label: '작가',
+      content: Array.isArray(artists) ? artists.join(', ') : '정보 없음',
     },
   ];
 
@@ -167,26 +162,25 @@ export default function ExhibitionDetail({
       ),
       action: handleLike,
     },
+    // {
+    //   label: '관람예약',
+    //   icon: <FaCalendar className={styles.actionIcon} />,
+    //   action: openReservation,
+    // },
     {
-      label: '관람예약',
-      icon: <FaCalendar className={styles.actionIcon} />,
-      action: openReservation,
+      label: '도슨트',
+      icon: <FaHeadphones className={styles.actionIcon} />,
+      action: () => navigate(`/scan`),
     },
     {
       label: '공유하기',
       icon: <FaShare className={styles.actionIcon} />,
       action: handleShare,
     },
-    {
-      label: '도슨트',
-      icon: <FaQrcode className={styles.actionIcon} />,
-      action: () => navigate(`/scan`),
-    },
   ];
 
   return (
     <div className={styles.layout}>
-      {/* 카드 1: 전시 포스터 및 기본 정보 */}
       <div className={`${styles.card} ${styles.profileCard}`}>
         <img
           className={styles.exhibitionImage}
@@ -213,7 +207,6 @@ export default function ExhibitionDetail({
         )}
       </div>
 
-      {/* 카드 2: 상세 정보 목록 */}
       <div className={`${styles.card} ${styles.infoCard}`}>
         <section className={styles.infoList}>
           {infos.map(({ label, content }) => (
@@ -225,11 +218,10 @@ export default function ExhibitionDetail({
         </section>
       </div>
 
-      {/* 카드 3: 탭 및 콘텐츠 */}
       {showUserActions && (
         <>
           <div className={`${styles.card} ${styles.tabCard}`}>
-            <h3 className={styles.sectionTitle}>전시 정보</h3>
+            <h3 className={styles.sectionTitle}>전시 소개</h3>
 
             {description ? (
               <div
@@ -243,7 +235,7 @@ export default function ExhibitionDetail({
             )}
 
             <h3 className={styles.sectionTitle}>관련 전시</h3>
-            <RelatedExhibitions exhibitions={relatedExhibitions || []} />
+            <RelatedExhibitions exhibitions={exhibitionData || []} />
           </div>
           <Link className={styles.backButton} to='/exhibitions'>
             목록으로 돌아가기
