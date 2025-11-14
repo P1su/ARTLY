@@ -18,9 +18,8 @@ export default function ArtistCard({ artistItem }) {
         alt='작가 대표 이미지'
       />
       <h3 className={styles.artistNameTitle}>{name}</h3>
-      <p className={styles.subParagraph}>
-        {field} | {nation}
-      </p>
+      <p className={styles.subParagraph}>{field}</p>
+      <p className={styles.subParagraph}>{nation}</p>
     </Link>
   );
 }
