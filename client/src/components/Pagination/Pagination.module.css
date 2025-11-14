@@ -3,6 +3,17 @@
   align-items: center;
 }
 
+.sideButtonContainer {
+  flex: 0 0 auto;
+}
+
+.pageNumbersContainer {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  gap: 8px;
+}
+
 .pageButton {
   border-radius: 50%;
   width: 3rem;

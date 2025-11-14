@@ -14,7 +14,12 @@ const TABS = [
 ];
 
 export default function TabLike() {
-  const [likedItems, setLikedItems] = useState([]);
+  const [likedData, setLikedData] = useState({
+    exhibition: [],
+    gallery: [],
+    artwork: [],
+    artist: [],
+  });
   const [activeTab, setActiveTab] = useState('exhibition');
 
   useEffect(() => {
@@ -23,33 +28,22 @@ export default function TabLike() {
         const likeRes = await userInstance.get('/api/users/me/likes');
         const { data } = likeRes;
 
-        const exhibitions = data.like_exhibitions.map((item) => ({
-          ...item,
-          likeType: 'exhibition',
-        }));
-        const galleries = data.like_galleries.map((item) => ({
-          ...item,
-          likeType: 'gallery',
-        }));
-        const artists = data.like_artists.map((item) => ({
-          ...item,
-          likeType: 'artist',
-        }));
+        setLikedData({
+        exhibition: data.like_exhibitions || [],
+        gallery: data.like_galleries || [],
+        artist: data.like_artists || [],
+        artwork: [],
+      });
+    } catch (err) {
+      console.log('like fetch err : ', err);
+      setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
+    }
+  };
 
-        const allLikedItems = [...exhibitions, ...galleries, ...artists];
-        setLikedItems(allLikedItems);
-      } catch (err) {
-        console.log('like fetch err : ', err);
-        setLikedItems([]);
-      }
-    };
+  fetchData();
+}, []);
 
-    fetchData();
-  }, []);
-
-  const filteredItems = likedItems.filter(
-    (item) => item.likeType === activeTab,
-  );
+  const filteredItems = likedData[activeTab] || [];
 
   return (
     <div>
@@ -76,23 +70,25 @@ export default function TabLike() {
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
             activeTab === 'exhibition' ? (
-              filteredItems.map((item) => (
+              filteredItems.map((item, index) => (
                 <ExhibitionCard
-                  key={`exhibition-${item.id}`}
+                  key={`exhibition-${item.id}-${index}`}
                   exhibitionItem={item}
                 />
               ))
             ) : activeTab === 'gallery' ? (
-              filteredItems.map((item) => (
-                <GalleryCard key={`gallery-${item.id}`} galleryItem={item} />
+              filteredItems.map((item, index) => (
+                <GalleryCard 
+                  key={`gallery-${item.id}-${index}`}
+                  galleryItem={item} />
               ))
             ) : activeTab === 'artist' ? (
-              filteredItems.map((item) => (
-                <ArtistCard key={`artist-${item.id}`} artistItem={item} />
+              filteredItems.map((item, index) => (
+                <ArtistCard 
+                  key={`artist-${item.id}-${index}`} 
+                  artistItem={item} />
               ))
-            ) : (
-              <p className={styles.emptyText}>해당 탭은 준비 중입니다.</p>
-            )
+            ) : null
           ) : (
             <p className={styles.emptyText}>
               좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가

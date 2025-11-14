@@ -6,16 +6,21 @@ import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import GalleryExhibitions from './components/GalleryExhibitions/GalleryExhibitions.jsx';
 import useMap from '../../../Nearby/hooks/useMap.jsx';
 import { userInstance } from '../../../../apis/instance.js';
+import { useToastContext } from '../../../../store/ToastProvider';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
 
+  const { addToast } = useToastContext();
+
+  // ✅ 중복 제거된 상태 변수
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
   const [activeTab, setActiveTab] = useState('ongoing');
 
+  // ✅ 중복 제거된 useMap
   useMap({
     lat: galleryData?.gallery_latitude,
     lng: galleryData?.gallery_longitude,
@@ -24,6 +29,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     location: galleryData?.gallery_address,
   });
 
+  // ✅ 갤러리 상세 데이터 가져오기
   const getGalleryDetail = async () => {
     try {
       const response = await userInstance.get(`/api/galleries/${id}`);
@@ -34,6 +40,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  // ✅ 사용자 좋아요 상태 가져오기
   const getUserLikes = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) return;
     try {
@@ -46,6 +53,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  // ✅ 마운트 시 데이터 로드
   useEffect(() => {
     if (id) {
       getGalleryDetail();
@@ -55,6 +63,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   if (!galleryData) return <div>로딩 중...</div>;
 
+  // ✅ 좋아요 토글
   const handleLike = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) {
       navigate('/login');
@@ -70,6 +79,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           liked_id: id,
           liked_type: 'gallery',
         });
+        addToast({
+          title: '좋아하는 갤러리로 추가 완료!',
+          message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
+        });
       }
       setIsLiked(!isLiked);
       await getGalleryDetail();
@@ -78,20 +91,19 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  // ✅ 공유하기
   const handleShare = () => {
     const { gallery_name: name } = galleryData;
     const url = window.location.href;
     if (navigator.share) {
-      // Web Share API 지원 시
       navigator
         .share({
           title: `ARTLY: ${name}`,
           text: `${name} 갤러리 정보를 확인해보세요!`,
-          url: url,
+          url,
         })
         .catch((error) => console.error('공유 실패:', error));
     } else {
-      // 미지원 시 클립보드 복사
       const textArea = document.createElement('textarea');
       textArea.value = url;
       document.body.appendChild(textArea);
@@ -118,8 +130,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     gallery_start_time: startTime,
     gallery_image: image,
     gallery_name: name,
-    gallery_latitude: lat,
-    gallery_longitude: lng,
     gallery_name_en: nameEn,
     gallery_phone: phone,
     gallery_email: email,
@@ -168,6 +178,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
               </span>
             ))}
           </div>
+
           {showUserActions && (
             <div className={styles.btnLayout}>
               <button className={styles.likeButton} onClick={handleLike}>
@@ -204,9 +215,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         <>
           <div
             className={styles.descriptionParagraph}
-            dangerouslySetInnerHTML={{
-              __html: description,
-            }}
+            dangerouslySetInnerHTML={{ __html: description }}
           />
 
           <DetailTabs
@@ -220,15 +229,16 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
                   return ex.exhibition_status === 'exhibited';
                 if (activeTab === 'upcoming')
                   return ex.exhibition_status === 'scheduled';
-                return true; // 혹시 다른 탭이 추가될 경우 대비
+                return true;
               })}
             />
           </DetailTabs>
 
           <div className={styles.mapSection}>
             <p className={styles.sectionTitle}>찾아오시는 길</p>
-            <div id={`gallery-${galleryId}-map`} className={styles.map}></div>
+            <div id={`gallery-${galleryId}-map`} className={styles.map} />
           </div>
+
           <button
             className={styles.backButton}
             onClick={() => navigate('/galleries')}
