@@ -1,15 +1,15 @@
 import styles from './ConsoleDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import useResponsive from '../../hooks/useResponsive';
+import { userInstance } from '../../apis/instance';
+import DetailTabs from '../../components/DetailTabs/DetailTabs';
+import QrModal from './components/QrModal/QrModal';
 import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
-import { useEffect, useState } from 'react';
-import DetailTabs from '../../components/DetailTabs/DetailTabs';
-import { userInstance } from '../../apis/instance';
-import GalleryExhibitions from '../../pages/Category/Gallery/GalleryDetail/components/GalleryExhibitions/GalleryExhibitions';
-import QrModal from './QrModal/QrModal';
-import GalleryArtworks from './components/GalleryArtworks/GalleryArtworks';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
+import ArtworksCards from './components/ArtworksCards/ArtworksCards';
+import ExhibitionsCards from '../../pages/Category/Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards';
 
 const DETAIL_CONFIG = {
   galleries: {
@@ -25,18 +25,14 @@ const DETAIL_CONFIG = {
   exhibitions: {
     title: '전시회',
     Component: ExhibitionDetail,
-    tabs: [
-      { label: '정보수정' },
-      { label: 'QR코드' },
-      { label: '리플렛/도록' },
-    ],
     fetchUrl: (id) => `/api/exhibitions/${id}`,
+    tabs: ['정보수정', 'QR코드', '리플렛/도록'],
   },
   artworks: {
     title: '작품',
     Component: ArtworkDetail,
-    tabs: [{ label: '정보수정' }, { label: 'QR코드' }, { label: '도슨트' }],
     fetchUrl: (id) => `/api/arts/${id}`,
+    tabs: ['정보수정', 'QR코드', '도슨트'],
   },
 };
 
@@ -47,27 +43,36 @@ export default function ConsoleDetail({ type }) {
   const [activeTab, setActiveTab] = useState('info');
   const [showQrModal, setShowQrModal] = useState(false);
 
-  useResponsive(); //??
+  const config = DETAIL_CONFIG[type];
+  const { title, Component, fetchUrl, tabs } = config || {};
 
   useEffect(() => {
+    if (!fetchUrl || !id) return;
+
     const fetchData = async () => {
-      const response = await userInstance.get(config.fetchUrl(id));
-      setData(response.data);
+      try {
+        const res = await userInstance.get(fetchUrl(id));
+        setData(res.data);
+      } catch (error) {
+        console.error('데이터 불러오기 실패:', error);
+      }
     };
+
     fetchData();
     setActiveTab('info');
   }, [id, type]);
 
-  const config = DETAIL_CONFIG[type];
-  const { Component, tabs } = config;
-
   const handleTabClick = (label) => {
-    if (label === '정보수정') {
-      navigate(`/console/${type}/edit/${id}`);
-    } else if (label === 'QR코드') {
-      setShowQrModal(true);
-    } else {
-      alert(`${label} 페이지로 이동합니다. ID: ${id}`);
+    switch (label) {
+      case '정보수정':
+        navigate(`/console/${type}/edit/${id}`);
+        break;
+      case 'QR코드':
+        setShowQrModal(true);
+        break;
+      default:
+        navigate(`/console/leaflet/${id}`);
+        break;
     }
   };
 
@@ -76,7 +81,7 @@ export default function ConsoleDetail({ type }) {
     { key: 'artworks', label: `작품(${data?.artworks?.length || 0})` },
     { key: 'exhibitions', label: `전시(${data?.exhibitions?.length || 0})` },
   ];
-  console.log(data);
+
   if (!data) return <div>데이터 로딩 중...</div>;
 
   return (
@@ -84,15 +89,15 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() => navigate(`/console/main`)}
+          onClick={() => navigate(`/console/${type}`)}
         >
           {'<'}
         </button>
-        <h1 className={styles.title}>{config.title}</h1>
+        <h1 className={styles.title}>{title}</h1>
       </header>
 
       <nav className={styles.adminTabNav}>
-        {tabs.map(({ label }) => (
+        {tabs.map((label) => (
           <button
             key={label}
             className={styles.adminTabButton}
@@ -106,37 +111,42 @@ export default function ConsoleDetail({ type }) {
       <main className={styles.content}>
         <Component showUserActions={false} id={id} />
 
-        <DetailTabs
-          tabs={contentTabs}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        >
-          {activeTab === 'info' &&
-            (data.gallery_description ? (
-              <div
-                className={styles.descriptionParagraph}
-                dangerouslySetInnerHTML={{
-                  __html: data.gallery_description,
-                }}
-              />
-            ) : (
-              <p className={styles.emptyContent}>
-                현재 등록된 정보가 없습니다.
-              </p>
-            ))}
-          {activeTab === 'artworks' && (
-            <>
-              <GalleryArtworks artworks={data.artworks} />
-              <button className={styles.addButton}>+ 작품 등록</button>
-            </>
-          )}
-          {activeTab === 'exhibitions' && (
-            <>
-              <GalleryExhibitions exhibitions={data.exhibitions} />
-              <button className={styles.addButton}>+ 전시회 등록</button>
-            </>
-          )}
-        </DetailTabs>
+        {/* 갤러리는 컴포넌트 안에 이미 정보/작품/전시 탭이 있으므로 중복 출력 X */}
+        {type !== 'artworks' && type !== 'galleries' && (
+          <DetailTabs
+            tabs={contentTabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          >
+            {activeTab === 'info' &&
+              (data.gallery_description ? (
+                <div
+                  className={styles.descriptionParagraph}
+                  dangerouslySetInnerHTML={{
+                    __html: data.gallery_description,
+                  }}
+                />
+              ) : (
+                <p className={styles.emptyContent}>
+                  현재 등록된 정보가 없습니다.
+                </p>
+              ))}
+
+            {activeTab === 'artworks' && (
+              <>
+                <ArtworksCards artworks={data.artworks} />
+                <button className={styles.addButton}>+ 작품 등록</button>
+              </>
+            )}
+
+            {activeTab === 'exhibitions' && (
+              <>
+                <ExhibitionsCards exhibitions={data.exhibitions} />
+                <button className={styles.addButton}>+ 전시회 등록</button>
+              </>
+            )}
+          </DetailTabs>
+        )}
       </main>
 
       {showQrModal && (
