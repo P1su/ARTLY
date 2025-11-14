@@ -132,8 +132,8 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
         />
         <input
           className={`${styles.input} ${styles.gallerySubNameInput}`}
-          name='gallery_name_en' // 영문 이름 필드명 추가 필요
-          value={data.gallery_name_en || ''}
+          name='gallery_eng_name'
+          value={data.gallery_eng_name || ''}
           onChange={handleInputChange}
           placeholder='갤러리 영문명'
         />

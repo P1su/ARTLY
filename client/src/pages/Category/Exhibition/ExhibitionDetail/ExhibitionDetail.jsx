@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
+import { FaHeadphones } from 'react-icons/fa6';
 // import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
 export default function ExhibitionDetail({
@@ -76,7 +77,6 @@ export default function ExhibitionDetail({
     const { exhibition_name: name } = exhibitionData;
     const url = window.location.href;
     if (navigator.share) {
-      // Web Share API 지원 시
       navigator
         .share({
           title: `ARTLY: ${name}`,
@@ -85,7 +85,6 @@ export default function ExhibitionDetail({
         })
         .catch((error) => console.error('공유 실패:', error));
     } else {
-      // 미지원 시 클립보드 복사
       const textArea = document.createElement('textarea');
       textArea.value = url;
       document.body.appendChild(textArea);
@@ -155,20 +154,20 @@ export default function ExhibitionDetail({
       ),
       action: handleLike,
     },
+    // {
+    //   label: '관람예약',
+    //   icon: <FaCalendar className={styles.actionIcon} />,
+    //   action: openReservation,
+    // },
     {
-      label: '관람예약',
-      icon: <FaCalendar className={styles.actionIcon} />,
-      action: openReservation,
+      label: '도슨트',
+      icon: <FaHeadphones className={styles.actionIcon} />,
+      action: () => navigate(`/scan`),
     },
     {
       label: '공유하기',
       icon: <FaShare className={styles.actionIcon} />,
       action: handleShare,
-    },
-    {
-      label: '도슨트',
-      icon: <FaQrcode className={styles.actionIcon} />,
-      action: () => navigate(`/scan`),
     },
   ];
 

@@ -124,7 +124,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     gallery_start_time: startTime = '',
     gallery_image: image = '',
     gallery_name: name = '',
-    gallery_name_en: nameEn = '',
+    gallery_eng_name: nameEn = '',
     gallery_phone: phone = '',
     gallery_email: email = '',
     gallery_homepage: homepage = '',
@@ -134,7 +134,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const infoList = [
     {
       label: '관람시간',
-      content: startTime && endTime ? `${startTime} - ${endTime}` : '정보 없음',
+      content:
+        startTime && endTime
+          ? `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`
+          : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
     { label: '전화번호', content: phone || '정보 없음' },
