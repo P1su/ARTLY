@@ -45,6 +45,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  // ✅ 마운트 시 데이터 로드
   useEffect(() => {
     fetchGalleryDetail();
   }, [id]);
@@ -57,6 +58,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   if (!galleryData) return <div>로딩 중...</div>;
 
+  // ✅ 좋아요 토글
   const handleLike = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) {
       navigate('/login');
@@ -87,6 +89,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
+  // ✅ 공유하기
   const handleShare = () => {
     const name = galleryData.gallery_name;
     const url = window.location.href;
