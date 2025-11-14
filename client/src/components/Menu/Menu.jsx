@@ -78,7 +78,10 @@ export default function Menu({ onOpen, isOpen }) {
           </span>
           <span
             className={styles.menuSpan}
-            onClick={() => alert('도록 페이지 이동')}
+            onClick={() => {
+              localStorage.setItem('showMyCatalogTab', 'true');
+              handleNavigate('/mypage');
+            }}
           >
             디지털 도록
           </span>
