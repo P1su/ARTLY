@@ -67,7 +67,7 @@ export default function ConsoleDetail({ type }) {
         setShowQrModal(true);
         break;
       default:
-        // navigate(`/console/leaflet/${id}`);
+        navigate(`/console/leaflet/${id}`);
         break;
     }
   };
@@ -144,7 +144,6 @@ export default function ConsoleDetail({ type }) {
         )}
       </main>
 
-      {/* QR 모달 */}
       {showQrModal && (
         <QrModal data={data} onClose={() => setShowQrModal(false)} />
       )}

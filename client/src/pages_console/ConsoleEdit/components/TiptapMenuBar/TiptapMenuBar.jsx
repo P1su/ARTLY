@@ -1,32 +1,36 @@
 import styles from '../TiptapEditor.module.css';
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
+import { uploadEditorImage } from '../utils/EditorUploader';
 
 export default function TiptapMenuBar({ editor }) {
-  const fileInputRef = useRef(null); // 숨겨진 file input을 위한 ref
+  const fileInputRef = useRef(null);
 
-  if (!editor) {
-    return null;
-  }
+  if (!editor) return null;
 
-  const handleFileChange = useCallback(
-    (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const src = e.target.result;
-          editor.chain().focus().setImage({ src }).run();
-        };
-        reader.readAsDataURL(file);
+  const handleFilesChange = async (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    // 파일 input 리셋
+    event.target.value = '';
+
+    // 에디터 포커스 유지
+    editor.chain().focus();
+
+    for (const file of files) {
+      // 🔥 1) 파일 서버 업로드 → URL 받아오기
+      const imageUrl = await uploadEditorImage(file);
+
+      if (imageUrl) {
+        // 🔥 2) 이미지 삽입 (여러 이미지 연속 삽입 가능)
+        editor.chain().setImage({ src: imageUrl }).run();
       }
-      // 같은 파일을 다시 선택할 수 있도록 input 값을 초기화
-      event.target.value = '';
-    },
-    [editor],
-  );
+    }
+  };
 
   return (
     <div className={styles.menuBar}>
+      {/* Bold / Italic / Strike */}
       <button
         type='button'
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -49,47 +53,36 @@ export default function TiptapMenuBar({ editor }) {
         <s>S</s>
       </button>
 
-      <div className={styles.divider}></div>
+      <div className={styles.divider} />
 
-      <button
-        type='button'
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={
-          editor.isActive('heading', { level: 1 }) ? styles.isActive : ''
-        }
-      >
-        H1
-      </button>
-      <button
-        type='button'
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={
-          editor.isActive('heading', { level: 2 }) ? styles.isActive : ''
-        }
-      >
-        H2
-      </button>
-      <button
-        type='button'
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={
-          editor.isActive('heading', { level: 3 }) ? styles.isActive : ''
-        }
-      >
-        H3
-      </button>
+      {/* Heading */}
+      {[1, 2, 3].map((level) => (
+        <button
+          key={level}
+          type='button'
+          onClick={() => editor.chain().focus().toggleHeading({ level }).run()}
+          className={
+            editor.isActive('heading', { level }) ? styles.isActive : ''
+          }
+        >
+          H{level}
+        </button>
+      ))}
 
-      <div className={styles.divider}></div>
+      <div className={styles.divider} />
 
+      {/* Multi-upload */}
       <button type='button' onClick={() => fileInputRef.current.click()}>
-        이미지
+        이미지 업로드
       </button>
+
       <input
         type='file'
         ref={fileInputRef}
-        onChange={handleFileChange}
+        onChange={handleFilesChange}
         style={{ display: 'none' }}
         accept='image/*'
+        multiple // 🔥 여러 장 업로드
       />
     </div>
   );

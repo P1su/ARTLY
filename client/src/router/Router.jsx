@@ -33,7 +33,7 @@ import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import ConsoleEdit from '../pages_console/ConsoleEdit/ConsoleEdit';
-
+import Leaflet from '../pages_console/Leaflet/Leaflet';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -81,8 +81,7 @@ const router = createBrowserRouter([
     element: <LayoutConsole />,
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
-      // { path: '/console/detail', element: <ConsoleDetail /> },
-      // { path: '/console/leaflet', element: <Leaflet /> },
+      { path: '/console/leaflet/:id', element: <Leaflet /> },
       {
         path: '/console/exhibitions/:id',
         element: <ConsoleDetail type='exhibitions' />,

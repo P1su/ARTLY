@@ -1,10 +1,8 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import ExhibitionsCards from '../../../pages/Category/Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards.jsx';
 
 export default function GalleryEditForm({ data, setData, onFileChange }) {
-  const [activeTab, setActiveTab] = useState('info');
   const [tagInput, setTagInput] = useState('');
   const [isKoreanComposing, setIsKoreanComposing] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -18,8 +16,6 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
       setIsKoreanComposing(false);
     }
   };
-
-  console.log(data); //
 
   const handleTagKeyDown = (e) => {
     if (isKoreanComposing) return;
@@ -269,7 +265,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
               className={styles.input}
               type='url'
               name='gallery_homepage'
-              value={data.gallery_homepage || ''} // 홈페이지 필드 추가
+              value={data.gallery_homepage || ''}
               onChange={handleInputChange}
             />
           </div>
@@ -300,37 +296,13 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           })}
         </div>
       </div>
-      <div className={styles.tabContainer}>
-        <nav className={styles.tabNav}>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'info' && styles.activeTab}`}
-            onClick={() => setActiveTab('info')}
-          >
-            소개
-          </button>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'exhibitions' && styles.activeTab}`}
-            onClick={() => setActiveTab('exhibitions')}
-          >
-            전시({data.exhibitions?.length || 0})
-          </button>
-        </nav>
-        <div className={styles.tabContent}>
-          {activeTab === 'info' && (
-            <TiptapEditor
-              content={data.gallery_description || ''}
-              onChange={handleDescriptionChange}
-            />
-          )}
-          {activeTab === 'exhibitions' &&
-            (data.exhibitions?.length > 0 ? (
-              <ExhibitionsCards exhibitions={data.exhibitions} />
-            ) : (
-              <p className={styles.emptyContent}>
-                현재 진행중인 전시가 없습니다.
-              </p>
-            ))}
-        </div>
+      <div className={`${styles.card} ${styles.tiptap}`}>
+        <label className={styles.label}>정보</label>
+
+        <TiptapEditor
+          content={data.gallery_description || ''}
+          onChange={handleDescriptionChange}
+        />
       </div>
     </>
   );

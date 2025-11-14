@@ -154,36 +154,13 @@
   margin-top: 1rem;
 }
 
-.tabContainer {
-  margin-top: 2rem;
-}
-.tabNav {
-  display: flex;
-  justify-content: space-around;
-  border-bottom: 1px solid #ddd;
-}
-.tabButton {
-  flex: 1;
-  padding: 1.2rem 2rem;
+.tiptap .label {
   font-size: 1.6rem;
-  font-weight: 600;
-  color: #888;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  margin-bottom: -1px;
+  font-weight: bold;
 }
-.activeTab {
-  color: #007bff;
-  border-bottom-color: #007bff;
-}
-.tabContent {
+
+.tiptap {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  padding: 1.5rem;
 }
 
 .emptyContent {
@@ -207,7 +184,6 @@
   background-color: #f5f5f5;
 }
 
-/* ✅ 작가 선택 행 */
 .artistSelectRow {
   display: flex;
   gap: 1rem;
@@ -263,4 +239,103 @@
   outline: none;
   border-color: #3f51b5;
   box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
+}
+
+@media (max-width: 1500px) {
+  .card {
+    padding: 2rem;
+  }
+
+  .galleryNameInput {
+    font-size: 2rem;
+  }
+
+  .timeInput,
+  .tagInputField {
+    font-size: 1.6rem;
+  }
+
+  .label {
+    font-size: 1.5rem;
+  }
+
+  .imageUploadBox {
+    height: 36rem;
+  }
+}
+
+@media (max-width: 1072px) {
+  .card {
+    padding: 1.8rem;
+  }
+
+  .galleryNameInput {
+    font-size: 1.8rem;
+  }
+
+  .gallerySubNameInput {
+    font-size: 1.5rem;
+  }
+
+  .tagInputField,
+  .timeInput {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
+
+  .label {
+    font-size: 1.4rem;
+  }
+
+  .tagItem {
+    font-size: 1.3rem;
+  }
+
+  .imageUploadBox {
+    height: 30rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .galleryNameInput {
+    font-size: 1.6rem;
+  }
+
+  .gallerySubNameInput {
+    font-size: 1.3rem;
+  }
+
+  .tagInputField {
+    font-size: 1.4rem;
+  }
+  .timeInput {
+    font-size: 1.2rem;
+    padding: 0.9rem;
+  }
+
+  .label {
+    font-size: 1.4rem;
+  }
+
+  .imageUploadBox {
+    height: 22rem;
+  }
+
+  .tagItem {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .previewImageDesc {
+    font-size: 1.4rem;
+  }
+
+  .checkboxGroup label {
+    font-size: 1.2rem;
+  }
 }

@@ -35,6 +35,10 @@
 .formContainer {
   padding: 2rem;
   flex-grow: 1;
+
+  /* 🔥 폼 내용만 최대 폭 제한 + 가운데 정렬 */
+  max-width: 95rem;
+  margin: 0 auto;
 }
 
 .bottomButtonContainer {
@@ -66,4 +70,61 @@
 .saveButton {
   background-color: #007bff;
   color: #fff;
+}
+
+@media (max-width: 1500px) {
+  .formContainer {
+    max-width: 90rem;
+    padding: 2rem 3rem;
+  }
+}
+
+@media (max-width: 1072px) {
+  .formContainer {
+    max-width: 80rem;
+    padding: 1.8rem 2rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .backButton {
+    font-size: 2rem;
+  }
+
+  .button {
+    font-size: 1.4rem;
+    padding: 1.3rem 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .formContainer {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .header {
+    height: 5.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .backButton {
+    font-size: 1.8rem;
+    left: 1rem;
+  }
+
+  .button {
+    padding: 1.2rem 0;
+    font-size: 1.3rem;
+  }
+
+  .bottomButtonContainer {
+    padding: 1.2rem 1.5rem;
+    gap: 0.8rem;
+  }
 }

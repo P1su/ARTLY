@@ -2,6 +2,7 @@ import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { userInstance } from '../../apis/instance.js';
+
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
@@ -10,14 +11,17 @@ const EDIT_CONFIG = {
   galleries: {
     title: '갤러리 수정',
     apiUrl: (id) => `/api/galleries/${id}`,
+    formImageField: 'gallery_image_file',
   },
   exhibitions: {
     title: '전시회 수정',
     apiUrl: (id) => `/api/exhibitions/${id}`,
+    formImageField: 'exhibition_poster_file',
   },
   artworks: {
     title: '작품 수정',
     apiUrl: (id) => `/api/arts/${id}`,
+    formImageField: 'art_image_file',
   },
 };
 
@@ -30,6 +34,7 @@ const FORM_COMPONENTS = {
 export default function ConsoleEdit({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [data, setData] = useState(null);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -45,19 +50,20 @@ export default function ConsoleEdit({ type }) {
           typeof response.data === 'string'
             ? JSON.parse(response.data)
             : response.data;
+
         setData(resData);
+        console.log('저장 응답:', response.data);
       } catch (error) {
         console.error('데이터 로딩 실패:', error);
         setData({});
       }
     };
+
     if (config) fetchData();
   }, [id, config]);
 
   const handleCancel = () => {
-    if (
-      window.confirm('수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.')
-    ) {
+    if (window.confirm('수정을 취소하시겠습니까?')) {
       navigate(`/console/${type}/${id}`);
     }
   };
@@ -66,47 +72,37 @@ export default function ConsoleEdit({ type }) {
     if (isSaving || !data) return;
     setIsSaving(true);
 
-    // ✅ 타입별 이미지 필드명 매핑
-    const imageFieldMap = {
-      galleries: 'gallery_image',
-      exhibitions: 'exhibition_poster',
-      artworks: 'art_image',
-    };
-    const imageKey = imageFieldMap[type];
-
-    // ✅ 모든 필드 포함한 formData 구성
     const formData = new FormData();
 
+    formData.append('_method', 'PATCH');
+
     Object.entries(data).forEach(([key, value]) => {
-      // 값이 null 또는 undefined라도 필드 자체는 유지 (초기화 방지 목적)
-      if (value === undefined) return;
+      if (value === undefined || value === null) return;
 
       if (typeof value === 'object' && !(value instanceof File)) {
         formData.append(key, JSON.stringify(value));
       } else {
-        formData.append(key, value ?? '');
+        formData.append(key, value);
       }
     });
 
-    // ✅ 선택된 새 이미지가 있을 경우에만 교체
+    const imageField = config.formImageField;
+
     if (selectedImageFile) {
-      formData.set(imageKey, selectedImageFile);
-    } else if (data[imageKey]) {
-      // 기존 이미지가 존재하면 다시 세팅해서 유지
-      formData.set(imageKey, data[imageKey]);
+      formData.append(imageField, selectedImageFile);
     }
 
     try {
-      const response = await userInstance.put(config.apiUrl(id), formData, {
+      const response = await userInstance.post(config.apiUrl(id), formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('✅ 저장 성공:', response.data);
+      console.log('저장 성공:', response.data);
       alert('저장되었습니다.');
       navigate(`/console/${type}/${id}`);
     } catch (error) {
-      console.error('❌ 데이터 저장 실패:', error);
-      alert('저장에 실패했습니다. 다시 시도해주세요.');
+      console.error('❌ 저장 오류:', error);
+      alert('저장 실패. 다시 시도하세요.');
     } finally {
       setIsSaving(false);
     }
@@ -142,7 +138,7 @@ export default function ConsoleEdit({ type }) {
           className={`${styles.button} ${styles.saveButton}`}
           onClick={handleSave}
         >
-          저장
+          {isSaving ? '저장 중...' : '저장'}
         </button>
         <button
           className={`${styles.button} ${styles.cancelButton}`}
