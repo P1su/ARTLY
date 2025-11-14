@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { instance } from '../../../../../apis/instance';
+import { userInstance } from '../../../../../apis/instance';
 import useDebounceSearch from '../../../hooks/useDebounceSearch';
 
 export default function useInterestedUser() {
@@ -14,7 +14,7 @@ export default function useInterestedUser() {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('ACCESS_TOKEN');
-      const response = await instance.get(`/api/users/console/likes?liked_type=${likedType}${search ? `&search=${search}` : ''}`, {
+      const response = await userInstance.get(`/api/users/console/likes?liked_type=${likedType}${search ? `&search=${search}` : ''}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -63,9 +63,9 @@ export default function useInterestedUser() {
       try {
         setIsLoading(true);
         const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          instance.get('/api/users/console/likes?liked_type=gallery'),
-          instance.get('/api/users/console/likes?liked_type=exhibition'),
-          instance.get('/api/users/console/likes?liked_type=art')
+          userInstance.get('/api/users/console/likes?liked_type=gallery'),
+          userInstance.get('/api/users/console/likes?liked_type=exhibition'),
+          userInstance.get('/api/users/console/likes?liked_type=art')
         ]);
         
         const allUsers = [
@@ -128,9 +128,9 @@ export default function useInterestedUser() {
       try {
         setIsLoading(true);
         const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          instance.get(`/api/users/console/likes?liked_type=gallery&search=${query}`),
-          instance.get(`/api/users/console/likes?liked_type=exhibition&search=${query}`),
-          instance.get(`/api/users/console/likes?liked_type=art&search=${query}`)
+          userInstance.get(`/api/users/console/likes?liked_type=gallery&search=${query}`),
+          userInstance.get(`/api/users/console/likes?liked_type=exhibition&search=${query}`),
+          userInstance.get(`/api/users/console/likes?liked_type=art&search=${query}`)
         ]);
         
         const allUsers = [
