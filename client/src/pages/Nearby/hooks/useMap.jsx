@@ -49,7 +49,7 @@ const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
     // 네이버 기능이 실행 가능하거나 위도, 경도가 있을 경우에만 동작작
 
     const mapElement = document.getElementById(id);
-    if (!window.naver?.maps || !mapElement || lat == null || lng == null) {
+    if (!window.naver?.maps || !mapElement || lat === null || lng === null) {
       return; // 하나라도 준비되지 않았다면, 아무것도 하지 않고 즉시 종료
     }
 

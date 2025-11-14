@@ -35,8 +35,6 @@
 .formContainer {
   padding: 2rem;
   flex-grow: 1;
-
-  /* 🔥 폼 내용만 최대 폭 제한 + 가운데 정렬 */
   max-width: 95rem;
   margin: 0 auto;
 }

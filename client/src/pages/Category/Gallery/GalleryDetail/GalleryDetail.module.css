@@ -56,32 +56,10 @@
   margin-bottom: 2rem;
 }
 
-.containerLayout {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 1rem;
-}
-
-.tagContainer {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.tag {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: 5rem;
-  border: solid 0.1rem #666;
-  background-color: none;
-  color: #666;
-  font-size: 1.6rem;
-}
-
 .btnLayout {
   display: flex;
-  gap: 1.4rem;
+  justify-content: space-evenly;
+  margin-bottom: 3rem;
 }
 
 .likeButton {
@@ -89,7 +67,6 @@
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
-  margin-left: auto;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -103,7 +80,31 @@
 
 .likedIcon {
   font-size: 2.2rem;
-  color: #e57373;
+  color: #3f51b5;
+}
+
+.containerLayout {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.tagContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5rem;
+  border: solid 0.1rem #777;
+  background-color: none;
+  color: #777;
+  font-size: 1.6rem;
 }
 
 .infoList {
@@ -216,21 +217,10 @@
   color: #8a8d91;
 }
 
-.mapSection {
-  margin: 2rem 0 5rem 0;
-}
-
 .sectionTitle {
   font-size: 2.3rem;
   font-weight: 600;
   margin: 3rem 0 1rem 2rem;
-}
-
-.map {
-  width: 100%;
-  height: 40rem;
-  border-radius: 1.5rem;
-  background-color: #f5f5f5;
 }
 
 .backButton {
@@ -254,14 +244,111 @@
   color: #999;
 }
 
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.mapModalBox {
+  background: #fff;
+  width: min(40rem, 90%);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.mapModalTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.mapModalSubTitle {
+  font-size: 1.3rem;
+  color: #777;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.mapModalMap {
+  width: 100%;
+  height: 24rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mapModalClose {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem 0;
+  border-radius: 8px;
+  border: none;
+  background: #4a5bba;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.likeModalBox {
+  background: #fff;
+  width: min(36rem, 90%);
+  border-radius: 16px;
+  padding: 4rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.likeModalStar {
+  font-size: 3.6rem;
+  color: #3f51b5;
+  margin-bottom: 1.2rem;
+}
+
+.likeModalTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.likeModalSub {
+  font-size: 1.3rem;
+  color: #777;
+  margin-top: 0.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.likeModalButton {
+  background: #3f51b5;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  width: 100%;
+  padding: 0.9rem 0;
+  margin-top: 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 @media (max-width: 1500px) {
   .layout {
     max-width: 90rem;
     padding: 3rem;
   }
 
-  .map {
-    height: 35rem;
+  .likeButton {
+    gap: 1.2rem;
+    font-size: 1.5rem;
+  }
+
+  .icon,
+  .likedIcon {
+    font-size: 2.8rem;
   }
 }
 
@@ -271,8 +358,14 @@
     padding: 2rem;
   }
 
-  .map {
-    height: 30rem;
+  .likeButton {
+    gap: 0.8rem;
+    font-size: 1.4rem;
+  }
+
+  .icon,
+  .likedIcon {
+    font-size: 2.5rem;
   }
 }
 
@@ -302,13 +395,6 @@
     font-size: 1.8rem;
     color: #666;
     margin-top: 0.4rem;
-  }
-
-  tagContainer {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
   }
 
   .tag {
@@ -363,20 +449,17 @@
     font-size: 1.4rem;
   }
 
-  .mapSection {
-    margin: 3rem 0;
-  }
-
-  .sectionTitle {
-    font-size: 2rem;
-    font-weight: 500;
-  }
-
   .backButton {
     font-size: 1.4rem;
   }
 
-  .map {
-    height: 25rem;
+  .likeButton {
+    gap: 0.6rem;
+    font-size: 1.2rem;
+  }
+
+  .icon,
+  .likedIcon {
+    font-size: 2.3rem;
   }
 }

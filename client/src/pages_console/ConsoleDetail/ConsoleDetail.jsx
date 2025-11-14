@@ -109,7 +109,8 @@ export default function ConsoleDetail({ type }) {
       <main className={styles.content}>
         <Component showUserActions={false} id={id} />
 
-        {type !== 'artworks' && (
+        {/* 갤러리는 컴포넌트 안에 이미 정보/작품/전시 탭이 있으므로 중복 출력 X */}
+        {type !== 'artworks' && type !== 'galleries' && (
           <DetailTabs
             tabs={contentTabs}
             activeTab={activeTab}
@@ -119,7 +120,9 @@ export default function ConsoleDetail({ type }) {
               (data.gallery_description ? (
                 <div
                   className={styles.descriptionParagraph}
-                  dangerouslySetInnerHTML={{ __html: data.gallery_description }}
+                  dangerouslySetInnerHTML={{
+                    __html: data.gallery_description,
+                  }}
                 />
               ) : (
                 <p className={styles.emptyContent}>
