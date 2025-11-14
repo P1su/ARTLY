@@ -1,0 +1,223 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 50px 120px;
+  background: #fff;
+}
+
+.title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 70px;
+}
+
+/* ===== 폼 영역 ===== */
+.formArea {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+}
+
+/* ✅ 라벨 강조 */
+.label {
+  font-size: 1.8rem; /* 1.5 → 1.8 */
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 22px 26px;
+  font-size: 1.4rem;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+}
+
+.textarea {
+  min-height: 280px;
+  resize: vertical;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.tagButton {
+  background: #eff6ff;
+  border: none;
+  color: #1d4ed8;
+  font-size: 1.2rem;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.tagButton:hover {
+  background: #dbeafe;
+}
+
+/* ===== 버튼 ===== */
+.submitButton {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 22px 0;
+  font-weight: 700;
+  font-size: 1.6rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.15s ease;
+}
+
+.submitButton:hover {
+  background: #1e40af;
+}
+
+.submitButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ===== 결과 영역 ===== */
+.resultArea {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.resultCard {
+  padding: 30px 34px;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fafafa;
+  white-space: pre-line;
+  line-height: 2;
+  font-size: 1.5rem;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #374151;
+}
+
+.refineButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.refineButton:hover {
+  background: #059669;
+}
+
+/* ✅ 점선 placeholder 복원 */
+.placeholder {
+  border: 3px dashed #cbd5e1;
+  border-radius: 16px;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 1.4rem;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+/* ===== 반응형 (768px 이하) ===== */
+@media (max-width: 768px) {
+  .page {
+    max-width: 100%;
+    padding: 60px 24px 80px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
+
+  .label {
+    font-size: 1.4rem; /* 모바일에서도 충분히 크도록 */
+    margin-bottom: 10px;
+  }
+
+  .input,
+  .textarea {
+    font-size: 1.1rem;
+    padding: 18px 20px;
+    border-radius: 10px;
+  }
+
+  .textarea {
+    min-height: 220px;
+  }
+
+  .tagContainer {
+    gap: 10px;
+  }
+
+  .tagButton {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .submitButton {
+    width: 100%;
+    font-size: 1.3rem;
+    padding: 20px 0;
+  }
+
+  .placeholder {
+    min-height: 260px;
+    font-size: 1.1rem;
+  }
+
+  .resultCard {
+    font-size: 1.2rem;
+    padding: 22px 24px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .refineButton {
+    align-self: flex-end;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
