@@ -34,6 +34,10 @@ import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import ConsoleEdit from '../pages_console/ConsoleEdit/ConsoleEdit';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
+import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
+import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
+import NotFound from '../pages/NotFound/NotFound';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -61,6 +65,7 @@ const router = createBrowserRouter([
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
       { path: '/reservation/:exhibitionId', element: <Reservation /> },
+      { path: '/invitation', element: <InvitationGenerator /> },
       {
         path: '/reservationconfirm/:reservationId',
         element: <ReservationConfirm />,
@@ -73,6 +78,7 @@ const router = createBrowserRouter([
           { path: '/purchase/:reservationId', element: <Purchase /> },
         ],
       },
+      { path: '*', element: <NotFound /> },
     ],
   },
 
@@ -82,6 +88,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/leaflet/:id', element: <Leaflet /> },
+
       {
         path: '/console/exhibitions/:id',
         element: <ConsoleDetail type='exhibitions' />,
@@ -105,6 +112,14 @@ const router = createBrowserRouter([
       {
         path: '/console/artworks/edit/:id',
         element: <ConsoleEdit type='artworks' />,
+      },
+      {
+        path: '/console/artworks/docent/:id',
+        element: <DocentGenerator />,
+      },
+      {
+        path: '/console/leaflet',
+        element: <Leaflet />,
       },
     ],
   },

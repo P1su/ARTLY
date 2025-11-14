@@ -1,4 +1,3 @@
-// GalleryDetail.jsx
 import styles from './GalleryDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -18,11 +17,14 @@ import ExhibitionsCards from './components/ExhibitionsCards/ExhibitionsCards.jsx
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
+import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
 export default function GalleryDetail({ showUserActions = true, id: propId }) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
+
+  const { addToast } = useToastContext();
 
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -32,6 +34,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   const fetchGalleryDetail = async () => {
     if (!id) return;
+
     try {
       const res = await userInstance.get(`/api/galleries/${id}`);
       const { data } = res;
@@ -65,6 +68,15 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         await userInstance.delete('/api/likes', { data: payload });
         setIsLiked(false);
         return;
+      } else {
+        await userInstance.post('/api/likes', {
+          liked_id: id,
+          liked_type: 'gallery',
+        });
+        addToast({
+          title: '좋아하는 갤러리로 추가 완료!',
+          message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
+        });
       }
 
       await userInstance.post('/api/likes', payload);
@@ -92,6 +104,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
       textarea.value = url;
       document.body.appendChild(textarea);
       textarea.select();
+
       try {
         document.execCommand('copy');
         alert('링크가 클립보드에 복사되었습니다.');

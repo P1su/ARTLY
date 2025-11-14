@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { instance } from '../../../apis/instance';
+import { userInstance } from '../../../apis/instance';
 
 export default function useDeleteItem() {
   const [galleryList, setGalleryList] = useState([]);
@@ -24,7 +24,7 @@ export default function useDeleteItem() {
         params.append('search', search);
       }
       const url = `/api/galleries${params.toString() ? `?${params.toString()}` : ''}`;
-      const response = await instance.get(url);
+      const response = await userInstance.get(url);
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const galleries = Array.isArray(response.data) ? response.data.map(item => ({
@@ -61,7 +61,7 @@ export default function useDeleteItem() {
       let url = urlBase;
       if (galleryId && galleryId !== '갤러리 전체') url += `?gallery_id=${galleryId}`;
       
-      const response = await instance.get(url);
+      const response = await userInstance.get(url);
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const exhibitions = Array.isArray(response.data) ? response.data.map(item => ({
@@ -95,7 +95,7 @@ export default function useDeleteItem() {
       }
       const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
       
-      const response = await instance.get(url);
+      const response = await userInstance.get(url);
       
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const artworks = Array.isArray(response.data) ? response.data.map(item => {
@@ -134,13 +134,13 @@ export default function useDeleteItem() {
   const handleDelete = async (id, type) => {
     try {
       if (type === 'gallery') {
-        await instance.delete(`/api/galleries/${id}`);
+        await userInstance.delete(`/api/galleries/${id}`);
         setGalleryList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'exhibition') {
-        await instance.delete(`/api/exhibitions/${id}`);
+        await userInstance.delete(`/api/exhibitions/${id}`);
         setExhibitionList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'artwork') {
-        await instance.delete(`/api/arts/${id}`);
+        await userInstance.delete(`/api/arts/${id}`);
         setArtworkList(prev => prev.filter(item => item.id !== id));
       }
     } catch (err) {

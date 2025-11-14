@@ -13,8 +13,9 @@
     box-shadow 0.3s;
 }
 
-.styleContainer {
+.linkContainer {
   width: 100%;
+  position: relative;
 }
 
 .galleryImage {
@@ -31,6 +32,17 @@
 
 .infoContainer {
   padding: 1.5rem;
+}
+
+.favButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
 }
 
 .galleryTitle {
@@ -67,7 +79,13 @@
     width: 40%;
     height: 11rem;
   }
+<<<<<<< HEAD
+  .infoContainer {
+    padding-top: 2rem;
+  }
+=======
 
+>>>>>>> main
   .galleryTitle {
     font-size: 1.4rem;
   }

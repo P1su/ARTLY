@@ -8,9 +8,9 @@ export default function NavBar() {
   return (
     <nav className={styles.navbarNavigation}>
       <ul className={styles.menuList}>
-        {menuList.map(({ label, path }) => (
+        {menuList.map(({ label, path, index }) => (
           <li
-            key={path}
+            key={`${label}-${index}`}
             className={`${styles.menuItem} ${pathname === path && styles.currentMenu}`}
           >
             <NavLink
