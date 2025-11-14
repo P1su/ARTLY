@@ -8,25 +8,33 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
 
-  console.log(data);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDescriptionChange = (newDescription) => {
-    setData((prev) => ({ ...prev, exhibition_description: newDescription }));
+  const handleDescriptionChange = (html) => {
+    setData((prev) => ({ ...prev, exhibition_description: html }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
       onFileChange(file);
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreviewUrl(previewUrl);
+      setImagePreviewUrl(URL.createObjectURL(file));
+
+      setData((prev) => ({ ...prev, exhibition_poster_url: '' }));
     }
-    e.target.value = '';
+    event.target.value = '';
   };
+
+  useEffect(() => {
+    if (data.exhibition_poster_url) {
+      setImagePreviewUrl(data.exhibition_poster_url);
+    } else if (data.exhibition_poster) {
+      setImagePreviewUrl(data.exhibition_poster);
+    }
+  }, [data.exhibition_poster, data.exhibition_poster_url]);
 
   const daysOfWeek = [
     '월요일',
@@ -38,38 +46,26 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     '일요일',
   ];
 
-  const handleCheckboxChange = (e) => {
+  const handleClosedDayChange = (e) => {
     const { value: day, checked } = e.target;
-    const currentClosedDays = data.exhibition_closed_day
+    const current = data.exhibition_closed_day
       ? data.exhibition_closed_day.split(',').map((d) => d.trim())
       : [];
 
-    let newClosedDays;
-    if (checked) {
-      newClosedDays = [...new Set([...currentClosedDays, day])];
-    } else {
-      newClosedDays = currentClosedDays.filter((d) => d !== day);
-    }
-
-    const daysOrder = daysOfWeek;
-    newClosedDays.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
+    const updated = checked
+      ? [...new Set([...current, day])]
+      : current.filter((d) => d !== day);
 
     setData((prev) => ({
       ...prev,
-      exhibition_closed_day: newClosedDays.join(', '),
+      exhibition_closed_day: updated.join(', '),
     }));
   };
-
-  useEffect(() => {
-    if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
-      setImagePreviewUrl(data.exhibition_poster);
-    }
-  }, [data.exhibition_poster]);
 
   return (
     <>
       <div className={styles.card}>
-        {/* 전시명 */}
+        {/* 제목 */}
         <input
           className={`${styles.input} ${styles.galleryNameInput}`}
           name='exhibition_title'
@@ -78,32 +74,38 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           placeholder='전시회 제목'
         />
 
-        {/* 대표 포스터 이미지 */}
+        {/* 대표 이미지 */}
         <input
-          type='file'
           ref={fileInputRef}
-          onChange={handleImageChange}
+          type='file'
           accept='image/*'
+          onChange={handleImageChange}
           style={{ display: 'none' }}
         />
+
         <div
           className={styles.imageUploadBox}
           onClick={() => fileInputRef.current.click()}
         >
           {imagePreviewUrl ? (
-            <img
-              src={imagePreviewUrl}
-              alt='전시 포스터'
-              className={styles.previewImage}
-            />
+            <img src={imagePreviewUrl} className={styles.previewImage} />
           ) : (
-            <p className={styles.previewImageDesc}>
-              + 전시 포스터 이미지를 업로드 해주세요
-            </p>
+            <p className={styles.previewImageDesc}>+ 전시 포스터 업로드</p>
           )}
         </div>
 
-        {/* 전시 필드 영역 */}
+        {/* 포스터 URL 직접 입력 */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>포스터 URL</label>
+          <input
+            className={styles.input}
+            name='exhibition_poster_url'
+            value={data.exhibition_poster_url || ''}
+            onChange={handleInputChange}
+            placeholder='https://example.com/poster.jpg'
+          />
+        </div>
+
         <div className={styles.formGrid}>
           {/* 전시 기간 */}
           <div className={styles.inputGroup}>
@@ -111,18 +113,18 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             <div className={styles.timeInputContainer}>
               <input
                 type='date'
-                className={styles.timeInput}
                 name='exhibition_start_date'
                 value={data.exhibition_start_date || ''}
                 onChange={handleInputChange}
+                className={styles.timeInput}
               />
               <span>~</span>
               <input
                 type='date'
-                className={styles.timeInput}
                 name='exhibition_end_date'
                 value={data.exhibition_end_date || ''}
                 onChange={handleInputChange}
+                className={styles.timeInput}
               />
             </div>
           </div>
@@ -146,11 +148,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 type='time'
                 className={styles.timeInput}
                 name='exhibition_start_time'
-                value={
-                  data.exhibition_start_time
-                    ? data.exhibition_start_time.slice(11, 16)
-                    : ''
-                }
+                value={data.exhibition_start_time?.slice(0, 5) || ''}
                 onChange={handleInputChange}
               />
               <span>~</span>
@@ -158,11 +156,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 type='time'
                 className={styles.timeInput}
                 name='exhibition_end_time'
-                value={
-                  data.exhibition_end_time
-                    ? data.exhibition_end_time.slice(11, 16)
-                    : ''
-                }
+                value={data.exhibition_end_time?.slice(0, 5) || ''}
                 onChange={handleInputChange}
               />
             </div>
@@ -178,8 +172,8 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                     type='checkbox'
                     value={day}
                     checked={data.exhibition_closed_day?.includes(day)}
-                    onChange={handleCheckboxChange}
-                  />{' '}
+                    onChange={handleClosedDayChange}
+                  />
                   {day}
                 </label>
               ))}
@@ -189,15 +183,14 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           {/* 입장료 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>입장료</label>
-            <div className={styles.priceInputContainer}>
-              <input
-                type='number'
-                className={styles.input}
-                name='exhibition_price'
-                value={data.exhibition_price || ''}
-                onChange={handleInputChange}
-              />
-            </div>
+            <input
+              type='text'
+              className={styles.input}
+              name='exhibition_price'
+              value={data.exhibition_price || ''}
+              onChange={handleInputChange}
+              placeholder='예: 유료 성인 5000원, 학생 4000원 ...'
+            />
           </div>
 
           {/* 전화번호 */}
@@ -237,8 +230,8 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>
             <input
-              className={styles.input}
               type='url'
+              className={styles.input}
               name='exhibition_homepage'
               value={data.exhibition_homepage || ''}
               onChange={handleInputChange}
@@ -247,17 +240,16 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         </div>
       </div>
 
-      {/* 탭 (소개) */}
+      {/* 소개 + 작품 탭 */}
       <div className={styles.tabContainer}>
         <nav className={styles.tabNav}>
           <button
-            className={`${styles.tabButton} ${
-              activeTab === 'info' && styles.activeTab
-            }`}
+            className={`${styles.tabButton} ${activeTab === 'info' && styles.activeTab}`}
             onClick={() => setActiveTab('info')}
           >
             소개
           </button>
+
           <button
             className={`${styles.tabButton} ${activeTab === 'artworks' && styles.activeTab}`}
             onClick={() => setActiveTab('artworks')}
@@ -273,13 +265,12 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               onChange={handleDescriptionChange}
             />
           )}
+
           {activeTab === 'artworks' &&
-            (data.exhibitions?.length > 0 ? (
+            (data.artworks?.length > 0 ? (
               <ArtworksCards artworks={data.artworks} />
             ) : (
-              <p className={styles.emptyContent}>
-                현재 전시된 작품이 없습니다.
-              </p>
+              <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
             ))}
         </div>
       </div>
