@@ -63,7 +63,6 @@ export default function Artists() {
     <div className={styles.layout}>
       <ListHeader
         title='작가'
-        placeholder='작가명 또는 국적 검색'
         isFav={artistFilters.liked_only}
         onEvent={getArtists}
         onFav={handleFav}
@@ -76,19 +75,23 @@ export default function Artists() {
       />
       <TotalCounts num={artists.length} label='작가' />
 
-      {isLoading && <div>작가 데이터 조회 중..</div>}
-      {artists.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {artists.length === 0 && (
+        <div className={styles.nonDataText}>조회된 작가가 없습니다.</div>
+      )}
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
           <ArtistCard key={item.id} artistItem={item} />
         ))}
       </div>
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={artists.length}
-      />
+
+      {artists.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={artists.length}
+        />
+      )}
     </div>
   );
 }

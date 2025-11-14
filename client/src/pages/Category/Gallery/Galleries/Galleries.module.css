@@ -13,6 +13,13 @@
   gap: 1rem;
 }
 
+.nonDataText {
+  padding-top: 3rem;
+  text-align: center;
+  color: var(--gray02);
+  font-size: 1.4rem;
+}
+
 @media (max-width: 1500px) {
   .layout {
     padding: 4rem 10rem 6rem;

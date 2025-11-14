@@ -66,7 +66,6 @@ export default function Galleries() {
     <div className={styles.layout}>
       <ListHeader
         title='갤러리'
-        placeholder='갤러리명 검색'
         isFav={galleryFilters.liked_only}
         onEvent={getGalleies}
         onFav={handleFav}
@@ -79,7 +78,9 @@ export default function Galleries() {
       />
 
       <TotalCounts num={galleries.length} label='갤러리' />
-      {galleries.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {galleries.length === 0 && (
+        <div className={styles.nonDataText}>조회된 갤러리가 없습니다.</div>
+      )}
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
@@ -87,11 +88,13 @@ export default function Galleries() {
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={galleries.length}
-      />
+      {galleries.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={galleries.length}
+        />
+      )}
     </div>
   );
 }
