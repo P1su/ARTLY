@@ -37,6 +37,7 @@ import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerato
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
+import Poster from './../pages_console/Poster/Poster';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: '/console/leaflet',
         element: <Leaflet />,
+      },
+      {
+        path: '/console/poster',
+        element: <Poster />,
       },
     ],
   },

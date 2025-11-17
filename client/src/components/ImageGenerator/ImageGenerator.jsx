@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import styles from './ImageGenerator.module.css';
+import React, { useState } from 'react';
+import { instance } from './../../apis/instance';
 
 export default function ImageGenerator() {
   const [userPrompt, setUserPrompt] = useState('');
@@ -7,6 +8,18 @@ export default function ImageGenerator() {
   const [loading, setLoading] = useState(false);
   const gpt_model_extraction = 'gpt-5-nano';
 
+  const postImageGenerate = async () => {
+    try {
+      const response = await instance.post('/api/console/images/generate', {
+        text: userPrompt,
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  /*
   // 키워드 추출
   const extractKeywords = async (userText) => {
     console.log('Extracting keywords from userText:', userText);
@@ -200,6 +213,7 @@ export default function ImageGenerator() {
       setLoading(false);
     }
   };
+*/
 
   return (
     <div className={styles.container}>
@@ -215,7 +229,7 @@ export default function ImageGenerator() {
             className={styles.textarea}
           />
           <button
-            onClick={handleSubmit}
+            onClick={postImageGenerate}
             className={styles.generateButton}
             disabled={loading}
           >
