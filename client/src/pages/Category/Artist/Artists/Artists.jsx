@@ -81,7 +81,7 @@ export default function Artists() {
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
-          <ArtistCard key={item.id} artistItem={item} />
+          <ArtistCard key={item.id} artistItem={item} onEvent={getArtists} />
         ))}
       </div>
 
