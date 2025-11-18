@@ -22,7 +22,7 @@
   height: 15rem;
   border-radius: 12px;
 
-  fill: object-fit;
+  object-fit: cover;
   transition: transform 0.3s;
 }
 

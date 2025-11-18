@@ -1,9 +1,7 @@
 .layout {
   display: flex;
   flex-direction: column;
-  padding: 8rem 2rem 7rem 2rem;
-
-  width: 36rem;
+  padding: 4rem 30rem 6rem;
 }
 
 .registerTitle {
@@ -50,4 +48,16 @@
 .submitButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (max-width: 1072px) {
+  .layout {
+    padding: 4rem 5rem 6rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .layout {
+    padding: 4rem 2rem 6rem;
+  }
 }

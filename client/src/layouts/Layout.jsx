@@ -18,8 +18,8 @@ export default function Layout() {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
           flexDirection: 'column',
+          flex: 1,
         }}
       >
         <Outlet />
