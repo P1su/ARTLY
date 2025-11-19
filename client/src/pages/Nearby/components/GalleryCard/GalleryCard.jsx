@@ -1,8 +1,7 @@
 import styles from './GalleryCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import IcFav from './../../../../assets/svg/IcFav';
-import IcUnFav from './../../../../assets/svg/IcUnFav';
 import { userInstance } from './../../../../apis/instance';
+import { FaStar } from 'react-icons/fa6';
 
 export default function GalleryCard({ galleryItem, onEvent }) {
   const {
@@ -47,6 +46,7 @@ export default function GalleryCard({ galleryItem, onEvent }) {
     }
   };
 
+  console.log(isLike);
   return (
     <div className={styles.layout}>
       <Link className={styles.linkContainer} to={`/galleries/${id}`}>
@@ -63,7 +63,9 @@ export default function GalleryCard({ galleryItem, onEvent }) {
             handleLike();
           }}
         >
-          {isLike ? <IcFav /> : <IcUnFav />}
+          <FaStar
+            className={isLike === true ? styles.likedIcon : styles.icon}
+          />
         </button>
         <div className={styles.infoContainer}>
           <h3 className={styles.galleryTitle}>{name}</h3>
