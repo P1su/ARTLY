@@ -17,7 +17,7 @@
   color: #333333;
   font-size: 48px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
   letter-spacing: -0.5px;
 }
@@ -94,5 +94,8 @@
 @media (max-width: 767px) {
   .searchForm {
     width: 100%;
+  }
+  .listTitle {
+    font-size: 29px;
   }
 }
