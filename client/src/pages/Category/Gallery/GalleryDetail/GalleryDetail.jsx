@@ -123,8 +123,8 @@ export default function GalleryDetail({
 
   const SNS_ICONS = {
     instagram: FaInstagram,
-    twitter: FaTwitter,
-    facebook: FaFacebook,
+    // twitter: FaTwitter,
+    // facebook: FaFacebook,
     youtube: FaYoutube,
     default: FaLink,
   };
@@ -144,11 +144,21 @@ export default function GalleryDetail({
     gallery_phone: phone = '',
     gallery_email: email = '',
     gallery_homepage: homepage = '',
-    gallery_sns: snsArray = [],
-    gallery_latitude: lat,
+    gallery_sns: rawSns,
     gallery_longitude: lng,
   } = galleryData;
 
+  let snsArray = [];
+  try {
+    if (Array.isArray(rawSns)) {
+      snsArray = rawSns;
+    } else if (typeof rawSns === 'string') {
+      snsArray = JSON.parse(rawSns);
+    }
+  } catch (e) {
+    console.error('SNS 데이터 파싱 오류:', e);
+    snsArray = [];
+  }
   const infoList = [
     {
       label: '관람시간',
@@ -170,7 +180,11 @@ export default function GalleryDetail({
         Array.isArray(snsArray) && snsArray.length > 0 ? (
           <div className={styles.inlineSns}>
             {snsArray.map(({ type, url }) => {
-              const Icon = SNS_ICONS[type?.toLowerCase()] || SNS_ICONS.default;
+              const snsType = type?.toLowerCase();
+              const Icon = SNS_ICONS[snsType] || SNS_ICONS.default;
+
+              const hoverClass = styles[snsType] || styles.defaultLink;
+
               return (
                 <a
                   key={`${type}-${url}`}
@@ -179,7 +193,7 @@ export default function GalleryDetail({
                   rel='noopener noreferrer'
                   className={styles.snsLink}
                 >
-                  <Icon className={styles.snsIcon} />
+                  <Icon className={`${styles.snsIcon} ${hoverClass}`} />
                 </a>
               );
             })}
@@ -189,7 +203,7 @@ export default function GalleryDetail({
         ),
     },
   ];
-
+  console.log(snsArray);
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length || 0})` },
