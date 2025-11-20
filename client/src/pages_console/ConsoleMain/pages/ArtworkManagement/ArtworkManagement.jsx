@@ -42,6 +42,7 @@ export default function ArtworkManagement({
   useEffect(() => {
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
+
       loadArtworks(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드

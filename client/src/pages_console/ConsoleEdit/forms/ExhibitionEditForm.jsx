@@ -1,12 +1,36 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import ArtworksCards from '../../ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
-  const [activeTab, setActiveTab] = useState('info');
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
+  // const [artistInput, setArtistInput] = useState('');
+  // const [artistIdInput, setArtistIdInput] = useState('');
+  // const [artistRoleInput, setArtistRoleInput] = useState('');
+
+  // useEffect(() => {
+  //   if (Array.isArray(data.artists)) {
+  //     setArtistInput(data.artists.join(', '));
+  //   } else if (typeof data.artists === 'string') {
+  //     setArtistInput(data.artists);
+  //   }
+  // }, [data.artists]);
+
+  useEffect(() => {
+    if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
+      setImagePreviewUrl(data.exhibition_poster);
+    }
+  }, [data.exhibition_poster]);
+
+  const handleRemoveImage = (e) => {
+    e.stopPropagation(); // 부모의 클릭 이벤트(파일 열기) 전파 방지
+    setImagePreviewUrl(null);
+    onFileChange(null); // 부모 컴포넌트의 선택된 파일 초기화
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,20 +45,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     const file = event.target.files[0];
     if (file) {
       onFileChange(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
-
-      setData((prev) => ({ ...prev, exhibition_poster_url: '' }));
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(previewUrl);
     }
     event.target.value = '';
   };
-
-  useEffect(() => {
-    if (data.exhibition_poster_url) {
-      setImagePreviewUrl(data.exhibition_poster_url);
-    } else if (data.exhibition_poster) {
-      setImagePreviewUrl(data.exhibition_poster);
-    }
-  }, [data.exhibition_poster, data.exhibition_poster_url]);
 
   const daysOfWeek = [
     '월요일',
@@ -46,26 +61,82 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     '일요일',
   ];
 
-  const handleClosedDayChange = (e) => {
+  const handleCheckboxChange = (e) => {
     const { value: day, checked } = e.target;
-    const current = data.exhibition_closed_day
+
+    const currentClosedDays = data.exhibition_closed_day
       ? data.exhibition_closed_day.split(',').map((d) => d.trim())
       : [];
 
-    const updated = checked
-      ? [...new Set([...current, day])]
-      : current.filter((d) => d !== day);
+    let newClosedDays;
+    if (checked) {
+      newClosedDays = [...new Set([...currentClosedDays, day])];
+    } else {
+      newClosedDays = currentClosedDays.filter((d) => d !== day);
+    }
+
+    const daysOrder = daysOfWeek;
+    newClosedDays.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
 
     setData((prev) => ({
       ...prev,
-      exhibition_closed_day: updated.join(', '),
+      exhibition_closed_day: newClosedDays.join(', '),
     }));
   };
+
+  // // [추가] 입력 중일 때는 문자열만 업데이트
+  // const handleArtistChange = (e) => {
+  //   setArtistInput(e.target.value);
+  // };
+
+  // // [추가] 입력창에서 나갈 때(포커스 해제) 배열로 변환하여 원본 data 업데이트
+  // const handleArtistBlur = () => {
+  //   // 콤마(,)를 기준으로 자르고 앞뒤 공백 제거
+  //   const artistArray = artistInput
+  //     .split(',')
+  //     .map((name) => name.trim())
+  //     .filter((name) => name !== ''); // 빈 문자열 제거
+
+  //   setData((prev) => ({ ...prev, artists: artistArray }));
+  // };
+  // // [핵심 기능] 작가 개별 등록 함수 (메인 저장과 별개로 동작)
+  // const handleAddArtist = async () => {
+  //   if (!artistIdInput) {
+  //     alert('작가 ID를 입력해주세요.');
+  //     return;
+  //   }
+
+  //   // API 명세에 맞춘 payload
+  //   const payload = {
+  //     artist_id: parseInt(artistIdInput, 10), // 정수로 변환
+  //     role: artistRoleInput || 'Artist', // 역할이 없으면 기본값
+  //   };
+
+  //   try {
+  //     // 전시회 ID는 data.id에 있다고 가정
+  //     await userInstance.post(`/api/exhibitions/${data.id}/artworks`, payload);
+
+  //     alert('작가가 성공적으로 등록되었습니다.');
+
+  //     // 입력창 초기화
+  //     setArtistIdInput('');
+  //     setArtistRoleInput('');
+
+  //     // (선택사항) 목록 갱신이 필요하다면 부모 컴포넌트에서 재조회 함수를 받아서 호출해야 함
+  //     // 임시로 화면에 반영하는 로직 (실제 데이터 구조에 맞춰 수정 필요)
+  //     // setData(prev => ({
+  //     //   ...prev,
+  //     //   artists: [...(prev.artists || []), `ID:${payload.artist_id}`]
+  //     // }));
+  //   } catch (error) {
+  //     console.error('작가 등록 실패:', error);
+  //     alert('작가 등록에 실패했습니다. ID를 확인해주세요.');
+  //   }
+  // };
 
   return (
     <>
       <div className={styles.card}>
-        {/* 제목 */}
         <input
           className={`${styles.input} ${styles.galleryNameInput}`}
           name='exhibition_title'
@@ -74,12 +145,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           placeholder='전시회 제목'
         />
 
-        {/* 대표 이미지 */}
         <input
-          ref={fileInputRef}
           type='file'
-          accept='image/*'
+          ref={fileInputRef}
           onChange={handleImageChange}
+          accept='image/*'
           style={{ display: 'none' }}
         />
 
@@ -88,59 +158,50 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           onClick={() => fileInputRef.current.click()}
         >
           {imagePreviewUrl ? (
-            <img src={imagePreviewUrl} className={styles.previewImage} />
+            <>
+              <img
+                src={imagePreviewUrl}
+                alt='전시 포스터 미리보기'
+                className={styles.previewImage}
+              />
+              <button
+                type='button'
+                onClick={handleRemoveImage}
+                className={styles.imageDelBtn}
+                title='이미지 삭제'
+              >
+                ✕
+              </button>
+            </>
           ) : (
-            <p className={styles.previewImageDesc}>+ 전시 포스터 업로드</p>
+            <p className={styles.previewImageDesc}>
+              + 전시 포스터를 업로드 해주세요
+            </p>
           )}
         </div>
 
-        {/* 포스터 URL 직접 입력 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>포스터 URL</label>
-          <input
-            className={styles.input}
-            name='exhibition_poster_url'
-            value={data.exhibition_poster_url || ''}
-            onChange={handleInputChange}
-            placeholder='https://example.com/poster.jpg'
-          />
-        </div>
-
         <div className={styles.formGrid}>
-          {/* 전시 기간 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>전시기간</label>
             <div className={styles.timeInputContainer}>
               <input
                 type='date'
+                className={styles.timeInput}
                 name='exhibition_start_date'
                 value={data.exhibition_start_date || ''}
                 onChange={handleInputChange}
-                className={styles.timeInput}
               />
               <span>~</span>
               <input
                 type='date'
+                className={styles.timeInput}
                 name='exhibition_end_date'
                 value={data.exhibition_end_date || ''}
                 onChange={handleInputChange}
-                className={styles.timeInput}
               />
             </div>
           </div>
 
-          {/* 전시장소 */}
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>전시장소</label>
-            <input
-              className={styles.input}
-              name='exhibition_location'
-              value={data.exhibition_location || ''}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          {/* 관람시간 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>관람시간</label>
             <div className={styles.timeInputContainer}>
@@ -162,7 +223,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
           </div>
 
-          {/* 휴관일 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>휴관일</label>
             <div className={styles.checkboxGroup}>
@@ -170,30 +230,48 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 <label key={day}>
                   <input
                     type='checkbox'
+                    name='closedDays'
                     value={day}
                     checked={data.exhibition_closed_day?.includes(day)}
-                    onChange={handleClosedDayChange}
-                  />
+                    onChange={handleCheckboxChange}
+                  />{' '}
                   {day}
                 </label>
               ))}
             </div>
           </div>
 
-          {/* 입장료 */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>전시장소</label>
+            <input
+              className={styles.input}
+              name='exhibition_organization
+'
+              value={data.exhibition_organization || ''}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>주소</label>
+            <input
+              className={styles.input}
+              name='exhibition_location'
+              value={data.exhibition_location || ''}
+              onChange={handleInputChange}
+            />
+          </div>
+
           <div className={styles.inputGroup}>
             <label className={styles.label}>입장료</label>
             <input
-              type='text'
               className={styles.input}
               name='exhibition_price'
               value={data.exhibition_price || ''}
               onChange={handleInputChange}
-              placeholder='예: 유료 성인 5000원, 학생 4000원 ...'
             />
           </div>
 
-          {/* 전화번호 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>전화번호</label>
             <input
@@ -204,34 +282,71 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             />
           </div>
 
-          {/* 주소 */}
+          {/* 작가 수정 부분 교체
           <div className={styles.inputGroup}>
-            <label className={styles.label}>주소</label>
+            <label className={styles.label}>참여 작가 (쉼표로 구분)</label>
             <input
               className={styles.input}
-              name='exhibition_address'
-              value={data.exhibition_address || ''}
-              onChange={handleInputChange}
+              name='artists'
+              value={artistInput} // data.artists 대신 artistInput 사용
+              onChange={handleArtistChange} // 입력 핸들러 교체
+              onBlur={handleArtistBlur} // 저장 핸들러 추가
+              placeholder='예: 홍길동, 김철수, 이영희'
             />
-          </div>
+          </div> */}
 
-          {/* 작가 */}
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>작가</label>
-            <input
-              className={styles.input}
-              name='exhibition_artist'
-              value={data.exhibition_artist || ''}
-              onChange={handleInputChange}
-            />
-          </div>
+          {/* <div className={styles.inputGroup}>
+            <label className={styles.label}>참여 작가 등록</label>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <input
+                type='number'
+                className={styles.input}
+                placeholder='작가 ID (숫자)'
+                value={artistIdInput}
+                onChange={(e) => setArtistIdInput(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <input
+                type='text'
+                className={styles.input}
+                placeholder='역할 (예: Main Artist)'
+                value={artistRoleInput}
+                onChange={(e) => setArtistRoleInput(e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <button
+                type='button'
+                onClick={handleAddArtist}
+                style={{
+                  padding: '0 2rem',
+                  backgroundColor: '#4a5bba',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '1.4rem',
+                }}
+              >
+                등록
+              </button>
+            </div>
+            <div
+              style={{ marginTop: '1rem', fontSize: '1.4rem', color: '#666' }}
+            >
+              현재 등록된 작가:{' '}
+              {Array.isArray(data.artists)
+                ? data.artists.join(', ')
+                : typeof data.artists === 'string'
+                  ? data.artists
+                  : '없음'}
+            </div>
+          </div> */}
 
-          {/* 홈페이지 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>
             <input
-              type='url'
               className={styles.input}
+              type='url'
               name='exhibition_homepage'
               value={data.exhibition_homepage || ''}
               onChange={handleInputChange}
@@ -240,39 +355,12 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         </div>
       </div>
 
-      {/* 소개 + 작품 탭 */}
-      <div className={styles.tabContainer}>
-        <nav className={styles.tabNav}>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'info' && styles.activeTab}`}
-            onClick={() => setActiveTab('info')}
-          >
-            소개
-          </button>
-
-          <button
-            className={`${styles.tabButton} ${activeTab === 'artworks' && styles.activeTab}`}
-            onClick={() => setActiveTab('artworks')}
-          >
-            작품({data.artworks?.length || 0})
-          </button>
-        </nav>
-
-        <div className={styles.tabContent}>
-          {activeTab === 'info' && (
-            <TiptapEditor
-              content={data.exhibition_description || ''}
-              onChange={handleDescriptionChange}
-            />
-          )}
-
-          {activeTab === 'artworks' &&
-            (data.artworks?.length > 0 ? (
-              <ArtworksCards artworks={data.artworks} />
-            ) : (
-              <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
-            ))}
-        </div>
+      <div className={`${styles.card} ${styles.tiptap}`}>
+        <label className={styles.label}>전시 소개</label>
+        <TiptapEditor
+          content={data.exhibition_description || ''}
+          onChange={handleDescriptionChange}
+        />
       </div>
     </>
   );

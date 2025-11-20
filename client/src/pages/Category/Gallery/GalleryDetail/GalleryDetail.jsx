@@ -17,14 +17,18 @@ import ExhibitionsCards from './components/ExhibitionsCards/ExhibitionsCards.jsx
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
-import { useToastContext } from '../../../../store/ToastProvider.jsx';
+// import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
-export default function GalleryDetail({ showUserActions = true, id: propId }) {
+export default function GalleryDetail({
+  showUserActions = true,
+  id: propId,
+  actionButtons,
+}) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
 
-  const { addToast } = useToastContext();
+  // const { addToast } = useToastContext();
 
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -45,7 +49,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
-  // ✅ 마운트 시 데이터 로드
   useEffect(() => {
     fetchGalleryDetail();
   }, [id]);
@@ -58,7 +61,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   if (!galleryData) return <div>로딩 중...</div>;
 
-  // ✅ 좋아요 토글
   const handleLike = async () => {
     if (!localStorage.getItem('ACCESS_TOKEN')) {
       navigate('/login');
@@ -75,10 +77,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           liked_id: id,
           liked_type: 'gallery',
         });
-        addToast({
-          title: '좋아하는 갤러리로 추가 완료!',
-          message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
-        });
+        // addToast({
+        //   title: '좋아하는 갤러리로 추가 완료!',
+        //   message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
+        // });
       }
 
       await userInstance.post('/api/likes', payload);
@@ -89,7 +91,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     }
   };
 
-  // ✅ 공유하기
   const handleShare = () => {
     const name = galleryData.gallery_name;
     const url = window.location.href;
@@ -122,8 +123,8 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
 
   const SNS_ICONS = {
     instagram: FaInstagram,
-    twitter: FaTwitter,
-    facebook: FaFacebook,
+    // twitter: FaTwitter,
+    // facebook: FaFacebook,
     youtube: FaYoutube,
     default: FaLink,
   };
@@ -143,11 +144,21 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
     gallery_phone: phone = '',
     gallery_email: email = '',
     gallery_homepage: homepage = '',
-    gallery_sns: snsArray = [],
-    gallery_latitude: lat,
+    gallery_sns: rawSns,
     gallery_longitude: lng,
   } = galleryData;
 
+  let snsArray = [];
+  try {
+    if (Array.isArray(rawSns)) {
+      snsArray = rawSns;
+    } else if (typeof rawSns === 'string') {
+      snsArray = JSON.parse(rawSns);
+    }
+  } catch (e) {
+    console.error('SNS 데이터 파싱 오류:', e);
+    snsArray = [];
+  }
   const infoList = [
     {
       label: '관람시간',
@@ -169,7 +180,11 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         Array.isArray(snsArray) && snsArray.length > 0 ? (
           <div className={styles.inlineSns}>
             {snsArray.map(({ type, url }) => {
-              const Icon = SNS_ICONS[type?.toLowerCase()] || SNS_ICONS.default;
+              const snsType = type?.toLowerCase();
+              const Icon = SNS_ICONS[snsType] || SNS_ICONS.default;
+
+              const hoverClass = styles[snsType] || styles.defaultLink;
+
               return (
                 <a
                   key={`${type}-${url}`}
@@ -178,7 +193,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
                   rel='noopener noreferrer'
                   className={styles.snsLink}
                 >
-                  <Icon className={styles.snsIcon} />
+                  <Icon className={`${styles.snsIcon} ${hoverClass}`} />
                 </a>
               );
             })}
@@ -188,7 +203,7 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
         ),
     },
   ];
-
+  console.log(snsArray);
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length || 0})` },
@@ -196,8 +211,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   ];
 
   const mapId = `gallery-${id}-map`;
-  console.log('lat:', lat, 'lng:', lng);
-  console.log('showMapModal:', showMapModal);
 
   return (
     <div className={styles.layout}>
@@ -299,19 +312,27 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
             <p className={styles.emptyContent}>현재 등록된 정보가 없습니다.</p>
           ))}
 
-        {activeTab === 'artworks' &&
-          (artworks.length > 0 ? (
-            <ArtworksCards artworks={artworks} />
-          ) : (
-            <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
-          ))}
+        {activeTab === 'artworks' && (
+          <>
+            {artworks.length > 0 ? (
+              <ArtworksCards artworks={artworks} />
+            ) : (
+              <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
+            )}
+            {actionButtons?.artworks}
+          </>
+        )}
 
-        {activeTab === 'exhibitions' &&
-          (exhibitions.length > 0 ? (
-            <ExhibitionsCards exhibitions={exhibitions} />
-          ) : (
-            <p className={styles.emptyContent}>현재 전시가 없습니다.</p>
-          ))}
+        {activeTab === 'exhibitions' && (
+          <>
+            {exhibitions.length > 0 ? (
+              <ExhibitionsCards exhibitions={exhibitions} />
+            ) : (
+              <p className={styles.emptyContent}>현재 전시가 없습니다.</p>
+            )}
+            {actionButtons?.exhibitions}
+          </>
+        )}
       </DetailTabs>
 
       {showUserActions && (

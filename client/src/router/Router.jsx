@@ -89,7 +89,6 @@ const router = createBrowserRouter([
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/leaflet/:id', element: <Leaflet /> },
 
-      { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
         element: <ConsoleDetail type='exhibitions' />,

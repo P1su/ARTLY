@@ -8,6 +8,24 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
 
+  useEffect(() => {
+    if (data.gallery_image && typeof data.gallery_image === 'string') {
+      setImagePreviewUrl(data.gallery_image);
+    }
+  }, [data.gallery_image]);
+
+  useEffect(() => {
+    if (typeof data.gallery_sns === 'string') {
+      try {
+        const parsedSns = JSON.parse(data.gallery_sns);
+        setData((prev) => ({ ...prev, gallery_sns: parsedSns }));
+      } catch (error) {
+        console.error('SNS 데이터 파싱 실패:', error);
+        setData((prev) => ({ ...prev, gallery_sns: [] }));
+      }
+    }
+  }, [data.gallery_sns, setData]);
+
   const handleComposition = (e) => {
     if (e.type === 'compositionstart') {
       setIsKoreanComposing(true);
@@ -83,7 +101,10 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
 
   const updateSnsField = (type, newUrl) => {
     setData((prev) => {
-      const snsList = prev.gallery_sns ? [...prev.gallery_sns] : [];
+      let snsList = Array.isArray(prev.gallery_sns)
+        ? [...prev.gallery_sns]
+        : [];
+
       const existingIndex = snsList.findIndex((sns) => sns.type === type);
 
       if (existingIndex !== -1) {
@@ -114,11 +135,14 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
     event.target.value = '';
   };
 
-  useEffect(() => {
-    if (data.gallery_image && typeof data.gallery_image === 'string') {
-      setImagePreviewUrl(data.gallery_image);
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setImagePreviewUrl(null);
+    onFileChange(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
-  }, [data.gallery_image]);
+  };
 
   return (
     <>
@@ -151,11 +175,21 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           onClick={() => fileInputRef.current.click()}
         >
           {imagePreviewUrl ? (
-            <img
-              src={imagePreviewUrl}
-              alt='갤러리 대표 이미지'
-              className={styles.previewImage}
-            />
+            <>
+              <img
+                src={imagePreviewUrl}
+                alt='갤러리 대표 이미지'
+                className={styles.previewImage}
+              />
+              <button
+                type='button'
+                onClick={handleRemoveImage}
+                className={styles.imageDelBtn}
+                title='이미지 삭제'
+              >
+                ✕
+              </button>
+            </>
           ) : (
             <p className={styles.previewImageDesc}>
               + 대표 이미지를 업로드 해주세요
@@ -277,12 +311,13 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
         <div className={styles.snsInputGroup}>
           {[
             { type: 'instagram', placeholder: 'Instagram 주소' },
-            { type: 'twitter', placeholder: 'Twitter 주소' },
-            { type: 'facebook', placeholder: 'Facebook 주소' },
             { type: 'youtube', placeholder: 'YouTube 주소' },
+            { type: 'facebook', placeholder: 'Facebook 주소' },
+            { type: 'twitter', placeholder: 'Twitter 주소' },
           ].map(({ type, placeholder }) => {
-            const currentValue =
-              data.gallery_sns?.find((sns) => sns.type === type)?.url || '';
+            const currentValue = Array.isArray(data.gallery_sns)
+              ? data.gallery_sns.find((sns) => sns.type === type)?.url || ''
+              : '';
 
             return (
               <input
@@ -296,6 +331,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           })}
         </div>
       </div>
+
       <div className={`${styles.card} ${styles.tiptap}`}>
         <label className={styles.label}>정보</label>
 
