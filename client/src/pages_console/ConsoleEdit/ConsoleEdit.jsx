@@ -1,5 +1,5 @@
 import styles from './ConsoleEdit.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { userInstance } from '../../apis/instance.js';
 
@@ -10,18 +10,19 @@ import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 const EDIT_CONFIG = {
   galleries: {
     title: '갤러리 수정',
-    apiUrl: (id) => `/api/galleries/${id}`,
+    apiUrl: (id) => (id === 'new' ? '/api/galleries' : `/api/galleries/${id}`),
     formImageField: 'gallery_image_file',
   },
   exhibitions: {
     title: '전시회 수정',
-    apiUrl: (id) => `/api/exhibitions/${id}`,
+    apiUrl: (id) =>
+      id === 'new' ? '/api/exhibitions' : `/api/exhibitions/${id}`,
     formImageField: 'exhibition_poster_file',
   },
   artworks: {
     title: '작품 수정',
-    apiUrl: (id) => `/api/arts/${id}`,
-    formImageField: 'art_image_file',
+    apiUrl: (id) => (id === 'new' ? '/api/arts' : `/api/arts/${id}`),
+    formImageField: 'image',
   },
 };
 
@@ -34,33 +35,49 @@ const FORM_COMPONENTS = {
 export default function ConsoleEdit({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [data, setData] = useState(null);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await userInstance.get(config.apiUrl(id));
-        const resData =
-          typeof response.data === 'string'
-            ? JSON.parse(response.data)
-            : response.data;
+    const initData = async () => {
+      if (isCreateMode) {
+        // 1. 생성 모드: 빈 객체로 초기화 + 쿼리 파라미터 반영
+        const initialData = {};
 
-        setData(resData);
-        console.log('저장 응답:', response.data);
-      } catch (error) {
-        console.error('데이터 로딩 실패:', error);
-        setData({});
+        // URL에서 전달받은 ID가 있다면 미리 넣어줌 (예: ?exhibition_id=1)
+        const exhibitionId = searchParams.get('exhibition_id');
+        const galleryId = searchParams.get('gallery_id');
+
+        if (exhibitionId) initialData.exhibition_id = exhibitionId;
+        if (galleryId) initialData.gallery_id = galleryId;
+
+        setData(initialData);
+      } else {
+        // 2. 수정 모드: 서버에서 데이터 조회
+        try {
+          const response = await userInstance.get(config.apiUrl(id));
+          const resData =
+            typeof response.data === 'string'
+              ? JSON.parse(response.data)
+              : response.data;
+          setData(resData);
+        } catch (error) {
+          console.error('데이터 로딩 실패:', error);
+          alert('데이터를 불러오지 못했습니다.');
+          navigate(`/console/${type}/${id}`);
+        }
       }
     };
 
-    if (config) fetchData();
-  }, [id, config]);
+    if (config) initData();
+  }, [id, config, isCreateMode, searchParams, navigate]);
 
   const handleCancel = () => {
     if (window.confirm('수정을 취소하시겠습니까?')) {
@@ -70,13 +87,48 @@ export default function ConsoleEdit({ type }) {
 
   const handleSave = async () => {
     if (isSaving || !data) return;
+
+    if (type === 'artworks' && isCreateMode) {
+      if (!data.artist_id) {
+        alert('작가를 선택해주세요.');
+        return;
+      }
+      if (!data.art_title) {
+        alert('작품명을 입력해주세요.');
+        return;
+      }
+      if (!selectedImageFile) {
+        alert('작품 이미지를 등록해주세요.');
+        return;
+      }
+    }
+
     setIsSaving(true);
 
     const formData = new FormData();
 
-    formData.append('_method', 'PATCH');
+    if (!isCreateMode) {
+      formData.append('_method', 'PATCH');
+    }
+
+    const ignoredKeys = [
+      'id',
+      'created_at',
+      'updated_at',
+      'user_id',
+      'artworks',
+      'exhibitions',
+      'reviews',
+      'is_liked',
+      'gallery',
+      'artist_users',
+      'artists',
+      'artist', // artist 객체 자체는 보내지 않음 (artist_id만 필요)
+    ];
 
     Object.entries(data).forEach(([key, value]) => {
+      if (ignoredKeys.includes(key)) return;
+
       if (value === undefined || value === null) return;
 
       if (typeof value === 'object' && !(value instanceof File)) {
@@ -86,23 +138,32 @@ export default function ConsoleEdit({ type }) {
       }
     });
 
-    const imageField = config.formImageField;
-
     if (selectedImageFile) {
-      formData.append(imageField, selectedImageFile);
+      formData.append(config.formImageField, selectedImageFile);
     }
 
     try {
-      const response = await userInstance.post(config.apiUrl(id), formData, {
+      const url = config.apiUrl(id);
+
+      const response = await userInstance.post(url, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       console.log('저장 성공:', response.data);
-      alert('저장되었습니다.');
+      alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
       navigate(`/console/${type}/${id}`);
     } catch (error) {
-      console.error('❌ 저장 오류:', error);
-      alert('저장 실패. 다시 시도하세요.');
+      console.error('저장 오류:', error);
+      if (error.response) {
+        console.log('서버 응답 메시지:', error.response.data);
+        const msg =
+          typeof error.response.data === 'object'
+            ? error.response.data.message || JSON.stringify(error.response.data)
+            : '서버 오류가 발생했습니다.';
+        alert(`저장 실패: ${msg}`);
+      } else {
+        alert('저장 중 네트워크 오류가 발생했습니다.');
+      }
     } finally {
       setIsSaving(false);
     }
