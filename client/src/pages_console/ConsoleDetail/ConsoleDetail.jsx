@@ -65,12 +65,14 @@ export default function ConsoleDetail({ type }) {
         break;
     }
   };
-
   const actionButtons = {
     artworks: (
       <button
         className={styles.addButton}
-        onClick={() => navigate(`/console/artworks/new?galleryId=${id}`)}
+        // 전시회 디테일에서 눌렀다면 exhibition_id를 넘겨서 자동 선택되게 함
+        onClick={() =>
+          navigate(`/console/artworks/edit/new?exhibition_id=${id}`)
+        }
       >
         + 작품 등록
       </button>
@@ -78,7 +80,10 @@ export default function ConsoleDetail({ type }) {
     exhibitions: (
       <button
         className={styles.addButton}
-        onClick={() => navigate(`/console/exhibitions/new?galleryId=${id}`)}
+        // 갤러리 디테일에서 눌렀다면 gallery_id를 넘김
+        onClick={() =>
+          navigate(`/console/exhibitions/edit/new?gallery_id=${id}`)
+        }
       >
         + 전시회 등록
       </button>
@@ -122,7 +127,11 @@ export default function ConsoleDetail({ type }) {
       </main>
 
       {showQrModal && (
-        <QrModal data={data} onClose={() => setShowQrModal(false)} />
+        <QrModal
+          data={data}
+          onClose={() => setShowQrModal(false)}
+          type={type}
+        />
       )}
     </div>
   );
