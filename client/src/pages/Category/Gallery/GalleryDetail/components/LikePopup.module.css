@@ -1,0 +1,61 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.likeModalBox {
+  background: #fff;
+  width: min(36rem, 90%);
+  border-radius: 16px;
+  padding: 4rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.likeModalStar {
+  font-size: 3.6rem;
+  color: #3f51b5;
+  margin-bottom: 1.2rem;
+}
+
+.likeModalTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.likeModalSub {
+  font-size: 1.3rem;
+  color: #777;
+  margin-top: 0.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.likeModalButton {
+  background: #3f51b5;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  width: 100%;
+  padding: 0.9rem 0;
+  margin-top: 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
