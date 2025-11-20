@@ -7,10 +7,29 @@
   padding: 4rem 30rem 6rem;
 }
 
+.dropboxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+}
+
+.mapButton {
+  display: inline-flex;
+  height: 25px;
+  padding: 3px 11px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  color: #888;
+  border: 1px solid var(--GrayScale-Placehoder, #888);
 }
 
 .nonDataText {

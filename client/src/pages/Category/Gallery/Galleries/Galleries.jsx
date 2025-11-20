@@ -1,5 +1,5 @@
 import styles from './Galleries.module.css';
-import { instance } from '../../../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ListHeader from '../../components/ListHeader/ListHeader';
@@ -9,6 +9,8 @@ import GalleryCard from '../../../Nearby/components/GalleryCard/GalleryCard';
 import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
+import useModal from './../../../../hooks/useModal';
+import GalleryMapModal from './components/GalleryMapModal/GalleryMapModal.jsx';
 
 export default function Galleries() {
   const [galleries, setGalleries] = useState([]);
@@ -25,6 +27,7 @@ export default function Galleries() {
   });
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
+  const { isOpen, handleOpenModal } = useModal();
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -46,7 +49,7 @@ export default function Galleries() {
         regions: galleryFilters.regions.replace(/\s+/g, ','),
         search: query,
       };
-      const response = await instance.get('/api/galleries', {
+      const response = await userInstance.get('/api/galleries', {
         params: updatedFilters,
       });
 
@@ -64,6 +67,7 @@ export default function Galleries() {
 
   return (
     <div className={styles.layout}>
+      {isOpen && <GalleryMapModal onOpen={handleOpenModal} />}
       <ListHeader
         title='갤러리'
         isFav={galleryFilters.liked_only}
@@ -72,10 +76,15 @@ export default function Galleries() {
         onSearch={handleSearch}
         value={query}
       />
-      <DropdownContainer
-        filterList={galleryFilter}
-        onSetFilter={setGalleryFilters}
-      />
+      <div className={styles.dropboxContainer}>
+        <DropdownContainer
+          filterList={galleryFilter}
+          onSetFilter={setGalleryFilters}
+        />
+        <button className={styles.mapButton} onClick={handleOpenModal}>
+          지도
+        </button>
+      </div>
 
       <TotalCounts num={galleries.length} label='갤러리' />
       {galleries.length === 0 && (
