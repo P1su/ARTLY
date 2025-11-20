@@ -17,14 +17,18 @@ import ExhibitionsCards from './components/ExhibitionsCards/ExhibitionsCards.jsx
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
-import { useToastContext } from '../../../../store/ToastProvider.jsx';
+// import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
-export default function GalleryDetail({ showUserActions = true, id: propId }) {
+export default function GalleryDetail({
+  showUserActions = true,
+  id: propId,
+  actionButtons,
+}) {
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
 
-  const { addToast } = useToastContext();
+  // const { addToast } = useToastContext();
 
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -73,10 +77,10 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
           liked_id: id,
           liked_type: 'gallery',
         });
-        addToast({
-          title: '좋아하는 갤러리로 추가 완료!',
-          message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
-        });
+        // addToast({
+        //   title: '좋아하는 갤러리로 추가 완료!',
+        //   message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
+        // });
       }
 
       await userInstance.post('/api/likes', payload);
@@ -193,8 +197,6 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
   ];
 
   const mapId = `gallery-${id}-map`;
-  console.log('lat:', lat, 'lng:', lng);
-  console.log('showMapModal:', showMapModal);
 
   return (
     <div className={styles.layout}>
@@ -296,19 +298,27 @@ export default function GalleryDetail({ showUserActions = true, id: propId }) {
             <p className={styles.emptyContent}>현재 등록된 정보가 없습니다.</p>
           ))}
 
-        {activeTab === 'artworks' &&
-          (artworks.length > 0 ? (
-            <ArtworksCards artworks={artworks} />
-          ) : (
-            <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
-          ))}
+        {activeTab === 'artworks' && (
+          <>
+            {artworks.length > 0 ? (
+              <ArtworksCards artworks={artworks} />
+            ) : (
+              <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
+            )}
+            {actionButtons?.artworks}
+          </>
+        )}
 
-        {activeTab === 'exhibitions' &&
-          (exhibitions.length > 0 ? (
-            <ExhibitionsCards exhibitions={exhibitions} />
-          ) : (
-            <p className={styles.emptyContent}>현재 전시가 없습니다.</p>
-          ))}
+        {activeTab === 'exhibitions' && (
+          <>
+            {exhibitions.length > 0 ? (
+              <ExhibitionsCards exhibitions={exhibitions} />
+            ) : (
+              <p className={styles.emptyContent}>현재 전시가 없습니다.</p>
+            )}
+            {actionButtons?.exhibitions}
+          </>
+        )}
       </DetailTabs>
 
       {showUserActions && (
