@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
+import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 import { useToastContext } from '../../../../store/ToastProvider';
 // import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
 
@@ -245,6 +246,16 @@ export default function ExhibitionDetail({
             <h3 className={styles.sectionTitle}>관련 전시</h3>
             <RelatedExhibitions exhibitions={relatedExhibitions || []} />
           </div>
+
+          {/* 초대장 문구 생성 섹션 */}
+          <div className={`${styles.card} ${styles.tabCard}`}>
+            <InvitationGenerator 
+              initialTheme={title}
+              initialOthers=""
+              showTitle={true}
+            />
+          </div>
+
           <Link className={styles.backButton} to='/exhibitions'>
             목록으로 돌아가기
           </Link>
