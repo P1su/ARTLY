@@ -9,8 +9,10 @@ import GalleryCard from '../../../Nearby/components/GalleryCard/GalleryCard';
 import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Galleries() {
+  const { user } = useUser();
   const [galleries, setGalleries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
@@ -31,7 +33,7 @@ export default function Galleries() {
   };
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setGalleryFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

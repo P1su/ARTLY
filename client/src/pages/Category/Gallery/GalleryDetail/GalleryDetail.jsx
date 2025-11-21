@@ -17,6 +17,7 @@ import ExhibitionsCards from './components/ExhibitionsCards/ExhibitionsCards.jsx
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
+import { useUser } from '../../../../store/UserProvider.jsx';
 // import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
 export default function GalleryDetail({
@@ -27,6 +28,7 @@ export default function GalleryDetail({
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
+  const { user } = useUser();
 
   // const { addToast } = useToastContext();
 
@@ -62,7 +64,7 @@ export default function GalleryDetail({
   if (!galleryData) return <div>로딩 중...</div>;
 
   const handleLike = async () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) {
+    if (!user) {
       navigate('/login');
       return;
     }
