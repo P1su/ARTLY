@@ -27,6 +27,11 @@ export default function Header() {
     navigate('/');
   };
 
+  const handleNotifications = () => {
+    handleClose();
+    navigate('/notifications');
+  };
+
   return (
     <header className={styles.headerLayout}>
       <span className={styles.logoSpan} onClick={handleHome}>
@@ -37,7 +42,14 @@ export default function Header() {
       {isDesktop && <NavBar />}
 
       <div className={styles.rightSection}>
-        <IcBell />
+        {/* 알림 버튼 */}
+         <button 
+          className={styles.notificationButton} 
+          onClick={handleNotifications}
+          aria-label="알림"
+        >
+          <IcBell />
+        </button>
 
         {/* 메뉴 버튼 */}
         <button onClick={isOpen ? handleClose : handleOpen}>

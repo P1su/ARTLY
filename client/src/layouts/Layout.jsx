@@ -1,8 +1,6 @@
-import useMobile from '../hooks/useMobile';
 import { Outlet, useLocation } from 'react-router-dom';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import ChatbotWidget from '../components/ChatbotWidget/ChatbotWidget';
 
 export default function Layout() {
@@ -17,12 +15,16 @@ export default function Layout() {
     <>
       <ScrollToTop />
       <Header />
-      <div style={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+        }}
+      >
         <Outlet />
       </div>
       {showChatbot && <ChatbotWidget />}
-
-      <Footer />
     </>
   );
 }

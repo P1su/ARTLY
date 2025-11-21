@@ -1,117 +1,111 @@
 import styles from './ExhibitionDetail.module.css';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { FaQrcode, FaCalendar, FaHeart, FaShare } from 'react-icons/fa';
+import {
+  FaStar,
+  FaShare,
+  FaHeadphones,
+  FaLink,
+  FaTicketSimple,
+  FaRegCircleCheck,
+  FaCalendarCheck,
+} from 'react-icons/fa6';
+import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
-import { FaHeadphones } from 'react-icons/fa6';
-// import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
-
-import { useToastContext } from '../../../../store/ToastProvider';
-// import ReservationModal from './components/ReservationModal/ReservationModal.jsx';
+import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
+import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
   id: propId,
+  actionButtons,
 }) {
   const { exhibitionId } = useParams();
   const id = propId || exhibitionId;
-
+  const { user } = useUser();
   const navigate = useNavigate();
+
   const [exhibitionData, setExhibitionData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
-  const { addToast } = useToastContext();
+  const [showLikePopup, setShowLikePopup] = useState(false);
+  const [activeTab, setActiveTab] = useState('info');
 
-  const getExhibitionDetail = async () => {
+  const fetchExhibitionDetail = async () => {
+    if (!id) return;
+
     try {
-      const response = await userInstance.get(`/api/exhibitions/${id}`);
-      setExhibitionData(response.data);
-      console.log('전시회', response.data);
+      const res = await userInstance.get(`/api/exhibitions/${id}`);
+      const { data } = res;
+      setExhibitionData(data);
+      if (typeof data.is_liked === 'boolean') setIsLiked(data.is_liked);
     } catch (error) {
-      console.error('데이터 로딩 실패:', error);
+      console.error('전시 상세 조회 실패:', error);
     }
   };
 
-  const getUserLikes = async () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) return;
-    try {
-      const res = await userInstance.get('/api/users/me/likes');
-      const likeExhibitions = res.data.like_exhibitions || [];
-      const liked = likeExhibitions.some((g) => g.id === Number(id));
-      setIsLiked(liked);
-    } catch (error) {
-      console.error('좋아요 상태 조회 실패:', error);
-    }
-  };
   useEffect(() => {
-    if (id) {
-      getExhibitionDetail();
-      getUserLikes();
-    }
+    fetchExhibitionDetail();
   }, [id]);
 
   const handleLike = async () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) {
+    if (!user) {
       navigate('/login');
       return;
     }
     try {
+      const payload = { liked_id: id, liked_type: 'exhibition' };
+
       if (isLiked) {
-        await userInstance.delete('/api/likes', {
-          data: { liked_id: id, liked_type: 'exhibition' },
-        });
+        await userInstance.delete('/api/likes', { data: payload });
+        setIsLiked(false);
       } else {
-        await userInstance.post('/api/likes', {
-          liked_id: id,
-          liked_type: 'exhibition',
-        });
-        addToast({
-          title: '좋아하는 전시회로 추가 완료!',
-          message: '좋아요 목록은 마이페이지에서 확인할 수 있어요.',
-        });
+        await userInstance.post('/api/likes', payload);
+        setIsLiked(true);
+        setShowLikePopup(true);
       }
-      setIsLiked(!isLiked);
-      await getExhibitionDetail();
     } catch (error) {
-      console.error(error);
+      console.error('관심 처리 실패:', error);
     }
   };
 
-  const openReservation = () => {
-    navigate(`/reservation/${exhibitionId}`);
-  };
-
   const handleShare = () => {
-    const { exhibition_name: name } = exhibitionData;
+    const name = exhibitionData?.exhibition_title;
     const url = window.location.href;
+
     if (navigator.share) {
       navigator
         .share({
           title: `ARTLY: ${name}`,
-          text: `${name} 갤러리 정보를 확인해보세요!`,
-          url: url,
+          text: `${name} 전시 정보를 확인해보세요!`,
+          url,
         })
         .catch((error) => console.error('공유 실패:', error));
     } else {
-      const textArea = document.createElement('textarea');
-      textArea.value = url;
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      document.body.appendChild(textarea);
+      textarea.select();
+
       try {
         document.execCommand('copy');
         alert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
         alert('링크 복사에 실패했습니다.');
+      } finally {
+        document.body.removeChild(textarea);
       }
-      document.body.removeChild(textArea);
     }
   };
 
-  if (!exhibitionData) {
-    return <div>로딩 중...</div>;
-  }
+  const handleDocent = () => {
+    navigate('/scan');
+  };
+  console.log('전시회', exhibitionData);
+
+  if (!exhibitionData) return <div>로딩 중...</div>;
 
   const {
     exhibition_title: title,
@@ -120,128 +114,168 @@ export default function ExhibitionDetail({
     exhibition_end_date: endDate,
     exhibition_start_time: startTime,
     exhibition_end_time: endTime,
+    exhibition_organization: organization,
     exhibition_location: exhibitionLocation,
     exhibition_price: price,
-    exhibition_organization: organization,
     exhibition_closed_day: closedDay,
     exhibition_description: description,
-    related_exhibitions: relatedExhibitions,
-    artworks,
+    related_exhibitions: relatedExhibitions = [],
+    artworks = [],
     exhibition_phone: phone,
-    exhibition_category: category,
-    artists,
-    // exhibition_homepage: homepage,
-    is_liked: isLike,
-    gallery,
+    artists = [],
+    exhibition_homepage: homepage,
   } = exhibitionData;
 
-  const infos = [
+  const infoList = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
-    { label: '전시장소', content: gallery.gallery_name },
+    { label: '전시장소', content: organization },
     {
       label: '관람시간',
-      content: `${startTime} ~ ${endTime}`,
+      content:
+        startTime && endTime
+          ? `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`
+          : '정보 없음',
     },
-    { label: '휴관일', content: closedDay },
-    { label: '입장료', content: `${price} (원)` },
-    { label: '전화번호', content: phone || '정보 없음' },
-    { label: '주소', content: exhibitionLocation },
+    { label: '휴관일', content: closedDay || '정보 없음' },
     {
-      label: '작가',
-      content: Array.isArray(artists) ? artists.join(', ') : '정보 없음',
+      label: '입장료',
+      content: price ? `${price.toLocaleString()}원` : '무료',
+    },
+    { label: '전화번호', content: phone || '정보 없음' },
+    { label: '주소', content: exhibitionLocation || '정보 없음' },
+    {
+      label: '참여작가',
+      content: artists.join(', ') || '정보 없음',
     },
   ];
 
-  const actionButtons = [
-    {
-      label: '좋아요',
-      icon: (
-        <FaHeart
-          className={`${styles.actionIcon} ${isLike && styles.isClicked}`}
-        />
-      ),
-      action: handleLike,
-    },
-    // {
-    //   label: '관람예약',
-    //   icon: <FaCalendar className={styles.actionIcon} />,
-    //   action: openReservation,
-    // },
-    {
-      label: '도슨트',
-      icon: <FaHeadphones className={styles.actionIcon} />,
-      action: () => navigate(`/scan`),
-    },
-    {
-      label: '공유하기',
-      icon: <FaShare className={styles.actionIcon} />,
-      action: handleShare,
-    },
+  const detailTabs = [
+    { key: 'info', label: '정보' },
+    { key: 'artworks', label: `작품(${artworks.length || 0})` },
+    { key: 'exhibitions', label: `전시(${relatedExhibitions.length || 0})` },
   ];
 
   return (
     <div className={styles.layout}>
-      <div className={`${styles.card} ${styles.profileCard}`}>
-        <img
-          className={styles.exhibitionImage}
-          src={poster}
-          alt='전시회 포스터'
-        />
-        <div className={styles.titleSection}>
-          <h1 className={styles.title}>{title}</h1>
+      {showUserActions && (
+        <div className={styles.breadcrumb}>
+          <span
+            className={styles.breadcrumbBack}
+            onClick={() => navigate('/exhibitions')}
+          >
+            전시회
+          </span>{' '}
+          &gt; {title}
         </div>
+      )}
 
+      <div className={styles.card}>
+        <img className={styles.posterImage} src={poster} alt='전시회 포스터' />
+        <section className={styles.titleSection}>
+          <h1 className={styles.exhibitionTitle}>{title}</h1>
+        </section>
         {showUserActions && (
-          <div className={styles.actionButtonContainer}>
-            {actionButtons.map(({ label, icon, action }) => (
-              <button
-                className={styles.actionButton}
-                key={label}
-                onClick={action}
-              >
-                {icon}
-                {label}
-              </button>
-            ))}
+          <div className={styles.btnLayout}>
+            <button className={styles.likeButton} onClick={handleLike}>
+              <FaStar className={isLiked ? styles.likedIcon : styles.icon} />
+              관심있어요
+            </button>
+            <button
+              className={styles.likeButton}
+              onClick={() => navigate(`/reservation/${id}`)}
+            >
+              <FaCalendarCheck className={styles.icon} />
+              무료예약
+            </button>
+            <button className={styles.likeButton} onClick={handleDocent}>
+              <FaHeadphones className={styles.icon} />
+              도슨트
+            </button>
+            <button className={styles.likeButton} onClick={handleShare}>
+              <FaShare className={styles.icon} />
+              공유하기
+            </button>
           </div>
         )}
-      </div>
 
-      <div className={`${styles.card} ${styles.infoCard}`}>
         <section className={styles.infoList}>
-          {infos.map(({ label, content }) => (
-            <div className={styles.infoRow} key={label}>
-              <span className={styles.infoLabel}>{label}</span>
-              <div className={styles.infoContent}>{content}</div>
-            </div>
-          ))}
+          {infoList.map(({ label, content }) => {
+            const isEmpty =
+              !content ||
+              (typeof content === 'string' && content.trim() === '정보 없음');
+
+            return (
+              <div className={styles.infoRow} key={label}>
+                <span className={styles.infoLabel}>{label}</span>
+                <div
+                  className={`${styles.infoContent} ${isEmpty ? styles.emptyInfo : ''}`}
+                >
+                  {content}
+                </div>
+              </div>
+            );
+          })}
+
+          <button
+            disabled={!homepage}
+            className={styles.homepageButton}
+            onClick={() => window.open(homepage, '_blank')}
+          >
+            {homepage ? '전시회 홈페이지 방문' : '홈페이지 정보 없음'}
+          </button>
         </section>
       </div>
 
-      {showUserActions && (
-        <>
-          <div className={`${styles.card} ${styles.tabCard}`}>
-            <h3 className={styles.sectionTitle}>전시 소개</h3>
+      <DetailTabs
+        tabs={detailTabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      >
+        {activeTab === 'info' &&
+          (description ? (
+            <div
+              className={styles.descriptionParagraph}
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          ) : (
+            <p className={styles.emptyContent}>
+              현재 등록된 전시 소개가 없습니다.
+            </p>
+          ))}
 
-            {description ? (
-              <div
-                className={styles.descriptionParagraph}
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
+        {activeTab === 'artworks' && (
+          <>
+            {artworks.length > 0 ? (
+              <ArtworksCards artworks={artworks} />
             ) : (
-              <p className={styles.emptyContent}>
-                현재 등록된 전시 정보가 없습니다.
-              </p>
+              <p className={styles.emptyContent}>등록된 작품이 없습니다.</p>
             )}
+            {actionButtons?.artworks}
+          </>
+        )}
 
-            <h3 className={styles.sectionTitle}>관련 전시</h3>
-            <RelatedExhibitions exhibitions={exhibitionData || []} />
-          </div>
-          <Link className={styles.backButton} to='/exhibitions'>
-            목록으로 돌아가기
-          </Link>
-        </>
+        {activeTab === 'exhibitions' && (
+          <>
+            {relatedExhibitions.length > 0 ? (
+              <RelatedExhibitions exhibitions={relatedExhibitions} />
+            ) : (
+              <p className={styles.emptyContent}>관련 전시가 없습니다.</p>
+            )}
+            {actionButtons?.exhibitions}
+          </>
+        )}
+      </DetailTabs>
+
+      {showUserActions && (
+        <button
+          className={styles.backButton}
+          onClick={() => navigate('/exhibitions')}
+        >
+          목록으로 돌아가기
+        </button>
       )}
+
+      {showLikePopup && <LikePopup onClose={() => setShowLikePopup(false)} />}
     </div>
   );
 }

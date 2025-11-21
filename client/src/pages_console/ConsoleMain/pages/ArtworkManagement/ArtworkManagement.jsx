@@ -42,12 +42,12 @@ export default function ArtworkManagement({
   useEffect(() => {
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
+
       loadArtworks(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
       loadArtworks('갤러리 전체');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGallery, galleryList]);
 
   // 선택된 갤러리의 ID 계산

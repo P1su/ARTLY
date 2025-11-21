@@ -32,11 +32,13 @@ import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
-import ConsoleEdit from '../pages_console/ConsoleEdit/ConsoleEdit';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
 import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
+import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
+import Poster from './../pages_console/Poster/Poster';
+import Notification from '../pages/Notification/Notification';
 
 const router = createBrowserRouter([
   {
@@ -73,6 +75,7 @@ const router = createBrowserRouter([
       {
         element: <AuthRoute />,
         children: [
+          { path: '/notifications', element: <Notification /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
@@ -87,8 +90,6 @@ const router = createBrowserRouter([
     element: <LayoutConsole />,
     children: [
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/leaflet/:id', element: <Leaflet /> },
-
       { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: '/console/leaflet',
         element: <Leaflet />,
+      },
+      {
+        path: '/console/poster',
+        element: <Poster />,
       },
     ],
   },

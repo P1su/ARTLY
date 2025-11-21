@@ -40,18 +40,24 @@ export default function ArtworkList() {
       <ListHeader title='작품' isArtworks />
 
       <TotalCounts num={artworks.length} label='작품' />
-      {isLoading && <div>작품 리스트 불러오는 중</div>}
+
+      {artworks.length === 0 && (
+        <div className={styles.nonDataText}>조회된 작품이 없습니다.</div>
+      )}
+
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
           <ArtworkCard key={item.id} artworkItems={item} />
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={artworks.length}
-      />
+      {artworks.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={artworks.length}
+        />
+      )}
     </div>
   );
 }

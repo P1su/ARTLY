@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 2rem 0;
+}
+
+.backButton {
+  display: inline-block;
+  width: 30rem;
+  padding: 1.5rem 2rem;
+  margin-top: 3rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.8rem;
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+}
