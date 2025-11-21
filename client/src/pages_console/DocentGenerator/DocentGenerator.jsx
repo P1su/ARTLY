@@ -84,6 +84,8 @@ export default function DocentGenerator({ autoGenerate = false }) {
           'Content-Type': undefined,
         },
       });
+
+      /* TODO: TTS 및 동영상 생성 API 연결 */
       
       alert(response.data?.message || '도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
