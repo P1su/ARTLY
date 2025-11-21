@@ -52,6 +52,10 @@ export default function Reservation() {
     }
   }, [exhibition]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
+
   const generateCalendarDays = () => {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -181,10 +185,15 @@ export default function Reservation() {
   console.log(exhibition.exhibition_poster);
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>관람예약</h2>
+      <div className={styles.breadcrumb}>
+        <span
+          className={styles.breadcrumbBack}
+          onClick={() => navigate(`/exhibitions/${exhibitionId}`)}
+        >
+          전시회
+        </span>{' '}
+        &gt; 관람예약
       </div>
-
       {/* step1 - 예약 날짜 및 인원 선택 파트 */}
       {step === 1 && (
         <>
@@ -288,7 +297,6 @@ export default function Reservation() {
         </>
       )}
 
-      {/* step2 - 예매 정보 입력 파트 */}
       {step === 2 && (
         <div className={styles.reservationForm}>
           <h3 className={styles.formTitle}>예약 정보 입력</h3>
@@ -349,7 +357,6 @@ export default function Reservation() {
         </div>
       )}
 
-      {/* step3 - 예매 완료 파트 */}
       {step === 3 && (
         <div className={styles.completionScreen}>
           <div className={styles.completionIcon}>

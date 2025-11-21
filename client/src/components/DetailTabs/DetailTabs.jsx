@@ -12,7 +12,9 @@ export default function DetailTabs({
         {tabs.map(({ key, label }) => (
           <button
             key={key}
-            className={`${styles.tabButton} ${activeTab === key && styles.activeTab}`}
+            className={`${styles.tabButton} ${
+              activeTab === key ? styles.activeTab : ''
+            }`}
             onClick={() => setActiveTab(key)}
           >
             {label}

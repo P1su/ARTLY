@@ -95,7 +95,7 @@ export default function TabMyView() {
     if (!confirm) return;
 
     try {
-      await instance.delete(`/api/reservations/${id}`);
+      await userInstance.delete(`/api/reservations/${id}`);
       setReservations((prev) =>
         prev.map((res) =>
           res.id === id ? { ...res, reservation_status: 'canceled' } : res,
