@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { userInstance } from '../../../../../apis/instance';
 import useDebounceSearch from '../../../hooks/useDebounceSearch';
+import { useUser } from '../../../../../store/UserProvider.jsx';
 
 export default function useInterestedUser() {
+  const { user } = useUser();
   const [interestedUserList, setInterestedUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -13,7 +15,7 @@ export default function useInterestedUser() {
   const loadInterestedUsers = async (likedType = 'gallery', search = '') => {
     try {
       setIsLoading(true);
-      const token = localStorage.getItem('ACCESS_TOKEN');
+      const token = user;
       const response = await userInstance.get(
         `/api/users/console/likes?liked_type=${likedType}${search ? `&search=${search}` : ''}`,
         {

@@ -5,8 +5,10 @@ import { BsChatFill } from 'react-icons/bs';
 import { IoCloseSharp } from 'react-icons/io5';
 import chatbotProfile from './mock/chatbotProfile.png';
 import IcMessage from '../../assets/svg/IcMessage.jsx';
+import { useUser } from '../../store/UserProvider.jsx';
 
 export default function ChatbotWidget() {
+  const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -18,7 +20,7 @@ export default function ChatbotWidget() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false); // state for loading gpt response
   const currentChat = useRef(null);
-  const curInstance = localStorage.getItem('ACCESS_TOKEN')
+  const curInstance = user
     ? userInstance
     : instance;
 

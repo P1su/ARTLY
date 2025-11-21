@@ -15,6 +15,7 @@ import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -23,6 +24,7 @@ export default function ExhibitionDetail({
 }) {
   const { exhibitionId } = useParams();
   const id = propId || exhibitionId;
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const [exhibitionData, setExhibitionData] = useState(null);
@@ -48,7 +50,7 @@ export default function ExhibitionDetail({
   }, [id]);
 
   const handleLike = async () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) {
+    if (!user) {
       navigate('/login');
       return;
     }
