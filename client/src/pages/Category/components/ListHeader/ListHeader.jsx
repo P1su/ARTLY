@@ -4,7 +4,6 @@ import IcSearch from './../../../../assets/svg/IcSearch';
 
 export default function ListHeader({
   title,
-  placeholder,
   isFav,
   onEvent,
   onFav,
@@ -32,7 +31,7 @@ export default function ListHeader({
         <form className={styles.searchForm} action={onEvent}>
           <input
             className={styles.searchInput}
-            placeholder={placeholder}
+            placeholder='검색...'
             onChange={onSearch}
             value={value}
           />

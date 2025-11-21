@@ -8,28 +8,43 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [showArtistModal, setShowArtistModal] = useState(false);
   const fileInputRef = useRef(null);
 
-  /** 🖼 대표 이미지 업로드 */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       onFileChange(file);
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreviewUrl(previewUrl);
+      setImagePreviewUrl(URL.createObjectURL(file));
+    }
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setImagePreviewUrl(null);
+    onFileChange(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
-  /** 입력값 변경 */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /** 설명 변경 */
   const handleDescriptionChange = (newDescription) => {
     setData((prev) => ({ ...prev, art_description: newDescription }));
   };
 
-  /** 기존 이미지 불러오기 */
+  // 작가 선택 콜백
+  const handleSelectArtist = (artist) => {
+    setData((prev) => ({
+      ...prev,
+      artist_name: artist.artist_name, // 화면 표시용 이름
+      artist_id: artist.id, // 실제 전송될 ID
+    }));
+    setShowArtistModal(false);
+  };
+
   useEffect(() => {
     if (data.art_image && typeof data.art_image === 'string') {
       setImagePreviewUrl(data.art_image);
@@ -39,7 +54,14 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
   return (
     <>
       <div className={styles.card}>
-        {/* 🎨 작품 이미지 */}
+        <input
+          className={`${styles.input} ${styles.galleryNameInput}`}
+          name='art_title'
+          value={data.art_title || ''}
+          onChange={handleInputChange}
+          placeholder='작품명 입력'
+        />
+
         <div className={styles.imageSection}>
           <input
             type='file'
@@ -51,153 +73,140 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
           <div
             className={styles.imageUploadBox}
             onClick={() => fileInputRef.current.click()}
+            style={{ position: 'relative' }}
           >
             {imagePreviewUrl ? (
-              <img
-                src={imagePreviewUrl}
-                alt='작품 이미지'
-                className={styles.previewImage}
-              />
+              <>
+                <img
+                  src={imagePreviewUrl}
+                  alt='작품 이미지'
+                  className={styles.previewImage}
+                />
+                <button
+                  className={styles.imageDelBtn}
+                  type='button'
+                  onClick={handleRemoveImage}
+                >
+                  ✕
+                </button>
+              </>
             ) : (
               <p className={styles.previewImageDesc}>+ 작품 이미지 넣기</p>
             )}
           </div>
         </div>
 
-        {/* 🖋 작품명 */}
-        <input
-          className={styles.input}
-          name='art_title'
-          value={data.art_title || ''}
-          onChange={handleInputChange}
-          placeholder='작품명 입력'
-        />
-
-        {/* 🏛 전시회 선택 (data.exhibitions 배열 사용) */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>전시회</label>
-          <select
-            className={styles.input}
-            name='exhibition_id'
-            value={data.exhibition_id || ''}
-            onChange={handleInputChange}
-          >
-            <option value=''>전시회 없음</option>
-            {data.exhibitions?.map((exh) => (
-              <option key={exh.id} value={exh.id}>
-                {exh.exhibition_title}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* 👩‍🎨 작가 선택 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>작가</label>
-          <div className={styles.artistSelectRow}>
-            <input
+        <div className={styles.formGrid}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>전시회</label>
+            <select
               className={styles.input}
-              name='artist_name'
-              value={data.artist_name || ''}
-              placeholder='선택된 작가'
-              readOnly
-            />
-            <button
-              type='button'
-              className={styles.selectButton}
-              onClick={() => setShowArtistModal(true)}
+              name='exhibition_id'
+              value={data.exhibition_id || ''}
+              onChange={handleInputChange}
             >
-              작가 선택
-            </button>
+              <option value=''>전시회 없음</option>
+              {data.exhibitions?.map((exh) => (
+                <option key={exh.id} value={exh.id}>
+                  {exh.exhibition_title}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
 
-        {/* 🗓 제작년도 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>제작년도</label>
-          <input
-            type='number'
-            className={styles.input}
-            name='art_year'
-            value={data.art_year || ''}
-            onChange={handleInputChange}
-            placeholder='예: 2023'
-          />
-        </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>작가</label>
+            <div className={styles.artistSelectRow}>
+              <input
+                className={styles.input}
+                value={data.artist_name || ''}
+                placeholder='작가를 선택해주세요'
+                readOnly
+                onClick={() => setShowArtistModal(true)}
+                style={{ cursor: 'pointer' }}
+              />
+              <button
+                type='button'
+                className={styles.selectButton}
+                onClick={() => setShowArtistModal(true)}
+              >
+                작가 선택
+              </button>
+            </div>
+          </div>
 
-        {/* 🎨 재료 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>재료</label>
-          <input
-            className={styles.input}
-            name='art_material'
-            value={data.art_material || ''}
-            onChange={handleInputChange}
-            placeholder='예: 유화, 캔버스 등'
-          />
-        </div>
-
-        {/* 📏 크기 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>크기</label>
-          <input
-            className={styles.input}
-            name='art_size'
-            value={data.art_size || ''}
-            onChange={handleInputChange}
-            placeholder='예: 100x150cm'
-          />
-        </div>
-
-        {/* 💰 가격 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>가격</label>
-          <div className={styles.priceInputContainer}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>제작년도</label>
             <input
               type='number'
               className={styles.input}
-              name='art_price'
-              value={data.art_price || ''}
+              name='art_year'
+              value={data.art_year || ''}
               onChange={handleInputChange}
-              placeholder='예: 2000000'
+              placeholder='예: 2025'
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>재료</label>
+            <input
+              className={styles.input}
+              name='art_material'
+              value={data.art_material || ''}
+              onChange={handleInputChange}
+              placeholder='예: Oil on canvas'
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>크기</label>
+            <input
+              className={styles.input}
+              name='art_size'
+              value={data.art_size || ''}
+              onChange={handleInputChange}
+              placeholder='예: 100x150cm'
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>문의 전화번호</label>
+            <input
+              className={styles.input}
+              name='gallery_phone'
+              value={data.gallery_phone || ''}
+              onChange={handleInputChange}
+              placeholder='예: 02-1234-5678'
             />
           </div>
         </div>
+      </div>
 
-        {/* 📝 작품 설명 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>작품 설명</label>
-          <TiptapEditor
-            content={data.art_description || ''}
-            onChange={handleDescriptionChange}
-          />
-        </div>
+      <div className={`${styles.card} ${styles.tiptap}`}>
+        <label className={styles.label}>작품 설명</label>
+        <TiptapEditor
+          content={data.art_description || ''}
+          onChange={handleDescriptionChange}
+        />
+      </div>
 
-        {/* 🤖 AI 도슨트 */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>AI 도슨트</label>
+      <div className={styles.card}>
+        <div className={styles.inputDocent}>
+          <label className={styles.docent}>AI 도슨트 스크립트</label>
           <textarea
             className={styles.textarea}
             name='art_docent'
             value={data.art_docent || ''}
             onChange={handleInputChange}
-            placeholder='AI 도슨트 내용을 입력하세요.'
+            placeholder='AI 도슨트가 읽어줄 내용을 입력하세요.'
           />
         </div>
       </div>
 
-      {/* 👩‍🎨 작가 선택 모달 */}
       {showArtistModal && (
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
-          onSelect={(artist) =>
-            setData((prev) => ({
-              ...prev,
-              artist_name: artist.name,
-              artist_id: artist.id,
-            }))
-          }
-          setData={setData}
+          onSelect={handleSelectArtist}
         />
       )}
     </>

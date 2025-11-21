@@ -3,9 +3,25 @@ import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
 import styles from './QrModal.module.css';
 
-export default function QrModal({ data, onClose }) {
-  const hasLeaflet = data && data.leafletUrl;
+export default function QrModal({ data, onClose, type }) {
+  const safeData = data || {};
+
+  const hasLeaflet = safeData.leafletUrl;
   const qrContainerRef = useRef(null);
+
+  const isExhibition = type === 'exhibitions';
+
+  const displayName = isExhibition
+    ? safeData.exhibition_title
+    : safeData.gallery_name;
+
+  const displaySubName = isExhibition
+    ? safeData.gallery?.gallery_name || safeData.gallery_name || ''
+    : safeData.gallery_eng_name || '';
+
+  const filePrefix = isExhibition
+    ? safeData.exhibition_title || 'exhibition'
+    : safeData.gallery_name || 'gallery';
 
   const handleDownload = () => {
     if (qrContainerRef.current === null) {
@@ -18,7 +34,7 @@ export default function QrModal({ data, onClose }) {
     })
       .then((dataUrl) => {
         const link = document.createElement('a');
-        link.download = `${data.gallery_name || 'gallery'}-qr-code.png`;
+        link.download = `${filePrefix}-qr-code.png`;
         link.href = dataUrl;
         link.click();
       })
@@ -44,15 +60,13 @@ export default function QrModal({ data, onClose }) {
               <div ref={qrContainerRef} className={styles.qrDownloadArea}>
                 <div className={styles.galleryInfo}>
                   <p className={styles.galleryName}>
-                    {data.gallery_name || '갤러리 이름'}
+                    {displayName || '이름 정보 없음'}
                   </p>
-                  <p className={styles.galleryNameEn}>
-                    {data.gallery_name_en || 'Gallery Name'}
-                  </p>
+                  <p className={styles.galleryNameEn}>{displaySubName}</p>
                 </div>
                 <div className={styles.qrCodeWrapper}>
                   <QRCode
-                    value={data.leafletUrl}
+                    value={safeData.leafletUrl}
                     size={200}
                     bgColor='#FFFFFF'
                     fgColor='#000000'
@@ -71,11 +85,9 @@ export default function QrModal({ data, onClose }) {
           ) : (
             <div className={styles.noLeaflet}>
               <p className={styles.galleryName}>
-                {data.gallery_name || '갤러리 이름'}
+                {displayName || '이름 정보 없음'}
               </p>
-              <p className={styles.galleryNameEn}>
-                {data.gallery_name_en || 'Gallery Name'}
-              </p>
+              <p className={styles.galleryNameEn}>{displaySubName}</p>
               <p className={styles.noLeafletMessage}>
                 아직 생성된 리플렛이 없어요.
               </p>

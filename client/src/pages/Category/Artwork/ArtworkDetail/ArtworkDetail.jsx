@@ -1,110 +1,163 @@
 import styles from './ArtworkDetail.module.css';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { FaCheckCircle, FaHeart, FaShare } from 'react-icons/fa';
+import { FaStar, FaPhone, FaShare } from 'react-icons/fa6';
 import { userInstance } from '../../../../apis/instance';
+import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
+import { useToastContext } from '../../../../store/ToastProvider.jsx';
+import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 
-export default function ArtworkDetail({ showUserActions = true, id: propId }) {
+export default function ArtworkDetail({
+  showUserActions = true,
+  id: propId,
+  actionButtons,
+}) {
   const { artworkId } = useParams();
   const id = propId || artworkId;
   const navigate = useNavigate();
+  const { addToast } = useToastContext();
 
   const [artworkData, setArtworkData] = useState(null);
-  useEffect(() => {
-    const fetchArtworkDetail = async () => {
-      try {
-        const res = await userInstance.get(`/api/arts/${id}`);
-        setArtworkData(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.error('데이터 로딩 실패:', error);
-      }
-    };
-    if (id) fetchArtworkDetail();
-  }, [id]);
+  const [isLiked, setIsLiked] = useState(false);
+  const [showLikePopup, setShowLikePopup] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
-  if (!artworkData) return <div className={styles.loading}>로딩 중...</div>;
-
-  const handleLike = () => alert('작품 좋아요 기능은 api 준비 중입니다.');
-  const handlePurchase = () => alert('구매문의 기능은 준비 중입니다.');
-
-  const handleShare = () => {
-    const { exhibition_name: name } = exhibitionData;
-    const url = window.location.href;
-    if (navigator.share) {
-      // Web Share API 지원 시
-      navigator
-        .share({
-          title: `ARTLY: ${name}`,
-          text: `${name} 갤러리 정보를 확인해보세요!`,
-          url: url,
-        })
-        .catch((error) => console.error('공유 실패:', error));
-    } else {
-      // 미지원 시 클립보드 복사
-      const textArea = document.createElement('textarea');
-      textArea.value = url;
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
-      } catch (err) {
-        console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
-      }
-      document.body.removeChild(textArea);
+  const fetchArtworkDetail = async () => {
+    if (!id) return;
+    try {
+      const res = await userInstance.get(`/api/arts/${id}`);
+      const { data } = res;
+      setArtworkData(data);
+      if (typeof data.is_liked === 'boolean') setIsLiked(data.is_liked);
+    } catch (error) {
+      console.error('작품 상세 조회 실패:', error);
     }
   };
 
+  useEffect(() => {
+    fetchArtworkDetail();
+  }, [id]);
+
+  const handleLike = async () => {
+    if (!localStorage.getItem('ACCESS_TOKEN')) {
+      navigate('/login');
+      return;
+    }
+    try {
+      const payload = { liked_id: id, liked_type: 'art' };
+      if (isLiked) {
+        await userInstance.delete('/api/likes', { data: payload });
+        setIsLiked(false);
+      } else {
+        await userInstance.post('/api/likes', payload);
+        setIsLiked(true);
+        setShowLikePopup(true);
+      }
+    } catch (error) {
+      console.error('관심 처리 실패:', error);
+      addToast({
+        title: '오류',
+        message: '좋아요 처리에 실패했습니다.',
+        type: 'error',
+      });
+    }
+  };
+
+  const handlePurchase = () => {
+    setShowPurchaseModal(true);
+  };
+
+  const handleShare = () => {
+    const name = artworkData?.art_title;
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator
+        .share({ title: `ARTLY: ${name}`, text: `${name} 작품 정보`, url })
+        .catch(console.error);
+    } else {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => alert('링크가 복사되었습니다.'));
+    }
+  };
+
+  if (!artworkData) return <div>로딩 중...</div>;
+
   const {
     art_title,
-    artist_name,
     art_description,
-    art_docent,
+    art_image,
+    art_year,
     art_material,
     art_size,
-    art_image,
-    is_liked: isLike,
-    recommended,
+    art_docent,
+    gallery_phone,
+    artist = {},
+    artist_name,
   } = artworkData;
 
-  const actionButtons = [
+  const finalArtistName = artist.artist_name || artist_name || 'Unknown Artist';
+  const artistImage = artist.artist_image || '/images/default_profile.png';
+  const relatedArtworks = artist.artworks || [];
+
+  const filteredRelatedArtworks = relatedArtworks.filter(
+    (art) => String(art.id) !== String(id),
+  );
+
+  const infoList = [
+    { label: '제작연도', content: art_year ? `${art_year} 년` : '정보 없음' },
+    { label: '재료', content: art_material || '정보 없음' },
+    { label: '크기', content: art_size || '정보 없음' },
+  ];
+
+  const buttons = [
     {
-      label: '좋아요',
-      icon: (
-        <FaHeart
-          className={`${styles.actionIcon} ${isLike && styles.isClicked}`}
-        />
-      ),
+      label: '관심있어요',
+      icon: <FaStar className={isLiked ? styles.likedIcon : styles.icon} />,
       action: handleLike,
     },
     {
       label: '구매문의',
-      icon: <FaCheckCircle className={styles.actionIcon} />,
+      icon: <FaPhone className={styles.icon} />,
       action: handlePurchase,
     },
     {
       label: '공유하기',
-      icon: <FaShare className={styles.actionIcon} />,
+      icon: <FaShare className={styles.icon} />,
       action: handleShare,
     },
   ];
 
   return (
     <div className={styles.layout}>
-      <div className={styles.artworkCard}>
+      {showUserActions && (
+        <div className={styles.breadcrumb}>
+          <span
+            className={styles.breadcrumbBack}
+            onClick={() => navigate('/artworks')}
+          >
+            작품
+          </span>{' '}
+          &gt; {art_title}
+        </div>
+      )}
+
+      <div className={styles.card}>
         <img src={art_image} alt={art_title} className={styles.mainImage} />
-        <h2 className={styles.title}>{art_title}</h2>
-        <p className={styles.subtitle}>{artist_name}</p>
+
+        <section className={styles.titleSection}>
+          <h1 className={styles.artworkTitle}>{art_title}</h1>
+          <p className={styles.artworkMaterial}>
+            {art_material || 'Mixed Media'}
+          </p>
+        </section>
 
         {showUserActions && (
-          <div className={styles.actionButtonContainer}>
-            {actionButtons.map(({ label, icon, action }) => (
+          <div className={styles.btnLayout}>
+            {buttons.map(({ label, icon, action }) => (
               <button
-                className={styles.actionButton}
                 key={label}
+                className={styles.actionButton}
                 onClick={action}
               >
                 {icon}
@@ -113,94 +166,102 @@ export default function ArtworkDetail({ showUserActions = true, id: propId }) {
             ))}
           </div>
         )}
-      </div>
 
-      {/* 작품 설명 */}
-      {/* 작품 정보 카드 */}
-      <div className={styles.infoCard}>
-        <div className={styles.artistHeader}>
+        <hr className={styles.divider} />
+
+        <div className={styles.artistSection}>
           <img
-            src={
-              artworkData.artist_profile_image || '/images/default_artist.png'
-            }
-            alt={artist_name}
+            src={artistImage}
+            alt={finalArtistName}
             className={styles.artistImage}
+            onError={(e) =>
+              (e.target.src = 'https://via.placeholder.com/100?text=Artist')
+            } // 배포 전 변경 예정
           />
-          <span className={styles.artistName}>{artist_name}</span>
+          <span className={styles.artistName}>{finalArtistName}</span>
         </div>
 
-        <ul className={styles.detailList}>
-          <li>
-            <span className={styles.label}>제작연도</span>
-            <span className={styles.value}>
-              {artworkData.art_year || '정보 없음'}
-            </span>
-          </li>
-          <li>
-            <span className={styles.label}>재료</span>
-            <span className={styles.value}>{art_material || '정보 없음'}</span>
-          </li>
-          <li>
-            <span className={styles.label}>크기</span>
-            <span className={styles.value}>{art_size || '정보 없음'}</span>
-          </li>
-          <li>
-            <span className={styles.label}>가격</span>
-            <span className={styles.value}>
-              {artworkData.art_price
-                ? `${artworkData.art_price.toLocaleString()}원`
-                : '정보 없음'}
-            </span>
-          </li>
-        </ul>
+        <div className={styles.infoList}>
+          {infoList.map(({ label, content }) => (
+            <div className={styles.infoRow} key={label}>
+              <span className={styles.infoLabel}>{label}</span>
+              <div className={styles.infoContent}>{content}</div>
+            </div>
+          ))}
+        </div>
 
-        <p className={styles.description}>
-          {art_description || '작품 설명이 등록되지 않았습니다.'}
-        </p>
+        <div className={styles.descriptionSection}>
+          {art_description ? (
+            <div
+              className={styles.descriptionParagraph}
+              dangerouslySetInnerHTML={{ __html: art_description }}
+            />
+          ) : (
+            <p className={styles.emptyInfo}>작품 설명이 없습니다.</p>
+          )}
 
-        {art_docent && (
-          <p className={styles.docent}>
-            <h3 className={styles.docentTitle}>AI 도슨트</h3>
-            <p className={styles.docentDesc}>{art_docent}</p>
-          </p>
-        )}
+          {art_docent && (
+            <div className={styles.docentBox}>
+              <span className={styles.docentLabel}>AI Docent</span>
+              <p>{art_docent}</p>
+            </div>
+          )}
+        </div>
+
+        {actionButtons?.info}
       </div>
 
-      {/* 추천 작품 */}
       {showUserActions && (
-        <>
-          <div className={styles.infoCard}>
-            <h3 className={styles.sectionTitle}>추천 작품</h3>
-            {!recommended || recommended.length === 0 ? (
-              <p className={styles.emptyContent}>연관 추천 작품이 없습니다.</p>
-            ) : (
-              <>
-                <div className={styles.relatedGrid}>
-                  {recommended.map((art) => (
-                    <div key={art.id} className={styles.relatedCard}>
-                      <img
-                        src={art.img}
-                        alt={art.title}
-                        className={styles.relatedImage}
-                      />
-                      <div className={styles.relatedInfo}>
-                        <h4 className={styles.relatedTitle}>{art.title}</h4>
-                        <p className={styles.relatedSub}>{art.material}</p>
-                        <p className={styles.relatedMeta}>
-                          {art.size} | {art.year}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+        <div className={styles.recommendSection}>
+          <h3 className={styles.sectionTitle}>작가의 다른 작품</h3>
+          {filteredRelatedArtworks.length > 0 ? (
+            <div className={styles.relatedGrid}>
+              {filteredRelatedArtworks.map((art) => (
+                <div
+                  key={art.id}
+                  className={styles.relatedCard}
+                  onClick={() => {
+                    navigate(`/artworks/${art.id}`);
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <img
+                    src={art.art_image}
+                    alt={art.art_title}
+                    className={styles.relatedImage}
+                  />
+                  <div className={styles.relatedInfo}>
+                    <h4 className={styles.relatedTitle}>{art.art_title}</h4>
+                  </div>
                 </div>
-              </>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.card}>
+              <p className={styles.emptyContent}>
+                작가의 다른 작품이 없습니다.
+              </p>
+            </div>
+          )}
 
-          <Link className={styles.backButton} to='/artworks'>
+          <button
+            className={styles.backButton}
+            onClick={() => navigate('/artworks')}
+          >
             목록으로
-          </Link>
-        </>
+          </button>
+        </div>
+      )}
+
+      {showLikePopup && (
+        <LikePopup onClose={() => setShowLikePopup(false)} type='artworks' />
+      )}
+
+      {showPurchaseModal && (
+        <PurchaseModal
+          phoneNumber={gallery_phone}
+          onClose={() => setShowPurchaseModal(false)}
+        />
       )}
     </div>
   );
