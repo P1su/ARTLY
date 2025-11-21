@@ -37,6 +37,7 @@ import Leaflet from '../pages_console/Leaflet/Leaflet';
 import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
+import Notification from '../pages/Notification/Notification';
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
       {
         element: <AuthRoute />,
         children: [
+          { path: '/notifications', element: <Notification /> }, 
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },

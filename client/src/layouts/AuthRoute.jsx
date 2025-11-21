@@ -1,9 +1,16 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../store/UserProvider.jsx';
 
 export default function AuthRoute() {
-  return localStorage.getItem('ACCESS_TOKEN') ? (
-    <Outlet />
-  ) : (
-    <Navigate to='/login' replace={true} />
-  );
+  
+  const { user } = useContext(UserContext); 
+
+  if (!user || !user.id) { 
+    return (
+      <Navigate to='/login' replace={true} />
+    );
+  }
+
+  return <Outlet />; 
 }

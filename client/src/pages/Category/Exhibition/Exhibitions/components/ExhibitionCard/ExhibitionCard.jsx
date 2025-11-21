@@ -7,8 +7,10 @@ import MapModal from '../MapModal/MapModal';
 import IcFav from './../../../../../../assets/svg/IcFav';
 import IcUnFav from './../../../../../../assets/svg/IcUnFav';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
+import { useUser } from '../../../../../../store/UserProvider.jsx';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
+  const { user } = useUser();
   const {
     id,
     exhibition_title: title,
@@ -42,7 +44,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   };
 
   const handleLike = async () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     try {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {

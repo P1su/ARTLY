@@ -9,8 +9,10 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ExhibitionCard from './components/ExhibitionCard/ExhibitionCard';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Exhibitions() {
+  const { user } = useUser();
   const [exhibitions, setExhibitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
@@ -32,7 +34,7 @@ export default function Exhibitions() {
   };
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setExhibitionFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

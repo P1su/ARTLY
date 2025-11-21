@@ -1,10 +1,12 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const JWT_Token = 'ACCESS_TOKEN';
 
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
   },
   withCredentials: true,
 });
@@ -23,14 +25,13 @@ export const userInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
   },
   withCredentials: true,
 });
 
 userInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('ACCESS_TOKEN');
+    const token = Cookies.get(JWT_Token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
