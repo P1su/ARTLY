@@ -18,6 +18,13 @@
   box-sizing: border-box;
 }
 
+.nonDataText {
+  padding-top: 3rem;
+  text-align: center;
+  color: var(--gray02);
+  font-size: 1.4rem;
+}
+
 /* 반응형 */
 @media (max-width: 1700px) {
   .layout {

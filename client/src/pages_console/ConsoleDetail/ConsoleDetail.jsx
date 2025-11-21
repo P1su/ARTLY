@@ -11,8 +11,12 @@ const DETAIL_CONFIG = {
   galleries: {
     title: '갤러리',
     Component: GalleryDetail,
+    tabs: [
+      { label: '정보수정' },
+      { label: 'QR코드' },
+      { label: '리플렛/도록' },
+    ],
     fetchUrl: (id) => `/api/galleries/${id}`,
-    tabs: ['정보수정', 'QR코드', '리플렛/도록'],
   },
   exhibitions: {
     title: '전시회',
@@ -97,9 +101,7 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() =>
-            navigate('/console/main', { state: { activeTab: `${title}관리` } })
-          }
+          onClick={() => navigate(`/console/${type}`)}
         >
           {'<'}
         </button>

@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  width: 100%;
+  width: 36rem;
   padding-top: 1rem;
 }
 
@@ -56,4 +56,10 @@
   font-style: normal;
   font-weight: 700;
   line-height: 24px; /* 150% */
+}
+
+@media (max-width: 700px) {
+  .layout {
+    width: 100%;
+  }
 }

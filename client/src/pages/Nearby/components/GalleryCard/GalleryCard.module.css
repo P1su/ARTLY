@@ -41,8 +41,18 @@
   gap: 1rem;
 
   position: absolute;
-  right: -1rem;
+  right: 0.5rem;
   top: 1rem;
+}
+
+.icon {
+  font-size: 1.8rem;
+  color: #bdbdbd;
+}
+
+.likedIcon {
+  font-size: 1.8rem;
+  color: #3f51b5;
 }
 
 .galleryTitle {
