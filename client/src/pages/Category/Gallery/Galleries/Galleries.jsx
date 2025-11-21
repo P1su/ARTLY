@@ -1,5 +1,5 @@
 import styles from './Galleries.module.css';
-import { instance } from '../../../../apis/instance.js';
+import { instance, userInstance } from '../../../../apis/instance.js';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ListHeader from '../../components/ListHeader/ListHeader';
@@ -9,6 +9,8 @@ import GalleryCard from '../../../Nearby/components/GalleryCard/GalleryCard';
 import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
+import useModal from './../../../../hooks/useModal';
+import GalleryMapModal from './components/GalleryMapModal/GalleryMapModal.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Galleries() {
@@ -27,6 +29,7 @@ export default function Galleries() {
   });
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
+  const { isOpen, handleOpenModal } = useModal();
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -48,7 +51,7 @@ export default function Galleries() {
         regions: galleryFilters.regions.replace(/\s+/g, ','),
         search: query,
       };
-      const response = await instance.get('/api/galleries', {
+      const response = await userInstance.get('/api/galleries', {
         params: updatedFilters,
       });
 
@@ -66,22 +69,29 @@ export default function Galleries() {
 
   return (
     <div className={styles.layout}>
+      {isOpen && <GalleryMapModal onOpen={handleOpenModal} />}
       <ListHeader
         title='갤러리'
-        placeholder='갤러리명 검색'
         isFav={galleryFilters.liked_only}
         onEvent={getGalleies}
         onFav={handleFav}
         onSearch={handleSearch}
         value={query}
       />
-      <DropdownContainer
-        filterList={galleryFilter}
-        onSetFilter={setGalleryFilters}
-      />
+      <div className={styles.dropboxContainer}>
+        <DropdownContainer
+          filterList={galleryFilter}
+          onSetFilter={setGalleryFilters}
+        />
+        <button className={styles.mapButton} onClick={handleOpenModal}>
+          지도
+        </button>
+      </div>
 
       <TotalCounts num={galleries.length} label='갤러리' />
-      {galleries.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {galleries.length === 0 && (
+        <div className={styles.nonDataText}>조회된 갤러리가 없습니다.</div>
+      )}
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
@@ -89,11 +99,13 @@ export default function Galleries() {
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={galleries.length}
-      />
+      {galleries.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={galleries.length}
+        />
+      )}
     </div>
   );
 }
