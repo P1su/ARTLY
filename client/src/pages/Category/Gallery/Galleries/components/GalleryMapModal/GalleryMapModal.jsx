@@ -19,7 +19,7 @@ export default function GalleryMapModal({ onOpen }) {
     lng,
     id: 'gallery-map',
     results,
-    zoomLevel: 12,
+    zoomLevel: 16,
   });
 
   useEffect(() => {
