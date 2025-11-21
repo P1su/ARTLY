@@ -64,6 +64,9 @@ export default function ConsoleDetail({ type }) {
       case 'QR코드':
         setShowQrModal(true);
         break;
+      case '도슨트':
+        navigate(`/console/artworks/docent/${id}`); // 작품 페이지 한정, leaflet 대신 도슨트 관리로 이동 가능
+        break;
       default:
         navigate(`/console/leaflet/${id}`);
         break;

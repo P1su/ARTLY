@@ -154,6 +154,21 @@
   margin: 0;
 }
 
+.docentVideoWrapper {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.docentVideo {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  border-radius: 8px;
+  background: #000;
+  outline: none;
+}
+
 .recommendSection {
   margin-top: 4rem;
 }

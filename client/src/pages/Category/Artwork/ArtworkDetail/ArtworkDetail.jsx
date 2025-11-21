@@ -91,6 +91,7 @@ export default function ArtworkDetail({
     art_material,
     art_size,
     art_docent,
+    art_docent_video, // 파라미터명 변경 가능성 있음
     gallery_phone,
     artist = {},
     artist_name,
@@ -204,6 +205,20 @@ export default function ArtworkDetail({
             <div className={styles.docentBox}>
               <span className={styles.docentLabel}>AI Docent</span>
               <p>{art_docent}</p>
+
+              {/* 도슨트 동영상 url이 있는 경우 재생기 표시*/}
+              {art_docent_video && (
+                <div className={styles.docentVideoWrapper}>
+                  <video
+                    className={styles.docentVideo}
+                    controls
+                    preload="metadata"
+                    src={art_docent_video}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              )}
             </div>
           )}
         </div>

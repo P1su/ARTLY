@@ -10,6 +10,7 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [confirmChecked, setConfirmChecked] = useState(false);
 
   const productName = art?.art_title || '작품명';
   const artist = art?.artist_name || art?.artist?.artist_name || '작가명';
@@ -83,6 +84,8 @@ export default function DocentGenerator({ autoGenerate = false }) {
           'Content-Type': undefined,
         },
       });
+
+      /* TODO: TTS 및 동영상 생성 API 연결 */
       
       alert(response.data?.message || '도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
@@ -127,6 +130,27 @@ export default function DocentGenerator({ autoGenerate = false }) {
             placeholder="도슨트 내용을 입력해주세요."
             disabled={loading}
           />
+
+          <div className={styles.checkboxBlock}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={confirmChecked}
+                onChange={(e) => setConfirmChecked(e.target.checked)}
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxText}>도슨트 동영상을 생성합니다.</span>
+            </label>
+
+            <div className={`${styles.expandedContent} ${confirmChecked ? styles.expandedActive : ''}`}>
+              <p className={styles.expandedTitle}>도슨트 동영상 안내</p>
+              <ul className={styles.expandedList}>
+                <li>변경사항 저장 후, 동영상이 생성되는 데에 수십 초에서 수 분이 소요될 수 있습니다.</li>
+                <li>생성된 동영상은 작품 관리 페이지에서 확인하실 수 있습니다.</li>
+                <li>동영상 생성 시 일정량의 비용이 청구됩니다.</li>
+              </ul>
+            </div>
+          </div>
 
           <div className={styles.buttonRow}>
             <button 
