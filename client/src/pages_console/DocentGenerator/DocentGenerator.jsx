@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styles from './DocentGenerator.module.css';
 import { userInstance } from '../../apis/instance';
 
-const DocentGenerator = ({ autoGenerate = false }) => {
+export default function DocentGenerator({ autoGenerate = false }) {
   const { id } = useParams();
   const [art, setArt] = useState(null);
   const [docentText, setDocentText] = useState('');
@@ -148,6 +148,4 @@ const DocentGenerator = ({ autoGenerate = false }) => {
       )}
     </div>
   );
-};
-
-export default DocentGenerator;
+}

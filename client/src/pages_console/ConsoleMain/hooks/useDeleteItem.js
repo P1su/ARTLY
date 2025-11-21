@@ -57,9 +57,11 @@ export default function useDeleteItem() {
     try {
       setIsLoading(true);
       // 실제 API 호출
-      const urlBase = '/api/exhibitions';
-      let url = urlBase;
-      if (galleryId && galleryId !== '갤러리 전체') url += `?gallery_id=${galleryId}`;
+      const params = new URLSearchParams();
+      if (galleryId && galleryId !== '갤러리 전체') {
+        params.append('gallery_id', galleryId);
+      }
+      const url = `/api/exhibitions${params.toString() ? `?${params.toString()}` : ''}`;
       
       const response = await userInstance.get(url);
       
