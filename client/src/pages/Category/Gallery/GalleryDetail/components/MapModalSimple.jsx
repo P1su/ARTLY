@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import styles from '../GalleryDetail.module.css';
+import styles from '../components/MapModalSimple.module.css';
 import useMap from '../../../../Nearby/hooks/useMap';
 
 export default function MapModalSimple({

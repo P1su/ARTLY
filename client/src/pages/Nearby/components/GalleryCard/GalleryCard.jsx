@@ -2,8 +2,10 @@ import styles from './GalleryCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { userInstance } from './../../../../apis/instance';
 import { FaStar } from 'react-icons/fa6';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function GalleryCard({ galleryItem, onEvent }) {
+  const { user } = useUser();
   const {
     id,
     gallery_name: name,
@@ -24,7 +26,7 @@ export default function GalleryCard({ galleryItem, onEvent }) {
   const navigate = useNavigate();
 
   const handleLike = async () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     try {
       if (isLike === true) {
         await userInstance.delete('/api/likes', {

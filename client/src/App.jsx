@@ -9,7 +9,7 @@ import FallbackUI from './components/FallbackUI/FallbackUI';
 
 function App() {
   return (
-    <ErrorBoundary fallback={<div>으악</div>}>
+    <ErrorBoundary fallback={<div>연결에 실패했습니다.</div>}>
       <Suspense fallback={<FallbackUI />}>
         <UserProvider>
           <ToastProvider>

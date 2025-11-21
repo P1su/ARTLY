@@ -109,7 +109,7 @@ export default function Menu({ onOpen, isOpen }) {
           >
             공지사항 & FAQ
           </span>
-          {localStorage.getItem('ACCESS_TOKEN') ? (
+          {user ? (
             <span className={styles.menuSpan} onClick={handleLogout}>
               로그아웃
             </span>

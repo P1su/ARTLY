@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { instance, userInstance } from '../../../../apis/instance.js';
 import ArtistActivity from './components/ArtistActivity/ArtistActivity';
 import { FaGlobe, FaHeart, FaShare } from 'react-icons/fa';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function ArtistDetail() {
+  const { user } = useUser();
   const { artistId } = useParams();
   const [artistData, setArtistData] = useState([]);
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function ArtistDetail() {
   }, []);
 
   const handleLike = async () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     try {
       if (artistData.is_liked === true) {
         await userInstance.delete('/api/likes', {

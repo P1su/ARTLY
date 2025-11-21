@@ -60,6 +60,7 @@
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 3rem;
+  padding: 1rem 0;
 }
 
 .likeButton {
@@ -190,7 +191,7 @@
 .inlineSns {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.3rem;
   flex-wrap: wrap;
 }
 
@@ -200,12 +201,26 @@
 }
 
 .snsIcon {
-  font-size: 2rem;
-  color: #555;
-  transition: color 0.2s ease;
+  font-size: 2.5rem;
+  color: #999;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .snsIcon:hover {
+  transform: translateY(-2px);
+}
+
+.instagram:hover {
+  color: #e1306c;
+}
+
+.youtube:hover {
+  color: #ff0000;
+}
+
+.defaultLink:hover {
   color: #007bff;
 }
 
@@ -241,97 +256,6 @@
 
 .emptyInfo {
   color: #999;
-}
-
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.mapModalBox {
-  background: #fff;
-  width: min(40rem, 90%);
-  border-radius: 16px;
-  padding: 3rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.mapModalTitle {
-  font-size: 1.6rem;
-  font-weight: 600;
-  text-align: center;
-}
-
-.mapModalSubTitle {
-  font-size: 1.3rem;
-  color: #777;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.mapModalMap {
-  width: 100%;
-  height: 24rem;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.mapModalClose {
-  margin-top: 1.5rem;
-  width: 100%;
-  padding: 1rem 0;
-  border-radius: 8px;
-  border: none;
-  background: #4a5bba;
-  color: #fff;
-  font-size: 1.4rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.likeModalBox {
-  background: #fff;
-  width: min(36rem, 90%);
-  border-radius: 16px;
-  padding: 4rem 2rem;
-  text-align: center;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-}
-
-.likeModalStar {
-  font-size: 3.6rem;
-  color: #3f51b5;
-  margin-bottom: 1.2rem;
-}
-
-.likeModalTitle {
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-.likeModalSub {
-  font-size: 1.3rem;
-  color: #777;
-  margin-top: 0.4rem;
-  margin-bottom: 1.4rem;
-}
-
-.likeModalButton {
-  background: #3f51b5;
-  color: #fff;
-  font-size: 1.4rem;
-  font-weight: 600;
-  width: 100%;
-  padding: 0.9rem 0;
-  margin-top: 2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
 @media (max-width: 1500px) {

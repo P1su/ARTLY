@@ -11,8 +11,10 @@ import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import useModal from './../../../../hooks/useModal';
 import GalleryMapModal from './components/GalleryMapModal/GalleryMapModal.jsx';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Galleries() {
+  const { user } = useUser();
   const [galleries, setGalleries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
@@ -34,7 +36,7 @@ export default function Galleries() {
   };
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setGalleryFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

@@ -1,0 +1,123 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalBox {
+  background: #fff;
+  width: 90%;
+  max-width: 36rem;
+  padding: 3rem 2rem;
+  border-radius: 1.6rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+.closeButton:hover {
+  color: #333;
+}
+
+.modalIconBox {
+  width: 6rem;
+  height: 6rem;
+  background: #f0f4ff;
+  color: #4a5bba;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.modalIcon {
+  font-size: 2.5rem;
+}
+
+.modalTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.modalDesc {
+  font-size: 1.4rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.phoneInfo {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.phoneNumber {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.callButton {
+  width: 100%;
+  padding: 1.2rem;
+  background: #4a5bba;
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.callButton:hover {
+  background: #3b4aa0;
+}
+
+.pcInfo {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #999;
+}
+
+.errorText {
+  color: #e06f29e5;
+  font-size: 1.4rem;
+  font-weight: 500;
+}

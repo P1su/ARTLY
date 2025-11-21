@@ -1,15 +1,11 @@
 import styles from './ConsoleDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import useResponsive from '../../hooks/useResponsive';
 import { userInstance } from '../../apis/instance';
-import DetailTabs from '../../components/DetailTabs/DetailTabs';
 import QrModal from './components/QrModal/QrModal';
 import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
-import ArtworksCards from './components/ArtworksCards/ArtworksCards';
-import ExhibitionsCards from '../../pages/Category/Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards';
 
 const DETAIL_CONFIG = {
   galleries: {
@@ -40,7 +36,6 @@ export default function ConsoleDetail({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const [activeTab, setActiveTab] = useState('info');
   const [showQrModal, setShowQrModal] = useState(false);
 
   const config = DETAIL_CONFIG[type];
@@ -59,8 +54,7 @@ export default function ConsoleDetail({ type }) {
     };
 
     fetchData();
-    setActiveTab('info');
-  }, [id, type]);
+  }, [id, type, fetchUrl]);
 
   const handleTabClick = (label) => {
     switch (label) {
@@ -75,12 +69,30 @@ export default function ConsoleDetail({ type }) {
         break;
     }
   };
-
-  const contentTabs = [
-    { key: 'info', label: '정보' },
-    { key: 'artworks', label: `작품(${data?.artworks?.length || 0})` },
-    { key: 'exhibitions', label: `전시(${data?.exhibitions?.length || 0})` },
-  ];
+  const actionButtons = {
+    artworks: (
+      <button
+        className={styles.addButton}
+        // 전시회 디테일에서 눌렀다면 exhibition_id를 넘겨서 자동 선택되게 함
+        onClick={() =>
+          navigate(`/console/artworks/edit/new?exhibition_id=${id}`)
+        }
+      >
+        + 작품 등록
+      </button>
+    ),
+    exhibitions: (
+      <button
+        className={styles.addButton}
+        // 갤러리 디테일에서 눌렀다면 gallery_id를 넘김
+        onClick={() =>
+          navigate(`/console/exhibitions/edit/new?gallery_id=${id}`)
+        }
+      >
+        + 전시회 등록
+      </button>
+    ),
+  };
 
   if (!data) return <div>데이터 로딩 중...</div>;
 
@@ -109,48 +121,19 @@ export default function ConsoleDetail({ type }) {
       </nav>
 
       <main className={styles.content}>
-        <Component showUserActions={false} id={id} />
-
-        {/* 갤러리는 컴포넌트 안에 이미 정보/작품/전시 탭이 있으므로 중복 출력 X */}
-        {type !== 'artworks' && type !== 'galleries' && (
-          <DetailTabs
-            tabs={contentTabs}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          >
-            {activeTab === 'info' &&
-              (data.gallery_description ? (
-                <div
-                  className={styles.descriptionParagraph}
-                  dangerouslySetInnerHTML={{
-                    __html: data.gallery_description,
-                  }}
-                />
-              ) : (
-                <p className={styles.emptyContent}>
-                  현재 등록된 정보가 없습니다.
-                </p>
-              ))}
-
-            {activeTab === 'artworks' && (
-              <>
-                <ArtworksCards artworks={data.artworks} />
-                <button className={styles.addButton}>+ 작품 등록</button>
-              </>
-            )}
-
-            {activeTab === 'exhibitions' && (
-              <>
-                <ExhibitionsCards exhibitions={data.exhibitions} />
-                <button className={styles.addButton}>+ 전시회 등록</button>
-              </>
-            )}
-          </DetailTabs>
-        )}
+        <Component
+          showUserActions={false}
+          id={id}
+          actionButtons={actionButtons}
+        />
       </main>
 
       {showQrModal && (
-        <QrModal data={data} onClose={() => setShowQrModal(false)} />
+        <QrModal
+          data={data}
+          onClose={() => setShowQrModal(false)}
+          type={type}
+        />
       )}
     </div>
   );

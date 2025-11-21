@@ -9,8 +9,10 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ArtistCard from './components/ArtistCard/ArtistCard';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Artists() {
+  const { user } = useUser();
   const [artists, setArtists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(12, artists);
@@ -24,7 +26,7 @@ export default function Artists() {
   const [query, setQuery] = useState('');
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setArtistFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,

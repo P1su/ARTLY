@@ -38,6 +38,7 @@ import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
 import Poster from './../pages_console/Poster/Poster';
+import Notification from '../pages/Notification/Notification';
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
       {
         element: <AuthRoute />,
         children: [
+          { path: '/notifications', element: <Notification /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },

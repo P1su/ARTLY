@@ -1,13 +1,19 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import Footer from '../components/Footer/Footer';
+import { useContext } from 'react';
+import { UserContext } from '../store/UserProvider.jsx';
+import Footer from './../components/Footer/Footer';
 
 export default function AuthRoute() {
-  return localStorage.getItem('ACCESS_TOKEN') ? (
+  const { user } = useContext(UserContext);
+
+  if (!user || !user.id) {
+    return <Navigate to='/login' replace />;
+  }
+
+  return (
     <>
       <Outlet />
       <Footer />
     </>
-  ) : (
-    <Navigate to='/login' replace />
   );
 }
