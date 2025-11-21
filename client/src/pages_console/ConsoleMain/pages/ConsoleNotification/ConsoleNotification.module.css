@@ -1,0 +1,54 @@
+.container {
+    padding: 24px;
+  }
+  
+  .pageTitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .item {
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    background: #fafafa;
+  }
+  
+  .row {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  
+  .label {
+    width: 80px;
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .value {
+    flex: 1;
+    color: #222;
+  }
+  
+  .empty {
+    margin-top: 40px;
+    font-size: 15px;
+    color: #777;
+    text-align: center;
+  }
+  
+  .loadingWrapper,
+  .errorWrapper {
+    padding: 24px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
