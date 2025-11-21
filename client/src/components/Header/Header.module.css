@@ -46,3 +46,9 @@
   height: 2rem;
   color: white;
 }
+
+.bellButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
