@@ -1,0 +1,218 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modalBox {
+  background: white;
+  width: 45rem;
+  max-height: 80vh;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.body {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.searchBar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.searchBar input {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.4rem;
+}
+.searchBar button {
+  padding: 0 1.5rem;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 리스트 스타일 */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.artistRow {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  gap: 1.5rem;
+}
+
+.artistImg {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.artistInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.category {
+  font-size: 1.3rem;
+  color: #888;
+}
+
+.selectBtn {
+  padding: 0.8rem 1.5rem;
+  background: #4a5bba;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.selectBtn:hover {
+  background: #3a499a;
+}
+
+/* 검색 결과 없음 & 신규 등록 */
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+  color: #888;
+  font-size: 1.5rem;
+}
+
+.addNewBtn {
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  background: #fff;
+  border: 1px solid #4a5bba;
+  color: #4a5bba;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.addNewBtn:hover {
+  background: #f0f4ff;
+}
+
+/* 신규 등록 폼 */
+.addFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+.addTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.imageUploadCircle {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.imageUploadCircle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaa;
+  gap: 0.5rem;
+}
+.placeholder span {
+  font-size: 1.2rem;
+}
+
+.addInput {
+  width: 100%;
+  padding: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+.cancelBtn,
+.confirmBtn {
+  flex: 1;
+  padding: 1.2rem;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  border: none;
+}
+.cancelBtn {
+  background: #eee;
+  color: #555;
+}
+.confirmBtn {
+  background: #4a5bba;
+  color: white;
+}

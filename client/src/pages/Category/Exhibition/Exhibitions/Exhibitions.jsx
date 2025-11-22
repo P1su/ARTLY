@@ -9,8 +9,10 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ExhibitionCard from './components/ExhibitionCard/ExhibitionCard';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Exhibitions() {
+  const { user } = useUser();
   const [exhibitions, setExhibitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
@@ -32,7 +34,7 @@ export default function Exhibitions() {
   };
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setExhibitionFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,
@@ -68,7 +70,6 @@ export default function Exhibitions() {
     <div className={styles.layout}>
       <ListHeader
         title='전시회'
-        placeholder='전시회명 또는 장소 검색'
         isFav={exhibitionFilters.liked_only}
         onEvent={getExhibitions}
         onFav={handleFav}
@@ -84,7 +85,9 @@ export default function Exhibitions() {
 
       <TotalCounts num={exhibitions.length} label='전시회' />
 
-      {exhibitions.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {exhibitions.length === 0 && (
+        <div className={styles.nonDataText}>조회된 전시회가 없습니다.</div>
+      )}
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
@@ -96,11 +99,13 @@ export default function Exhibitions() {
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={exhibitions.length}
-      />
+      {exhibitions.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={exhibitions.length}
+        />
+      )}
     </div>
   );
 }

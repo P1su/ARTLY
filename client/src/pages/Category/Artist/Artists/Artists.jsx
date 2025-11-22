@@ -9,8 +9,10 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ArtistCard from './components/ArtistCard/ArtistCard';
+import { useUser } from '../../../../store/UserProvider.jsx';
 
 export default function Artists() {
+  const { user } = useUser();
   const [artists, setArtists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentPage, setCurrentPage, pageItems } = usePagination(12, artists);
@@ -24,7 +26,7 @@ export default function Artists() {
   const [query, setQuery] = useState('');
 
   const handleFav = () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    !user && navigate('/login');
     setArtistFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,
@@ -63,7 +65,6 @@ export default function Artists() {
     <div className={styles.layout}>
       <ListHeader
         title='작가'
-        placeholder='작가명 또는 국적 검색'
         isFav={artistFilters.liked_only}
         onEvent={getArtists}
         onFav={handleFav}
@@ -76,19 +77,23 @@ export default function Artists() {
       />
       <TotalCounts num={artists.length} label='작가' />
 
-      {isLoading && <div>작가 데이터 조회 중..</div>}
-      {artists.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {artists.length === 0 && (
+        <div className={styles.nonDataText}>조회된 작가가 없습니다.</div>
+      )}
 
       <div className={styles.gridContainer}>
         {pageItems.map((item) => (
-          <ArtistCard key={item.id} artistItem={item} />
+          <ArtistCard key={item.id} artistItem={item} onEvent={getArtists} />
         ))}
       </div>
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        totalItems={artists.length}
-      />
+
+      {artists.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalItems={artists.length}
+        />
+      )}
     </div>
   );
 }

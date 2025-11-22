@@ -1,0 +1,77 @@
+.editorWrapper {
+  border: 0.1rem solid #d0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.menuBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  background-color: #f8f9fa;
+  border-bottom: 0.1rem solid #d0d0d0;
+}
+
+.menuBar button {
+  padding: 0.5rem 0.8rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.menuBar button:hover {
+  background-color: #e9ecef;
+}
+
+.menuBar .isActive {
+  background-color: #d0e0ff;
+  color: #007bff;
+}
+
+.divider {
+  width: 0.1rem;
+  height: 1.5rem;
+  background-color: #d0d0d0;
+  margin: 0 0.5rem;
+}
+
+.editorContent {
+  padding: 1.5rem;
+  min-height: 25rem;
+  font-size: 1.6rem;
+  line-height: 1.7;
+  outline: none;
+}
+
+.editorContent .ProseMirror {
+  outline: none;
+}
+
+.editorContent .ProseMirror h1 {
+  font-size: 2.2em;
+  font-weight: bold;
+}
+.editorContent .ProseMirror h2 {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+.editorContent .ProseMirror h3 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.editorContent :global(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem 0;
+  border-radius: 4px;
+}

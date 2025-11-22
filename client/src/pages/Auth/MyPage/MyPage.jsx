@@ -14,8 +14,15 @@ export default function MyPage() {
     const fromReservationModalFlag = localStorage.getItem(
       'fromReservationModal',
     );
+    const showMyCatalogTab = localStorage.getItem('showMyCatalogTab');
 
-    if (attendanceModalFlag === 'true' || fromReservationModalFlag === 'true') {
+    if (showMyCatalogTab === 'true') {
+      setSelectedTab('MY도록');
+      localStorage.removeItem('showMyCatalogTab');
+    } else if (
+      attendanceModalFlag === 'true' ||
+      fromReservationModalFlag === 'true'
+    ) {
       setSelectedTab('MY관람');
       localStorage.removeItem('fromReservationModal');
     }

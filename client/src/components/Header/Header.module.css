@@ -47,7 +47,7 @@
   color: white;
 }
 
-.bellButton {
+.notificationButton {
   cursor: pointer;
   display: flex;
   align-items: center;

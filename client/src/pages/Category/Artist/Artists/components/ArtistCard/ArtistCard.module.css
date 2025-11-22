@@ -3,8 +3,10 @@
   flex-direction: column;
   align-items: center;
 
+  position: relative;
+
   width: 100%;
-  height: 30rem;
+  height: 25.2rem;
   padding: 8px 8px 24px 8px;
 
   gap: 1rem;
@@ -17,15 +19,10 @@
 
 .artistImage {
   width: 100%;
-  height: 16.9rem;
-  padding-bottom: 2.4rem;
-  border-radius: 12px;
-  height: 16.9rem;
-  padding-bottom: 2.4rem;
+  height: 15rem;
   border-radius: 12px;
 
-  fill: object-fit;
-  fill: object-fit;
+  object-fit: cover;
   transition: transform 0.3s;
 }
 
@@ -33,14 +30,27 @@
   color: var(--black01);
   font-size: 24px;
   font-style: normal;
-  color: var(--black01);
-  font-size: 24px;
-  font-style: normal;
   font-weight: 600;
   line-height: 18px; /* 75% */
   letter-spacing: -0.2px;
-  line-height: 18px; /* 75% */
-  letter-spacing: -0.2px;
+}
+
+.statusContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+
+  width: 5rem;
+  height: 1.9rem;
+
+  font-size: 0.9rem;
+  color: var(--white01);
+  border-radius: 10px;
+  background: var(--blue01);
+  z-index: 5;
 }
 
 .subParagraph {
@@ -48,8 +58,35 @@
   font-size: 18px;
   line-height: 126%; /* 22.68px */
   letter-spacing: -0.2px;
-  color: var(--gray03);
-  font-size: 18px;
-  line-height: 126%; /* 22.68px */
-  letter-spacing: -0.2px;
+}
+
+.favButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  position: absolute;
+  right: 0.5rem;
+  top: 16rem;
+}
+
+@media (max-width: 756px) {
+  .artistNameTitle {
+    color: #707070;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 75% */
+    letter-spacing: -0.2px;
+  }
+
+  .subParagraph {
+    color: var(--gray03);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.3px;
+  }
 }

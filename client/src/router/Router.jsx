@@ -27,16 +27,19 @@ import Reservation from '../pages/Reservation/Reservation';
 import ConsoleMain from '../pages_console/ConsoleMain/ConsoleMain';
 import LayoutConsole from '../layouts/LayoutConsole';
 import ConsoleDetail from '../pages_console/ConsoleDetail/ConsoleDetail';
-import ConsoleEdit from '../pages_console/ConsoleDetail/ConsoleEdit/ConsoleEdit';
 import ExhibitionDetail from '../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import GalleryDetail from '../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
+import ConsoleNotification from '../pages_console/ConsoleMain/pages/ConsoleNotification/ConsoleNotification';
+import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
-import ConsoleNotification from '../pages_console/ConsoleMain/pages/ConsoleNotification/ConsoleNotification';
+import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
+import Poster from './../pages_console/Poster/Poster';
+import Notification from '../pages/Notification/Notification';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +68,7 @@ const router = createBrowserRouter([
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
       { path: '/reservation/:exhibitionId', element: <Reservation /> },
+      { path: '/invitation', element: <InvitationGenerator /> },
       {
         path: '/reservationconfirm/:reservationId',
         element: <ReservationConfirm />,
@@ -72,6 +76,7 @@ const router = createBrowserRouter([
       {
         element: <AuthRoute />,
         children: [
+          { path: '/notifications', element: <Notification /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },
           { path: '/purchase/:reservationId', element: <Purchase /> },
@@ -119,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: '/console/leaflet',
         element: <Leaflet />,
+      },
+      {
+        path: '/console/poster',
+        element: <Poster />,
       },
     ],
   },

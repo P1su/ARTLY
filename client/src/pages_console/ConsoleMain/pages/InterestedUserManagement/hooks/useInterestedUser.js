@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { userInstance } from '../../../../../apis/instance';
 import useDebounceSearch from '../../../hooks/useDebounceSearch';
+import { useUser } from '../../../../../store/UserProvider.jsx';
 
 export default function useInterestedUser() {
+  const { user } = useUser();
   const [interestedUserList, setInterestedUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -259,7 +261,11 @@ export default function useInterestedUser() {
   };
 
   // 디바운스 검색 hook 사용
-  const { searchValue: searchQuery, handleSearchChange, clearSearch } = useDebounceSearch({
+  const {
+    searchValue: searchQuery,
+    handleSearchChange,
+    clearSearch,
+  } = useDebounceSearch({
     onSearch: performSearch,
     onEmptySearch: () => handleTabChange(activeTab),
     onClearSearch: async () => {

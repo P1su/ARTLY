@@ -8,18 +8,18 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import Spinner from '../../components/Spinner/Spinner';
 import styles from './ExhibitionManagement.module.css';
 
-export default function ExhibitionManagement({ 
-  exhibitionList, 
-  selectedGallery, 
-  onGalleryChange, 
+export default function ExhibitionManagement({
+  exhibitionList,
+  selectedGallery,
+  onGalleryChange,
   onDelete,
   loadExhibitions,
   isLoading,
   error,
-  galleryList
+  galleryList,
 }) {
   const navigate = useNavigate();
-  
+
   const handleDelete = (id) => {
     if (window.confirm('정말로 이 전시회를 삭제하시겠습니까?')) {
       onDelete(id, 'exhibition');
@@ -27,24 +27,27 @@ export default function ExhibitionManagement({
   };
 
   // 갤러리를 ID로 변환하는 함수
-  const getGalleryId = useCallback((galleryName) => {
-    if (galleryName === '갤러리 전체') {
-      return '갤러리 전체';
-    }
-    const gallery = galleryList.find(g => g.name === galleryName);
-    return gallery ? gallery.id : '갤러리 전체';
-  }, [galleryList]);
+  const getGalleryId = useCallback(
+    (galleryName) => {
+      if (galleryName === '갤러리 전체') {
+        return '갤러리 전체';
+      }
+      const gallery = galleryList.find((g) => g.name === galleryName);
+      return gallery ? gallery.id : '갤러리 전체';
+    },
+    [galleryList],
+  );
 
   // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
   useEffect(() => {
     if (galleryList.length > 0 && selectedGallery) {
       const galleryId = getGalleryId(selectedGallery);
+
       loadExhibitions(galleryId);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
       loadExhibitions('갤러리 전체');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGallery, galleryList]);
 
   // 선택된 갤러리의 ID 계산
@@ -53,7 +56,7 @@ export default function ExhibitionManagement({
   }, [selectedGallery, galleryList, getGalleryId]);
 
   // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
-  const filteredExhibitionList = exhibitionList.filter(exhibition => {
+  const filteredExhibitionList = exhibitionList.filter((exhibition) => {
     if (selectedGallery === '갤러리 전체') {
       return true;
     }
@@ -64,29 +67,33 @@ export default function ExhibitionManagement({
     return exhibition.gallery_name === selectedGallery;
   });
 
-
   // 갤러리 옵션에 "갤러리 전체" 추가
   // 실제로 전시회가 있는 갤러리만 필터링
   const galleryOptions = useMemo(() => {
-    const options = [
-      { id: 'all', name: '갤러리 전체', value: '갤러리 전체' }
-    ];
-    
+    const options = [{ id: 'all', name: '갤러리 전체', value: '갤러리 전체' }];
+
     // 전시회 목록에서 실제로 사용되는 갤러리 ID/이름 추출
-    const usedGalleryIds = new Set(exhibitionList.map(ex => ex.gallery_id).filter(Boolean));
-    const usedGalleryNames = new Set(exhibitionList.map(ex => ex.gallery_name).filter(Boolean));
-    
+    const usedGalleryIds = new Set(
+      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
+    );
+    const usedGalleryNames = new Set(
+      exhibitionList.map((ex) => ex.gallery_name).filter(Boolean),
+    );
+
     // galleryList에서 실제로 전시회가 있는 갤러리만 필터링
-    galleryList.forEach(gallery => {
-      if (usedGalleryIds.has(gallery.id) || usedGalleryNames.has(gallery.name)) {
+    galleryList.forEach((gallery) => {
+      if (
+        usedGalleryIds.has(gallery.id) ||
+        usedGalleryNames.has(gallery.name)
+      ) {
         options.push({
           id: gallery.id,
           name: gallery.name,
-          value: gallery.name
+          value: gallery.name,
         });
       }
     });
-    
+
     return options;
   }, [galleryList, exhibitionList]);
 
@@ -101,9 +108,7 @@ export default function ExhibitionManagement({
   if (error) {
     return (
       <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>
-          오류가 발생했습니다: {error}
-        </div>
+        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
       </div>
     );
   }
@@ -111,37 +116,37 @@ export default function ExhibitionManagement({
   if (filteredExhibitionList.length > 0) {
     return (
       <section className={styles.contentContainer}>
-        <LookUp 
-          value={selectedGallery} 
+        <LookUp
+          value={selectedGallery}
           onChange={onGalleryChange}
           options={galleryOptions}
         />
-        
+
         <div className={styles.countAndButtonContainer}>
           <CountList count={filteredExhibitionList.length} />
-          <RegisterButton 
-            buttonText="+전시회 등록"
+          <RegisterButton
+            buttonText='+전시회 등록'
             onButtonClick={() => alert('전시회 등록')}
           />
         </div>
 
         <section className={styles.contentContainer}>
-          {filteredExhibitionList.map(exhibition => (
-            <div 
-              key={exhibition.id} 
+          {filteredExhibitionList.map((exhibition) => (
+            <div
+              key={exhibition.id}
               className={styles.galleryCard}
               onClick={() => navigate(`/console/exhibitions/${exhibition.id}`)}
             >
               <div className={styles.cardContent}>
-                <img 
-                  src={exhibition.image} 
+                <img
+                  src={exhibition.image}
                   alt={exhibition.title}
                   className={styles.galleryImage}
                 />
                 <div className={styles.cardInfo}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{exhibition.title}</h3>
-                    <button 
+                    <button
                       onClick={() => handleDelete(exhibition.id)}
                       className={styles.deleteButton}
                     >
@@ -149,7 +154,9 @@ export default function ExhibitionManagement({
                     </button>
                   </div>
                   <p className={styles.galleryAddress}>{exhibition.period}</p>
-                  <p className={styles.galleryFloor}>{exhibition.gallery_name}</p>
+                  <p className={styles.galleryFloor}>
+                    {exhibition.gallery_name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -162,25 +169,25 @@ export default function ExhibitionManagement({
   return (
     <>
       <div className={styles.searchContainer}>
-        <LookUp 
-          value={selectedGallery} 
+        <LookUp
+          value={selectedGallery}
           onChange={onGalleryChange}
           options={galleryOptions}
         />
       </div>
-      
+
       <div className={styles.countAndButtonContainer}>
         <CountList count={0} />
-        <RegisterButton 
-          buttonText="+전시회 등록"
+        <RegisterButton
+          buttonText='+전시회 등록'
           onButtonClick={() => alert('전시회 등록')}
         />
       </div>
 
       <section className={styles.emptyStateContainer}>
-        <EmptyState 
-          message="등록된 전시회가 없어요."
-          buttonText="+전시회 등록"
+        <EmptyState
+          message='등록된 전시회가 없어요.'
+          buttonText='+전시회 등록'
         />
       </section>
     </>
