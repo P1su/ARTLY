@@ -93,6 +93,7 @@ export default function ExhibitionDetail({
         document.execCommand('copy');
         alert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
+        console.error('클립보드 복사 실패:', err);
         alert('링크 복사에 실패했습니다.');
       } finally {
         document.body.removeChild(textarea);
@@ -103,6 +104,8 @@ export default function ExhibitionDetail({
   const handleDocent = () => {
     navigate('/scan');
   };
+
+  console.log('전시회', exhibitionData);
 
   if (!exhibitionData) return <div>로딩 중...</div>;
 
