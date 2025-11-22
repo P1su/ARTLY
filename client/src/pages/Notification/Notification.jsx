@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { userInstance } from '../../apis/instance';
 import { useUser } from '../../store/UserProvider.jsx';
+import { onForegroundMessage } from '../../apis/FcmService';
 import styles from './Notification.module.css';
 import { IoMegaphoneOutline } from 'react-icons/io5';
 
@@ -79,6 +80,45 @@ export default function Notification() {
             setIsLoading(false);
         }
     }, [isUserLoading, user?.id, fetchNotifications]);
+
+    // 백그라운드 + 포그라운드 메시지 리스너 설정
+    useEffect(() => {
+        if (!user?.id) return;
+
+        // 포그라운드 메시지 처리 (탭이 활성화되어 있을 때)
+        const unsubscribeForeground = onForegroundMessage(() => {
+            console.log('📌 포그라운드 알림 감지 → 목록 갱신');
+            fetchNotifications(user.id);
+        });
+
+        // 백그라운드 메시지 처리 (Service Worker에서 전달받음)
+        const handleServiceWorkerMessage = (event) => {
+            if (event.data?.type === 'NEW_NOTIFICATION') {
+                console.log('📌 백그라운드 알림 감지 → 목록 갱신', event.data);
+                fetchNotifications(user.id);
+            }
+        };
+
+        // Service Worker 메시지 리스너 등록
+        if ('serviceWorker' in navigator) {
+            // 현재 활성화된 Service Worker가 있으면 바로 리스너 등록
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+            }
+
+            // Service Worker가 나중에 활성화될 수도 있으므로 ready 상태도 확인
+            navigator.serviceWorker.ready.then(() => {
+                navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+            });
+        }
+
+        return () => {
+            unsubscribeForeground();
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage);
+            }
+        };
+    }, [user?.id, fetchNotifications]);
 
     if (isLoading) {
         return <div className={styles.layout}>알림을 불러오는 중...</div>;
