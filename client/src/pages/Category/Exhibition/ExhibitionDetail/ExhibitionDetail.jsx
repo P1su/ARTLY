@@ -5,14 +5,12 @@ import {
   FaStar,
   FaShare,
   FaHeadphones,
-  FaLink,
-  FaTicketSimple,
-  FaRegCircleCheck,
   FaCalendarCheck,
 } from 'react-icons/fa6';
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
+import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
@@ -39,7 +37,10 @@ export default function ExhibitionDetail({
       const res = await userInstance.get(`/api/exhibitions/${id}`);
       const { data } = res;
       setExhibitionData(data);
-      if (typeof data.is_liked === 'boolean') setIsLiked(data.is_liked);
+
+      if (typeof data.is_liked === 'boolean') {
+        setIsLiked(data.is_liked);
+      }
     } catch (error) {
       console.error('전시 상세 조회 실패:', error);
     }
@@ -103,6 +104,7 @@ export default function ExhibitionDetail({
   const handleDocent = () => {
     navigate('/scan');
   };
+
   console.log('전시회', exhibitionData);
 
   if (!exhibitionData) return <div>로딩 중...</div>;
@@ -137,22 +139,16 @@ export default function ExhibitionDetail({
           : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
-    {
-      label: '입장료',
-      content: price ? `${price.toLocaleString()}원` : '무료',
-    },
+    { label: '입장료', content: price ? `${price.toLocaleString()}원` : '무료' },
     { label: '전화번호', content: phone || '정보 없음' },
     { label: '주소', content: exhibitionLocation || '정보 없음' },
-    {
-      label: '참여작가',
-      content: artists.join(', ') || '정보 없음',
-    },
+    { label: '참여작가', content: artists.join(', ') || '정보 없음' },
   ];
 
   const detailTabs = [
     { key: 'info', label: '정보' },
-    { key: 'artworks', label: `작품(${artworks.length || 0})` },
-    { key: 'exhibitions', label: `전시(${relatedExhibitions.length || 0})` },
+    { key: 'artworks', label: `작품(${artworks.length})` },
+    { key: 'exhibitions', label: `전시(${relatedExhibitions.length})` },
   ];
 
   return (
@@ -170,10 +166,12 @@ export default function ExhibitionDetail({
       )}
 
       <div className={styles.card}>
-        <img className={styles.posterImage} src={poster} alt='전시회 포스터' />
+        <img className={styles.posterImage} src={poster} alt="전시회 포스터" />
+
         <section className={styles.titleSection}>
           <h1 className={styles.exhibitionTitle}>{title}</h1>
         </section>
+
         {showUserActions && (
           <div className={styles.btnLayout}>
             <button className={styles.likeButton} onClick={handleLike}>
@@ -208,7 +206,9 @@ export default function ExhibitionDetail({
               <div className={styles.infoRow} key={label}>
                 <span className={styles.infoLabel}>{label}</span>
                 <div
-                  className={`${styles.infoContent} ${isEmpty ? styles.emptyInfo : ''}`}
+                  className={`${styles.infoContent} ${
+                    isEmpty ? styles.emptyInfo : ''
+                  }`}
                 >
                   {content}
                 </div>
@@ -226,6 +226,7 @@ export default function ExhibitionDetail({
         </section>
       </div>
 
+      {/* 탭 영역 */}
       <DetailTabs
         tabs={detailTabs}
         activeTab={activeTab}
@@ -265,6 +266,15 @@ export default function ExhibitionDetail({
           </>
         )}
       </DetailTabs>
+
+      {/* 초대장 문구 생성 섹션 - HEAD 기능 보존 */}
+      <div className={`${styles.card} ${styles.tabCard}`}>
+        <InvitationGenerator
+          initialTheme={title}
+          initialOthers=""
+          showTitle={true}
+        />
+      </div>
 
       {showUserActions && (
         <button
