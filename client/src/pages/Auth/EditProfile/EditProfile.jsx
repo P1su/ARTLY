@@ -21,6 +21,10 @@ const EditProfile = () => {
     return <div>데이터 불러오는 중</div>;
   }
 
+  const handleUpdateUserInfo = (updatedData) => {
+      setUser({ ...user, ...updatedData });
+  };
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -88,7 +92,7 @@ const EditProfile = () => {
               className={styles.changeButtonSmall}
               onClick={handleOpenModal}
             >
-              아이디 변경
+              비밀번호 변경
             </button>
           </div>
 
@@ -190,6 +194,7 @@ const EditProfile = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         userInfo={user}
+        onUpdateUserInfo={handleUpdateUserInfo}
       />
     </div>
   );
