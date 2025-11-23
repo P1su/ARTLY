@@ -59,13 +59,14 @@ export default function useDeleteItem() {
     try {
       setIsLoading(true);
       // 실제 API 호출
-      const urlBase = '/api/exhibitions';
-      let url = urlBase;
-      if (galleryId && galleryId !== '갤러리 전체')
-        url += `?gallery_id=${galleryId}`;
-
+      const params = new URLSearchParams();
+      if (galleryId && galleryId !== '갤러리 전체') {
+        params.append('gallery_id', galleryId);
+      }
+      const url = `/api/exhibitions${params.toString() ? `?${params.toString()}` : ''}`;
+      
       const response = await userInstance.get(url);
-
+      
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const exhibitions = Array.isArray(response.data)
         ? response.data.map((item) => ({
@@ -100,9 +101,9 @@ export default function useDeleteItem() {
         params.append('gallery_id', galleryId);
       }
       const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
-
+      
       const response = await userInstance.get(url);
-
+      
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const artworks = Array.isArray(response.data)
         ? response.data.map((item) => {
@@ -149,13 +150,13 @@ export default function useDeleteItem() {
     try {
       if (type === 'gallery') {
         await userInstance.delete(`/api/galleries/${id}`);
-        setGalleryList((prev) => prev.filter((item) => item.id !== id));
+        setGalleryList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'exhibition') {
         await userInstance.delete(`/api/exhibitions/${id}`);
-        setExhibitionList((prev) => prev.filter((item) => item.id !== id));
+        setExhibitionList(prev => prev.filter(item => item.id !== id));
       } else if (type === 'artwork') {
         await userInstance.delete(`/api/arts/${id}`);
-        setArtworkList((prev) => prev.filter((item) => item.id !== id));
+        setArtworkList(prev => prev.filter(item => item.id !== id));
       }
     } catch (err) {
       setError(err.message);
