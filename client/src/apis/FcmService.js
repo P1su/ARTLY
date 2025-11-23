@@ -3,24 +3,48 @@ import Cookies from 'js-cookie';
 import { messaging } from '../utils/firebase-config.js';
 import { instance } from './instance';
 
-const VAPID_KEY = import.meta.env.VITE_FCM_VAPID_KEY;
-const FCM_TOKEN_KEY = 'fcm_token';
+const VAPID_KEY = import.meta.env.VITE_FCM_VAPID_KEY; 
+const FCM_TOKEN_KEY = 'fcm_token'; 
+
+// iOS 환경에서
+const isIOSWebView = () => {
+  return (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.getFcmToken);
+};
 
 export const requestFCMToken = async (userId) => {
-  // Android 환경에서
+
+  if (isIOSWebView()) {
+    console.log("iOS 환경 감지됨");
+    window.webkit.messageHandlers.setUserId.postMessage(userId);
+    
+    window.receiveFcmToken = async function(token) {
+      console.log(`iOS로부터 FCM 토큰 수신: ${token}`);
+      if (token) {
+        await sendTokenToServer(userId, token);
+      }
+    };
+    
+    window.webkit.messageHandlers.getFcmToken.postMessage(null);
+    return; 
+  }
+
+  // 2. Android WebView 환경
   if (typeof window.Android !== 'undefined') {
     console.log(`WebView에서 가져온 User_Id : ${userId}`);
 
     const nativeToken = window.Android.getFcmToken();
-
+    
+    window.Android.setUserId(userId);
+    
     if (nativeToken) {
-      console.log(`안드로이드 FCM Token: ${nativeToken}`);
-      window.Android.setUserId(userId);
-      return nativeToken;
+        console.log(`안드로이드 FCM Token: ${nativeToken}`);
+        
+        await sendTokenToServer(userId, nativeToken);
+        
+        return nativeToken;
     } else {
-      console.warn(`Android에서 Fcm 토큰을 가져오지 못했습니다.`);
-      window.Android.setUserId(userId);
-      return 'NATIVE_MODE_PENDING';
+        console.warn(`Android에서 Fcm 토큰을 가져오지 못했습니다.`);
+        return 'NATIVE_MODE_PENDING';
     }
   }
 
