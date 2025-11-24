@@ -53,6 +53,87 @@
     outline: none;
     box-sizing: border-box;
   }
+
+  .checkboxBlock {
+    width: 100%;
+    background: #eff9fd;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+  }
+    .checkboxBlock {
+      width: 100%;
+      background: #f8fafc; /* 연한 회색/파란톤 */
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column; /* 세로로 쌓기 */
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 780px;
+  }
+
+  .checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .checkboxText {
+    font-size: 14px;
+    color: #374151;
+  }
+
+  /* 확장되는 상세 안내 영역 (체크 시 표시) */
+  .expandedContent {
+    width: 100%;
+    max-width: 780px;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-height: 0;
+    padding: 0 14px;
+    opacity: 0;
+    transition: max-height 260ms ease, opacity 200ms ease, padding 200ms ease;
+  }
+
+  .expandedActive {
+    max-height: 240px; /* 충분히 크게 잡아 확장 */
+    padding: 12px 14px 14px 14px;
+    opacity: 1;
+  }
+
+  .expandedTitle {
+    margin: 0 0 6px 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #111827;
+  }
+
+  .expandedList {
+    margin: 0;
+    padding-left: 18px;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .expandedList li {
+    margin-bottom: 6px;
+  }
   
   .buttonRow {
     display: flex;
