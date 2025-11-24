@@ -65,7 +65,7 @@ export default function Table({
         </thead>
         <tbody>
           {interestedUserList.map(user => (
-            <tr key={user.id} className={styles.tableRow}>
+            <tr key={`${user.type}-${user.id}`} className={styles.tableRow}>
               <td className={styles.tableCell}>
                 <input 
                   type="checkbox" 
@@ -84,6 +84,3 @@ export default function Table({
     </div>
   );
 }
-
-
-

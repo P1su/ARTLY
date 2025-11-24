@@ -99,11 +99,11 @@
 
 .input:focus {
   outline: none;
-  border-color: #3cb371;
+  border-color: #007bff;
 }
 
 .submitButton {
-  background-color: #3cb371;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 3rem;
@@ -116,5 +116,5 @@
 }
 
 .submitButton:hover {
-  background-color: #38a169;
+  background-color: #007bff;
 }

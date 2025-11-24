@@ -33,6 +33,7 @@ import ArtistDetail from '../pages/Category/Artist/ArtistDetail/ArtistDetail';
 import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
+import ConsoleNotification from '../pages_console/ConsoleMain/pages/ConsoleNotification/ConsoleNotification';
 import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
@@ -89,6 +90,7 @@ const router = createBrowserRouter([
     path: '/console',
     element: <LayoutConsole />,
     children: [
+      { path: '/console/notification', element: <ConsoleNotification /> },
       { path: '/console/main', element: <ConsoleMain /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
       {

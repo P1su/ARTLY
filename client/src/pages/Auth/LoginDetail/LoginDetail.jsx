@@ -29,9 +29,12 @@ export default function LoginDetail() {
 
       login(userPayload, jwtToken);
 
-      if (userPayload && userPayload.id) { 
+      // 관리자(admin_flag === '1')가 아닌 경우에만 FCM 토큰 발급
+      if (userPayload && userPayload.id && userPayload.admin_flag !== '1') { 
         await requestFCMToken(userPayload.id);
-      } 
+      } else {
+        console.log("관리자 계정 - FCM 토큰 발급 건너뜸");
+      }
 
       if (from === '/register') {
         navigate('/', { replace: true });
