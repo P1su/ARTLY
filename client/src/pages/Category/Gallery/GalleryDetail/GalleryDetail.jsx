@@ -1,5 +1,5 @@
 import styles from './GalleryDetail.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, data } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   FaStar,
@@ -147,6 +147,7 @@ export default function GalleryDetail({
     gallery_email: email = '',
     gallery_homepage: homepage = '',
     gallery_sns: rawSns,
+    gallery_latitude: lat,
     gallery_longitude: lng,
   } = galleryData;
 
@@ -205,7 +206,6 @@ export default function GalleryDetail({
         ),
     },
   ];
-  console.log(snsArray);
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length || 0})` },
