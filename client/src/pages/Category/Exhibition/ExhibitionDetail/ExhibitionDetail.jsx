@@ -126,7 +126,10 @@ export default function ExhibitionDetail({
     exhibition_phone: phone,
     artists = [],
     exhibition_homepage: homepage,
+    exhibition_status: status,
   } = exhibitionData;
+
+  const isReservable = status === 'exhibited';
 
   const infoList = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
@@ -182,8 +185,12 @@ export default function ExhibitionDetail({
               관심있어요
             </button>
             <button
-              className={styles.likeButton}
+              className={`${styles.likeButton} ${
+                !isReservable ? styles.disabledButton : ''
+              }`}
+              disabled={!isReservable}
               onClick={() => navigate(`/reservation/${id}`)}
+              title={!isReservable ? '현재 전시 기간이 아닙니다' : ''}
             >
               <FaCalendarCheck className={styles.icon} />
               예약하기
