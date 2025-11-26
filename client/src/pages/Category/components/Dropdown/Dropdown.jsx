@@ -10,8 +10,14 @@ export default function Dropdown({
   onOpen,
   onSetFilter,
   shape = 'round',
+  defaultValue,
 }) {
-  const [label, setLabel] = useState(dropdownItems[0].label);
+  const initialItem =
+    dropdownItems.find((item) => item.value === defaultValue) ||
+    dropdownItems[0];
+
+  const [label, setLabel] = useState(initialItem.label);
+
   const { isMobile } = useResponsive();
   const handleCategory = (category) => {
     setLabel(category.label);

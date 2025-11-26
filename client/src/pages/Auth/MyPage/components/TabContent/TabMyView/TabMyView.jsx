@@ -11,7 +11,7 @@ export default function TabMyView() {
   const [reservations, setReservations] = useState([]);
   const [filter, setFilter] = useState({
     dateSort: 'latest',
-    statusFilter: 'all',
+    statusFilter: 'reserved',
   });
 
   const navigate = useNavigate();
