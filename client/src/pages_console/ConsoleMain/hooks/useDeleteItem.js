@@ -1,13 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { userInstance } from '../../../apis/instance';
+import { useNavigate } from 'react-router-dom';
 
 export default function useDeleteItem() {
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
+
   const [artworkList, setArtworkList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   // 갤러리 목록 로드
   const loadGalleries = useCallback(async (search = '') => {
@@ -30,10 +34,10 @@ export default function useDeleteItem() {
       const galleries = Array.isArray(response.data)
         ? response.data.map((item) => ({
             id: item.id,
-            name: item.gallery_name,
-            address: item.gallery_address,
-            closedDay: item.gallery_closed_day,
-            time: `${item.gallery_start_time} - ${item.gallery_end_time}`,
+            name: item.gallery_name || '정보 없음',
+            address: item.gallery_address || '정보 없음',
+            closedDay: item.gallery_closed_day || '정보 없음',
+            time: `${item.gallery_start_time || '정보 없음'} - ${item.gallery_end_time || '정보 없음'}`,
             registered: item.exhibitions ? item.exhibitions.length : 0,
             liked: item.like_count,
             image: item.gallery_image,
@@ -64,9 +68,9 @@ export default function useDeleteItem() {
         params.append('gallery_id', galleryId);
       }
       const url = `/api/exhibitions${params.toString() ? `?${params.toString()}` : ''}`;
-      
+
       const response = await userInstance.get(url);
-      
+
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const exhibitions = Array.isArray(response.data)
         ? response.data.map((item) => ({
@@ -101,9 +105,9 @@ export default function useDeleteItem() {
         params.append('gallery_id', galleryId);
       }
       const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
-      
+
       const response = await userInstance.get(url);
-      
+
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const artworks = Array.isArray(response.data)
         ? response.data.map((item) => {
@@ -150,14 +154,26 @@ export default function useDeleteItem() {
     try {
       if (type === 'gallery') {
         await userInstance.delete(`/api/galleries/${id}`);
-        setGalleryList(prev => prev.filter(item => item.id !== id));
+        setGalleryList((prev) => prev.filter((item) => item.id !== id));
       } else if (type === 'exhibition') {
         await userInstance.delete(`/api/exhibitions/${id}`);
-        setExhibitionList(prev => prev.filter(item => item.id !== id));
+        setExhibitionList((prev) => prev.filter((item) => item.id !== id));
       } else if (type === 'artwork') {
         await userInstance.delete(`/api/arts/${id}`);
-        setArtworkList(prev => prev.filter(item => item.id !== id));
+        setArtworkList((prev) => prev.filter((item) => item.id !== id));
       }
+      alert(
+        `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
+      );
+
+      let targetTab = '갤러리관리';
+      if (type === 'exhibition') targetTab = '전시회관리';
+      else if (type === 'artwork') targetTab = '작품관리';
+
+      navigate('/console/main', {
+        state: { activeTab: targetTab },
+        replace: true,
+      });
     } catch (err) {
       setError(err.message);
       console.error('삭제 실패:', err);

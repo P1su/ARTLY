@@ -45,6 +45,29 @@ export default function ConsoleEdit({ type }) {
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
 
+  const getTabNameByType = (type) => {
+    switch (type) {
+      case 'galleries':
+        return '갤러리관리';
+      case 'exhibitions':
+        return '전시회관리';
+      case 'artworks':
+        return '작품관리';
+      default:
+        return '갤러리관리';
+    }
+  };
+
+  const handleAfterAction = () => {
+    if (isCreateMode) {
+      navigate('/console/main', {
+        state: { activeTab: getTabNameByType(type) },
+      });
+    } else {
+      navigate(`/console/${type}/${id}`);
+    }
+  };
+
   useEffect(() => {
     const initData = async () => {
       if (isCreateMode) {
@@ -81,7 +104,7 @@ export default function ConsoleEdit({ type }) {
 
   const handleCancel = () => {
     if (window.confirm('수정을 취소하시겠습니까?')) {
-      navigate(`/console/${type}/${id}`);
+      handleAfterAction();
     }
   };
 
@@ -101,14 +124,12 @@ export default function ConsoleEdit({ type }) {
         alert('작품 이미지를 등록해주세요.');
         return;
       }
-    }
-    else if (type === 'galleries') {
+    } else if (type === 'galleries') {
       if (!data.gallery_name) {
         alert('갤러리명을 입력해주세요.');
         return;
       }
-    }
-    else /*if (type === 'exhibitions')*/ {
+    } /*if (type === 'exhibitions')*/ else {
       if (!data.exhibition_title) {
         alert('전시회명을 입력해주세요.');
         return;
@@ -117,7 +138,7 @@ export default function ConsoleEdit({ type }) {
         alert('전시기간을 입력해주세요.');
         return;
       }
-      if (!data.exhibtion_start_time || !data.exhibtion_end_time) {
+      if (!data.exhibition_start_time || !data.exhibtion_end_time) {
         alert('전시 시간을 입력해주세요.');
         return;
       }
@@ -175,7 +196,7 @@ export default function ConsoleEdit({ type }) {
 
       console.log('저장 성공:', response.data);
       alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
-      navigate(`/console/${type}/${id}`);
+      handleAfterAction();
     } catch (error) {
       console.error('저장 오류:', error);
       if (error.response) {
