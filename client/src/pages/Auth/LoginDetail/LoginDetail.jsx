@@ -15,8 +15,8 @@ export default function LoginDetail() {
   });
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const from = location.state?.from?.pathname || '/'; 
+
+  const from = location.state?.from?.pathname || '/';
 
   const { login } = useContext(UserContext);
 
@@ -30,19 +30,17 @@ export default function LoginDetail() {
       login(userPayload, jwtToken);
 
       // 관리자(admin_flag === '1')가 아닌 경우에만 FCM 토큰 발급
-      if (userPayload && userPayload.id && userPayload.admin_flag !== '1') { 
+      if (userPayload && userPayload.id && userPayload.admin_flag !== '1') {
         await requestFCMToken(userPayload.id);
       } else {
-        console.log("관리자 계정 - FCM 토큰 발급 건너뜸");
+        console.log('관리자 계정 - FCM 토큰 발급 건너뜸');
       }
 
       if (from === '/register') {
         navigate('/', { replace: true });
-      } 
-      else if (from && from !== '/login' && from !== location.pathname) {
+      } else if (from && from !== '/login' && from !== location.pathname) {
         navigate(from, { replace: true });
-      }
-      else {
+      } else {
         navigate('/', { replace: true });
       }
     } catch (error) {
@@ -59,7 +57,13 @@ export default function LoginDetail() {
       <h1 className={styles.loginTitle}>로그인</h1>
       <p className={styles.subParagraph}>아뜰리 계정으로 로그인하세요</p>
       <div className={styles.contentContainer}>
-        <form className={styles.loginForm} onSubmit={(e) => { e.preventDefault(); postLogin(); }}>
+        <form
+          className={styles.loginForm}
+          onSubmit={(e) => {
+            e.preventDefault();
+            postLogin();
+          }}
+        >
           <InputText
             placeholder='ID (6 ~ 20자 영문, 숫자)'
             name='login_id'
@@ -69,10 +73,13 @@ export default function LoginDetail() {
           <InputText
             placeholder='Password (8 ~ 16자 영문+숫자+특수문자)'
             name='login_pwd'
+            type='password'
             onChange={handleChange}
             value={loginDatas.login_pwd}
           />
-          <button type="submit" className={styles.submitButton}>회원 로그인</button>
+          <button type='submit' className={styles.submitButton}>
+            회원 로그인
+          </button>
         </form>
         <SupportSection />
       </div>
