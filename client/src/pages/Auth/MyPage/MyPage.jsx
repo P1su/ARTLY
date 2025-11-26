@@ -4,29 +4,20 @@ import ProfileCard from './components/ProfileCard/ProfileCard';
 import TabLike from './components/TabContent/TabLike/TabLike';
 import TabPurchased from './components/TabContent/TabPurchased/TabPurchased';
 import TabMyView from './components/TabContent/TabMyView/TabMyView';
+import { useLocation } from 'react-router-dom';
 
 export default function MyPage() {
+  const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('좋아요');
   const tabs = ['좋아요', 'MY관람', 'MY도록'];
 
   useEffect(() => {
-    const attendanceModalFlag = localStorage.getItem('showAttendanceModal');
-    const fromReservationModalFlag = localStorage.getItem(
-      'fromReservationModal',
-    );
-    const showMyCatalogTab = localStorage.getItem('showMyCatalogTab');
-
-    if (showMyCatalogTab === 'true') {
-      setSelectedTab('MY도록');
-      localStorage.removeItem('showMyCatalogTab');
-    } else if (
-      attendanceModalFlag === 'true' ||
-      fromReservationModalFlag === 'true'
-    ) {
+    if (location.state?.successModal) {
       setSelectedTab('MY관람');
-      localStorage.removeItem('fromReservationModal');
+    } else if (location.state?.activeTab) {
+      setSelectedTab(location.state.activeTab);
     }
-  }, []);
+  }, [location.state]);
 
   const renderTabContent = () => {
     switch (selectedTab) {

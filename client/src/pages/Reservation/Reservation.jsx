@@ -231,7 +231,9 @@ export default function Reservation() {
   };
 
   const goToMyReservations = () => {
-    navigate('/mypage');
+    navigate('/mypage', {
+      state: { activeTab: 'MY관람' },
+    });
   };
 
   if (loading) return <div className={styles.loading}>로딩 중...</div>;
@@ -341,14 +343,10 @@ export default function Reservation() {
                     <span className={styles.dateNumber}>{day.day}</span>
                     {day.day && (
                       <>
-                        {/* 1. 휴관일인 경우 빨간 점 */}
                         {day.isClosedDay && (
                           <div className={styles.closedDot} />
                         )}
 
-                        {/* 2. 오늘인 경우 파란 점 (휴관일이 아닐 때만 혹은 둘 다 표시 정책에 따라) */}
-                        {/* 보통 휴관일과 오늘이 겹치면 휴관일이 우선이거나 둘 다 표시합니다. */}
-                        {/* 아래는 오늘이면서 휴관일이 아닐 때만 파란 점을 찍는 예시입니다. */}
                         {!day.isClosedDay && day.isToday && (
                           <div className={styles.todayDot} />
                         )}

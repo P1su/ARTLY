@@ -6,12 +6,14 @@ import { userInstance } from '../../apis/instance';
 
 export default function QrScanner() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const qrCodeRegionId = 'html5qr-code-full-region';
   const html5QrcodeScannerRef = useRef(null);
   const [error, setError] = useState(null);
   const [showTestMessage, setShowTestMessage] = useState(false);
 
-  const location = useLocation();
+  const receivedExhibitionInfo = location.state?.exhibitionInfo || null;
 
   const handleTestBtnClick = async () => {
     const itemId = new URLSearchParams(location.search).get('itemId');
@@ -22,9 +24,12 @@ export default function QrScanner() {
         reservation_status: 'used',
       });
 
-      localStorage.setItem('showAttendanceModal', 'true');
-
-      navigate('/mypage');
+      navigate('/mypage', {
+        state: {
+          successModal: true,
+          exhibitionInfo: receivedExhibitionInfo,
+        },
+      });
     } catch (err) {
       console.error('관람 인증 실패:', err);
       alert('관람 인증 처리 중 문제가 발생했습니다.');
@@ -76,9 +81,6 @@ export default function QrScanner() {
   }, [navigate]);
 
   const handleCloseButton = () => {
-    localStorage.removeItem('showAttendanceModal');
-    localStorage.removeItem('exhibitionInfo');
-
     navigate(-1);
   };
 

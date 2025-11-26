@@ -4,10 +4,11 @@ import { userInstance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import DropdownContainer from '../../../../../Category/components/DropdownContainer/DropdownContainer';
 import tabMyViewFilter from '../../../../../../utils/filters/tabMyViewFilter';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AttendanceModal from '../../AttendanceModal/AttendanceModal';
 
 export default function TabMyView() {
+  const location = useLocation();
   const [reservations, setReservations] = useState([]);
   const [filter, setFilter] = useState({
     dateSort: 'latest',
@@ -24,32 +25,11 @@ export default function TabMyView() {
   });
 
   useEffect(() => {
-    const shouldShowModal = localStorage.getItem('showAttendanceModal');
-
-    if (shouldShowModal === 'true') {
-      const storedExhibitionInfo = localStorage.getItem('exhibitionInfo');
-
-      if (storedExhibitionInfo) {
-        try {
-          const exhibitionInfo = JSON.parse(storedExhibitionInfo);
-          setSelectedExhibition(exhibitionInfo);
-          setShowAttendanceModal(true);
-        } catch (error) {
-          console.error('전시회 정보 파싱 실패:', error);
-          setSelectedExhibition({
-            id: '',
-            title: '기본 제목',
-            imageUrl: '기본 이미지 URL',
-          });
-          setShowAttendanceModal(false);
-        }
-
-        localStorage.removeItem('showAttendanceModal');
-      } else {
-        setShowAttendanceModal(false);
-      }
+    if (location.state?.successModal && location.state?.exhibitionInfo) {
+      setSelectedExhibition(location.state.exhibitionInfo);
+      setShowAttendanceModal(true);
     }
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +67,6 @@ export default function TabMyView() {
 
   const handleCloseModal = () => {
     setShowAttendanceModal(false);
-    localStorage.removeItem('exhibitionInfo');
   };
 
   const handleStatusChange = async (id) => {
@@ -112,11 +91,10 @@ export default function TabMyView() {
       title: item.exhibition_title,
       imageUrl: item.exhibition_poster,
     };
-    localStorage.setItem('exhibitionInfo', JSON.stringify(exhibitionInfo));
 
-    localStorage.setItem('showAttendanceModal', 'true');
-    console.log('예매 데이터 바뀌기 전: ');
-    navigate(`/scan?itemId=${item.id}`);
+    navigate(`/scan?itemId=${item.id}`, {
+      state: { exhibitionInfo },
+    });
   };
 
   return (
@@ -146,7 +124,9 @@ export default function TabMyView() {
                 onReservation={() => {
                   navigate(`/reservationconfirm/${item.id}`);
                 }}
-                onGoDetail={() => handleGoDetail(item.exhibition_id)}
+                onGoDetail={() =>
+                  navigate(`/exhibitions/${item.exhibition_id}`)
+                }
                 onCancel={() => handleStatusChange(item.id)}
                 onQR={() => handleQR(item)}
                 type='reservation'
