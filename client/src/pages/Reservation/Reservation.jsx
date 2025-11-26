@@ -80,10 +80,44 @@ export default function Reservation() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [step]);
 
+  const getClosedWeekdays = (closedString) => {
+    if (!closedString) return [];
+
+    const dayMap = {
+      일요일: 0,
+      월요일: 1,
+      화요일: 2,
+      수요일: 3,
+      목요일: 4,
+      금요일: 5,
+      토요일: 6,
+    };
+
+    return closedString
+      .split(',')
+      .map((s) => dayMap[s.trim()])
+      .filter((n) => n !== undefined);
+  };
+
   const generateCalendarDays = () => {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
     const days = [];
+
+    const startDate = exhibition?.exhibition_start_date
+      ? new Date(exhibition.exhibition_start_date)
+      : null;
+    const endDate = exhibition?.exhibition_end_date
+      ? new Date(exhibition.exhibition_end_date)
+      : null;
+    const closedWeekdays = exhibition
+      ? getClosedWeekdays(exhibition.exhibition_closed_day)
+      : [];
+
+    if (startDate) startDate.setHours(0, 0, 0, 0);
+    if (endDate) endDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     Array.from({ length: firstDayOfMonth }).forEach(() => {
       days.push({ day: '', disabled: true });
@@ -92,13 +126,31 @@ export default function Reservation() {
     Array.from({ length: daysInMonth }).forEach((_, idx) => {
       const i = idx + 1;
       const date = new Date(currentYear, currentMonth, i);
-      const isToday = date.toDateString() === new Date().toDateString();
-      const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
+      date.setHours(0, 0, 0, 0);
+
+      const isToday = date.getTime() === today.getTime();
+
+      let isDisabled = false;
+      let isClosedDay = false;
+
+      // 과거 날짜 불가
+      if (date < today) isDisabled = true;
+
+      // 전시 기간 외 불가 (시작일 전 or 종료일 후)
+      if (startDate && date < startDate) isDisabled = true;
+      if (endDate && date > endDate) isDisabled = true;
+
+      // 휴관일 불가 (요일 체크)
+      if (closedWeekdays.includes(date.getDay())) {
+        isDisabled = true;
+        isClosedDay = true;
+      }
       days.push({
         day: i,
         date,
-        disabled: isPast,
+        disabled: isDisabled,
         isToday,
+        isClosedDay,
       });
     });
 
@@ -241,6 +293,16 @@ export default function Reservation() {
                   {'>'}
                 </button>
               </div>
+              <div className={styles.legend}>
+                <div className={styles.legendItem}>
+                  <div className={`${styles.legendDot} ${styles.dotRed}`} />
+                  <span>휴관</span>
+                </div>
+                <div className={styles.legendItem}>
+                  <div className={`${styles.legendDot} ${styles.dotBlue}`} />
+                  <span>오늘</span>
+                </div>
+              </div>
             </div>
 
             <div className={styles.weekdaysRow}>
@@ -276,7 +338,22 @@ export default function Reservation() {
                     }`}
                     onClick={() => handleDateSelect(day)}
                   >
-                    {day.day}
+                    <span className={styles.dateNumber}>{day.day}</span>
+                    {day.day && (
+                      <>
+                        {/* 1. 휴관일인 경우 빨간 점 */}
+                        {day.isClosedDay && (
+                          <div className={styles.closedDot} />
+                        )}
+
+                        {/* 2. 오늘인 경우 파란 점 (휴관일이 아닐 때만 혹은 둘 다 표시 정책에 따라) */}
+                        {/* 보통 휴관일과 오늘이 겹치면 휴관일이 우선이거나 둘 다 표시합니다. */}
+                        {/* 아래는 오늘이면서 휴관일이 아닐 때만 파란 점을 찍는 예시입니다. */}
+                        {!day.isClosedDay && day.isToday && (
+                          <div className={styles.todayDot} />
+                        )}
+                      </>
+                    )}
                   </div>
                 );
               })}
