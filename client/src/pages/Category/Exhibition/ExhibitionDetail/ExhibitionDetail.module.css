@@ -186,6 +186,12 @@
   background-color: #f0f0f0;
 }
 
+.disabledButton {
+  color: #a0a0a07c;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
 @media (max-width: 1500px) {
   .layout {
     max-width: 90rem;

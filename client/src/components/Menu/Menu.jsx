@@ -88,7 +88,6 @@ export default function Menu({ onOpen, isOpen }) {
           <span
             className={styles.menuSpan}
             onClick={() => {
-              localStorage.setItem('showMyCatalogTab', 'true');
               handleNavigate('/mypage');
             }}
           >

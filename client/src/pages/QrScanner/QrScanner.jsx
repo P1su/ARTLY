@@ -2,29 +2,34 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import styles from './QrScanner.module.css';
-import { instance } from '../../apis/instance';
+import { userInstance } from '../../apis/instance';
 
 export default function QrScanner() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const qrCodeRegionId = 'html5qr-code-full-region';
   const html5QrcodeScannerRef = useRef(null);
   const [error, setError] = useState(null);
   const [showTestMessage, setShowTestMessage] = useState(false);
 
-  const location = useLocation();
+  const receivedExhibitionInfo = location.state?.exhibitionInfo || null;
 
   const handleTestBtnClick = async () => {
     const itemId = new URLSearchParams(location.search).get('itemId');
     if (!itemId) return;
 
     try {
-      await instance.patch(`/api/reservations/${itemId}`, {
+      await userInstance.patch(`/api/reservations/${itemId}`, {
         reservation_status: 'used',
       });
 
-      localStorage.setItem('showAttendanceModal', 'true');
-
-      navigate('/mypage');
+      navigate('/mypage', {
+        state: {
+          successModal: true,
+          exhibitionInfo: receivedExhibitionInfo,
+        },
+      });
     } catch (err) {
       console.error('관람 인증 실패:', err);
       alert('관람 인증 처리 중 문제가 발생했습니다.');
@@ -76,9 +81,6 @@ export default function QrScanner() {
   }, [navigate]);
 
   const handleCloseButton = () => {
-    localStorage.removeItem('showAttendanceModal');
-    localStorage.removeItem('exhibitionInfo');
-
     navigate(-1);
   };
 
@@ -134,11 +136,9 @@ export default function QrScanner() {
 
       <div className={styles.instructionBox}>
         <p>QR 코드를 화면에 인식해주세요.</p>
-        {showTestMessage && (
-          <button onClick={handleTestBtnClick} className={styles.test}>
-            전시회 관람인증 QR 테스트
-          </button>
-        )}
+        <button onClick={handleTestBtnClick} className={styles.test}>
+          전시회 관람인증 QR 테스트
+        </button>
       </div>
     </div>
   );

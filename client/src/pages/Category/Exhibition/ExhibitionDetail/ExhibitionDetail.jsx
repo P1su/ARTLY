@@ -126,7 +126,10 @@ export default function ExhibitionDetail({
     exhibition_phone: phone,
     artists = [],
     exhibition_homepage: homepage,
+    exhibition_status: status,
   } = exhibitionData;
+
+  const isReservable = status === 'exhibited';
 
   const infoList = [
     { label: '전시기간', content: `${startDate} ~ ${endDate}` },
@@ -139,7 +142,10 @@ export default function ExhibitionDetail({
           : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
-    { label: '입장료', content: price ? `${price.toLocaleString()}원` : '무료' },
+    {
+      label: '입장료',
+      content: price ? `${price.toLocaleString()}원` : '무료',
+    },
     { label: '전화번호', content: phone || '정보 없음' },
     { label: '주소', content: exhibitionLocation || '정보 없음' },
     { label: '참여작가', content: artists.join(', ') || '정보 없음' },
@@ -166,7 +172,7 @@ export default function ExhibitionDetail({
       )}
 
       <div className={styles.card}>
-        <img className={styles.posterImage} src={poster} alt="전시회 포스터" />
+        <img className={styles.posterImage} src={poster} alt='전시회 포스터' />
 
         <section className={styles.titleSection}>
           <h1 className={styles.exhibitionTitle}>{title}</h1>
@@ -179,11 +185,15 @@ export default function ExhibitionDetail({
               관심있어요
             </button>
             <button
-              className={styles.likeButton}
+              className={`${styles.likeButton} ${
+                !isReservable ? styles.disabledButton : ''
+              }`}
+              disabled={!isReservable}
               onClick={() => navigate(`/reservation/${id}`)}
+              title={!isReservable ? '현재 전시 기간이 아닙니다' : ''}
             >
               <FaCalendarCheck className={styles.icon} />
-              무료예약
+              예약하기
             </button>
             <button className={styles.likeButton} onClick={handleDocent}>
               <FaHeadphones className={styles.icon} />
@@ -269,11 +279,7 @@ export default function ExhibitionDetail({
 
       {/* 초대장 문구 생성 섹션 - HEAD 기능 보존 */}
       <div className={`${styles.card} ${styles.tabCard}`}>
-        <InvitationGenerator
-          initialTheme={title}
-          initialOthers=""
-          showTitle={true}
-        />
+        <InvitationGenerator initialTheme={title} initialOthers='' showTitle />
       </div>
 
       {showUserActions && (
