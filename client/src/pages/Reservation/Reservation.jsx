@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
 import styles from './Reservation.module.css';
-import { instance } from '../../apis/instance';
+import { userInstance } from '../../apis/instance';
 
 export default function Reservation() {
   const { exhibitionId } = useParams();
@@ -31,7 +31,9 @@ export default function Reservation() {
     if (exhibitionId) {
       const fetchExhibition = async () => {
         try {
-          const res = await instance.get(`/api/exhibitions/${exhibitionId}`);
+          const res = await userInstance.get(
+            `/api/exhibitions/${exhibitionId}`,
+          );
           setExhibition(res.data);
         } catch {
           setError('전시 정보를 불러오는 중 오류가 발생했습니다.');
@@ -51,6 +53,26 @@ export default function Reservation() {
       }));
     }
   }, [exhibition]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await userInstance.get('/api/users/me');
+        const userData = res.data;
+        console.log(userData);
+        setReservationInfo((prev) => ({
+          ...prev,
+          name: userData.user_name || '',
+          phone: userData.user_phone || '',
+          email: userData.user_email || '',
+        }));
+      } catch (error) {
+        console.error('유저 정보 불러오기 실패:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -128,7 +150,7 @@ export default function Reservation() {
 
     if (step === 2) {
       try {
-        const response = await instance.post('/api/reservations', {
+        const response = await userInstance.post('/api/reservations', {
           exhibition_id: Number(exhibitionId),
           number_of_tickets: personCount,
           reservation_datetime: selectedDate,
@@ -182,7 +204,6 @@ export default function Reservation() {
     { label: '이메일', value: reservationInfo.email },
   ];
 
-  console.log(exhibition.exhibition_poster);
   return (
     <div className={styles.container}>
       <div className={styles.breadcrumb}>
