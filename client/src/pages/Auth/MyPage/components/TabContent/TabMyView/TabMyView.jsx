@@ -106,11 +106,6 @@ export default function TabMyView() {
     }
   };
 
-  const handleGoDetail = (id) => {
-    navigate(`/exhibitions/${id}`);
-    localStorage.removeItem('exhibitionInfo');
-  };
-
   const handleQR = (item) => {
     const exhibitionInfo = {
       id: item.exhibition_id,
@@ -170,7 +165,7 @@ export default function TabMyView() {
           exhibitionTitle={selectedExhibition.title}
           imageUrl={selectedExhibition.imageUrl}
           visitDate={new Date().toLocaleDateString()}
-          onViewExhibition={() => handleGoDetail(selectedExhibition.id)}
+          onViewExhibition={() => navigate('/exhibitions')}
         />
       )}
     </div>

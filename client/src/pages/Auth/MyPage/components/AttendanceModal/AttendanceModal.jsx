@@ -36,7 +36,7 @@ const AttendanceModal = ({
         <div className={styles.visitDate}>방문일시 : {visitDate}</div>
 
         <button className={styles.infoButton} onClick={onViewExhibition}>
-          전시회 정보 보기
+          다른 전시 둘러보기
         </button>
       </div>
     </div>
