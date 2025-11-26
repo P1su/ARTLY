@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import styles from './QrScanner.module.css';
-import { instance } from '../../apis/instance';
+import { userInstance } from '../../apis/instance';
 
 export default function QrScanner() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function QrScanner() {
     if (!itemId) return;
 
     try {
-      await instance.patch(`/api/reservations/${itemId}`, {
+      await userInstance.patch(`/api/reservations/${itemId}`, {
         reservation_status: 'used',
       });
 
@@ -134,11 +134,9 @@ export default function QrScanner() {
 
       <div className={styles.instructionBox}>
         <p>QR 코드를 화면에 인식해주세요.</p>
-        {showTestMessage && (
-          <button onClick={handleTestBtnClick} className={styles.test}>
-            전시회 관람인증 QR 테스트
-          </button>
-        )}
+        <button onClick={handleTestBtnClick} className={styles.test}>
+          전시회 관람인증 QR 테스트
+        </button>
       </div>
     </div>
   );
