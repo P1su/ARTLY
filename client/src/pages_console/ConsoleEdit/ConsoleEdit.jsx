@@ -82,6 +82,7 @@ export default function ConsoleEdit({ type }) {
         if (galleryId) initialData.gallery_id = galleryId;
 
         setData(initialData);
+        console.log(data);
       } else {
         // 2. 수정 모드: 서버에서 데이터 조회
         try {
@@ -130,6 +131,11 @@ export default function ConsoleEdit({ type }) {
         return;
       }
     } /*if (type === 'exhibitions')*/ else {
+      if (isCreateMode && !data.gallery_id) {
+        alert('잘못된 접근입니다. 갤러리 정보가 없습니다.');
+        return;
+      }
+
       if (!data.exhibition_title) {
         alert('전시회명을 입력해주세요.');
         return;
@@ -138,8 +144,8 @@ export default function ConsoleEdit({ type }) {
         alert('전시기간을 입력해주세요.');
         return;
       }
-      if (!data.exhibition_start_time || !data.exhibtion_end_time) {
-        alert('전시 시간을 입력해주세요.');
+      if (!data.exhibition_start_time || !data.exhibition_end_time) {
+        alert('관람시간을 입력해주세요.');
         return;
       }
       if (!data.exhibition_organization) {

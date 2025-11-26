@@ -37,7 +37,7 @@ export default function useDeleteItem() {
             name: item.gallery_name || '정보 없음',
             address: item.gallery_address || '정보 없음',
             closedDay: item.gallery_closed_day || '정보 없음',
-            time: `${item.gallery_start_time || '정보 없음'} - ${item.gallery_end_time || '정보 없음'}`,
+            time: `${item.gallery_start_time || '정보 없음'} ~ ${item.gallery_end_time || '정보 없음'}`,
             registered: item.exhibitions ? item.exhibitions.length : 0,
             liked: item.like_count,
             image: item.gallery_image,
@@ -75,8 +75,8 @@ export default function useDeleteItem() {
       const exhibitions = Array.isArray(response.data)
         ? response.data.map((item) => ({
             id: item.id,
-            title: item.exhibition_title,
-            period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
+            title: item.exhibition_title || '정보 없음',
+            period: `${item.exhibition_start_date || '정보 없음'} ~ ${item.exhibition_end_date || '정보 없음'}`,
             image: item.exhibition_poster || null, // API에 없을 경우 null
             gallery_name:
               item.exhibition_organization?.name || '갤러리 정보 없음',

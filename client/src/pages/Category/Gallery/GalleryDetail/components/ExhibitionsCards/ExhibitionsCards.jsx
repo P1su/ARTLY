@@ -20,7 +20,7 @@ export default function ExhibitionsCards({ exhibitions }) {
     <section className={styles.exhibitionList}>
       {exhibitions.map(
         ({
-          exhibition_id: id,
+          id,
           exhibition_poster: poster,
           exhibition_title: title,
           exhibition_status: status,

@@ -49,7 +49,7 @@ export default function GalleryManagement({
 
     if (filteredGalleryList.length > 0) {
       return (
-        <section className={styles.contentContainer}>
+        <div className={styles.contentContainer}>
           <div
             style={{
               opacity: isSearching ? 0.5 : 1,
@@ -97,7 +97,7 @@ export default function GalleryManagement({
               </div>
             ))}
           </div>
-        </section>
+        </div>
       );
     }
 

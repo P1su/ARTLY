@@ -166,7 +166,7 @@ export default function GalleryDetail({
       label: '관람시간',
       content:
         startTime && endTime
-          ? `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`
+          ? `${startTime.slice(0, 5)} ~ ${endTime.slice(0, 5)}`
           : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
