@@ -350,12 +350,20 @@
 }
 
 .summaryTitle {
-  background-color: #f8f9fa;
+  background-color: #f8f9faf2;
   padding: 1.5rem 2rem;
   font-size: 1.6rem;
   font-weight: 600;
   color: #333;
   border-bottom: 1px solid #eee;
+}
+
+.summaryTitle2 {
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  border-bottom: 3px solid #eeeeeef0;
 }
 
 .summaryImage {

@@ -20,6 +20,7 @@ export default function Reservation() {
     email: '',
     date: '',
     gallery: '',
+    price: 0,
     state: '관람신청',
   });
 
@@ -50,6 +51,7 @@ export default function Reservation() {
       setReservationInfo((prev) => ({
         ...prev,
         gallery: exhibition.exhibition_location,
+        price: exhibition.exhibition_price,
       }));
     }
   }, [exhibition]);
@@ -157,8 +159,8 @@ export default function Reservation() {
           visitor_name: reservationInfo.name,
           visitor_phone: reservationInfo.phone,
           visitor_email: reservationInfo.email,
-          payment_method: '', // 현재 구현 안 했으므로 null 또는 빈 문자열
-          total_price: 0, // 마찬가지로 null 처리
+          payment_method: '', // 제거 예정
+          total_price: exhibition.exhibition_price * personCount,
         });
 
         console.log('예약 완료:', response.data);
@@ -177,7 +179,6 @@ export default function Reservation() {
   };
 
   const goToMyReservations = () => {
-    localStorage.setItem('fromReservationModal', 'true');
     navigate('/mypage');
   };
 
@@ -202,6 +203,10 @@ export default function Reservation() {
     { label: '예약자', value: reservationInfo.name },
     { label: '전화번호', value: reservationInfo.phone },
     { label: '이메일', value: reservationInfo.email },
+    {
+      label: '예상 가격',
+      value: `${(exhibition.exhibition_price || 0).toLocaleString()}원 (방문 후 결제)`,
+    },
   ];
 
   return (
@@ -368,6 +373,10 @@ export default function Reservation() {
                   ? exhibition.exhibition_location
                   : '전시 장소',
               },
+              {
+                label: '예상 가격',
+                value: `${(exhibition.exhibition_price || 0).toLocaleString()}원`,
+              },
             ].map((item) => (
               <div className={styles.summaryRow} key={item.label}>
                 <span className={styles.summaryLabel}>{item.label}</span>
@@ -395,7 +404,7 @@ export default function Reservation() {
             {completionSummaryItems.map((item) => (
               <div className={styles.summaryRow} key={item.label}>
                 {item.label === '전시명' ? (
-                  <h2 className={styles.summaryTitle}>{item.value}</h2>
+                  <h2 className={styles.summaryTitle2}>{item.value}</h2>
                 ) : (
                   <>
                     <span className={styles.summaryLabel}>{item.label}</span>
