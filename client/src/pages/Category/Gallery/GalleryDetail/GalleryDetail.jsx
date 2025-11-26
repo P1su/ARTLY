@@ -5,8 +5,6 @@ import {
   FaStar,
   FaShare,
   FaInstagram,
-  FaTwitter,
-  FaFacebook,
   FaYoutube,
   FaLink,
   FaLocationDot,
