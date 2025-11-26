@@ -84,23 +84,26 @@ export default function MobileMain() {
   }, [items]);
 
   useEffect(() => {
-    if (user) {
-      const fetchFavGallery = async () => {
-        try {
-          const response = await userInstance.get('/api/galleries', {
-            params: {
-              liked_only: 1,
-            },
-          });
-
-          setGalleries(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      fetchFavGallery();
+    if (!user) {
+      setGalleries([]);
+      return;
     }
+
+    const fetchFavGallery = async () => {
+      try {
+        const response = await userInstance.get('/api/galleries', {
+          params: {
+            liked_only: 1,
+          },
+        });
+
+        setGalleries(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFavGallery();
   }, [user]);
 
   return (
