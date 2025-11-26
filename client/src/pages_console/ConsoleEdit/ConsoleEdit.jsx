@@ -173,7 +173,6 @@ export default function ConsoleEdit({ type }) {
       'is_liked',
       'gallery',
       'artist_users',
-      'artists',
       'artist', // artist 객체 자체는 보내지 않음 (artist_id만 필요)
     ];
 
@@ -189,6 +188,10 @@ export default function ConsoleEdit({ type }) {
       }
     });
 
+    console.log('=== 전송 데이터 확인 ===');
+    for (let [key, val] of formData.entries()) {
+      console.log(`${key}:`, val);
+    }
     if (selectedImageFile) {
       formData.append(config.formImageField, selectedImageFile);
     }
