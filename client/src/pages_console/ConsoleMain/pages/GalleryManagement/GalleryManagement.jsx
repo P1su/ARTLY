@@ -67,7 +67,7 @@ export default function GalleryManagement({
           <CountList count={filteredGalleryList.length} />
           <RegisterButton
             buttonText='+갤러리 등록'
-            onButtonClick={() => alert('갤러리 등록')}
+            onButtonClick={() => navigate(`/console/galleries/edit/new`)}
           />
         </div>
 

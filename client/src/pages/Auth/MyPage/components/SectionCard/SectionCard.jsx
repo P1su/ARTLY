@@ -106,7 +106,6 @@ export default function SectionCard({
                   onGoDetail();
                 }}
               >
-                {' '}
                 전시정보
               </button>
 
@@ -119,7 +118,7 @@ export default function SectionCard({
                       onQR(item.exhibition_id);
                     }}
                   >
-                    관람확인
+                    관람인증
                   </button>
                   <button
                     className={styles.cancel}
@@ -128,7 +127,7 @@ export default function SectionCard({
                       onCancel();
                     }}
                   >
-                    취소
+                    예약취소
                   </button>
                 </>
               )}
