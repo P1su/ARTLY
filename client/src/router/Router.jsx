@@ -93,6 +93,9 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/notification', element: <ConsoleNotification /> },
       { path: '/console/main', element: <ConsoleMain /> },
+      { path: '/console/galleries', element: <ConsoleMain defaultTab="갤러리관리"/> },
+      { path: '/console/exhibitions', element: <ConsoleMain defaultTab="전시회관리" /> },
+      { path: '/console/artworks', element: <ConsoleMain defaultTab="작품관리" /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
