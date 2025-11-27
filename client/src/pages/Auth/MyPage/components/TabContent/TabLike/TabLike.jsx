@@ -5,6 +5,7 @@ import { userInstance } from '../../../../../../apis/instance';
 import ExhibitionCard from '../../../../../Category/Exhibition/Exhibitions/components/ExhibitionCard/ExhibitionCard';
 import GalleryCard from '../../../../../Nearby/components/GalleryCard/GalleryCard';
 import ArtistCard from '../../../../../Category/Artist/Artists/components/ArtistCard/ArtistCard';
+import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 const TABS = [
   { label: '전시회', key: 'exhibition' },
@@ -21,8 +22,11 @@ export default function TabLike() {
     artist: [],
   });
   const [activeTab, setActiveTab] = useState('exhibition');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+    
     const fetchData = async () => {
       try {
         const likeRes = await userInstance.get('/api/users/me/likes');
@@ -37,6 +41,8 @@ export default function TabLike() {
     } catch (err) {
       console.log('like fetch err : ', err);
       setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,32 +75,35 @@ export default function TabLike() {
       <section className={styles.cardListSection}>
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
-            activeTab === 'exhibition' ? (
-              filteredItems.map((item, index) => (
-                <ExhibitionCard
-                  key={`exhibition-${item.id}-${index}`}
-                  exhibitionItem={item}
-                />
-              ))
-            ) : activeTab === 'gallery' ? (
-              filteredItems.map((item, index) => (
-                <GalleryCard 
-                  key={`gallery-${item.id}-${index}`}
-                  galleryItem={item} />
-              ))
-            ) : activeTab === 'artist' ? (
-              filteredItems.map((item, index) => (
-                <ArtistCard 
-                  key={`artist-${item.id}-${index}`} 
-                  artistItem={item} />
-              ))
-            ) : null
-          ) : (
-            <p className={styles.emptyText}>
-              좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
-              없습니다.
-            </p>
-          )}
+              activeTab === 'exhibition' ? (
+                filteredItems.map((item, index) => (
+                  <ExhibitionCard
+                    key={`exhibition-${item.id}-${index}`}
+                    exhibitionItem={item}
+                  />
+                ))
+              ) : activeTab === 'gallery' ? (
+                filteredItems.map((item, index) => (
+                  <GalleryCard 
+                    key={`gallery-${item.id}-${index}`}
+                    galleryItem={item} />
+                ))
+              ) : activeTab === 'artist' ? (
+                filteredItems.map((item, index) => (
+                  <ArtistCard 
+                    key={`artist-${item.id}-${index}`} 
+                    artistItem={item} />
+                ))
+              ) : null
+            ) : (
+              !isLoading ? (
+              <p className={styles.emptyText}>
+                좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
+                없습니다.
+              </p>
+              ) : ( <LoadingSpinner /> )
+            )
+          }
         </div>
       </section>
     </div>

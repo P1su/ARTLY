@@ -6,10 +6,11 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ListHeader from './../../components/ListHeader/ListHeader';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function ArtworkList() {
   const [artworks, setArtworks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
     10,
     artworks,
@@ -40,8 +41,9 @@ export default function ArtworkList() {
       <ListHeader title='작품' isArtworks />
 
       <TotalCounts num={artworks.length} label='작품' />
+      {isLoading && <LoadingSpinner />}
 
-      {artworks.length === 0 && (
+      {!isLoading && artworks.length === 0 && (
         <div className={styles.nonDataText}>조회된 작품이 없습니다.</div>
       )}
 
