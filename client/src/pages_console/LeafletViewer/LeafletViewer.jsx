@@ -102,8 +102,8 @@ export default function LeafletViewer() {
                     maxWidth={isDesktop ? 600 : 350}
                     minHeight={Math.round(280 * BOOK_RATIO)}
                     maxHeight={Math.round((isDesktop ? 600 : 350) * BOOK_RATIO)}
-                    showCover={true}
-                    mobileScrollSupport={true}
+                    showCover={false}
+                    mobileScrollSupport={false}
                     className={styles.flipBook}
                     onFlip={(e) => setCurrentPage(e.data)}
                     usePortrait={!isDesktop}
