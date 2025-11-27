@@ -10,11 +10,12 @@ import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ExhibitionCard from './components/ExhibitionCard/ExhibitionCard';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function Exhibitions() {
   const { user } = useUser();
   const [exhibitions, setExhibitions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
     12,
     exhibitions,
@@ -84,8 +85,9 @@ export default function Exhibitions() {
       />
 
       <TotalCounts num={exhibitions.length} label='전시회' />
+      {isLoading && <LoadingSpinner />}
 
-      {exhibitions.length === 0 && (
+      {!isLoading && exhibitions.length === 0 && (
         <div className={styles.nonDataText}>조회된 전시회가 없습니다.</div>
       )}
 
