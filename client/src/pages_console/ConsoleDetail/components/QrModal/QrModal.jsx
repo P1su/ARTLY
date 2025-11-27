@@ -66,7 +66,7 @@ export default function QrModal({ data, onClose, type }) {
                 </div>
                 <div className={styles.qrCodeWrapper}>
                   <QRCode
-                    value={safeData.leafletUrl}
+                    value={`${window.location.origin}/view/leaflet/${type}/${safeData.id}`}
                     size={200}
                     bgColor='#FFFFFF'
                     fgColor='#000000'
