@@ -2,41 +2,43 @@
 .contentContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* 모바일용 작은 간격 */
+  gap: 1.5rem;
+  /* Increased gap */
 }
 
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .contentContainer {
-    gap: 1.5rem; /* 태블릿 이상에서는 큰 간격 */
+    gap: 1.5rem;
   }
 }
 
 .emptyStateContainer {
   display: block;
   width: 100%;
-  padding: 1rem; /* 모바일용 작은 패딩 */
-  border: 0.1rem solid #e5e7eb;
-  border-radius: 0.5rem;
+  padding: 2rem;
+  border: none;
+  border-radius: 1rem;
   background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .emptyStateContainer {
-    padding: 1.5rem;
+    padding: 3rem;
   }
 }
 
 /* 5. 레이아웃 */
 .searchContainer {
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .countAndButtonContainer {
   display: flex;
-  padding: 0rem 0.5rem;
+  padding: 0 0.5rem;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
@@ -45,11 +47,11 @@
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .searchContainer {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
-  
+
   .countAndButtonContainer {
-    padding: 0rem 1rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
 }

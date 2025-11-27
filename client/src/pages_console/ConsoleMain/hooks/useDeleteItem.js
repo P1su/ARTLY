@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { userInstance } from '../../../apis/instance';
+import { useUser } from '../../../store/UserProvider';
 
 export default function useDeleteItem() {
+  const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
   const [artworkList, setArtworkList] = useState([]);
+  const [leafletList, setLeafletList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
@@ -23,21 +26,24 @@ export default function useDeleteItem() {
       if (search) {
         params.append('search', search);
       }
+      if (user?.id) {
+        params.append('userId', user.id);
+      }
       const url = `/api/galleries${params.toString() ? `?${params.toString()}` : ''}`;
       const response = await userInstance.get(url);
 
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const galleries = Array.isArray(response.data)
         ? response.data.map((item) => ({
-            id: item.id,
-            name: item.gallery_name,
-            address: item.gallery_address,
-            closedDay: item.gallery_closed_day,
-            time: `${item.gallery_start_time} - ${item.gallery_end_time}`,
-            registered: item.exhibitions ? item.exhibitions.length : 0,
-            liked: item.like_count,
-            image: item.gallery_image,
-          }))
+          id: item.id,
+          name: item.gallery_name,
+          address: item.gallery_address,
+          closedDay: item.gallery_closed_day,
+          time: `${item.gallery_start_time} - ${item.gallery_end_time}`,
+          registered: item.exhibitions ? item.exhibitions.length : 0,
+          liked: item.like_count,
+          image: item.gallery_image,
+        }))
         : [];
 
       setGalleryList(galleries);
@@ -52,7 +58,7 @@ export default function useDeleteItem() {
       setIsLoading(false);
       setIsSearching(false);
     }
-  }, []);
+  }, [user]);
 
   // 전시회 목록 로드
   const loadExhibitions = useCallback(async (galleryId = '') => {
@@ -64,21 +70,21 @@ export default function useDeleteItem() {
         params.append('gallery_id', galleryId);
       }
       const url = `/api/exhibitions${params.toString() ? `?${params.toString()}` : ''}`;
-      
+
       const response = await userInstance.get(url);
-      
+
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const exhibitions = Array.isArray(response.data)
         ? response.data.map((item) => ({
-            id: item.id,
-            title: item.exhibition_title,
-            period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
-            image: item.exhibition_poster || null, // API에 없을 경우 null
-            gallery_name:
-              item.exhibition_organization?.name || '갤러리 정보 없음',
-            gallery_id: item.gallery_id || null, // 갤러리 ID 추가 (최상위 레벨)
-            value: item.exhibition_organization?.name || '갤러리 정보 없음',
-          }))
+          id: item.id,
+          title: item.exhibition_title,
+          period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
+          image: item.exhibition_poster || null, // API에 없을 경우 null
+          gallery_name:
+            item.exhibition_organization?.name || '갤러리 정보 없음',
+          gallery_id: item.gallery_id || null, // 갤러리 ID 추가 (최상위 레벨)
+          value: item.exhibition_organization?.name || '갤러리 정보 없음',
+        }))
         : [];
 
       setExhibitionList(exhibitions);
@@ -101,34 +107,34 @@ export default function useDeleteItem() {
         params.append('gallery_id', galleryId);
       }
       const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
-      
+
       const response = await userInstance.get(url);
-      
+
       // API 응답 데이터를 mock 데이터 형식에 맞게 변환
       const artworks = Array.isArray(response.data)
         ? response.data.map((item) => {
-            // exhibitions 배열에서 첫 번째 전시회의 갤러리 정보 추출
-            const firstExhibition =
-              item.exhibitions && item.exhibitions.length > 0
-                ? item.exhibitions[0]
-                : null;
-            const galleryName =
-              firstExhibition?.gallery?.gallery_name || '갤러리 정보 없음';
-            const galleryId =
-              firstExhibition?.gallery_id ||
-              firstExhibition?.gallery?.id ||
-              null;
+          // exhibitions 배열에서 첫 번째 전시회의 갤러리 정보 추출
+          const firstExhibition =
+            item.exhibitions && item.exhibitions.length > 0
+              ? item.exhibitions[0]
+              : null;
+          const galleryName =
+            firstExhibition?.gallery?.gallery_name || '갤러리 정보 없음';
+          const galleryId =
+            firstExhibition?.gallery_id ||
+            firstExhibition?.gallery?.id ||
+            null;
 
-            return {
-              id: item.id,
-              title: item.art_title,
-              artist: item.artist?.artist_name || '작가 정보 없음',
-              image: item.art_image || null,
-              gallery_name: galleryName,
-              gallery_id: galleryId,
-              value: galleryName,
-            };
-          })
+          return {
+            id: item.id,
+            title: item.art_title,
+            artist: item.artist?.artist_name || '작가 정보 없음',
+            image: item.art_image || null,
+            gallery_name: galleryName,
+            gallery_id: galleryId,
+            value: galleryName,
+          };
+        })
         : [];
 
       setArtworkList(artworks);
@@ -146,6 +152,55 @@ export default function useDeleteItem() {
     loadGalleries();
   }, []);
 
+  // 사용자 정보가 있을 때 리플렛 목록 로드
+  useEffect(() => {
+    if (user?.id) {
+      loadLeaflets();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  // 리플렛 목록 로드
+  const loadLeaflets = useCallback(async (search = '') => {
+    if (!user?.id) {
+      setLeafletList([]);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      if (search.trim()) {
+        setIsSearching(true);
+      }
+
+      const response = await userInstance.get(`/api/leaflet`, {
+        params: {
+          creator_user_id: user.id,
+        },
+      });
+
+      let leaflets = Array.isArray(response.data) ? response.data : [];
+
+      // 검색어가 있으면 클라이언트 사이드 필터링
+      if (search.trim()) {
+        const searchLower = search.toLowerCase();
+        leaflets = leaflets.filter(leaflet =>
+          leaflet.title?.toLowerCase().includes(searchLower) ||
+          leaflet.category?.toLowerCase().includes(searchLower)
+        );
+      }
+
+      setLeafletList(leaflets);
+    } catch (err) {
+      setError(err.message);
+      console.error('리플렛 목록 로드 실패:', err);
+      setLeafletList([]);
+    } finally {
+      setIsLoading(false);
+      setIsSearching(false);
+    }
+  }, [user?.id]);
+
   const handleDelete = async (id, type) => {
     try {
       if (type === 'gallery') {
@@ -157,6 +212,10 @@ export default function useDeleteItem() {
       } else if (type === 'artwork') {
         await userInstance.delete(`/api/arts/${id}`);
         setArtworkList(prev => prev.filter(item => item.id !== id));
+      } else if (type === 'leaflet') {
+        await userInstance.delete(`/api/leaflet/${id}`);
+        setLeafletList(prev => prev.filter(item => item.id !== id));
+        alert('리플렛이 삭제되었습니다.');
       }
     } catch (err) {
       setError(err.message);
@@ -169,10 +228,12 @@ export default function useDeleteItem() {
     galleryList,
     exhibitionList,
     artworkList,
+    leafletList,
     handleDelete,
     loadGalleries,
     loadExhibitions,
     loadArtworks,
+    loadLeaflets,
     isLoading,
     isSearching,
     error,

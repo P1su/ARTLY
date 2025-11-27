@@ -4,6 +4,7 @@ import GalleryManagement from './pages/GalleryManagement/GalleryManagement';
 import ExhibitionManagement from './pages/ExhibitionManagement/ExhibitionManagement';
 import ArtworkManagement from './pages/ArtworkManagement/ArtworkManagement';
 import InterestedUserManagement from './pages/InterestedUserManagement/InterestedUserManagement';
+
 import useDeleteItem from './hooks/useDeleteItem';
 import styles from './ConsoleMain.module.css';
 import { useLocation } from 'react-router-dom';
@@ -87,6 +88,7 @@ export default function ConsoleMain() {
             galleryList={galleryList}
           />
         )}
+
         {activeTab === '관심유저관리' && <InterestedUserManagement />}
       </div>
     </div>

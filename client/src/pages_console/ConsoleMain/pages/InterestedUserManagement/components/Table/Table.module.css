@@ -2,168 +2,138 @@
 .tableContainer {
   display: block;
   width: 100%;
-  border: 0.1rem solid #e5e7eb;
-  border-radius: 0.5rem;
+  border: none;
+  border-radius: 1rem;
   background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  /* Ensure corners are clipped */
 }
 
 .tableFilters {
   display: flex;
-  gap: 0.25rem; /* 모바일용 작은 간격 */
-  padding: 0.5rem;
-  border-bottom: 0.1rem solid #e5e7eb;
-  overflow-x: auto; /* 모바일에서 스크롤 가능 */
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #F3F4F6;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .tableFilters::-webkit-scrollbar {
-  display: none; /* 스크롤바 숨기기 */
+  display: none;
 }
 
 .table {
   display: table;
   width: 100%;
+  border-collapse: collapse;
 }
 
 .tableHeader {
   display: table-header-group;
+  background-color: #F9FAFB;
+  /* Light gray header */
 }
 
 .tableRow {
   display: table-row;
+  border-bottom: 1px solid #F3F4F6;
 }
 
 .tableCell {
   display: table-cell;
+  vertical-align: middle;
 }
 
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .tableFilters {
-    gap: 0.5rem; /* 태블릿 이상에서는 큰 간격 */
+    gap: 0.75rem;
+    padding: 1.5rem;
   }
 }
 
 /* 2. Position */
 
 /* 3. Box */
-.tableContainer {
-  width: 100%;
-  border: 0.1rem solid #e5e7eb;
-  border-radius: 0.5rem;
-}
-
-.tableFilters {
-  padding: 0.5rem;
-  border-bottom: 0.1rem solid #e5e7eb;
-}
-
 .filterButton {
-  padding: 0.25rem 0.75rem; /* 모바일용 작은 패딩 */
+  padding: 0.4rem 0.8rem;
   border: none;
-  border-radius: 0.375rem;
-  font-size: 0.875rem; /* 모바일용 작은 폰트 */
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6B7280;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.filterButton:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.filterButtonActive {
+  background-color: #EFF6FF;
+  color: #2563EB;
+  font-weight: 600;
 }
 
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .filterButton {
-    padding: 0.25rem 1rem; /* 태블릿 이상에서는 큰 패딩 */
+    padding: 0.5rem 1rem;
     font-size: 1rem;
   }
 }
 
-.table {
-  width: 100%;
-}
-
 .tableHeaderCell {
-  padding: 0.5rem; /* 모바일용 작은 패딩 */
+  padding: 1rem;
   text-align: left;
-  font-size: 0.875rem; /* 모바일용 작은 폰트 */
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .tableHeaderCellCheckbox {
-  width: 2.5rem; /* 모바일용 작은 체크박스 영역 */
-}
-
-.tableRow {
-  border-bottom: 0.1rem solid #e5e7eb;
+  width: 3rem;
+  text-align: center;
 }
 
 .tableCell {
-  padding: 0.5rem; /* 모바일용 작은 패딩 */
-  font-size: 0.875rem; /* 모바일용 작은 폰트 */
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #111827;
 }
 
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .tableHeaderCell {
-    padding: 0.75rem;
+    padding: 1.2rem;
     font-size: 1rem;
   }
-  
-  .tableHeaderCellCheckbox {
-    width: 3rem;
-  }
-  
+
   .tableCell {
-    padding: 0.75rem;
-    font-size: 1rem;
+    padding: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 
 /* 4. Background */
-.tableContainer {
-  background-color: white;
-}
-
-.filterButton {
-  background: none;
-}
-
-.filterButtonActive {
-  background-color: #f3f4f6;
-}
-
-.filterButton:hover {
-  background-color: #f9fafb;
-}
-
-.tableHeader {
-  background-color: #2563eb;
-}
-
 .tableRow:hover {
-  background-color: #f9fafb;
+  background-color: #F9FAFB;
 }
 
 /* 5. Font */
-.tableFilters {
-  font-size: 1rem;
-  color: #6b7280;
-}
-
-.tableHeader {
-  color: white;
-}
-
-.tableHeaderCell {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.tableCell {
-  font-size: 1rem;
-}
-
 .tableCellGray {
-  color: #6b7280;
+  color: #6B7280;
 }
 
 /* 6. Animation */
 .filterButton {
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .tableRow {
@@ -174,6 +144,3 @@
 .filterButton {
   cursor: pointer;
 }
-
-
-
