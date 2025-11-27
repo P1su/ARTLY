@@ -40,6 +40,7 @@ import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
 import Poster from './../pages_console/Poster/Poster';
 import Notification from '../pages/Notification/Notification';
+import LeafletViewer from '../pages_console/LeafletViewer/LeafletViewer';
 
 const router = createBrowserRouter([
   {
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
   {
     path: '/scan/:id?',
     element: <QrScanner />,
+  },
+  {
+    path: '/view/leaflet/:category/:id',
+    element: <LeafletViewer />,
   },
 ]);
 

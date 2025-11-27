@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
-import Preview from './components/Preview/Preview';
 import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
 
@@ -13,7 +12,6 @@ export default function Leaflet({ type }) {
   const navigate = useNavigate();
   // id는 항상 Owner(Gallery/Exhibition) ID입니다.
   const [leafletId, setLeafletId] = useState(null);
-  const [showBookletViewer, setShowBookletViewer] = useState(false);
   const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [existingLeaflet, setExistingLeaflet] = useState(null);
@@ -91,14 +89,15 @@ export default function Leaflet({ type }) {
   }, [id, type]);
 
   const handlePreview = () => {
-    if (!coverImage) {
-      toast.error('표지 이미지를 먼저 업로드해주세요!', {
+    if (!leafletId) {
+      toast.error('먼저 리플렛을 생성해주세요!', {
         position: 'top-center',
         duration: 3000,
       });
       return;
     }
-    setShowBookletViewer(true);
+    const viewerUrl = `/view/leaflet/${type}/${id}`;
+    window.open(viewerUrl, '_blank');
   };
 
 
@@ -396,12 +395,6 @@ export default function Leaflet({ type }) {
         </div>
       </div>
 
-      <Preview
-        isOpen={showBookletViewer}
-        onClose={() => setShowBookletViewer(false)}
-        coverImage={coverImage}
-        imageList={imageList}
-      />
     </div >
   );
 }
