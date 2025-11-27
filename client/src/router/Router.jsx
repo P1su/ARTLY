@@ -122,8 +122,12 @@ const router = createBrowserRouter([
         element: <DocentGenerator />,
       },
       {
-        path: '/console/leaflet',
-        element: <Leaflet />,
+        path: '/console/galleries/leaflet/:id',
+        element: <Leaflet type="galleries" />,
+      },
+      {
+        path: '/console/exhibitions/leaflet/:id',
+        element: <Leaflet type="exhibitions" />,
       },
       {
         path: '/console/poster',
