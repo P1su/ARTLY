@@ -31,10 +31,12 @@ const AttendanceModal = ({
         </div>
 
         <div className={styles.confirmText}>관람 확인 완료</div>
+        <div className={styles.visitDate}>이용해주셔서 감사합니다.</div>
+
         <div className={styles.visitDate}>방문일시 : {visitDate}</div>
 
         <button className={styles.infoButton} onClick={onViewExhibition}>
-          전시회 정보 보기
+          다른 전시 둘러보기
         </button>
       </div>
     </div>

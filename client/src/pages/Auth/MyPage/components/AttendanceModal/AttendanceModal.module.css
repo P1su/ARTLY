@@ -22,6 +22,7 @@
   flex-direction: column;
   padding: 0 0 3rem;
   position: relative;
+  margin-top: 3rem;
 }
 
 .modalHeader {
@@ -80,14 +81,14 @@
 
 .confirmText {
   font-weight: 600;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   text-align: center;
   margin-bottom: 0.8rem;
   color: #222;
 }
 
 .visitDate {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-align: center;
   color: #999;
   margin-bottom: 2rem;
@@ -96,7 +97,7 @@
 .infoButton {
   display: block;
   width: 14rem;
-  margin: 0 auto 2rem;
+  margin: 1rem auto 1rem;
   padding: 0.8rem 0;
   font-size: 1.4rem;
   font-weight: 600;
@@ -118,4 +119,40 @@
   color: #bbb;
   text-align: center;
   user-select: none;
+}
+
+@media (max-width: 700px) {
+  .modalContainer {
+    width: 85%;
+    max-height: 52rem;
+  }
+
+  .imageContainer {
+    width: 29rem;
+    height: 20rem;
+    margin: 2rem auto;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+  }
+
+  .checkIconContainer {
+    width: 5rem;
+    height: 5rem;
+    border: 0.25rem solid #3cb371;
+    margin: 0 auto 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .checkIconContainer svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #3cb371;
+  }
+
+  .infoButton {
+    margin: 0 auto;
+  }
 }

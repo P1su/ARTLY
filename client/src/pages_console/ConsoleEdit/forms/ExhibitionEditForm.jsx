@@ -245,8 +245,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             <label className={styles.label}>전시장소</label>
             <input
               className={styles.input}
-              name='exhibition_organization
-'
+              name='exhibition_organization'
               value={data.exhibition_organization || ''}
               onChange={handleInputChange}
             />

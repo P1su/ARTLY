@@ -10,6 +10,7 @@ const tabMyViewFilter = [
   {
     label: '관람상태',
     key: 'statusFilter',
+    defaultValue: 'reserved',
     options: [
       { label: '전체', value: 'all' },
       { label: '관람신청', value: 'reserved' },

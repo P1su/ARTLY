@@ -21,6 +21,7 @@ export default function DropdownContainer({
           title={item.label}
           dropdownItems={item.options}
           filterKey={item.key}
+          defaultValue={item.defaultValue}
           isOpen={idx === itemIndex}
           onOpen={() => {
             handleOpen(idx);
