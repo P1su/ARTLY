@@ -126,7 +126,7 @@ export default function ExhibitionManagement({
           <CountList count={filteredExhibitionList.length} />
           <RegisterButton
             buttonText='+전시회 등록'
-            onButtonClick={() => alert('전시회 등록')}
+            onButtonClick={() => navigate(`/console/exhibitions/edit/new`)}
           />
         </div>
 

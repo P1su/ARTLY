@@ -98,6 +98,38 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
+}
+
+.legend {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 1.2rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendDot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+
+.dotRed {
+  background-color: #ff4d4f;
+}
+
+.dotBlue {
+  background-color: #4f7df3c5;
 }
 
 .monthNavigator {
@@ -154,6 +186,14 @@
   color: #e53935;
 }
 
+.closedDot {
+  width: 4px;
+  height: 4px;
+  background-color: #ff4d4f;
+  border-radius: 50%;
+  margin: 4px auto 0;
+}
+
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -163,16 +203,28 @@
 .dateCell {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 4rem;
-  width: 4rem;
+  justify-content: flex-start;
+  height: 7rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  width: 7rem;
   margin: 0 auto;
+  border-radius: 5px;
   font-size: 1.4rem;
   color: #333;
-  border-radius: 50%;
   cursor: pointer;
+  padding-top: 10px;
+  gap: 0.6rem;
   transition: all 0.2s;
+}
+
+.todayDot {
+  width: 4px;
+  height: 4px;
+  background-color: #4f7df3c5;
+  border-radius: 50%;
 }
 
 .dateCell:hover:not(.disabled):not(.selected) {
@@ -194,17 +246,6 @@
   box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
 }
 
-.dateCell.today::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background-color: #4285f4;
-  border-radius: 50%;
-}
 .dateCell.selected.today::after {
   background-color: #fff;
 }
@@ -350,12 +391,20 @@
 }
 
 .summaryTitle {
-  background-color: #f8f9fa;
+  background-color: #f8f9faf2;
   padding: 1.5rem 2rem;
   font-size: 1.6rem;
   font-weight: 600;
   color: #333;
   border-bottom: 1px solid #eee;
+}
+
+.summaryTitle2 {
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  border-bottom: 3px solid #eeeeeef0;
 }
 
 .summaryImage {
@@ -500,10 +549,30 @@
     padding: 1.5rem;
   }
 
+  .legend {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.8rem;
+  }
+
   .dateCell {
     height: 3.5rem;
     width: 3.5rem;
     font-size: 1.3rem;
+    padding-top: 0.5rem;
+    gap: 0.2rem;
+    line-height: 1;
+  }
+
+  .closedDot,
+  .todayDot {
+    width: 3px;
+    height: 3px;
   }
 
   .reservationSummary {

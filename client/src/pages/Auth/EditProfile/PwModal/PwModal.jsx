@@ -1,13 +1,40 @@
 import React, { useState } from 'react';
 import styles from './PwModal.module.css';
 import { FaTimes } from 'react-icons/fa';
+import { userInstance } from '../../../../apis/instance';
 
 const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!userInfo) {
+      return;
+    }
+    
+    const updatePayload = {
+      ...userInfo, 
+      login_pwd: newPassword,
+    };
+
+    try {
+      const res = await userInstance.put('/api/users/me', updatePayload);
+
+      alert('비밀번호가 성공적으로 변경되었습니다.');
+
+      onUpdateUserInfo(res.data); 
+      setCurrentPassword(''); // 입력 필드 빈칸 만들기
+      setNewPassword('');
+      onClose();
+    } catch (error) {
+      alert('비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.');
+
+      setCurrentPassword(''); 
+      setNewPassword('');
+      return;
+    }
   };
 
   if (!isOpen) return null;

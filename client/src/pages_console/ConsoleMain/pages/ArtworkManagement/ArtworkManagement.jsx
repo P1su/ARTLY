@@ -126,7 +126,7 @@ export default function ArtworkManagement({
           <CountList count={filteredArtworkList.length} />
           <RegisterButton
             buttonText='+작품 등록'
-            onButtonClick={() => alert('작품 등록')}
+            onButtonClick={() => navigate(`/console/artworks/edit/new`)}
           />
         </div>
 
