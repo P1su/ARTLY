@@ -6,6 +6,7 @@ import DropdownContainer from '../../../../../Category/components/DropdownContai
 import tabMyViewFilter from '../../../../../../utils/filters/tabMyViewFilter';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AttendanceModal from '../../AttendanceModal/AttendanceModal';
+import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function TabMyView() {
   const location = useLocation();
@@ -14,6 +15,7 @@ export default function TabMyView() {
     dateSort: 'latest',
     statusFilter: 'reserved',
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -34,12 +36,15 @@ export default function TabMyView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const res = await userInstance.get('/api/users/me/exhibitions');
         const { data } = res;
 
         setReservations(data);
       } catch (err) {
         console.error('데이터 가져오기 실패:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -133,7 +138,9 @@ export default function TabMyView() {
               />
             ))
           ) : (
-            <p className={styles.emptyText}>예약한 전시가 없습니다.</p>
+            !isLoading ? (
+              <p className={styles.emptyText}>예약한 전시가 없습니다.</p>
+            ) : ( <LoadingSpinner />)
           )}
         </div>
       </section>

@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: #F3F4F6;
+  /* Modern gray background */
 }
 
 .tabSection {
@@ -12,12 +13,14 @@
   top: 0;
   z-index: 10;
   background-color: white;
-  border-bottom: 0.1rem solid #e2e8f0;
+  /* Removed border-bottom for cleaner look, or keep subtle if needed */
+  /* border-bottom: 0.1rem solid #e2e8f0; */
 }
 
 .content {
   display: block;
-  padding: 1rem; /* 모바일용 패딩 */
+  padding: 1.5rem 1rem;
+  /* Increased padding */
   flex: 1;
   overflow-x: hidden;
 }
@@ -26,16 +29,22 @@
 @media (min-width: 768px) {
   .content {
     padding: 2rem;
+    max-width: 1200px;
+    /* Center content */
+    margin: 0 auto;
+    width: 100%;
   }
-  
+
   .cardContent {
-    flex-direction: row; /* 데스크탑용 가로 배치 */
+    flex-direction: row;
+    /* 데스크탑용 가로 배치 */
   }
 }
 
 .cardContent {
   display: flex;
-  flex-direction: column; /* 모바일용 세로 배치 */
+  flex-direction: column;
+  /* 모바일용 세로 배치 */
   gap: 1rem;
 }
 

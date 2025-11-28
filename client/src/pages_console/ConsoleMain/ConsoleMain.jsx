@@ -4,15 +4,19 @@ import GalleryManagement from './pages/GalleryManagement/GalleryManagement';
 import ExhibitionManagement from './pages/ExhibitionManagement/ExhibitionManagement';
 import ArtworkManagement from './pages/ArtworkManagement/ArtworkManagement';
 import InterestedUserManagement from './pages/InterestedUserManagement/InterestedUserManagement';
+
 import useDeleteItem from './hooks/useDeleteItem';
 import styles from './ConsoleMain.module.css';
 import { useLocation } from 'react-router-dom';
 
-export default function ConsoleMain() {
+export default function ConsoleMain({
+  defaultTab = '갤러리관리',
+  defaultGallery = '갤러리 전체',
+}) {
   const location = useLocation();
 
-  const [activeTab, setActiveTab] = useState('갤러리관리');
-  const [selectedGallery, setSelectedGallery] = useState('갤러리 전체');
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [selectedGallery, setSelectedGallery] = useState(defaultGallery);
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -87,6 +91,7 @@ export default function ConsoleMain() {
             galleryList={galleryList}
           />
         )}
+
         {activeTab === '관심유저관리' && <InterestedUserManagement />}
       </div>
     </div>

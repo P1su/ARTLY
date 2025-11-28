@@ -25,6 +25,23 @@
   border-radius: 0.6rem;
   overflow: hidden;
   box-sizing: border-box;
+  cursor: move;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.innerPageItemBox:hover {
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.15);
+}
+
+.innerPageItemBox.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.innerPageItemBox.dragOver {
+  border: 0.2rem solid #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .innerPageImage {
