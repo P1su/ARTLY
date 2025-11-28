@@ -147,6 +147,7 @@ export default function GalleryDetail({
     gallery_email: email = '',
     gallery_homepage: homepage = '',
     gallery_sns: rawSns,
+    gallery_latitude: lat,
     gallery_longitude: lng,
   } = galleryData;
 
