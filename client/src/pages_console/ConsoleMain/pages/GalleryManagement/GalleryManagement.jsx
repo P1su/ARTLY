@@ -37,12 +37,6 @@ export default function GalleryManagement({
   };
 
   const renderContent = () => {
-    if (error) {
-      return (
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
-      );
-    }
-
     if (isLoading && filteredGalleryList.length === 0) {
       return <Spinner />;
     }

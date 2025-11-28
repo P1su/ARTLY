@@ -115,14 +115,6 @@ export default function ExhibitionManagement({
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
-      </div>
-    );
-  }
-
   if (filteredExhibitionList.length > 0) {
     return (
       <section className={styles.contentContainer}>

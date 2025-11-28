@@ -26,10 +26,10 @@ export default function ArtworkManagement({
     }
   };
 
-  // 갤러리를 ID로 변환하는 함수
+  // 갤러리 이름으로 ID를 찾는 함수
   const getGalleryId = useCallback(
     (galleryName) => {
-      if (galleryName === '갤러리 전체') {
+      if (!galleryName || galleryName === '갤러리 전체') {
         return '갤러리 전체';
       }
       const gallery = galleryList.find((g) => g.name === galleryName);
@@ -38,77 +38,66 @@ export default function ArtworkManagement({
     [galleryList],
   );
 
-  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
-  useEffect(() => {
-    if (galleryList.length > 0 && selectedGallery) {
-      const galleryId = getGalleryId(selectedGallery);
-
-      loadArtworks(galleryId);
-    } else if (galleryList.length > 0) {
-      // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
-      loadArtworks('갤러리 전체');
-    }
-  }, [selectedGallery, galleryList]);
-
-  // 선택된 갤러리의 ID 계산
+  // 현재 선택된 갤러리 ID (useMemo로 최적화)
   const selectedGalleryId = useMemo(() => {
     return getGalleryId(selectedGallery);
-  }, [selectedGallery, galleryList, getGalleryId]);
+  }, [selectedGallery, getGalleryId]);
 
-  // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
+  const handleRegister = () => {
+    let url = '/console/artworks/edit/new';
+
+    // 특정 갤러리가 선택되어 있다면 ID를 함께 보냄
+    if (selectedGalleryId && selectedGalleryId !== '갤러리 전체') {
+      url += `?gallery_id=${selectedGalleryId}`;
+    }
+
+    navigate(url);
+  };
+
+  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
+  useEffect(() => {
+    // 갤러리 리스트가 로드된 상태라면
+    if (galleryList.length > 0) {
+      loadArtworks(selectedGalleryId);
+    }
+  }, [selectedGalleryId, galleryList, loadArtworks]);
+
+  // 서버 필터링 보완용 클라이언트 필터링
   const filteredArtworkList = artworkList.filter((artwork) => {
-    if (selectedGallery === '갤러리 전체') {
+    if (!selectedGallery || selectedGallery === '갤러리 전체') {
       return true;
     }
-    // 갤러리 ID로도 비교 (더 정확함)
-    if (artwork.gallery_id && selectedGalleryId) {
+    // ID 비교 우선
+    if (
+      artwork.gallery_id &&
+      selectedGalleryId &&
+      selectedGalleryId !== '갤러리 전체'
+    ) {
       return String(artwork.gallery_id) === String(selectedGalleryId);
     }
     return artwork.gallery_name === selectedGallery;
   });
 
-  // 갤러리 옵션에 "갤러리 전체" 추가
-  // 실제로 작품이 있는 갤러리만 필터링
   const galleryOptions = useMemo(() => {
     const options = [{ id: 'all', name: '갤러리 전체', value: '갤러리 전체' }];
 
-    // 작품 목록에서 실제로 사용되는 갤러리 ID/이름 추출
-    const usedGalleryIds = new Set(
-      artworkList.map((art) => art.gallery_id).filter(Boolean),
-    );
-    const usedGalleryNames = new Set(
-      artworkList.map((art) => art.gallery_name).filter(Boolean),
-    );
-
-    // galleryList에서 실제로 작품이 있는 갤러리만 필터링
-    galleryList.forEach((gallery) => {
-      if (
-        usedGalleryIds.has(gallery.id) ||
-        usedGalleryNames.has(gallery.name)
-      ) {
+    if (Array.isArray(galleryList)) {
+      galleryList.forEach((gallery) => {
         options.push({
           id: gallery.id,
           name: gallery.name,
           value: gallery.name,
         });
-      }
-    });
+      });
+    }
 
     return options;
-  }, [galleryList, artworkList]);
+  }, [galleryList]);
 
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
         <Spinner />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
       </div>
     );
   }
@@ -126,7 +115,7 @@ export default function ArtworkManagement({
           <CountList count={filteredArtworkList.length} />
           <RegisterButton
             buttonText='+작품 등록'
-            onButtonClick={() => navigate(`/console/artworks/edit/new`)}
+            onButtonClick={handleRegister}
           />
         </div>
 
@@ -149,7 +138,10 @@ export default function ArtworkManagement({
                     <p className={styles.artworkArtist}>{artwork.artist}</p>
                   </div>
                   <button
-                    onClick={() => handleDelete(artwork.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(artwork.id);
+                    }}
                     className={styles.deleteButton}
                   >
                     <HiTrash size={18} />
@@ -177,12 +169,16 @@ export default function ArtworkManagement({
         <CountList count={0} />
         <RegisterButton
           buttonText='+작품 등록'
-          onButtonClick={() => alert('작품 등록')}
+          onButtonClick={handleRegister}
         />
       </div>
 
       <section className={styles.emptyStateContainer}>
-        <EmptyState message='등록된 작품이 없어요.' buttonText='+작품 등록' />
+        <EmptyState
+          message='등록된 작품이 없어요.'
+          buttonText='+작품 등록'
+          onButtonClick={handleRegister}
+        />
       </section>
     </>
   );
