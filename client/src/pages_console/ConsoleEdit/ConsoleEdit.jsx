@@ -113,16 +113,8 @@ export default function ConsoleEdit({ type }) {
     if (isSaving || !data) return;
 
     if (type === 'artworks') {
-      if (!data.artist_id) {
-        alert('작가를 선택해주세요.');
-        return;
-      }
       if (!data.art_title) {
         alert('작품명을 입력해주세요.');
-        return;
-      }
-      if (!selectedImageFile) {
-        alert('작품 이미지를 등록해주세요.');
         return;
       }
     } else if (type === 'galleries') {
@@ -138,18 +130,6 @@ export default function ConsoleEdit({ type }) {
 
       if (!data.exhibition_title) {
         alert('전시회명을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibition_start_date || !data.exhibition_end_date) {
-        alert('전시기간을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibition_start_time || !data.exhibition_end_time) {
-        alert('관람시간을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibition_organization) {
-        alert('전시장소를 입력해주세요.');
         return;
       }
     }
@@ -181,6 +161,12 @@ export default function ConsoleEdit({ type }) {
 
       if (value === undefined || value === null) return;
 
+      if (key === 'gallery_sns' && Array.isArray(value)) {
+        const validSns = value.filter((sns) => sns.type !== 'twitter');
+        formData.append(key, JSON.stringify(validSns));
+        return;
+      }
+
       if (typeof value === 'object' && !(value instanceof File)) {
         formData.append(key, JSON.stringify(value));
       } else {
@@ -188,10 +174,6 @@ export default function ConsoleEdit({ type }) {
       }
     });
 
-    console.log('=== 전송 데이터 확인 ===');
-    for (let [key, val] of formData.entries()) {
-      console.log(`${key}:`, val);
-    }
     if (selectedImageFile) {
       formData.append(config.formImageField, selectedImageFile);
     }

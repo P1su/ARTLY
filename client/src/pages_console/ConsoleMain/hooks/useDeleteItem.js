@@ -11,8 +11,6 @@ export default function useDeleteItem() {
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
-
   // 갤러리 목록 로드
   const loadGalleries = useCallback(async (search = '') => {
     try {
@@ -165,15 +163,6 @@ export default function useDeleteItem() {
       alert(
         `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
       );
-
-      let targetTab = '갤러리관리';
-      if (type === 'exhibition') targetTab = '전시회관리';
-      else if (type === 'artwork') targetTab = '작품관리';
-
-      navigate('/console/main', {
-        state: { activeTab: targetTab },
-        replace: true,
-      });
     } catch (err) {
       setError(err.message);
       console.error('삭제 실패:', err);
