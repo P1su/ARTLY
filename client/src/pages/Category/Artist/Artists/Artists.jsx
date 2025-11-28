@@ -10,11 +10,12 @@ import Pagination from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../hooks/usePagination';
 import ArtistCard from './components/ArtistCard/ArtistCard';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function Artists() {
   const { user } = useUser();
   const [artists, setArtists] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentPage, setCurrentPage, pageItems } = usePagination(12, artists);
   const [artistFilters, setArtistFilters] = useState({
     category: '',
@@ -76,8 +77,9 @@ export default function Artists() {
         onSetFilter={setArtistFilters}
       />
       <TotalCounts num={artists.length} label='작가' />
-
-      {artists.length === 0 && (
+      {isLoading && <LoadingSpinner />}
+      
+      {!isLoading && artists.length === 0 && (
         <div className={styles.nonDataText}>조회된 작가가 없습니다.</div>
       )}
 

@@ -8,10 +8,11 @@ import TotalCounts from '../../components/TotalCounts/TotalCounts';
 import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { newsFilter } from '../../../../utils/filters/newsFilter.js';
 import NewsCard from './components/NewsCard/NewsCard';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function News() {
   const [news, setNews] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, news);
   const [newsFilters, setNewsFilters] = useState({
     category: '',
@@ -39,7 +40,7 @@ export default function News() {
 
       setNews(response.data);
     } catch (error) {
-      console.error('전시회 목록 불러오기 실패:', error);
+      console.error('공고 목록 불러오기 실패:', error);
     } finally {
       setIsLoading(false);
     }
@@ -63,9 +64,9 @@ export default function News() {
       <DropdownContainer filterList={newsFilter} onSetFilter={setNewsFilters} />
 
       <TotalCounts num={news.length} label='뉴스' />
+      {isLoading && <LoadingSpinner />}
 
-      {isLoading && <div>뉴스 데이터 조회 중..</div>}
-      {news.length === 0 && <div>조회된 데이터가 없습니다.</div>}
+      {!isLoading && news.length === 0 && <div>조회된 데이터가 없습니다.</div>}
 
       <section className={styles.newsListSection}>
         {pageItems.map((item) => (

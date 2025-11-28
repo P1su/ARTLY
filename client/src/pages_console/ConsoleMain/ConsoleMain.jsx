@@ -9,11 +9,14 @@ import useDeleteItem from './hooks/useDeleteItem';
 import styles from './ConsoleMain.module.css';
 import { useLocation } from 'react-router-dom';
 
-export default function ConsoleMain() {
+export default function ConsoleMain({
+  defaultTab = '갤러리관리',
+  defaultGallery = '갤러리 전체',
+}) {
   const location = useLocation();
 
-  const [activeTab, setActiveTab] = useState('갤러리관리');
-  const [selectedGallery, setSelectedGallery] = useState('갤러리 전체');
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [selectedGallery, setSelectedGallery] = useState(defaultGallery);
 
   useEffect(() => {
     if (location.state?.activeTab) {
