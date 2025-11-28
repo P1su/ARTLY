@@ -4,7 +4,7 @@ import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import AlarmModal from '../../components/AlarmModal/AlarmModal';
-import Spinner from '../../components/Spinner/Spinner';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import Table from './components/Table/Table';
 import useUserSelection from './hooks/useUserSelection';
 import useInterestedUser from './hooks/useInterestedUser';
@@ -106,7 +106,7 @@ export default function InterestedUserManagement() {
   if (isLoading || isSearching) {
     return (
       <div className={styles.contentContainer}>
-        <Spinner />
+        <LoadingSpinner />
       </div>
     );
   }

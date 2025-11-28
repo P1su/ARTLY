@@ -3,9 +3,11 @@ import { userInstance } from '../../../../../../apis/instance';
 import SectionCard from '../../SectionCard/SectionCard';
 import styles from './TabPurchased.module.css';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function TabPurchased() {
   const [purchased, setPurchased] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleOpenQRScanner = () => {
@@ -23,6 +25,7 @@ export default function TabPurchased() {
   useEffect(() => {
     async function fetchData() {
       try {
+        setIsLoading(true);
         const res = await userInstance.get('/api/users/me/purchases');
         const purchases = res.data;
 
@@ -54,6 +57,8 @@ export default function TabPurchased() {
       } catch (err) {
         console.error('구매 목록 가져오기 실패: ', err);
         setPurchased([]);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -90,11 +95,13 @@ export default function TabPurchased() {
               />
             ))
           ) : (
-            <p className={styles.emptyText}>
-              더 등록된 도록이 없습니다.
-              <br />
-              도록 QR코드로 연결
-            </p>
+            !isLoading ? (
+              <p className={styles.emptyText}>
+                더 등록된 도록이 없습니다.
+                <br />
+                도록 QR코드로 연결
+              </p>
+            ) : ( <LoadingSpinner /> )
           )}
         </div>
       </section>

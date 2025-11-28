@@ -12,11 +12,12 @@ import usePagination from '../../../../hooks/usePagination';
 import useModal from './../../../../hooks/useModal';
 import GalleryMapModal from './components/GalleryMapModal/GalleryMapModal.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function Galleries() {
   const { user } = useUser();
   const [galleries, setGalleries] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentPage, setCurrentPage, pageItems } = usePagination(
     12,
     galleries,
@@ -89,7 +90,9 @@ export default function Galleries() {
       </div>
 
       <TotalCounts num={galleries.length} label='갤러리' />
-      {galleries.length === 0 && (
+      {isLoading && <LoadingSpinner />}
+
+      {!isLoading && galleries.length === 0 && (
         <div className={styles.nonDataText}>조회된 갤러리가 없습니다.</div>
       )}
 
