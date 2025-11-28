@@ -150,7 +150,7 @@ export default function useDeleteItem() {
     }
   }, []);
 
-  // 컴포넌트 마운트 시 갤러리 목록 로드
+  // 사용자 정보가 있을 때 갤러리 목록 로드
   useEffect(() => {
     if (user?.id) {
       loadGalleries();
