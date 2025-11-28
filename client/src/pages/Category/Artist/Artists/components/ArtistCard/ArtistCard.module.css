@@ -67,8 +67,18 @@
   gap: 1rem;
 
   position: absolute;
-  right: 0.5rem;
-  top: 16rem;
+  right: 2rem;
+  top: 16.5rem;
+}
+
+.icon {
+  font-size: 1.8rem;
+  color: #bdbdbd;
+}
+
+.likedIcon {
+  font-size: 1.8rem;
+  color: #e57373;
 }
 
 @media (max-width: 756px) {

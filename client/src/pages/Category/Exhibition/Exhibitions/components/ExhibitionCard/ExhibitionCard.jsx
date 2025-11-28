@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { userInstance } from '../../../../../../apis/instance.js';
 import { getExhibitionStatus } from '../../../utils/getExhibitionStatus.js';
 import MapModal from '../MapModal/MapModal';
-import IcFav from './../../../../../../assets/svg/IcFav';
-import IcUnFav from './../../../../../../assets/svg/IcUnFav';
+import { FaHeart } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 
@@ -90,7 +89,9 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
             handleLike();
           }}
         >
-          {isLike ? <IcFav /> : <IcUnFav />}
+          <FaHeart
+            className={isLike === true ? styles.likedIcon : styles.icon}
+          />
         </button>
         <button
           className={styles.locButton}
