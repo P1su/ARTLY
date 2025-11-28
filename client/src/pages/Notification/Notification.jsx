@@ -136,7 +136,11 @@ export default function Notification() {
         <div className={styles.layout}>
             <div className={styles.notificationList}>
                 {notifications.map((item) => (
-                    <div key={item.id} className={styles.notificationItem}>
+                    <div key={item.id} 
+                        className={`${styles.notificationItem} ${item.read ? styles.readItem : ''}`}
+                        onClick={() => {
+                        if (!item.read) handleNotificationClick(item.id);
+                        }}>
                         <div className={styles.iconContainer}>
                             {getIcon()}
                         </div>
