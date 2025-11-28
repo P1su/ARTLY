@@ -5,7 +5,7 @@ import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
-import Spinner from '../../components/Spinner/Spinner';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
 
@@ -40,7 +40,7 @@ export default function GalleryManagement({
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
-        <Spinner />
+        <LoadingSpinner />
       </div>
     );
   }
@@ -88,7 +88,10 @@ export default function GalleryManagement({
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{gallery.name}</h3>
                     <button
-                      onClick={() => handleDelete(gallery.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(gallery.id);
+                      }}
                       className={styles.deleteButton}
                     >
                       <HiTrash size={18} />

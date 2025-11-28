@@ -11,11 +11,7 @@ const DETAIL_CONFIG = {
   galleries: {
     title: '갤러리',
     Component: GalleryDetail,
-    tabs: [
-      { label: '정보수정' },
-      { label: 'QR코드' },
-      { label: '리플렛/도록' },
-    ],
+    tabs: ['정보수정', 'QR코드', '리플렛/도록'],
     fetchUrl: (id) => `/api/galleries/${id}`,
   },
   exhibitions: {
@@ -68,7 +64,7 @@ export default function ConsoleDetail({ type }) {
         navigate(`/console/artworks/docent/${id}`); // 작품 페이지 한정, leaflet 대신 도슨트 관리로 이동 가능
         break;
       default:
-        navigate(`/console/leaflet/${id}`);
+        navigate(`/console/${type}/leaflet/${id}`);
         break;
     }
   };

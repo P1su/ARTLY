@@ -40,6 +40,7 @@ import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
 import Poster from './../pages_console/Poster/Poster';
 import Notification from '../pages/Notification/Notification';
+import LeafletViewer from '../pages_console/LeafletViewer/LeafletViewer';
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,9 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/notification', element: <ConsoleNotification /> },
       { path: '/console/main', element: <ConsoleMain /> },
+      { path: '/console/galleries', element: <ConsoleMain defaultTab="갤러리관리"/> },
+      { path: '/console/exhibitions', element: <ConsoleMain defaultTab="전시회관리" /> },
+      { path: '/console/artworks', element: <ConsoleMain defaultTab="작품관리" /> },
       { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
@@ -122,8 +126,12 @@ const router = createBrowserRouter([
         element: <DocentGenerator />,
       },
       {
-        path: '/console/leaflet',
-        element: <Leaflet />,
+        path: '/console/galleries/leaflet/:id',
+        element: <Leaflet type="galleries" />,
+      },
+      {
+        path: '/console/exhibitions/leaflet/:id',
+        element: <Leaflet type="exhibitions" />,
       },
       {
         path: '/console/poster',
@@ -135,6 +143,10 @@ const router = createBrowserRouter([
   {
     path: '/scan/:id?',
     element: <QrScanner />,
+  },
+  {
+    path: '/view/leaflet/:category/:id',
+    element: <LeafletViewer />,
   },
 ]);
 
