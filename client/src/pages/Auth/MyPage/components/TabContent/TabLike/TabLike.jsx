@@ -13,6 +13,17 @@ const TABS = [
   { label: '작가', key: 'artist' },
 ];
 
+const removeDuplicates = (items) => {
+  const uniqueIds = new Set();
+  return items.filter(item => {
+    if (uniqueIds.has(item.id)) {
+      return false;
+    }
+    uniqueIds.add(item.id);
+    return true;
+  });
+};
+
 export default function TabLike() {
   const [likedData, setLikedData] = useState({
     exhibition: [],
@@ -28,10 +39,14 @@ export default function TabLike() {
         const likeRes = await userInstance.get('/api/users/me/likes');
         const { data } = likeRes;
 
+        const uniqueExhibitions = removeDuplicates(data.like_exhibitions || []);
+        const uniqueGalleries = removeDuplicates(data.like_galleries || []);
+        const uniqueArtists = removeDuplicates(data.like_artists || []);
+
         setLikedData({
-        exhibition: data.like_exhibitions || [],
-        gallery: data.like_galleries || [],
-        artist: data.like_artists || [],
+        exhibition: uniqueExhibitions,
+        gallery: uniqueGalleries,
+        artist: uniqueArtists,
         artwork: [],
       });
     } catch (err) {
@@ -70,22 +85,22 @@ export default function TabLike() {
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
             activeTab === 'exhibition' ? (
-              filteredItems.map((item, index) => (
+              filteredItems.map((item) => (
                 <ExhibitionCard
-                  key={`exhibition-${item.id}-${index}`}
+                  key={`exhibition-${item.id}`}
                   exhibitionItem={item}
                 />
               ))
             ) : activeTab === 'gallery' ? (
-              filteredItems.map((item, index) => (
+              filteredItems.map((item) => (
                 <GalleryCard 
-                  key={`gallery-${item.id}-${index}`}
+                  key={`gallery-${item.id}`}
                   galleryItem={item} />
               ))
             ) : activeTab === 'artist' ? (
-              filteredItems.map((item, index) => (
+              filteredItems.map((item) => (
                 <ArtistCard 
-                  key={`artist-${item.id}-${index}`} 
+                  key={`artist-${item.id}`} 
                   artistItem={item} />
               ))
             ) : null
