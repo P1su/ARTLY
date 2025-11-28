@@ -88,7 +88,10 @@ export default function GalleryManagement({
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{gallery.name}</h3>
                     <button
-                      onClick={() => handleDelete(gallery.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(gallery.id);
+                      }}
                       className={styles.deleteButton}
                     >
                       <HiTrash size={18} />
