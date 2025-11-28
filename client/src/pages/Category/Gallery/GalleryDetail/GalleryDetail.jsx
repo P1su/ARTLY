@@ -125,8 +125,6 @@ export default function GalleryDetail({
 
   const SNS_ICONS = {
     instagram: FaInstagram,
-    // twitter: FaTwitter,
-    // facebook: FaFacebook,
     youtube: FaYoutube,
     default: FaLink,
   };
@@ -147,6 +145,7 @@ export default function GalleryDetail({
     gallery_email: email = '',
     gallery_homepage: homepage = '',
     gallery_sns: rawSns,
+    gallery_latitude: lat,
     gallery_longitude: lng,
   } = galleryData;
 
@@ -161,6 +160,9 @@ export default function GalleryDetail({
     console.error('SNS 데이터 파싱 오류:', e);
     snsArray = [];
   }
+
+  const validSns = snsArray.filter((sns) => sns.url && sns.url.trim() !== '');
+
   const infoList = [
     {
       label: '관람시간',
@@ -179,9 +181,9 @@ export default function GalleryDetail({
     {
       label: 'SNS',
       content:
-        Array.isArray(snsArray) && snsArray.length > 0 ? (
+        validSns.length > 0 ? (
           <div className={styles.inlineSns}>
-            {snsArray.map(({ type, url }) => {
+            {validSns.map(({ type, url }) => {
               const snsType = type?.toLowerCase();
               const Icon = SNS_ICONS[snsType] || SNS_ICONS.default;
 
@@ -190,7 +192,7 @@ export default function GalleryDetail({
               return (
                 <a
                   key={`${type}-${url}`}
-                  href={url || '#'}
+                  href={url}
                   target='_blank'
                   rel='noopener noreferrer'
                   className={styles.snsLink}
@@ -205,7 +207,7 @@ export default function GalleryDetail({
         ),
     },
   ];
-  console.log(snsArray);
+
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length || 0})` },

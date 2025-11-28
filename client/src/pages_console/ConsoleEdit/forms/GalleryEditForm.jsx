@@ -26,6 +26,20 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
     }
   }, [data.gallery_sns, setData]);
 
+  const handleSnsBlur = (type, currentUrl) => {
+    if (!currentUrl) return;
+
+    let formattedUrl = currentUrl.trim();
+
+    if (
+      !formattedUrl.startsWith('http://') &&
+      !formattedUrl.startsWith('https://')
+    ) {
+      formattedUrl = `https://${formattedUrl}`;
+      updateSnsField(type, formattedUrl);
+    }
+  };
+
   const handleComposition = (e) => {
     if (e.type === 'compositionstart') {
       setIsKoreanComposing(true);
@@ -312,8 +326,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           {[
             { type: 'instagram', placeholder: 'Instagram 주소' },
             { type: 'youtube', placeholder: 'YouTube 주소' },
-            { type: 'facebook', placeholder: 'Facebook 주소' },
-            { type: 'twitter', placeholder: 'Twitter 주소' },
+            { type: 'facebook', placeholder: 'Facebook 주소' }, // 타
           ].map(({ type, placeholder }) => {
             const currentValue = Array.isArray(data.gallery_sns)
               ? data.gallery_sns.find((sns) => sns.type === type)?.url || ''
@@ -326,6 +339,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
                 placeholder={placeholder}
                 value={currentValue}
                 onChange={(e) => updateSnsField(type, e.target.value)}
+                onBlur={() => handleSnsBlur(type, currentValue)}
               />
             );
           })}
