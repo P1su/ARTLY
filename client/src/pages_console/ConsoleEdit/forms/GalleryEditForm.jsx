@@ -326,7 +326,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           {[
             { type: 'instagram', placeholder: 'Instagram 주소' },
             { type: 'youtube', placeholder: 'YouTube 주소' },
-            { type: 'facebook', placeholder: 'Facebook 주소' }, // 타
+            { type: 'default', placeholder: '기타 주소' },
           ].map(({ type, placeholder }) => {
             const currentValue = Array.isArray(data.gallery_sns)
               ? data.gallery_sns.find((sns) => sns.type === type)?.url || ''

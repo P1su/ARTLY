@@ -70,38 +70,63 @@ export default function ConsoleEdit({ type }) {
 
   useEffect(() => {
     const initData = async () => {
-      if (isCreateMode) {
-        // 1. 생성 모드: 빈 객체로 초기화 + 쿼리 파라미터 반영
-        const initialData = {};
+      try {
+        let initialData = {};
+        let targetGalleryId = null;
 
-        // URL에서 전달받은 ID가 있다면 미리 넣어줌 (예: ?exhibition_id=1)
-        const exhibitionId = searchParams.get('exhibition_id');
-        const galleryId = searchParams.get('gallery_id');
+        if (isCreateMode) {
+          const exhibitionId = searchParams.get('exhibition_id');
+          const galleryId = searchParams.get('gallery_id');
 
-        if (exhibitionId) initialData.exhibition_id = exhibitionId;
-        if (galleryId) initialData.gallery_id = galleryId;
+          if (exhibitionId) initialData.exhibition_id = exhibitionId;
+          if (galleryId) initialData.gallery_id = galleryId;
 
-        setData(initialData);
-        console.log(data);
-      } else {
-        // 2. 수정 모드: 서버에서 데이터 조회
-        try {
+          targetGalleryId = galleryId;
+        } else {
           const response = await userInstance.get(config.apiUrl(id));
-          const resData =
+          initialData =
             typeof response.data === 'string'
               ? JSON.parse(response.data)
               : response.data;
-          setData(resData);
-        } catch (error) {
-          console.error('데이터 로딩 실패:', error);
-          alert('데이터를 불러오지 못했습니다.');
-          navigate(`/console/${type}/${id}`);
+
+          targetGalleryId = initialData.gallery_id;
         }
+        if (type === 'artworks' && targetGalleryId) {
+          try {
+            console.log(
+              `전시회 목록 로딩 시작 (Gallery ID: ${targetGalleryId})`,
+            );
+
+            const exhResponse = await userInstance.get(
+              `/api/exhibitions?gallery_id=${targetGalleryId}`,
+            );
+
+            initialData.exhibitions = Array.isArray(exhResponse.data)
+              ? exhResponse.data
+              : [];
+
+            console.log('불러온 전시회 개수:', initialData.exhibitions.length);
+
+            if (!isCreateMode && initialData.exhibitions_connected) {
+              initialData.selected_exhibition_ids =
+                initialData.exhibitions_connected.map((ex) => ex.id);
+            }
+          } catch (exhError) {
+            console.error('전시회 목록 로딩 실패:', exhError);
+            initialData.exhibitions = [];
+          }
+        }
+
+        setData(initialData);
+      } catch (error) {
+        console.error('데이터 초기화 실패:', error);
+        alert('데이터를 불러오지 못했습니다.');
+        navigate(`/console/${type}`);
       }
     };
 
     if (config) initData();
-  }, [id, config, isCreateMode, searchParams, navigate]);
+  }, [id, config, isCreateMode, searchParams, navigate, type]);
 
   const handleCancel = () => {
     if (window.confirm('수정을 취소하시겠습니까?')) {
@@ -127,7 +152,6 @@ export default function ConsoleEdit({ type }) {
         alert('잘못된 접근입니다. 갤러리 정보가 없습니다.');
         return;
       }
-
       if (!data.exhibition_title) {
         alert('전시회명을 입력해주세요.');
         return;
@@ -136,56 +160,81 @@ export default function ConsoleEdit({ type }) {
 
     setIsSaving(true);
 
-    const formData = new FormData();
-
-    if (!isCreateMode) {
-      formData.append('_method', 'PATCH');
-    }
-
-    const ignoredKeys = [
-      'id',
-      'created_at',
-      'updated_at',
-      'user_id',
-      'artworks',
-      'exhibitions',
-      'reviews',
-      'is_liked',
-      'gallery',
-      'artist_users',
-      'artist', // artist 객체 자체는 보내지 않음 (artist_id만 필요)
-    ];
-
-    Object.entries(data).forEach(([key, value]) => {
-      if (ignoredKeys.includes(key)) return;
-
-      if (value === undefined || value === null) return;
-
-      if (key === 'gallery_sns' && Array.isArray(value)) {
-        const validSns = value.filter((sns) => sns.type !== 'twitter');
-        formData.append(key, JSON.stringify(validSns));
-        return;
-      }
-
-      if (typeof value === 'object' && !(value instanceof File)) {
-        formData.append(key, JSON.stringify(value));
-      } else {
-        formData.append(key, value);
-      }
-    });
-
-    if (selectedImageFile) {
-      formData.append(config.formImageField, selectedImageFile);
-    }
-
     try {
-      const url = config.apiUrl(id);
+      const formData = new FormData();
 
+      if (!isCreateMode) {
+        formData.append('_method', 'PATCH');
+      }
+
+      const ignoredKeys = [
+        'id',
+        'created_at',
+        'updated_at',
+        'user_id',
+        'artworks',
+        'exhibitions',
+        'reviews',
+        'is_liked',
+        'gallery',
+        'artist_users',
+        'artist',
+        'selected_exhibition_ids',
+      ];
+
+      // 데이터 순회하며 FormData 구성
+      Object.entries(data).forEach(([key, value]) => {
+        if (ignoredKeys.includes(key)) return;
+        if (value === undefined || value === null) return;
+
+        // SNS 배열 처리
+        if (key === 'gallery_sns' && Array.isArray(value)) {
+          const validSns = value.filter((sns) => sns.type !== 'twitter');
+          formData.append(key, JSON.stringify(validSns));
+          return;
+        }
+
+        // 객체나 배열은 문자열로 변환, 파일이 아닌 경우만
+        if (typeof value === 'object' && !(value instanceof File)) {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value);
+        }
+      });
+
+      // 이미지 파일이 선택되었다면 추가
+      if (selectedImageFile) {
+        formData.append(config.formImageField, selectedImageFile);
+      }
+
+      // 1. 메인 저장 API 호출 (작품/전시회/갤러리 생성 또는 수정)
+      const url = config.apiUrl(id);
       const response = await userInstance.post(url, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('저장 성공:', response.data);
+      console.log('1단계 저장 성공:', response.data);
+
+      // 2. [작품 관리일 경우] 선택된 전시회들에 연결하기 (2단계)
+      if (type === 'artworks') {
+        const savedArtId = isCreateMode
+          ? response.data.data?.id || response.data.id
+          : id;
+        const selectedExhibitions = data.selected_exhibition_ids || [];
+
+        if (selectedExhibitions.length > 0 && savedArtId) {
+          const connectPromises = selectedExhibitions.map((exhibitionId) => {
+            return userInstance.post(`/api/exhibitions/${exhibitionId}/arts`, {
+              art_id: savedArtId,
+              display_order: 0,
+            });
+          });
+
+          await Promise.all(connectPromises);
+          console.log(`2단계 전시회 ${selectedExhibitions.length}곳 연결 완료`);
+        }
+      }
+
       alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
       handleAfterAction();
     } catch (error) {

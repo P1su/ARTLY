@@ -242,7 +242,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             />
           </div>
 
-          {/* <div className={styles.inputGroup}>
+          <div className={styles.inputGroup}>
             <label className={styles.label}>참여 작가 (쉼표로 구분)</label>
             <input
               className={styles.input}
@@ -252,7 +252,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               onBlur={handleArtistBlur} // 저장 핸들러 추가
               placeholder='예: 홍길동, 김철수, 이영희'
             />
-          </div> */}
+          </div>
 
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>

@@ -31,6 +31,31 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleExhibitionCheck = (e, exhibitionId) => {
+    const isChecked = e.target.checked;
+
+    setData((prev) => {
+      // 기존에 선택된 전시회 ID 배열 (없으면 빈 배열)
+      const currentSelection = prev.selected_exhibition_ids || [];
+
+      if (isChecked) {
+        // 체크 시 배열에 추가
+        return {
+          ...prev,
+          selected_exhibition_ids: [...currentSelection, exhibitionId],
+        };
+      } else {
+        // 체크 해제 시 배열에서 제거
+        return {
+          ...prev,
+          selected_exhibition_ids: currentSelection.filter(
+            (id) => id !== exhibitionId,
+          ),
+        };
+      }
+    });
+  };
+
   const handleDescriptionChange = (newDescription) => {
     setData((prev) => ({ ...prev, art_description: newDescription }));
   };
@@ -97,21 +122,47 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
         </div>
 
         <div className={styles.formGrid}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>전시회</label>
-            <select
-              className={styles.input}
-              name='exhibition_id'
-              value={data.exhibition_id || ''}
-              onChange={handleInputChange}
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.label}>전시회 선택 (다중 선택 가능)</label>
+            <div
+              className={styles.checkboxContainer}
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px',
+                padding: '10px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+              }}
             >
-              <option value=''>전시회 없음</option>
-              {data.exhibitions?.map((exh) => (
-                <option key={exh.id} value={exh.id}>
-                  {exh.exhibition_title}
-                </option>
-              ))}
-            </select>
+              {data.exhibitions && data.exhibitions.length > 0 ? (
+                data.exhibitions.map((exh) => (
+                  <label
+                    key={exh.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <input
+                      type='checkbox'
+                      // data.selected_exhibition_ids 배열에 해당 ID가 있는지 확인
+                      checked={
+                        data.selected_exhibition_ids?.includes(exh.id) || false
+                      }
+                      onChange={(e) => handleExhibitionCheck(e, exh.id)}
+                    />
+                    {exh.exhibition_title}
+                  </label>
+                ))
+              ) : (
+                <span style={{ color: '#888' }}>
+                  진행 중인 전시회가 없습니다.
+                </span>
+              )}
+            </div>
           </div>
 
           <div className={styles.inputGroup}>
