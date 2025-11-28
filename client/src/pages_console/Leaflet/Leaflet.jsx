@@ -128,190 +128,65 @@ export default function Leaflet({ type }) {
     }
   };
 
-  // 리플렛 생성 또는 수정
+  // 리플렛 생성
   const handleUpload = async () => {
-    // 생성 모드에서는 제목과 표지 이미지 필수
-    if (!leafletId) {
-      if (!title.trim()) {
-        toast.error('리플렛 제목을 입력해주세요!', {
-          position: 'top-center',
-        });
-        return;
-      }
-
-      const hasNewCoverFile = coverImage?.file;
-      if (!hasNewCoverFile) {
-        toast.error('표지 이미지를 업로드해주세요!', {
-          position: 'top-center',
-        });
-        return;
-      }
-    }
-
-    // 새 이미지 파일이 있는지 확인
-    const hasNewCoverFile = coverImage?.file;
-    const hasNewInnerFiles = imageList.some((img) => img.file);
-
-    if (hasNewCoverFile && !coverImage.file) {
-      toast.error('표지 파일 정보가 없습니다.');
+    // 제목과 표지 이미지 필수
+    if (!title.trim()) {
+      toast.error('리플렛 제목을 입력해주세요!', {
+        position: 'top-center',
+      });
       return;
     }
 
-    if (hasNewInnerFiles && imageList.some((img) => img.file && !img.file)) {
-      toast.error('내지 이미지 파일 정보가 없습니다.');
+    if (!coverImage?.file) {
+      toast.error('표지 이미지를 업로드해주세요!', {
+        position: 'top-center',
+      });
       return;
     }
 
     try {
       setIsLoading(true);
 
+      // 수정 모드일 경우: 기존 리플렛 먼저 삭제
       if (leafletId && existingLeaflet) {
-        // 수정 모드: PATCH 요청
-        const updateData = {
-          title: title.trim(),
-          category: type === 'galleries' ? 'galleryLeaflet' : 'exhibitionLeaflet',
-        };
+        await userInstance.delete(`/api/leaflet/${leafletId}`);
+      }
 
-        // 현재 UI에 표시된 이미지 순서대로 최종 URL 배열 구성
-        const finalUrls = [];
+      // 생성: POST 요청
+      const formData = new FormData();
 
-        // 새 이미지 파일이 있으면 먼저 업로드
-        let uploadedUrls = [];
-        if (hasNewCoverFile || hasNewInnerFiles) {
-          const formData = new FormData();
+      // 표지 먼저
+      formData.append('image[]', coverImage.file);
 
-          if (hasNewCoverFile) {
-            formData.append('image[]', coverImage.file);
-          }
-
-          imageList.forEach((img) => {
-            if (img.file) {
-              formData.append('image[]', img.file);
-            }
-          });
-
-          const uploadRes = await userInstance.post('/api/upload/image', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-
-          // 업로드된 이미지 URL 배열 구성
-          // 응답 형식 확인: urls 배열 또는 url 단일 값
-          if (Array.isArray(uploadRes.data.urls)) {
-            uploadedUrls = uploadRes.data.urls;
-          } else if (uploadRes.data.url) {
-            uploadedUrls = [uploadRes.data.url];
-          } else if (Array.isArray(uploadRes.data)) {
-            uploadedUrls = uploadRes.data;
-          } else {
-            uploadedUrls = [];
-          }
-
-          // 새 파일이 있는데 업로드가 실패한 경우만 에러
-          if (uploadedUrls.length === 0 && (hasNewCoverFile || hasNewInnerFiles)) {
-            toast.error('이미지 업로드에 실패했습니다.', {
-              position: 'top-center',
-            });
-            return;
-          }
+      // 내지들
+      imageList.forEach((img) => {
+        if (img.file) {
+          formData.append('image[]', img.file);
         }
+      });
 
-        // 표지 이미지 처리
-        let uploadedIndex = 0;
-        if (coverImage) {
-          if (coverImage.file) {
-            // 새 파일인 경우 업로드된 URL 사용
-            if (uploadedUrls.length > 0 && uploadedUrls[uploadedIndex]) {
-              finalUrls.push(uploadedUrls[uploadedIndex]);
-              uploadedIndex++;
-            } else if (hasNewCoverFile) {
-              // 새 파일이 있는데 업로드가 실패한 경우만 에러
-              toast.error('표지 이미지 업로드에 실패했습니다.', {
-                position: 'top-center',
-              });
-              return;
-            }
-          } else if (coverImage.url) {
-            // 기존 URL인 경우 그대로 사용
-            finalUrls.push(coverImage.url);
-          }
-        }
+      formData.append('title', title.trim());
+      // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
+      // categoryId: 해당 카테고리의 ID
+      const categoryName = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+      formData.append('category', categoryName);
+      formData.append('categoryId', id); // Owner ID passed via params
 
-        // 내지 이미지 처리
-        for (const img of imageList) {
-          if (img.file) {
-            // 새 파일인 경우 업로드된 URL 사용
-            if (uploadedUrls[uploadedIndex]) {
-              finalUrls.push(uploadedUrls[uploadedIndex]);
-              uploadedIndex++;
-            } else if (hasNewInnerFiles) {
-              // 새 파일이 있는데 업로드가 실패한 경우만 에러
-              toast.error('내지 이미지 업로드에 실패했습니다.', {
-                position: 'top-center',
-              });
-              return;
-            }
-          } else if (img.url) {
-            // 기존 URL인 경우 그대로 사용
-            finalUrls.push(img.url);
-          }
-        }
+      const res = await userInstance.post('/api/leaflet', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-        // 최종 URL 배열이 비어있으면 에러
-        if (finalUrls.length === 0) {
-          toast.error('이미지가 없습니다. 최소 1개 이상의 이미지가 필요합니다.', {
-            position: 'top-center',
-          });
-          return;
-        }
+      toast.success('리플렛이 성공적으로 생성되었습니다!', {
+        position: 'top-center',
+      });
 
-        updateData.image_urls = finalUrls;
-
-        const res = await userInstance.patch(`/api/leaflet/${leafletId}`, updateData);
-        toast.success('리플렛이 성공적으로 수정되었습니다!', {
-          position: 'top-center',
-        });
-      } else {
-        // 생성 모드: POST 요청
-        if (!hasNewCoverFile) {
-          toast.error('표지 이미지를 업로드해주세요!');
-          return;
-        }
-
-        const formData = new FormData();
-
-        // 표지 먼저
-        formData.append('image[]', coverImage.file);
-
-        // 내지들
-        imageList.forEach((img) => {
-          if (img.file) {
-            formData.append('image[]', img.file);
-          }
-        });
-
-        formData.append('title', title.trim());
-        // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
-        // categoryId: 해당 카테고리의 ID
-        const categoryName = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
-        formData.append('category', categoryName);
-        formData.append('categoryId', id); // Owner ID passed via params
-
-        const res = await userInstance.post('/api/leaflet', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        toast.success('리플렛이 성공적으로 생성되었습니다!', {
-          position: 'top-center',
-        });
-
-        // 생성 후 상세 페이지로 이동
-        if (res.data.id) {
-          navigate(`/console/${type}/leaflet/${res.data.id}`);
-        }
+      // 생성 후 leafletId 업데이트 (페이지 유지)
+      if (res.data.id) {
+        setLeafletId(res.data.id);
+        setExistingLeaflet(res.data);
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.response?.data?.error || '리플렛 저장 중 오류가 발생했습니다.';
@@ -375,15 +250,15 @@ export default function Leaflet({ type }) {
             리플렛/도록 보기
           </button>
 
-          <button
-            className={styles.rightButton}
-            onClick={handleUpload}
-            disabled={isEmpty || isLoading}
-          >
-            {isLoading ? '처리 중...' : '생성/수정'}
-          </button>
-
-          {leafletId && (
+          {!leafletId ? (
+            <button
+              className={styles.rightButton}
+              onClick={handleUpload}
+              disabled={isEmpty || isLoading}
+            >
+              {isLoading ? '처리 중...' : '생성'}
+            </button>
+          ) : (
             <button
               className={styles.deleteButton}
               onClick={handleDelete}
