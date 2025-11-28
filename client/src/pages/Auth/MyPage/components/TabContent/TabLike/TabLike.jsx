@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './TabLike.module.css';
 import { userInstance } from '../../../../../../apis/instance';
-// no direct navigation here; cards handle their own links
 import ExhibitionCard from '../../../../../Category/Exhibition/Exhibitions/components/ExhibitionCard/ExhibitionCard';
 import GalleryCard from '../../../../../Nearby/components/GalleryCard/GalleryCard';
 import ArtistCard from '../../../../../Category/Artist/Artists/components/ArtistCard/ArtistCard';
@@ -14,6 +13,17 @@ const TABS = [
   { label: '작가', key: 'artist' },
 ];
 
+const removeDuplicates = (items) => {
+  const uniqueIds = new Set();
+  return items.filter(item => {
+    if (uniqueIds.has(item.id)) {
+      return false;
+    }
+    uniqueIds.add(item.id);
+    return true;
+  });
+};
+
 export default function TabLike() {
   const [likedData, setLikedData] = useState({
     exhibition: [],
@@ -25,29 +35,32 @@ export default function TabLike() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     
     const fetchData = async () => {
       try {
         const likeRes = await userInstance.get('/api/users/me/likes');
         const { data } = likeRes;
 
-        setLikedData({
-        exhibition: data.like_exhibitions || [],
-        gallery: data.like_galleries || [],
-        artist: data.like_artists || [],
-        artwork: [],
-      });
-    } catch (err) {
-      console.log('like fetch err : ', err);
-      setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        const uniqueExhibitions = removeDuplicates(data.like_exhibitions || []);
+        const uniqueGalleries = removeDuplicates(data.like_galleries || []);
+        const uniqueArtists = removeDuplicates(data.like_artists || []);
 
-  fetchData();
-}, []);
+        setLikedData({
+          exhibition: uniqueExhibitions,
+          gallery: uniqueGalleries,
+          artist: uniqueArtists,
+          artwork: [],
+        });
+      } catch (err) {
+        console.log('like fetch err : ', err);
+        setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredItems = likedData[activeTab] || [];
 
@@ -75,35 +88,36 @@ export default function TabLike() {
       <section className={styles.cardListSection}>
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
-              activeTab === 'exhibition' ? (
-                filteredItems.map((item, index) => (
-                  <ExhibitionCard
-                    key={`exhibition-${item.id}-${index}`}
-                    exhibitionItem={item}
-                  />
-                ))
-              ) : activeTab === 'gallery' ? (
-                filteredItems.map((item, index) => (
-                  <GalleryCard 
-                    key={`gallery-${item.id}-${index}`}
-                    galleryItem={item} />
-                ))
-              ) : activeTab === 'artist' ? (
-                filteredItems.map((item, index) => (
-                  <ArtistCard 
-                    key={`artist-${item.id}-${index}`} 
-                    artistItem={item} />
-                ))
-              ) : null
-            ) : (
-              !isLoading ? (
+            activeTab === 'exhibition' ? (
+              filteredItems.map((item) => ( 
+                <ExhibitionCard
+                  key={`exhibition-${item.id}`} 
+                  exhibitionItem={item}
+                />
+              ))
+            ) : activeTab === 'gallery' ? (
+              filteredItems.map((item) => ( 
+                <GalleryCard 
+                  key={`gallery-${item.id}`} 
+                  galleryItem={item} />
+              ))
+            ) : activeTab === 'artist' ? (
+              filteredItems.map((item) => ( 
+                <ArtistCard 
+                  key={`artist-${item.id}`} 
+                  artistItem={item} />
+              ))
+            ) : null
+          ) : (
+            !isLoading ? (
               <p className={styles.emptyText}>
                 좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
                 없습니다.
               </p>
-              ) : ( <LoadingSpinner /> )
+            ) : ( 
+              <LoadingSpinner /> 
             )
-          }
+          )}
         </div>
       </section>
     </div>

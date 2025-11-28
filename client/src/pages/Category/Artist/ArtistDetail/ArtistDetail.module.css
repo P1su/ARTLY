@@ -1,67 +1,337 @@
 .layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding: 3rem;
   gap: 2rem;
-
-  padding: 2rem;
 }
 
-.infoSection {
+.loading {
+  padding: 4rem;
+  text-align: center;
+  font-size: 1.6rem;
+  color: #888;
+}
+
+.breadcrumb {
+  font-size: 1.6rem;
+  color: #888;
+  cursor: default;
+}
+
+.breadcrumbBack {
+  cursor: pointer;
+}
+
+.breadcrumbBack:hover {
+  color: #376aed;
+}
+
+.titleSection {
+  text-align: center;
+}
+
+.statusBadge {
+  display: inline-flex;
+  width: 7rem;
+  height: 30px;
+  padding: 3px 11px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 20px;
+  background: var(--MainColor, #376aed);
+
+  color: var(--color-grey-97, #f7f7f8);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 171.429% */
+}
+
+.artistTitle {
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.artistSubTitle {
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  color: #666;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-
-  width: 100%;
+  gap: 2rem;
 }
 
 .artistImage {
   width: 100%;
-  height: 33.5rem;
-  border-radius: 50%;
-
-  object-fit: fill;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 1rem;
 }
 
-.artistTitle {
-  color: #333;
-  font-size: 2.8rem;
-  font-weight: 600;
-}
-
-.subSpan {
-  color: #878787;
-  font-size: 1.6rem;
-}
-
-.icon {
-  width: 1.6rem;
-  height: 1.6rem;
-}
-
-.icHeart {
-  fill: #e57373;
-}
-
-.buttonContainer {
+.btnLayout {
   display: flex;
-  gap: 2rem;
+  justify-content: space-evenly;
+  width: 100%;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.subButton {
+.actionButton {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.actionButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 2.3rem;
+}
+
+.likedIcon {
+  color: #e57373;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tag {
+  padding: 0.6rem 1.4rem;
+  border-radius: 5rem;
+  border: 0.1rem solid #d0d0d0;
+  font-size: 1.4rem;
+  color: #555;
+}
+
+.onExhibition {
+  border-color: #376aed;
+  color: #376aed;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.infoRow {
+  display: flex;
+  font-size: 1.6rem;
+  align-items: flex-start;
+}
+
+.infoLabel {
+  width: 10rem;
+  flex-shrink: 0;
+  color: #888;
+}
+
+.infoContent {
+  color: #333;
+  word-break: break-word;
+}
+
+.emptyInfo {
+  color: #bbb;
+}
+
+.descriptionParagraph {
+  font-size: 1.6rem;
+  color: #333;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.descriptionParagraph :global(img) {
+  max-width: 100%;
+  border-radius: 0.8rem;
+  margin: 1.2rem 0;
+}
+
+.emptyContent {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.5rem;
+  color: #8a8d91;
+}
+
+.exhibitionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.exhibitionCard {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border: 0.1rem solid #e5e5e5;
+  border-radius: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease;
+}
+
+.exhibitionCard:hover {
+  box-shadow: 0 0.6rem 1.2rem rgba(0, 0, 0, 0.08);
+}
+
+.exhibitionPoster {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.8rem;
+}
+
+.exhibitionInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.exhibitionTitle {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.3rem;
+}
+
+.exhibitionDates {
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.artworkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
+}
+
+.artworkCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 8px 8px 10px 8px;
+
+  border-radius: 16px;
+  background: #fff;
+
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+}
+
+.artworkImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.08);
+}
+
+.artworkTitle {
+  color: #030303;
+
+  font-size: var(--font-size-14, 14px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px; /* 128.571% */
+  letter-spacing: -0.2px;
 }
 
 .backButton {
-  padding: 1rem 2rem;
-  margin-top: 2rem;
+  width: 100%;
+  padding: 1.5rem 2rem;
   border: 0.1rem solid #ddd;
-  border-radius: 0.4rem;
-  color: #666;
-  font-size: 1.4rem;
+  border-radius: 0.8rem;
+  color: #333;
+  font-size: 1.6rem;
   font-weight: 500;
+  background: none;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background-color: #f5f5f5;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    padding: 2rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  .exhibitionCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .exhibitionPoster {
+    width: 100%;
+    height: auto;
+  }
+
+  .infoLabel {
+    width: 8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .layout {
+    padding: 1.5rem;
+  }
+
+  .artistTitle {
+    font-size: 2.4rem;
+  }
+
+  .artistSubTitle {
+    font-size: 1.5rem;
+  }
+
+  .actionButton {
+    font-size: 1.3rem;
+  }
+
+  .icon {
+    font-size: 2rem;
+  }
+
+  .infoRow {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .infoLabel {
+    width: auto;
+  }
 }

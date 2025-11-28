@@ -57,8 +57,8 @@
   gap: 1rem;
 
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 2.5rem;
+  top: 2rem;
 }
 
 .locButton {
@@ -73,14 +73,14 @@
   gap: 1rem;
 }
 
-.isClicked {
-  fill: #e57373;
+.icon {
+  font-size: 1.8rem;
+  color: #bdbdbd;
 }
 
-.icHeart {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #333;
+.likedIcon {
+  font-size: 1.8rem;
+  color: #e57373;
 }
 
 .icLoc {
