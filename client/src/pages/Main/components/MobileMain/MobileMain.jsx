@@ -168,56 +168,67 @@ export default function MobileMain() {
                       exhibition.exhibition_status === 'exhibited',
                   ),
                 )
-                .map(({ gallery_name, gallery_address, exhibitions }) => (
-                  <>
-                    {exhibitions
-                      .filter(
-                        (exhibition) =>
-                          exhibition.exhibition_status === 'exhibited',
-                      )
-                      .map(
-                        ({
-                          id,
-                          exhibition_poster,
-                          exhibition_title,
-                          exhibition_status,
-                        }) => (
-                          <div
-                            className={styles.galleryItemCard}
-                            key={id}
-                            onClick={() => {
-                              navigate(`/exhibitions/${id}`);
-                            }}
-                          >
-                            <div className={styles.galleryTitle}>
-                              <div>
-                                {gallery_name} /{' '}
-                                <span className={styles.exhibitionSpan}>
-                                  {exhibition_title}
-                                </span>
-                              </div>
-                              <FaChevronRight />
-                            </div>
-                            <div className={styles.addressText}>
-                              {gallery_address}
-                            </div>
-                            <div className={styles.imageBox}>
+                .map(
+                  ({
+                    id: gallery_id,
+                    gallery_name,
+                    gallery_address,
+                    exhibitions,
+                  }) => (
+                    <>
+                      {exhibitions
+                        .filter(
+                          (exhibition) =>
+                            exhibition.exhibition_status === 'exhibited',
+                        )
+                        .map(
+                          ({
+                            id,
+                            exhibition_poster,
+                            exhibition_title,
+                            exhibition_status,
+                          }) => (
+                            <div className={styles.galleryItemCard} key={id}>
                               <div
-                                className={`${styles.statusBadge} ${exhibition_status === 'exhibited' && styles.ongoing}`}
+                                className={styles.galleryTitle}
+                                onClick={() => {
+                                  navigate(`/galleries/${gallery_id}`);
+                                }}
                               >
-                                {formatStatus(exhibition_status)}
+                                <div>
+                                  {gallery_name} /{' '}
+                                  <span className={styles.exhibitionSpan}>
+                                    {exhibition_title}
+                                  </span>
+                                </div>
+                                <FaChevronRight />
                               </div>
-                              <img
-                                className={styles.exhibitionImage}
-                                src={exhibition_poster}
-                                alt=''
-                              />
+                              <div className={styles.addressText}>
+                                {gallery_address}
+                              </div>
+                              <div
+                                className={styles.imageBox}
+                                onClick={() => {
+                                  navigate(`/exhibitions/${id}`);
+                                }}
+                              >
+                                <div
+                                  className={`${styles.statusBadge} ${exhibition_status === 'exhibited' && styles.ongoing}`}
+                                >
+                                  {formatStatus(exhibition_status)}
+                                </div>
+                                <img
+                                  className={styles.exhibitionImage}
+                                  src={exhibition_poster}
+                                  alt=''
+                                />
+                              </div>
                             </div>
-                          </div>
-                        ),
-                      )}
-                  </>
-                ))}
+                          ),
+                        )}
+                    </>
+                  ),
+                )}
             </div>
           )}
         </div>
