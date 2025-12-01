@@ -77,7 +77,7 @@ export default function ConsoleDetail({ type }) {
         navigate(`/console/artworks/docent/${id}`); // 작품 페이지 한정, leaflet 대신 도슨트 관리로 이동 가능
         break;
       default:
-        navigate(`/console/leaflet/${id}`);
+        navigate(`/console/${type}/leaflet/${id}`);
         break;
     }
   };

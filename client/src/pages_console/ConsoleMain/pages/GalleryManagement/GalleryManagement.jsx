@@ -5,7 +5,7 @@ import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
-import Spinner from '../../components/Spinner/Spinner';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
 
@@ -37,9 +37,15 @@ export default function GalleryManagement({
   };
 
   const renderContent = () => {
-    if (isLoading && filteredGalleryList.length === 0) {
-      return <Spinner />;
+    if (isLoading) {
+      return (
+        <div className={styles.contentContainer}>
+          <LoadingSpinner />
+        </div>
+      );
     }
+
+    console.log(filteredGalleryList);
 
     if (filteredGalleryList.length > 0) {
       return (
@@ -73,13 +79,16 @@ export default function GalleryManagement({
                       </button>
                     </div>
                     <p className={styles.galleryAddress}>
-                      주소 | {gallery.address}
+                      주소 | {gallery.address || '정보 없음'}
                     </p>
                     <p className={styles.galleryClosedDay}>
-                      휴관일 | {gallery.closedDay}
+                      휴관일 | {gallery.closedDay || '정보 없음'}
                     </p>
                     <p className={styles.galleryTime}>
-                      운영 시간 | {gallery.time}
+                      운영 시간 |{' '}
+                      {gallery.time?.includes('null') || !gallery.time
+                        ? '정보 없음'
+                        : gallery.time}
                     </p>
                   </div>
                 </div>

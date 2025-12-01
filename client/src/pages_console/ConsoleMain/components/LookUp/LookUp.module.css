@@ -41,10 +41,10 @@
 .dropdownItem {
   display: block;
   cursor: pointer;
-  padding: 0.875rem 1rem; /* 모바일용 패딩 */
-  min-height: 2.5rem; /* 모바일용 최소 높이 */
+  padding: 1.1rem 1.5rem; /* 모바일용 패딩 */
+  min-height: 3rem; /* 모바일용 최소 높이 */
   border-bottom: 0.1rem solid #f3f4f6;
-  font-size: 0.875rem; /* 모바일용 폰트 */
+  font-size: 1.1rem; /* 모바일용 폰트 */
   color: #374151;
   font-weight: 500;
   transition: background-color 0.2s ease;
@@ -95,12 +95,12 @@
   }
 
   .inputContainer {
-    padding: 1.5rem 2rem; /* 태블릿 이상에서는 더 큰 패딩 */
+    padding: 1.8rem 2.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
     border-radius: 0.875rem; /* 태블릿 이상에서는 더 큰 둥근 모서리 */
   }
 
   .inputField {
-    font-size: 1.25rem; /* 태블릿 이상에서는 더 큰 폰트 */
+    font-size: 1.5rem; /* 태블릿 이상에서는 더 큰 폰트 */
   }
 
   .dropdownItem {

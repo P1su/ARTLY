@@ -56,6 +56,56 @@
   }
 }
 
+
+
+/* 제목 입력 필드 */
+.titleInputBox {
+  margin-bottom: 2rem;
+}
+
+.titleLabel {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #333;
+}
+
+.titleInput {
+  width: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  transition: border-color 0.2s;
+}
+
+.titleInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.titleInput:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .titleInputBox {
+    margin-bottom: 2.5rem;
+  }
+  
+  .titleLabel {
+    font-size: 1.4rem;
+  }
+  
+  .titleInput {
+    font-size: 1.6rem;
+    padding: 1.2rem;
+  }
+}
+
 /* 표지 섹션 - 모바일 최적화 */
 .coverSectionBox {
   margin-bottom: 2rem; /* 원래 크기로 복원 */
@@ -162,7 +212,7 @@
 
 /* 내지 섹션 */
 .innerPagesSectionBox {
-  margin-bottom: 3.2rem; /* 원래 크기로 복원 */
+  margin-bottom: 10rem; /* 버튼과 간격 확보 */
 }
 
 .innerPagesLabelSpan {
@@ -364,11 +414,48 @@
   background-color: transparent;
 }
 
-.dividerBox {
-  width: 0.1rem;
-  margin: 0.8rem 0;
-  background-color: white;
+
+
+.deleteButton {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-right: 0.1rem solid rgba(255, 255, 255, 0.3);
 }
+
+@media (min-width: 768px) {
+  .deleteButton {
+    padding: 1.5rem 2.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.deleteButton:hover {
+  background-color: #ff7875;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 버튼 구분선 */
+.leftButton,
+.rightButton {
+  border-right: 0.1rem solid rgba(255, 255, 255, 0.3);
+}
+
+.deleteButton {
+  border-right: none;
+}
+
+
 
 .previewButton:disabled {
   background-color: #6c757d;

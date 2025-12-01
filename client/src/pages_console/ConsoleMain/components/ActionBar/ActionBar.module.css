@@ -1,109 +1,58 @@
 .actionContainer {
   display: flex;
-  justify-content: space-between; /* 모바일에서는 좌우 꽉 채우기 */
-  gap: 0.25rem; /* 모바일용 작은 간격 */
-  overflow-x: auto;
-  padding: 0 0.5rem; /* 모바일용 작은 패딩 */
-  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
 }
 
 .actionButton {
-  flex: 1; /* 모바일에서도 균등 분할 */
+  flex: 0 0 auto;
   white-space: nowrap;
   min-width: fit-content;
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .actionContainer {
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: 0;
-  }
-
-  .actionButton {
-    flex: 1;
-  }
-}
-
-/* 2. Position */
-
-/* 3. Box - 모바일 최적화 */
-.actionButton {
-  padding: 0.75rem 0.5rem; /* 모바일용 더 작은 패딩 */
+  padding: 0.8rem 1.5rem;
   border: none;
-  border-bottom: 0.2rem solid transparent;
-  border-radius: 0;
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .actionButton {
-    padding: 1.6rem;
-  }
-}
-
-/* 4. Background */
-.actionButton {
-  background: none;
-}
-
-/* 5. Font - 모바일 최적화 */
-.actionButton {
-  color: #666666;
-  font-size: 1rem; /* 모바일용 작은 폰트 */
+  border-radius: 9999px;
+  font-size: 1.2rem;
   font-weight: 500;
-  text-align: center;
+  color: #6B7280;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .actionButton {
-    font-size: 1.4rem;
-  }
+.actionButton:hover {
+  background-color: #F3F4F6;
+  color: #374151;
 }
 
 .actionButtonActive {
-  color: #2563eb;
-  font-weight: 500;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.actionButtonActive:hover {
+  background-color: #1d4ed8;
+  color: white;
 }
 
 .actionButtonInactive {
   color: #6b7280;
 }
 
-/* 6. Animation */
-.actionButton {
-  transition: all 0.2s ease;
-}
+/* 태블릿 이상 (768px 이상) */
+@media (min-width: 768px) {
+  .actionContainer {
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-/* 7. 기타 속성 */
-.actionButton {
-  cursor: pointer;
-}
-
-.actionButtonActive {
-  border-bottom-color: #2563eb;
-}
-
-.actionButtonInactive:hover {
-  color: #111827;
-}
-
-/* 스크롤바 스타일링 */
-.actionContainer::-webkit-scrollbar {
-  height: 0.2rem;
-}
-
-.actionContainer::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.actionContainer::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 0.1rem;
-}
-
-.actionContainer::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  .actionButton {
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+  }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { userInstance } from '../../../../apis/instance';
 import styles from "./ConsoleNotification.module.css";
 import { IoMegaphoneOutline } from "react-icons/io5";
@@ -30,22 +30,36 @@ const Icon = () => (
 );
 
 export default function ConsoleNotification() {
+  const [activeTab, setActiveTab] = useState('sent');
   const [notiList, setNotiList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchNotificationHistory = async () => {
+  const fetchNotificationHistory = useCallback(async () => {
     try {
       setIsLoading(true);
+      setError(null); 
+      
       const token = localStorage.getItem("ACCESS_TOKEN");
 
-      const res = await userInstance.get("/api/notification/console", {
+      const endpoint = activeTab === 'sent' 
+        ? "/api/notification/console" // 전체 발송 내역
+        : "/api/notification/user";   // 내 수신 내역
+
+      const res = await userInstance.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = Array.isArray(res.data?.data) ? res.data.data : [];
 
-      const sorted = data.sort(
+      const mappedData = data.map(item => ({
+        id: item.notification_id || item.id,
+        title: item.title,
+        body: item.body || item.content, 
+        create_dtm: item.create_dtm
+      }));
+
+      const sorted = mappedData.sort(
         (a, b) =>
           new Date(b.create_dtm).getTime() -
           new Date(a.create_dtm).getTime()
@@ -58,12 +72,12 @@ export default function ConsoleNotification() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [activeTab]); 
 
   // 🔥 최초 로딩
   useEffect(() => {
     fetchNotificationHistory();
-  }, []);
+  }, [fetchNotificationHistory]);
 
   // 🔥 실시간 NEW_NOTIFICATION 감지 → 목록 재조회
   useEffect(() => {
@@ -74,7 +88,7 @@ export default function ConsoleNotification() {
 
     window.addEventListener("NEW_NOTIFICATION", handler);
     return () => window.removeEventListener("NEW_NOTIFICATION", handler);
-  }, []);
+  }, [fetchNotificationHistory]);
 
   // =====================================
   // 렌더링
@@ -98,14 +112,35 @@ export default function ConsoleNotification() {
 
   return (
     <div className={styles.layout}>
-      <h2 className={styles.title}>알림 발송 내역</h2>
+      
+      <div className={styles.tabContainer}>
+        <button 
+          className={`${styles.tabButton} ${activeTab === 'sent' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('sent')}
+        >
+          보낸 알림
+        </button>
+        <button 
+          className={`${styles.tabButton} ${activeTab === 'received' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('received')}
+        >
+          받은 알림
+        </button>
+      </div>
 
-      <div className={styles.list}>
-        {notiList.map((item) => (
-          <div key={item.id} className={styles.notificationItem}>
-            <div className={styles.iconArea}>
-              <Icon />
-            </div>
+      {isLoading ? (
+        <div className={styles.loading}>불러오는 중...</div>
+      ) : error ? (
+        <div className={styles.error}>{error}</div>
+      ) : notiList.length === 0 ? (
+        <div className={styles.empty}>내역이 없습니다.</div>
+      ) : (
+        <div className={styles.list}>
+          {notiList.map((item, index) => (
+            <div key={`${item.id}-${index}`} className={styles.notificationItem}>
+              <div className={styles.iconArea}>
+                <Icon />
+              </div>
 
             <div className={styles.contentArea}>
               <div className={styles.headerRow}>
@@ -120,6 +155,7 @@ export default function ConsoleNotification() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 .contentContainer {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .emptyStateContainer {
@@ -15,15 +15,21 @@
 
 .artworkCard {
   display: block;
+  cursor: pointer;
 }
 
-.artworkContent {
+.cardContent {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.5rem;
 }
 
-.artworkInfo {
+.cardInfo {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardHeader {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -38,30 +44,77 @@
 
 .emptyStateContainer {
   width: 100%;
-  padding: 1rem;
-  border: 0.1rem solid #e5e7eb;
-  border-radius: 0.5rem;
+  padding: 2rem;
+  border: none;
+  border-radius: 1rem;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .searchContainer {
+  margin-bottom: 1.5rem;
+}
+
+.countAndButtonContainer {
+  display: flex;
+  padding: 0 0.5rem;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
+.errorMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+}
+
 .artworkCard {
-  padding: 0.75rem;
-  border: 0.1rem solid #e5e7eb;
-  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: none;
+  /* Remove border */
+  border-radius: 1rem;
+  /* 16px radius */
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  /* Subtle shadow */
+  transition: all 0.2s ease;
 }
 
 .artworkImage {
-  width: 100%;
+  width: 8rem;
   height: 8rem;
-  border-radius: 0.375rem;
+  border-radius: 0.75rem;
+  /* Rounded image */
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.cardHeader {
+  margin-bottom: 0.5rem;
 }
 
 .deleteButton {
-  padding: 0.25rem;
+  padding: 0.5rem;
   border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  cursor: pointer;
+  color: #9CA3AF;
+  transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: #FEE2E2;
+  color: #EF4444;
+}
+
+.artworkArtist {
+  margin-bottom: 0.25rem;
+}
+
+.galleryName {
+  margin-bottom: 0.75rem;
 }
 
 /* 4. Background */
@@ -73,40 +126,36 @@
   background-color: white;
 }
 
-.deleteButton {
-  background: none;
-}
-
 /* 5. Font */
 .artworkTitle {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 .artworkArtist {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  color: #4B5563;
+}
+
+.galleryName {
+  font-size: 1rem;
+  color: #6B7280;
+}
+
+.emptyMessage {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
   color: #6b7280;
 }
 
-.deleteButton {
-  color: #ef4444;
-}
-
-.deleteButton:hover {
-  color: #dc2626;
-}
-
 /* 6. Animation */
-.artworkCard {
-  transition: box-shadow 0.2s ease;
-}
-
 .artworkCard:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.deleteButton {
-  transition: color 0.2s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* 태블릿 이상 (768px 이상) */
@@ -114,55 +163,34 @@
   .contentContainer {
     gap: 1.5rem;
   }
-  
+
   .emptyStateContainer {
-    padding: 1.5rem;
+    padding: 3rem;
   }
-  
+
   .searchContainer {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
-  
+
   .artworkCard {
-    padding: 1rem;
+    padding: 2rem;
   }
-  
+
   .artworkImage {
+    width: 12rem;
     height: 12rem;
   }
-  
+
   .artworkTitle {
-    font-size: 1.25rem;
+    font-size: 1.8rem;
   }
-  
+
   .artworkArtist {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
-  
+
   .countAndButtonContainer {
-    padding: 0rem 1rem;
+    padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
 }
-.artworkImage {
-  object-fit: cover;
-}
-
-.deleteButton {
-  cursor: pointer;
-}
-
-.countAndButtonContainer {
-    display: flex;
-    padding: 0rem 0.5rem;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-
-.errorMessage {
-  text-align: center;
-  padding: 2rem;
-  color: #ef4444;
-}
-

@@ -31,7 +31,6 @@ export default function ExhibitionsCards({ exhibitions }) {
           exhibition_end_date: end_date,
         }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
-
           const destinationPath = isConsolePage
             ? `/console/exhibitions/${id}`
             : `/exhibitions/${id}`;

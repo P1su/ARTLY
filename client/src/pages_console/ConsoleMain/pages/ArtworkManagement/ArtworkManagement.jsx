@@ -5,7 +5,7 @@ import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
-import Spinner from '../../components/Spinner/Spinner';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ArtworkManagement.module.css';
 
 export default function ArtworkManagement({
@@ -97,7 +97,7 @@ export default function ArtworkManagement({
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
-        <Spinner />
+        <LoadingSpinner />
       </div>
     );
   }
@@ -126,16 +126,24 @@ export default function ArtworkManagement({
               className={styles.artworkCard}
               onClick={() => navigate(`/console/artworks/${artwork.id}`)}
             >
-              <div className={styles.artworkContent}>
+              <div className={styles.cardContent}>
                 <img
                   src={artwork.image}
                   alt={artwork.title}
                   className={styles.artworkImage}
                 />
-                <div className={styles.artworkInfo}>
-                  <div>
+                <div className={styles.cardInfo}>
+                  <div className={styles.cardHeader}>
                     <h3 className={styles.artworkTitle}>{artwork.title}</h3>
-                    <p className={styles.artworkArtist}>{artwork.artist}</p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(artwork.id);
+                      }}
+                      className={styles.deleteButton}
+                    >
+                      <HiTrash size={18} />
+                    </button>
                   </div>
                   <button
                     onClick={(e) => {

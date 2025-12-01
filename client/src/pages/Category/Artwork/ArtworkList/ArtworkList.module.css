@@ -4,6 +4,7 @@
   width: 100%;
   gap: 2rem;
   padding: 4rem 20rem 6rem;
+  overflow-x: hidden;
 }
 
 .gridContainer {

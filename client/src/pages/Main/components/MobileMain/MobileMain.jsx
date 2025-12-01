@@ -38,6 +38,12 @@ export default function MobileMain() {
     },
   ];
 
+  const hasAnyExhibition = galleries.some(
+    (gallery) =>
+      gallery.exhibitions &&
+      gallery.exhibitions.some((ex) => ex.exhibition_status === 'exhibited'),
+  );
+
   const formatStatus = (status) => {
     if (status === 'exhibited') {
       return '전시중';
@@ -142,9 +148,9 @@ export default function MobileMain() {
               className={styles.itemBox}
               key={key}
               onClick={() => {
-                key === 'book' &&
-                  localStorage.setItem('showMyCatalogTab', 'true');
-                navigate(link);
+                key === 'book'
+                  ? navigate(link, { state: { activeTab: 'MY도록' } })
+                  : navigate(link);
               }}
             >
               {icon}
@@ -153,61 +159,94 @@ export default function MobileMain() {
           ))}
         </div>
         <div>
-          {!user && galleries.length === 0 ? (
+          {!user || galleries.length === 0 || !hasAnyExhibition ? (
             <div className={styles.nonGalleryBox}>
-              아직 관심있는 갤러리가 없네요!
-              <br />
-              관심 갤러리를 추가하고 소식을 받아보세요.
+              {!user ? (
+                <>
+                  로그인을 하여 <br /> 관심 갤러리를 추가해보세요.
+                </>
+              ) : galleries.length === 0 ? (
+                <>
+                  아직 관심있는 갤러리가 없네요! <br />
+                  관심 갤러리를 추가하고 소식을 받아보세요.
+                </>
+              ) : (
+                <>
+                  관심 갤러리에서 진행 중인 전시가 없네요! <br />더 많은
+                  갤러리를 확인해보세요.
+                </>
+              )}
             </div>
           ) : (
             <div className={styles.exhibitionList}>
-              {galleries.map(
-                ({ gallery_name, gallery_address, exhibitions }) => (
-                  <>
-                    {exhibitions.map(
-                      ({
-                        id,
-                        exhibition_poster,
-                        exhibition_title,
-                        exhibition_status,
-                      }) => (
-                        <div
-                          className={styles.galleryItemCard}
-                          key={id}
-                          onClick={() => {
-                            navigate(`/exhibitions/${id}`);
-                          }}
-                        >
-                          <div className={styles.galleryTitle}>
-                            <div>
-                              {gallery_name} /{' '}
-                              <span className={styles.exhibitionSpan}>
-                                {exhibition_title}
-                              </span>
+              {galleries
+                .filter(({ exhibitions }) =>
+                  exhibitions?.some(
+                    (exhibition) =>
+                      exhibition.exhibition_status === 'exhibited',
+                  ),
+                )
+                .map(
+                  ({
+                    id: gallery_id,
+                    gallery_name,
+                    gallery_address,
+                    exhibitions,
+                  }) => (
+                    <>
+                      {exhibitions
+                        .filter(
+                          (exhibition) =>
+                            exhibition.exhibition_status === 'exhibited',
+                        )
+                        .map(
+                          ({
+                            id,
+                            exhibition_poster,
+                            exhibition_title,
+                            exhibition_status,
+                          }) => (
+                            <div className={styles.galleryItemCard} key={id}>
+                              <div
+                                className={styles.galleryTitle}
+                                onClick={() => {
+                                  navigate(`/galleries/${gallery_id}`);
+                                }}
+                              >
+                                <div>
+                                  {gallery_name} /{' '}
+                                  <span className={styles.exhibitionSpan}>
+                                    {exhibition_title}
+                                  </span>
+                                </div>
+                                <FaChevronRight />
+                              </div>
+                              <div className={styles.addressText}>
+                                {gallery_address}
+                              </div>
+                              <div
+                                className={styles.imageBox}
+                                onClick={() => {
+                                  navigate(`/exhibitions/${id}`);
+                                }}
+                              >
+                                <div
+                                  className={`${styles.statusBadge} ${exhibition_status === 'exhibited' && styles.ongoing}`}
+                                >
+                                  {formatStatus(exhibition_status)}
+                                </div>
+                                <img
+                                  className={styles.exhibitionImage}
+                                  src={exhibition_poster}
+                                  alt=''
+                                />
+                              </div>
                             </div>
-                            <FaChevronRight />
-                          </div>
-                          <div className={styles.addressText}>
-                            {gallery_address}
-                          </div>
-                          <div className={styles.imageBox}>
-                            <div
-                              className={`${styles.statusBadge} ${exhibition_status === 'exhibited' && styles.ongoing}`}
-                            >
-                              {formatStatus(exhibition_status)}
-                            </div>
-                            <img
-                              className={styles.exhibitionImage}
-                              src={exhibition_poster}
-                              alt=''
-                            />
-                          </div>
-                        </div>
-                      ),
-                    )}
-                  </>
-                ),
-              )}
+                          ),
+                        )}
+                    </>
+                  ),
+                )}
             </div>
           )}
         </div>
