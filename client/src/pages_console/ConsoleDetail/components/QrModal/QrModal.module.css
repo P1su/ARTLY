@@ -49,12 +49,6 @@
   text-align: center;
 }
 
-.qrDownloadArea {
-  padding: 2rem;
-  display: inline-block;
-  background-color: #fff;
-}
-
 .galleryInfo {
   display: flex;
   flex-direction: column;
@@ -102,4 +96,56 @@
   margin-top: 2rem;
   font-size: 1.6rem;
   color: #555;
+}
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 20rem;
+  color: #666;
+  font-size: 1.4rem;
+}
+
+/* [NEW] 빈 데이터 상태 */
+.noContentState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+/* 이름 텍스트 스타일 통합/개선 */
+.mainName {
+  font-size: 1.8rem; /* 18px */
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.subName {
+  font-size: 1.2rem; /* 12px */
+  color: #888;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase; /* 영문 대문자 처리 */
+}
+
+.emptyMessage {
+  margin-top: 4rem;
+  color: #666;
+  font-size: 1.4rem;
+}
+
+/* 캡처 영역 패딩 조정 (이미지 저장 시 여백 확보) */
+.qrDownloadArea {
+  background-color: white;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
 }
