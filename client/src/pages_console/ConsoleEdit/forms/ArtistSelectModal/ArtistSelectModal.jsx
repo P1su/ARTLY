@@ -47,40 +47,54 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
       alert('작가 이름을 입력해주세요.');
       return;
     }
-    alert('구현 예정입니다.');
-    // const formData = new FormData();
-    // formData.append('artist_name', newArtistName);
-    // // 필요한 경우 카테고리 등 추가 (API 명세에 따라 수정)
-    // // formData.append('artist_category', 'Painting');
 
-    // if (newArtistImage) {
-    //   formData.append('artist_image_file', newArtistImage);
-    // }
+    try {
+      const formData = new FormData();
 
-    // try {
-    //   // [수정] 등록도 마찬가지로 /api/artist (단수형)
-    //   const res = await userInstance.post('/api/artists', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
+      // 1. 필수/입력 데이터 추가
+      formData.append('artist_name', newArtistName);
 
-    //   alert('작가가 등록되었습니다.');
+      // 2. 이미지가 있다면 추가
+      if (newArtistImage) {
+        formData.append('artist_image', newArtistImage);
+      }
 
-    //   // 등록 성공 후, 응답 데이터 구조 확인하여 선택 처리
-    //   // 보통 res.data에 등록된 작가 객체가 옴
-    //   const newArtist = res.data;
+      // 3. 기타 필드 (API 명세에는 있지만 UI에 입력창이 없는 경우)
+      // 필요하다면 빈 문자열이나 기본값을 보냅니다.
+      formData.append('artist_category', '기타'); // 기본값 예시
+      formData.append('artist_nation', '');
+      formData.append('artist_description', '');
 
-    //   // 안전장치: 만약 res.data가 아니라면 목록을 다시 불러와서 이름으로 찾기
-    //   if (!newArtist || !newArtist.id) {
-    //     fetchArtists(newArtistName);
-    //     setIsAddingNew(false);
-    //     return;
-    //   }
+      // 4. API 호출 (명세서에 따라 /api/artists)
+      const response = await userInstance.post('/api/artists', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-    //   onSelect(newArtist);
-    // } catch (error) {
-    //   console.error('작가 등록 실패:', error);
-    //   alert('작가 등록에 실패했습니다.');
-    // }
+      alert('작가가 성공적으로 등록되었습니다.');
+
+      // 5. 등록 후 처리: 방금 등록한 작가를 바로 선택 처리
+      // 백엔드 응답 구조에 따라 response.data 혹은 response.data.data 사용
+      const createdArtist = response.data.data || response.data;
+
+      if (createdArtist && createdArtist.id) {
+        onSelect(createdArtist); // 바로 선택하고 모달 닫기
+      } else {
+        // 만약 응답에 작가 정보가 없다면 목록을 새로고침하고 입력창 닫기
+        setIsAddingNew(false);
+        setNewArtistName('');
+        setNewArtistImage(null);
+        setNewImagePreview(null);
+        fetchArtists();
+      }
+    } catch (error) {
+      console.error('작가 등록 실패:', error);
+      // 에러 메시지 추출 시도
+      const errorMsg =
+        error.response?.data?.message || '작가 등록 중 오류가 발생했습니다.';
+      alert(errorMsg);
+    }
   };
 
   return (

@@ -167,24 +167,8 @@ export default function ConsoleEdit({ type }) {
         formData.append('_method', 'PATCH');
       }
 
-      const ignoredKeys = [
-        'id',
-        'created_at',
-        'updated_at',
-        'user_id',
-        'artworks',
-        'exhibitions',
-        'reviews',
-        'is_liked',
-        'gallery',
-        'artist_users',
-        'artist',
-        'selected_exhibition_ids',
-      ];
-
       // 데이터 순회하며 FormData 구성
       Object.entries(data).forEach(([key, value]) => {
-        if (ignoredKeys.includes(key)) return;
         if (value === undefined || value === null) return;
 
         // SNS 배열 처리
@@ -213,8 +197,6 @@ export default function ConsoleEdit({ type }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('1단계 저장 성공:', response.data);
-
       // 2. [작품 관리일 경우] 선택된 전시회들에 연결하기 (2단계)
       if (type === 'artworks') {
         const savedArtId = isCreateMode
@@ -232,6 +214,36 @@ export default function ConsoleEdit({ type }) {
 
           await Promise.all(connectPromises);
           console.log(`2단계 전시회 ${selectedExhibitions.length}곳 연결 완료`);
+        }
+      }
+
+      if (type === 'exhibitions') {
+        const savedExhibitionId = isCreateMode
+          ? response.data.data?.id || response.data.id
+          : id;
+
+        const currentArtists = data.participating_artists || [];
+        const artistIds = currentArtists.map((artist) => artist.artist_id);
+
+        // 작가가 1명이라도 있거나, 수정 모드(작가 전체 삭제 가능성)일 때 호출
+        if (savedExhibitionId) {
+          try {
+            // 백엔드 명세에 맞춘 페이로드: { "artist_ids": [1, 2, 3] }
+            const payload = {
+              artist_ids: artistIds,
+            };
+
+            // ✨ 반복 호출 없이 한 번만 호출!
+            await userInstance.post(
+              `/api/exhibitions/${savedExhibitionId}/artists`,
+              payload,
+            );
+
+            console.log('2단계 작가 목록 저장 성공:', artistIds);
+          } catch (artistError) {
+            console.error('작가 저장 실패:', artistError);
+            alert('전시회는 저장되었으나, 작가 목록 저장에 실패했습니다.');
+          }
         }
       }
 

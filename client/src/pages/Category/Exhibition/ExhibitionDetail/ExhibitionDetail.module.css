@@ -255,6 +255,9 @@
   .likeButton {
     font-size: 1.4rem;
   }
+  .likedIcon {
+    font-size: 2rem;
+  }
   .icon {
     font-size: 2rem;
   }

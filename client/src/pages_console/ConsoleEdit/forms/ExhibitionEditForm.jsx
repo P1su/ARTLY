@@ -1,19 +1,17 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
+import ArtistSelectModal from './ArtistSelectModal/ArtistSelectModal.jsx';
 
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
   const [artistInput, setArtistInput] = useState('');
+  const [showArtistModal, setShowArtistModal] = useState(false);
 
-  useEffect(() => {
-    if (Array.isArray(data.artists)) {
-      setArtistInput(data.artists.join(', '));
-    } else if (typeof data.artists === 'string') {
-      setArtistInput(data.artists);
-    }
-  }, [data.artists]);
+  const selectedArtists = Array.isArray(data.participating_artists)
+    ? data.participating_artists
+    : [];
 
   useEffect(() => {
     if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
@@ -47,6 +45,33 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       setImagePreviewUrl(previewUrl);
     }
     event.target.value = '';
+  };
+
+  const handleSelectArtist = (artist) => {
+    const currentArtists = data.participating_artists || [];
+
+    if (currentArtists.some((a) => a.artist_id === artist.id)) {
+      alert('이미 추가된 작가입니다.');
+      return;
+    }
+
+    const newArtist = {
+      artist_id: artist.id,
+      name: artist.artist_name,
+    };
+
+    setData((prev) => ({
+      ...prev,
+      participating_artists: [...currentArtists, newArtist],
+    }));
+    setShowArtistModal(false);
+  };
+
+  const handleRemoveArtist = (id) => {
+    const updatedArtists = (data.participating_artists || []).filter(
+      (artist) => artist.artist_id !== id,
+    );
+    setData((prev) => ({ ...prev, participating_artists: updatedArtists }));
   };
 
   const daysOfWeek = [
@@ -242,16 +267,58 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>참여 작가 (쉼표로 구분)</label>
-            <input
-              className={styles.input}
-              name='artists'
-              value={artistInput} // data.artists 대신 artistInput 사용
-              onChange={handleArtistChange} // 입력 핸들러 교체
-              onBlur={handleArtistBlur} // 저장 핸들러 추가
-              placeholder='예: 홍길동, 김철수, 이영희'
-            />
+          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
+            <label className={styles.label}>참여 작가 등록</label>
+
+            <div className={styles.artistListContainer}>
+              <button
+                type='button'
+                className={styles.addArtistBtn}
+                onClick={() => setShowArtistModal(true)}
+                style={{
+                  marginBottom: '10px',
+                  padding: '8px 12px',
+                  cursor: 'pointer',
+                }}
+              >
+                + 작가 검색 및 추가
+              </button>
+
+              <div
+                style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+              >
+                {(data.participating_artists || []).map((artist, index) => (
+                  <div
+                    key={artist.artist_id || index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      background: '#f5f5f5',
+                      padding: '8px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    <span style={{ fontWeight: 'bold', flex: 1 }}>
+                      {artist.name}
+                    </span>
+
+                    <button
+                      type='button'
+                      onClick={() => handleRemoveArtist(artist.artist_id)}
+                      style={{
+                        border: 'none',
+                        background: 'none',
+                        cursor: 'pointer',
+                        color: 'red',
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className={styles.inputGroup}>
@@ -274,6 +341,13 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           onChange={handleDescriptionChange}
         />
       </div>
+
+      {showArtistModal && (
+        <ArtistSelectModal
+          onClose={() => setShowArtistModal(false)}
+          onSelect={handleSelectArtist}
+        />
+      )}
     </>
   );
 }
