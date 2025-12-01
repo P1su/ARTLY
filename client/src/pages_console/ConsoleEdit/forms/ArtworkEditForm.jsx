@@ -1,7 +1,7 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import ArtistSelectModal from './ArtistSelectModal/ArtistSelectModal.jsx';
+import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 
 export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -62,58 +62,38 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
           placeholder='작품명 입력'
         />
 
-        <div className={styles.imageSection}>
-          <input
-            type='file'
-            ref={fileInputRef}
-            onChange={handleImageChange}
-            accept='image/*'
-            style={{ display: 'none' }}
-          />
-          <div
-            className={styles.imageUploadBox}
-            onClick={() => fileInputRef.current.click()}
-            style={{ position: 'relative' }}
-          >
-            {imagePreviewUrl ? (
-              <>
-                <img
-                  src={imagePreviewUrl}
-                  alt='작품 이미지'
-                  className={styles.previewImage}
-                />
-                <button
-                  className={styles.imageDelBtn}
-                  type='button'
-                  onClick={handleRemoveImage}
-                >
-                  ✕
-                </button>
-              </>
-            ) : (
-              <p className={styles.previewImageDesc}>+ 작품 이미지 넣기</p>
-            )}
-          </div>
+        <input
+          type='file'
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          accept='image/*'
+          style={{ display: 'none' }}
+        />
+        <div
+          className={styles.imageUploadBox}
+          onClick={() => fileInputRef.current.click()}
+        >
+          {imagePreviewUrl ? (
+            <>
+              <img
+                src={imagePreviewUrl}
+                alt='작품 이미지'
+                className={styles.previewImage}
+              />
+              <button
+                className={styles.imageDelBtn}
+                type='button'
+                onClick={handleRemoveImage}
+              >
+                ✕
+              </button>
+            </>
+          ) : (
+            <p className={styles.previewImageDesc}>+ 작품 이미지 넣기</p>
+          )}
         </div>
 
         <div className={styles.formGrid}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>전시회</label>
-            <select
-              className={styles.input}
-              name='exhibition_id'
-              value={data.exhibition_id || ''}
-              onChange={handleInputChange}
-            >
-              <option value=''>전시회 없음</option>
-              {data.exhibitions?.map((exh) => (
-                <option key={exh.id} value={exh.id}>
-                  {exh.exhibition_title}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div className={styles.inputGroup}>
             <label className={styles.label}>작가</label>
             <div className={styles.artistSelectRow}>
