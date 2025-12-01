@@ -89,40 +89,18 @@ export default function ConsoleEdit({ type }) {
     if (isSaving || !data) return;
 
     if (type === 'artworks') {
-      if (!data.artist_id) {
-        alert('작가를 선택해주세요.');
-        return;
-      }
       if (!data.art_title) {
         alert('작품명을 입력해주세요.');
         return;
       }
-      if (!selectedImageFile) {
-        alert('작품 이미지를 등록해주세요.');
-        return;
-      }
-    }
-    else if (type === 'galleries') {
+    } else if (type === 'galleries') {
       if (!data.gallery_name) {
         alert('갤러리명을 입력해주세요.');
         return;
       }
-    }
-    else /*if (type === 'exhibitions')*/ {
+    } /*if (type === 'exhibitions')*/ else {
       if (!data.exhibition_title) {
         alert('전시회명을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibition_start_date || !data.exhibition_end_date) {
-        alert('전시기간을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibtion_start_time || !data.exhibtion_end_time) {
-        alert('전시 시간을 입력해주세요.');
-        return;
-      }
-      if (!data.exhibition_organization) {
-        alert('전시장소를 입력해주세요.');
         return;
       }
     }

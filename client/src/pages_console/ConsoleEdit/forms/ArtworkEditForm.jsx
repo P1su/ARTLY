@@ -8,6 +8,13 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [showArtistModal, setShowArtistModal] = useState(false);
   const fileInputRef = useRef(null);
 
+  const STATUS_LABEL = {
+    exhibited: '진행중',
+    scheduled: '예정',
+    ended: '종료',
+    default: '정보없음',
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -98,23 +105,6 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
 
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>전시회</label>
-            <select
-              className={styles.input}
-              name='exhibition_id'
-              value={data.exhibition_id || ''}
-              onChange={handleInputChange}
-            >
-              <option value=''>전시회 없음</option>
-              {data.exhibitions?.map((exh) => (
-                <option key={exh.id} value={exh.id}>
-                  {exh.exhibition_title}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.inputGroup}>
             <label className={styles.label}>작가</label>
             <div className={styles.artistSelectRow}>
               <input
@@ -178,6 +168,38 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
               onChange={handleInputChange}
               placeholder='예: 02-1234-5678'
             />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>작품 등록된 전시회</label>
+            <div className={styles.exhibitionListWrapper}>
+              {data.exhibitions && data.exhibitions.length > 0 ? (
+                data.exhibitions.map((exh) => {
+                  const statusKey = exh.exhibition_status || 'default';
+
+                  return (
+                    <div key={exh.id} className={styles.exhibitionItem}>
+                      <span className={styles.exhibitionTitle}>
+                        {exh.exhibition_title}
+                      </span>
+                      <span
+                        className={`${styles.statusBadge} ${styles[statusKey]}`}
+                      >
+                        {STATUS_LABEL[statusKey] || statusKey}
+                      </span>
+                    </div>
+                  );
+                })
+              ) : (
+                <span className={styles.emptyText}>
+                  현재 작품 등록된 전시회가 없습니다.
+                </span>
+              )}
+            </div>
+
+            <p className={styles.helperText}>
+              ※ 작품의 전시회 등록 및 해제는 '전시회 관리' 탭에서 진행해주세요.
+            </p>
           </div>
         </div>
       </div>

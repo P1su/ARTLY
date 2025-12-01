@@ -71,6 +71,7 @@ export default function QrModal({ data, onClose, type }) {
             setHasContent(true);
             const viewerUrl = `${window.location.origin}/view/leaflet/${type}/${data.id}`;
             setQrUrl(viewerUrl);
+            console.log(viewerUrl);
           } else {
             setHasContent(false);
           }
