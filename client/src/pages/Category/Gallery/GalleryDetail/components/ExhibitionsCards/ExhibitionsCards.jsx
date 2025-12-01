@@ -20,7 +20,7 @@ export default function ExhibitionsCards({ exhibitions }) {
     <section className={styles.exhibitionList}>
       {exhibitions.map(
         ({
-          exhibition_id: id,
+          id,
           exhibition_poster: poster,
           exhibition_title: title,
           exhibition_status: status,
@@ -29,7 +29,6 @@ export default function ExhibitionsCards({ exhibitions }) {
           exhibition_end_date: end_date,
         }) => {
           const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG.default;
-
           const destinationPath = isConsolePage
             ? `/console/exhibitions/${id}`
             : `/exhibitions/${id}`;
