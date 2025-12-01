@@ -142,9 +142,9 @@ export default function MobileMain() {
               className={styles.itemBox}
               key={key}
               onClick={() => {
-                key === 'book' &&
-                  localStorage.setItem('showMyCatalogTab', 'true');
-                navigate(link);
+                key === 'book'
+                  ? navigate(link, { state: { activeTab: 'MY도록' } })
+                  : navigate(link);
               }}
             >
               {icon}
