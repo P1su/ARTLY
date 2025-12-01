@@ -37,6 +37,19 @@ export default function ConsoleDetail({ type }) {
   const config = DETAIL_CONFIG[type];
   const { title, Component, fetchUrl, tabs } = config || {};
 
+  const getTabNameByType = (t) => {
+    switch (t) {
+      case 'galleries':
+        return '갤러리관리';
+      case 'exhibitions':
+        return '전시회관리';
+      case 'artworks':
+        return '작품관리';
+      default:
+        return '갤러리관리';
+    }
+  };
+
   useEffect(() => {
     if (!fetchUrl || !id) return;
 
@@ -100,7 +113,11 @@ export default function ConsoleDetail({ type }) {
       <header className={styles.header}>
         <button
           className={styles.backButton}
-          onClick={() => navigate(`/console/${type}`)}
+          onClick={() =>
+            navigate('/console/main', {
+              state: { activeTab: getTabNameByType(type) },
+            })
+          }
         >
           {'<'}
         </button>

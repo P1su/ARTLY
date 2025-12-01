@@ -126,12 +126,32 @@
   color: #444;
 }
 
-.descriptionParagraph {
+.emptyInfo {
+  color: #999;
   font-size: 1.6rem;
+}
+
+.descriptionParagraph {
   line-height: 1.7;
-  color: #333;
+  font-size: 1.6rem;
+  color: #616161;
   white-space: pre-wrap;
+  word-break: keep-all;
   margin-bottom: 2rem;
+}
+
+.descriptionParagraph :global(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+.descriptionParagraph :global(p:empty)::before {
+  content: ' ';
+  white-space: pre;
 }
 
 .docentBox {
@@ -139,7 +159,7 @@
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid #4a5bba;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .docentLabel {
   display: block;
@@ -214,10 +234,6 @@
   padding: 4rem 0;
   font-size: 1.6rem;
   color: #aaa;
-}
-.emptyInfo {
-  color: #999;
-  font-size: 1.4rem;
 }
 
 .backButton {

@@ -8,6 +8,8 @@ const STATUS_CONFIG = {
   default: { text: '기타', className: styles.statusDefault },
 };
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
 export default function ExhibitionsCards({ exhibitions }) {
   const location = useLocation();
   const isConsolePage = location.pathname.includes('/console');
@@ -33,6 +35,11 @@ export default function ExhibitionsCards({ exhibitions }) {
             ? `/console/exhibitions/${id}`
             : `/exhibitions/${id}`;
 
+          const imageUrl =
+            poster && !poster.startsWith('http')
+              ? `${BASE_URL}/${poster}`
+              : poster;
+
           return (
             <Link
               className={styles.exhibitionCard}
@@ -42,7 +49,7 @@ export default function ExhibitionsCards({ exhibitions }) {
               <div className={styles.imageContainer}>
                 <img
                   className={styles.exhibitionImage}
-                  src={poster}
+                  src={imageUrl}
                   alt='전시 포스터 이미지'
                 />
                 <span
@@ -53,9 +60,13 @@ export default function ExhibitionsCards({ exhibitions }) {
               </div>
 
               <div className={styles.infoContainer}>
-                <h4 className={styles.title}>{title}</h4>
-                <p className={styles.location}>{exhibitionLocation}</p>
-                <p className={styles.date}>{`${start_date} ~ ${end_date}`}</p>
+                <h4 className={styles.title}>{title || '정보 없음'}</h4>
+                <p className={styles.location}>
+                  {exhibitionLocation || '주소 정보 없음'}
+                </p>
+                <p
+                  className={styles.date}
+                >{`${start_date || '정보 없음'} ~ ${end_date || '정보 없음'}`}</p>
               </div>
             </Link>
           );
