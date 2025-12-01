@@ -6,12 +6,19 @@ import { userInstance } from '../../../../apis/instance';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
+import { FaChevronRight } from 'react-icons/fa';
 
 export default function ArtworkDetail({
   showUserActions = true,
   id: propId,
   actionButtons,
 }) {
+  const STATUS_CONFIG = {
+    exhibited: { label: '진행중', className: styles.exhibited },
+    scheduled: { label: '예정', className: styles.scheduled },
+    ended: { label: '종료', className: styles.ended },
+  };
+
   const { artworkId } = useParams();
   const id = propId || artworkId;
   const navigate = useNavigate();
@@ -95,6 +102,7 @@ export default function ArtworkDetail({
     gallery_phone,
     artist = {},
     artist_name,
+    exhibitions = [],
   } = artworkData;
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
@@ -240,6 +248,52 @@ export default function ArtworkDetail({
 
         {actionButtons?.info}
       </div>
+
+      {showUserActions && exhibitions && exhibitions.length > 0 && (
+        <div className={styles.exhibitionSection}>
+          <span className={styles.sectionTitle}>전시 정보</span>
+          <div className={styles.exhibitionList}>
+            {exhibitions.map((exh) => {
+              // 백엔드 데이터에 status가 없다면 날짜 비교 또는 기본값 사용
+              const statusKey = exh.exhibition_status || 'ended';
+              const statusInfo =
+                STATUS_CONFIG[statusKey] || STATUS_CONFIG.ended;
+
+              return (
+                <div
+                  key={exh.id}
+                  className={styles.exhibitionItem}
+                  onClick={() => navigate(`/exhibitions/${exh.id}`)}
+                >
+                  <div className={styles.exhibitionInfo}>
+                    {/* 상태 뱃지 */}
+                    <span
+                      className={`${styles.statusBadge} ${statusInfo.className}`}
+                    >
+                      {statusInfo.label}
+                    </span>
+
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className={styles.exhibitionTitle}>
+                        {exh.exhibition_title}
+                      </span>
+                      {/* 기간 정보가 있다면 표시 */}
+                      {exh.start_date && exh.end_date && (
+                        <span className={styles.exhibitionDate}>
+                          {exh.start_date} ~ {exh.end_date}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 이동 화살표 아이콘 */}
+                  <FaChevronRight className={styles.arrowIcon} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {showUserActions && (
         <div className={styles.recommendSection}>
