@@ -153,7 +153,7 @@ export default function MobileMain() {
           ))}
         </div>
         <div>
-          {!user && galleries.length === 0 ? (
+          {!user || galleries.length === 0 ? (
             <div className={styles.nonGalleryBox}>
               아직 관심있는 갤러리가 없네요!
               <br />
