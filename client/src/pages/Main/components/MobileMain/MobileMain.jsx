@@ -160,11 +160,21 @@ export default function MobileMain() {
         <div>
           {!user || galleries.length === 0 || !hasAnyExhibition ? (
             <div className={styles.nonGalleryBox}>
-              {!user && '로그인을 하여 \n 관심 갤러리를 추가해보세요'}
-              {galleries.length === 0 &&
-                '아직 관심있는 갤러리가 없네요!\n 관심 갤러리를 추가하고 소식을 받아보세요.'}
-              {!hasAnyExhibition &&
-                '관심 갤러리에서 진행 중인 전시가 없네요! \n 더 많은 갤러리를 확인해보세요.'}
+              {!user ? (
+                <>
+                  로그인을 하여 <br /> 관심 갤러리를 추가해보세요.
+                </>
+              ) : galleries.length === 0 ? (
+                <>
+                  아직 관심있는 갤러리가 없네요! <br />
+                  관심 갤러리를 추가하고 소식을 받아보세요.
+                </>
+              ) : (
+                <>
+                  관심 갤러리에서 진행 중인 전시가 없네요! <br />더 많은
+                  갤러리를 확인해보세요.
+                </>
+              )}
             </div>
           ) : (
             <div className={styles.exhibitionList}>
