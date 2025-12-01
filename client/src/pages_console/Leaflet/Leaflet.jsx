@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
@@ -9,14 +7,6 @@ import Inner from './components/Inner/Inner';
 import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
 
-export default function Leaflet({ type }) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  // id는 항상 Owner(Gallery/Exhibition) ID입니다.
-  const [leafletId, setLeafletId] = useState(null);
-  const [title, setTitle] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [existingLeaflet, setExistingLeaflet] = useState(null);
 export default function Leaflet({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,7 +36,8 @@ export default function Leaflet({ type }) {
         setIsLoading(true);
 
         // Owner 모드로 통일: 카테고리와 ID로 조회
-        const category = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+        const category =
+          type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
         const res = await userInstance.get(`/api/leaflet`, {
           params: {
             category: category,
@@ -77,7 +68,9 @@ export default function Leaflet({ type }) {
             }
             // 나머지 이미지를 내지로 설정
             if (leafletData.image_urls.length > 1) {
-              const innerImages = leafletData.image_urls.slice(1).map(url => ({ url }));
+              const innerImages = leafletData.image_urls
+                .slice(1)
+                .map((url) => ({ url }));
               setImageList(innerImages);
             }
           }
@@ -109,8 +102,6 @@ export default function Leaflet({ type }) {
     const viewerUrl = `/view/leaflet/${type}/${id}`;
     window.open(viewerUrl, '_blank');
   };
-
-
 
   const handleDelete = async () => {
     if (!leafletId) return;
@@ -179,7 +170,8 @@ export default function Leaflet({ type }) {
       formData.append('title', title.trim());
       // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
       // categoryId: 해당 카테고리의 ID
-      const categoryName = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+      const categoryName =
+        type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
       formData.append('category', categoryName);
       formData.append('categoryId', id); // Owner ID passed via params
 
@@ -199,7 +191,10 @@ export default function Leaflet({ type }) {
         setExistingLeaflet(res.data);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.response?.data?.error || '리플렛 저장 중 오류가 발생했습니다.';
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        '리플렛 저장 중 오류가 발생했습니다.';
       toast.error(errorMessage, {
         position: 'top-center',
         duration: 5000,
@@ -218,7 +213,8 @@ export default function Leaflet({ type }) {
       <div className={styles.mainContentContainer}>
         <div className={styles.panelHeaderBox}>
           <p className={styles.panelHeaderParagraph}>
-            리플렛/도록을 만들 이미지를 등록해주세요.<br />
+            리플렛/도록을 만들 이미지를 등록해주세요.
+            <br />
             전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
           </p>
         </div>
@@ -226,10 +222,10 @@ export default function Leaflet({ type }) {
         <div className={styles.titleInputBox}>
           <label className={styles.titleLabel}>리플렛 제목</label>
           <input
-            type="text"
+            type='text'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="리플렛 제목을 입력하세요"
+            placeholder='리플렛 제목을 입력하세요'
             className={styles.titleInput}
             disabled={isLoading}
           />
@@ -258,7 +254,6 @@ export default function Leaflet({ type }) {
             disabled={isEmpty}
           >
             리플렛/도록 보기
-            리플렛/도록 보기
           </button>
 
           {!leafletId ? (
@@ -280,7 +275,6 @@ export default function Leaflet({ type }) {
           )}
         </div>
       </div>
-
-    </div >
+    </div>
   );
 }
