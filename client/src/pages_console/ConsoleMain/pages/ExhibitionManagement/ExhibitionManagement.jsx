@@ -147,7 +147,10 @@ export default function ExhibitionManagement({
                   <div className={styles.cardHeader}>
                     <h3 className={styles.galleryTitle}>{exhibition.title}</h3>
                     <button
-                      onClick={() => handleDelete(exhibition.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(exhibition.id);
+                      }}
                       className={styles.deleteButton}
                     >
                       <HiTrash size={18} />

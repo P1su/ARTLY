@@ -24,9 +24,11 @@ export default function Menu({ onOpen, isOpen }) {
     navigate('/');
   };
 
-  const handleNavigate = (path) => {
+  const handleNavigate = (path, isBook = false) => {
     onOpen();
-    navigate(path);
+    !isBook
+      ? navigate(path)
+      : navigate(path, { state: { activeTab: 'MY도록' } });
   };
 
   return (
@@ -88,7 +90,7 @@ export default function Menu({ onOpen, isOpen }) {
           <span
             className={styles.menuSpan}
             onClick={() => {
-              handleNavigate('/mypage');
+              handleNavigate('/mypage', true);
             }}
           >
             디지털 도록
