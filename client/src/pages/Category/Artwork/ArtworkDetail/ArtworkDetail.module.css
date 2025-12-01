@@ -229,6 +229,91 @@
   margin: 0;
 }
 
+.exhibitionSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.exhibitionLabel {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.exhibitionList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.exhibitionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  background-color: #f9f9f9;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.exhibitionItem:hover {
+  background-color: #fff;
+  border-color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.exhibitionInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exhibitionTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.exhibitionDate {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+/* 뱃지 스타일 */
+.statusBadge {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.4rem;
+  white-space: nowrap;
+}
+
+.exhibited {
+  color: #00b894;
+  background-color: #e6fffa;
+}
+
+.scheduled {
+  color: #f39c12;
+  background-color: #fef9e7;
+}
+
+.ended {
+  color: #939ca0;
+  background-color: #e4e5ecdb;
+}
+
+.arrowIcon {
+  color: #ccc;
+  font-size: 1.4rem;
+}
+
 .emptyContent {
   text-align: center;
   padding: 4rem 0;
