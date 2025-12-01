@@ -38,6 +38,12 @@ export default function MobileMain() {
     },
   ];
 
+  const hasAnyExhibition = galleries.some(
+    (gallery) =>
+      gallery.exhibitions &&
+      gallery.exhibitions.some((ex) => ex.exhibition_status === 'exhibited'),
+  );
+
   const formatStatus = (status) => {
     if (status === 'exhibited') {
       return '전시중';
@@ -143,8 +149,7 @@ export default function MobileMain() {
               key={key}
               onClick={() => {
                 key === 'book' &&
-                  localStorage.setItem('showMyCatalogTab', 'true');
-                navigate(link);
+                  navigate(link, { state: { activeTab: 'MY도록' } });
               }}
             >
               {icon}
@@ -153,11 +158,23 @@ export default function MobileMain() {
           ))}
         </div>
         <div>
-          {!user && galleries.length === 0 ? (
+          {!user || galleries.length === 0 || !hasAnyExhibition ? (
             <div className={styles.nonGalleryBox}>
-              아직 관심있는 갤러리가 없네요!
-              <br />
-              관심 갤러리를 추가하고 소식을 받아보세요.
+              {!user ? (
+                <>
+                  로그인을 하여 <br /> 관심 갤러리를 추가해보세요.
+                </>
+              ) : galleries.length === 0 ? (
+                <>
+                  아직 관심있는 갤러리가 없네요! <br />
+                  관심 갤러리를 추가하고 소식을 받아보세요.
+                </>
+              ) : (
+                <>
+                  관심 갤러리에서 진행 중인 전시가 없네요! <br />더 많은
+                  갤러리를 확인해보세요.
+                </>
+              )}
             </div>
           ) : (
             <div className={styles.exhibitionList}>

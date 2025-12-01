@@ -120,6 +120,8 @@
   font-weight: 500;
   line-height: 20px; /* 166.667% */
   letter-spacing: -0.2px;
+
+  white-space: pre-line;
 }
 
 .exhibitionList {
