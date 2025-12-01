@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
@@ -7,6 +9,14 @@ import Inner from './components/Inner/Inner';
 import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
 
+export default function Leaflet({ type }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  // id는 항상 Owner(Gallery/Exhibition) ID입니다.
+  const [leafletId, setLeafletId] = useState(null);
+  const [title, setTitle] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [existingLeaflet, setExistingLeaflet] = useState(null);
 export default function Leaflet({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -247,6 +257,7 @@ export default function Leaflet({ type }) {
             onClick={handlePreview}
             disabled={isEmpty}
           >
+            리플렛/도록 보기
             리플렛/도록 보기
           </button>
 
