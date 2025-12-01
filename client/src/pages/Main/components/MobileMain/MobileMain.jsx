@@ -143,8 +143,7 @@ export default function MobileMain() {
               key={key}
               onClick={() => {
                 key === 'book' &&
-                  localStorage.setItem('showMyCatalogTab', 'true');
-                navigate(link);
+                  navigate(link, { state: { activeTab: 'MY도록' } });
               }}
             >
               {icon}
