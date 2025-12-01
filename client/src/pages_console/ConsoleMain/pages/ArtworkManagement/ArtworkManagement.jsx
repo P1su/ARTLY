@@ -145,15 +145,7 @@ export default function ArtworkManagement({
                       <HiTrash size={18} />
                     </button>
                   </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(artwork.id);
-                    }}
-                    className={styles.deleteButton}
-                  >
-                    <HiTrash size={18} />
-                  </button>
+                  <p className={styles.artworkArtist}>{artwork.artist}</p>
                 </div>
               </div>
             </div>

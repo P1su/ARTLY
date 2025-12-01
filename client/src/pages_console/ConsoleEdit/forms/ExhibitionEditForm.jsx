@@ -1,13 +1,15 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import ArtistSelectModal from './ArtistSelectModal/ArtistSelectModal.jsx';
+import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
+import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectModal.jsx';
 
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
   const [artistInput, setArtistInput] = useState('');
   const [showArtistModal, setShowArtistModal] = useState(false);
+  const [showArtworkModal, setShowArtworkModal] = useState(false);
 
   const selectedArtists = Array.isArray(data.participating_artists)
     ? data.participating_artists
@@ -72,6 +74,25 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       (artist) => artist.artist_id !== id,
     );
     setData((prev) => ({ ...prev, participating_artists: updatedArtists }));
+  };
+
+  const handleSelectArtworks = (newArts) => {
+    const currentArts = data.connected_artworks || [];
+    const uniqueNewArts = newArts.filter(
+      (newArt) => !currentArts.some((exist) => exist.id === newArt.id),
+    );
+
+    setData((prev) => ({
+      ...prev,
+      connected_artworks: [...currentArts, ...uniqueNewArts],
+    }));
+  };
+
+  const handleRemoveArtwork = (artId) => {
+    setData((prev) => ({
+      ...prev,
+      connected_artworks: prev.connected_artworks.filter((a) => a.id !== artId),
+    }));
   };
 
   const daysOfWeek = [
@@ -321,6 +342,45 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
           </div>
 
+          <div className={`${styles.inputGroup} ${styles.artworkSection}`}>
+            <label className={styles.label}>출품 작품 관리</label>
+            <div className={styles.artistListContainer}>
+              <button
+                type='button'
+                className={styles.addArtworkBtn}
+                onClick={() => setShowArtworkModal(true)}
+              >
+                + 작품 불러오기
+              </button>
+
+              <div className={styles.artworkGrid}>
+                {(data.connected_artworks || []).map((art) => (
+                  <div key={art.id} className={styles.artworkCard}>
+                    <img
+                      src={art.image || '/images/no-image.png'}
+                      alt='thumb'
+                      className={styles.artworkThumb}
+                    />
+                    <div className={styles.artworkMeta}>
+                      <div className={styles.artworkTitle}>{art.art_title}</div>
+                      <div className={styles.artworkArtist}>
+                        {art.artist_name}
+                      </div>
+                    </div>
+                    <button
+                      type='button'
+                      className={styles.removeBtn}
+                      onClick={() => handleRemoveArtwork(art.id)}
+                      title='삭제'
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>
             <input
@@ -346,6 +406,13 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
           onSelect={handleSelectArtist}
+        />
+      )}
+
+      {showArtworkModal && (
+        <ArtworkSelectModal
+          onClose={() => setShowArtworkModal(false)}
+          onSelect={handleSelectArtworks}
         />
       )}
     </>

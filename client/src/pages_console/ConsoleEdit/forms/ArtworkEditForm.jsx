@@ -1,7 +1,7 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
-import ArtistSelectModal from './ArtistSelectModal/ArtistSelectModal.jsx';
+import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 
 export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -29,31 +29,6 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleExhibitionCheck = (e, exhibitionId) => {
-    const isChecked = e.target.checked;
-
-    setData((prev) => {
-      // 기존에 선택된 전시회 ID 배열 (없으면 빈 배열)
-      const currentSelection = prev.selected_exhibition_ids || [];
-
-      if (isChecked) {
-        // 체크 시 배열에 추가
-        return {
-          ...prev,
-          selected_exhibition_ids: [...currentSelection, exhibitionId],
-        };
-      } else {
-        // 체크 해제 시 배열에서 제거
-        return {
-          ...prev,
-          selected_exhibition_ids: currentSelection.filter(
-            (id) => id !== exhibitionId,
-          ),
-        };
-      }
-    });
   };
 
   const handleDescriptionChange = (newDescription) => {
@@ -87,84 +62,38 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
           placeholder='작품명 입력'
         />
 
-        <div className={styles.imageSection}>
-          <input
-            type='file'
-            ref={fileInputRef}
-            onChange={handleImageChange}
-            accept='image/*'
-            style={{ display: 'none' }}
-          />
-          <div
-            className={styles.imageUploadBox}
-            onClick={() => fileInputRef.current.click()}
-            style={{ position: 'relative' }}
-          >
-            {imagePreviewUrl ? (
-              <>
-                <img
-                  src={imagePreviewUrl}
-                  alt='작품 이미지'
-                  className={styles.previewImage}
-                />
-                <button
-                  className={styles.imageDelBtn}
-                  type='button'
-                  onClick={handleRemoveImage}
-                >
-                  ✕
-                </button>
-              </>
-            ) : (
-              <p className={styles.previewImageDesc}>+ 작품 이미지 넣기</p>
-            )}
-          </div>
+        <input
+          type='file'
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          accept='image/*'
+          style={{ display: 'none' }}
+        />
+        <div
+          className={styles.imageUploadBox}
+          onClick={() => fileInputRef.current.click()}
+        >
+          {imagePreviewUrl ? (
+            <>
+              <img
+                src={imagePreviewUrl}
+                alt='작품 이미지'
+                className={styles.previewImage}
+              />
+              <button
+                className={styles.imageDelBtn}
+                type='button'
+                onClick={handleRemoveImage}
+              >
+                ✕
+              </button>
+            </>
+          ) : (
+            <p className={styles.previewImageDesc}>+ 작품 이미지 넣기</p>
+          )}
         </div>
 
         <div className={styles.formGrid}>
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <label className={styles.label}>전시회 선택 (다중 선택 가능)</label>
-            <div
-              className={styles.checkboxContainer}
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '10px',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-              }}
-            >
-              {data.exhibitions && data.exhibitions.length > 0 ? (
-                data.exhibitions.map((exh) => (
-                  <label
-                    key={exh.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <input
-                      type='checkbox'
-                      // data.selected_exhibition_ids 배열에 해당 ID가 있는지 확인
-                      checked={
-                        data.selected_exhibition_ids?.includes(exh.id) || false
-                      }
-                      onChange={(e) => handleExhibitionCheck(e, exh.id)}
-                    />
-                    {exh.exhibition_title}
-                  </label>
-                ))
-              ) : (
-                <span style={{ color: '#888' }}>
-                  진행 중인 전시회가 없습니다.
-                </span>
-              )}
-            </div>
-          </div>
-
           <div className={styles.inputGroup}>
             <label className={styles.label}>작가</label>
             <div className={styles.artistSelectRow}>

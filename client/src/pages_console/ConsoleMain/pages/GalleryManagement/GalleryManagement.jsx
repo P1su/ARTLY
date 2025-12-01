@@ -13,8 +13,9 @@ export default function GalleryManagement({
   galleryList,
   onDelete,
   loadGalleries,
-  isLoading, // 초기 로딩 or 페이지 전환 로딩
-  isSearching, // 검색어 입력 중 로딩 (백그라운드)
+  isLoading,
+
+  isSearching,
   error,
 }) {
   const navigate = useNavigate();
@@ -23,119 +24,123 @@ export default function GalleryManagement({
   const { searchValue, handleSearchChange } = useDebounceSearch({
     onSearch: loadGalleries,
     onEmptySearch: () => loadGalleries(''),
-    minLength: 1, // 1글자라도 검색되게 변경 (UX상 자연스러움)
+    minLength: 2,
     delay: 500,
   });
 
+  // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
 
-  const handleDelete = (e, id) => {
-    e.stopPropagation();
+  const handleDelete = (id) => {
     if (window.confirm('정말로 이 갤러리를 삭제하시겠습니까?')) {
       onDelete(id, 'gallery');
     }
   };
 
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div className={styles.contentContainer}>
-          <LoadingSpinner />
+  if (isLoading) {
+    return (
+      <div className={styles.contentContainer}>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.contentContainer}>
+        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
+      </div>
+    );
+  }
+
+  if (filteredGalleryList.length > 0) {
+    return (
+      <div className={styles.contentContainer}>
+        <LookUp
+          value={searchValue}
+          onChange={handleSearchChange}
+          placeholder='갤러리 검색'
+          isInput
+        />
+
+        <div className={styles.countAndButtonContainer}>
+          <CountList count={filteredGalleryList.length} />
+          <RegisterButton
+            buttonText='+갤러리 등록'
+            onButtonClick={() => navigate(`/console/galleries/edit/new`)}
+          />
         </div>
-      );
-    }
 
-    console.log(filteredGalleryList);
-
-    if (filteredGalleryList.length > 0) {
-      return (
-        <div className={styles.contentContainer}>
-          <div
-            style={{
-              opacity: isSearching ? 0.5 : 1,
-              transition: 'opacity 0.2s',
-            }}
-          >
-            {filteredGalleryList.map((gallery) => (
-              <div
-                key={gallery.id}
-                className={styles.galleryCard}
-                onClick={() => navigate(`/console/galleries/${gallery.id}`)}
-              >
-                <div className={styles.cardContent}>
-                  <img
-                    src={gallery.image}
-                    alt={gallery.name}
-                    className={styles.galleryImage}
-                  />
-                  <div className={styles.cardInfo}>
-                    <div className={styles.cardHeader}>
-                      <h3 className={styles.galleryTitle}>{gallery.name}</h3>
-                      <button
-                        onClick={(e) => handleDelete(e, gallery.id)}
-                        className={styles.deleteButton}
-                      >
-                        <HiTrash size={18} />
-                      </button>
-                    </div>
-                    <p className={styles.galleryAddress}>
-                      주소 | {gallery.address || '정보 없음'}
-                    </p>
-                    <p className={styles.galleryClosedDay}>
-                      휴관일 | {gallery.closedDay || '정보 없음'}
-                    </p>
-                    <p className={styles.galleryTime}>
-                      운영 시간 |{' '}
-                      {gallery.time?.includes('null') || !gallery.time
-                        ? '정보 없음'
-                        : gallery.time}
-                    </p>
+        <section className={styles.contentContainer}>
+          {filteredGalleryList.map((gallery) => (
+            <div
+              key={gallery.id}
+              className={styles.galleryCard}
+              onClick={() => navigate(`/console/galleries/${gallery.id}`)}
+            >
+              <div className={styles.cardContent}>
+                <img
+                  src={gallery.image}
+                  alt={gallery.name}
+                  className={styles.galleryImage}
+                />
+                <div className={styles.cardInfo}>
+                  <div className={styles.cardHeader}>
+                    <h3 className={styles.galleryTitle}>{gallery.name}</h3>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(gallery.id);
+                      }}
+                      className={styles.deleteButton}
+                    >
+                      <HiTrash size={18} />
+                    </button>
                   </div>
-                </div>
-                <div className={styles.cardFooter}>
-                  <span>등록된 전시회 {gallery.registered}건</span>
-                  <span className={styles.separator}>|</span>
-                  <span>좋아요 {gallery.liked}명</span>
+                  <p className={styles.galleryAddress}>{gallery.address}</p>
+                  <p className={styles.galleryClosedDay}>
+                    휴관일 | {gallery.closedDay}
+                  </p>
+                  <p className={styles.galleryTime}>{gallery.time}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <section className={styles.emptyStateContainer}>
-        <EmptyState
-          message={
-            searchValue ? '검색 결과가 없어요.' : '등록된 갤러리가 없어요.'
-          }
-          buttonText='+갤러리 등록'
-        />
-      </section>
+              <div className={styles.cardFooter}>
+                <span>등록된 전시회 {gallery.registered}건</span>
+                <span className={styles.separator}>|</span>
+                <span>좋아요 {gallery.liked}명</span>
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
     );
-  };
+  }
 
   return (
-    <div className={styles.contentContainer}>
+    <>
       <div className={styles.searchContainer}>
         <LookUp
           value={searchValue}
-          onChange={(val) => handleSearchChange(val)}
+          onChange={handleSearchChange}
           placeholder='갤러리 검색'
           isInput
         />
       </div>
 
       <div className={styles.countAndButtonContainer}>
-        <CountList count={filteredGalleryList.length} />
+        <CountList count={0} />
         <RegisterButton
           buttonText='+갤러리 등록'
-          onButtonClick={() => navigate(`/console/galleries/edit/new`)}
+          onButtonClick={() => alert('갤러리 등록')}
         />
       </div>
 
-      {renderContent()}
-    </div>
+      <section className={styles.emptyStateContainer}>
+        <EmptyState
+          message='등록된 갤러리가 없어요.'
+          buttonText='+갤러리 등록'
+        />
+      </section>
+    </>
   );
 }

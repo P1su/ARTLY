@@ -116,6 +116,26 @@ export default function ConsoleEdit({ type }) {
             initialData.exhibitions = [];
           }
         }
+        if (type === 'exhibitions' && !isCreateMode) {
+          try {
+            // API: 해당 전시회의 작품 목록 조회 (경로는 백엔드 명세 확인 필요)
+            // 예: /api/exhibitions/{id}/arts
+            const artRes = await userInstance.get(
+              `/api/exhibitions/${id}/arts`,
+            );
+            // 응답 형태에 따라 처리 (예: res.data)
+            initialData.connected_artworks = Array.isArray(artRes.data)
+              ? artRes.data
+              : [];
+            console.log(
+              '불러온 작품 수:',
+              initialData.connected_artworks.length,
+            );
+          } catch (e) {
+            console.warn('작품 목록 로딩 실패(신규 등록이면 무시):', e);
+            initialData.connected_artworks = [];
+          }
+        }
 
         setData(initialData);
       } catch (error) {
@@ -186,6 +206,17 @@ export default function ConsoleEdit({ type }) {
         }
       });
 
+      if (!formData.has('gallery_id')) {
+        const galleryId = data.gallery_id || data.gallery?.id;
+        if (galleryId) {
+          formData.append('gallery_id', galleryId);
+        } else {
+          console.error(
+            '⚠️ 경고: gallery_id를 찾을 수 없습니다. 저장 시 권한 오류가 발생할 수 있습니다.',
+          );
+        }
+      }
+
       // 이미지 파일이 선택되었다면 추가
       if (selectedImageFile) {
         formData.append(config.formImageField, selectedImageFile);
@@ -223,17 +254,21 @@ export default function ConsoleEdit({ type }) {
           : id;
 
         const currentArtists = data.participating_artists || [];
-        const artistIds = currentArtists.map((artist) => artist.artist_id);
+        const artistIds = currentArtists.map(
+          (artist) => artist.artist_id || artist.id,
+        );
 
-        // 작가가 1명이라도 있거나, 수정 모드(작가 전체 삭제 가능성)일 때 호출
+        const validArtistIds = artistIds.filter((id) => id);
+
         if (savedExhibitionId) {
           try {
-            // 백엔드 명세에 맞춘 페이로드: { "artist_ids": [1, 2, 3] }
             const payload = {
-              artist_ids: artistIds,
+              artist_ids: validArtistIds,
+              gallery_id: data.gallery_id,
             };
 
-            // ✨ 반복 호출 없이 한 번만 호출!
+            console.log('작가 저장 페이로드:', payload);
+
             await userInstance.post(
               `/api/exhibitions/${savedExhibitionId}/artists`,
               payload,
@@ -243,6 +278,41 @@ export default function ConsoleEdit({ type }) {
           } catch (artistError) {
             console.error('작가 저장 실패:', artistError);
             alert('전시회는 저장되었으나, 작가 목록 저장에 실패했습니다.');
+          }
+
+          const currentArtworks = data.connected_artworks || [];
+
+          if (currentArtworks.length > 0) {
+            try {
+              // 방법 A: 한 번에 ID 목록 보내기 (백엔드가 지원한다면 가장 깔끔)
+              /*
+                    await userInstance.post(`/api/exhibitions/${savedExhibitionId}/arts/batch`, {
+                        art_ids: currentArtworks.map(art => art.id),
+                        gallery_id: data.gallery_id
+                    });
+                    */
+
+              // 방법 B: 반복문으로 하나씩 연결 (기존 'artworks' 저장 로직과 유사하게 안전한 방법)
+              // 기존 연결을 다 끊고 새로 넣을지, 추가만 할지는 백엔드 로직에 따름.
+              // 여기서는 "전시회에 작품 추가" API를 반복 호출하는 방식 예시
+
+              const artConnectPromises = currentArtworks.map((art) => {
+                return userInstance.post(
+                  `/api/exhibitions/${savedExhibitionId}/arts`,
+                  {
+                    art_id: art.id,
+                    display_order: 0, // 필요시 순서
+                    gallery_id: data.gallery_id, // ★ 권한 에러 방지용
+                  },
+                );
+              });
+
+              await Promise.all(artConnectPromises);
+              console.log(`총 ${currentArtworks.length}개 작품 연결 완료`);
+            } catch (artError) {
+              console.error('작품 연결 실패:', artError);
+              // 409 Conflict(이미 존재함) 에러는 무시해도 된다면 여기서 예외 처리
+            }
           }
         }
       }
