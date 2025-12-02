@@ -272,6 +272,162 @@
   box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
 }
 
+.exhibitionListWrapper {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.exhibitionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 0.1rem solid #eee;
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+  background-color: #ebebeb70;
+}
+
+.exhibitionTitle {
+  font-size: 1.4rem;
+  color: #333;
+}
+
+/* 뱃지 공통 스타일 */
+.statusBadge {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+}
+
+/* 상태별 컬러 */
+.exhibited {
+  color: #00b894;
+  background-color: #e6fffa;
+}
+
+.scheduled {
+  color: #f39c12;
+  background-color: #fef9e7;
+}
+
+.ended {
+  color: #b2bec3;
+  background-color: #f1f2f6;
+}
+.default {
+  color: #b2bec3;
+  background-color: #f1f2f6;
+}
+
+/* 텍스트 스타일 */
+.emptyText {
+  color: #999;
+  font-size: 1.4rem;
+}
+
+.helperText {
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.artworkSection {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+  border-top: 0.1rem solid #eee;
+  padding-top: 2rem;
+}
+
+.addArtworkBtn {
+  margin-bottom: 1rem;
+  padding: 0.8rem 1.2rem;
+  background-color: #fff;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.4rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.addArtworkBtn:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.artworkGrid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(30rem, 1fr)
+  ); /* 300px min width */
+  gap: 1rem;
+}
+
+.artworkCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 0.1rem solid #ddd;
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  transition: box-shadow 0.2s;
+}
+
+.artworkCard:hover {
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.05);
+}
+
+.artworkThumb {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  background-color: #eee;
+}
+
+.artworkMeta {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.artworkTitle {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artworkArtist {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.removeBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #ff4d4f;
+  font-size: 1.4rem;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeBtn:hover {
+  color: #d9363e;
+}
+
 @media (max-width: 1500px) {
   .card {
     padding: 2rem;

@@ -6,6 +6,7 @@ export default function useDeleteItem() {
   const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
+
   const [artworkList, setArtworkList] = useState([]);
   const [leafletList, setLeafletList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,8 +81,8 @@ export default function useDeleteItem() {
       const exhibitions = Array.isArray(response.data)
         ? response.data.map((item) => ({
             id: item.id,
-            title: item.exhibition_title,
-            period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
+            title: item.exhibition_title || '정보 없음',
+            period: `${item.exhibition_start_date || '정보 없음'} ~ ${item.exhibition_end_date || '정보 없음'}`,
             image: item.exhibition_poster || null, // API에 없을 경우 null
             gallery_name:
               item.exhibition_organization?.name || '갤러리 정보 없음',
@@ -226,6 +227,9 @@ export default function useDeleteItem() {
         setLeafletList((prev) => prev.filter((item) => item.id !== id));
         alert('리플렛이 삭제되었습니다.');
       }
+      alert(
+        `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
+      );
     } catch (err) {
       setError(err.message);
       console.error('삭제 실패:', err);
