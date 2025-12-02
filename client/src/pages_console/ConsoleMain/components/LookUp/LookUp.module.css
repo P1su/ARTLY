@@ -8,7 +8,7 @@
   display: block;
   padding: 1rem 1.5rem; /* 모바일용 작은 패딩 */
   border-radius: 0.5rem; /* 모바일용 작은 둥근 모서리 */
-  background-color: #f3f4f6;
+  background-color: #ececee;
 }
 
 .dropdownContainer {
@@ -82,7 +82,7 @@
   width: 100%;
   border: none;
   outline: none;
-  font-size: 1.1rem; /* 모바일용 폰트 */
+  font-size: 1.2rem; /* 모바일용 작은 폰트 */
   font-weight: 500;
   background: transparent;
 }
@@ -93,22 +93,22 @@
     margin-bottom: 1rem; /* 태블릿 이상에서는 더 큰 여백 */
     font-size: 1.125rem; /* 태블릿 이상에서는 더 큰 폰트 */
   }
-  
+
   .inputContainer {
     padding: 1.8rem 2.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
     border-radius: 0.875rem; /* 태블릿 이상에서는 더 큰 둥근 모서리 */
   }
-  
+
   .inputField {
     font-size: 1.5rem; /* 태블릿 이상에서는 더 큰 폰트 */
   }
-  
+
   .dropdownItem {
     padding: 1.125rem 1.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
     min-height: 3.5rem; /* 태블릿 이상에서는 더 큰 최소 높이 */
     font-size: 1rem; /* 태블릿 이상에서는 더 큰 폰트 */
   }
-  
+
   .chevron {
     font-size: 1.6rem; /* 태블릿 */
   }

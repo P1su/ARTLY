@@ -253,7 +253,7 @@ export default function Leaflet({ type }) {
             onClick={handlePreview}
             disabled={isEmpty}
           >
-            리플렛/도록 보기 리플렛/도록 보기
+            리플렛/도록 보기
           </button>
 
           {!leafletId ? (

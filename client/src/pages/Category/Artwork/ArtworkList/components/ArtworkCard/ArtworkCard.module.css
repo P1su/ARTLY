@@ -32,4 +32,17 @@
 .subParagraph {
   color: #666666;
   font-size: 1.2rem;
+
+  margin-top: 8px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  word-break: keep-all;
+
+  line-height: 1.5;
+  max-height: 4.5em;
 }
