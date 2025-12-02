@@ -47,6 +47,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
+      { path: '/', element: <Main /> },
+
       { path: '/exhibitions', element: <Exhibitions /> },
       { path: '/galleries', element: <Galleries /> },
       { path: '/artists', element: <Artists /> },
@@ -76,8 +78,6 @@ const router = createBrowserRouter([
       {
         element: <AuthRoute />,
         children: [
-          { path: '/', element: <Main /> },
-
           { path: '/notifications', element: <Notification /> },
           { path: '/mypage', element: <Mypage /> },
           { path: '/mypage/edit', element: <EditProfile /> },

@@ -1,19 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper 임포트
+import { Navigation } from 'swiper/modules'; // 네비게이션 모듈
+import 'swiper/css';
+import 'swiper/css/navigation';
+
 import styles from './ArtistCarousel.module.css';
 import { instance } from '../../../../apis/instance.js';
 
 export default function ArtistCarousel({ title }) {
   const [artists, setArtists] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [slidesToShow, setSlidesToShow] = useState(1);
-  const [isSliding, setIsSliding] = useState(false);
-  const carouselRef = useRef(null);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
-  const updateSlidesToShow = () => {
-    setSlidesToShow(4);
+  const handleSwiperInit = (swiper) => {
+    swiper.params.navigation.prevEl = prevRef.current;
+    swiper.params.navigation.nextEl = nextRef.current;
+    swiper.navigation.destroy();
+    swiper.navigation.init();
+    swiper.navigation.update();
   };
 
   useEffect(() => {
@@ -21,7 +26,7 @@ export default function ArtistCarousel({ title }) {
       try {
         const response = await instance.get('/api/artist', {
           params: {
-            //category: 'onExhibition',
+            category: 'onExhibition',
           },
         });
         const parsed = response.data
@@ -39,63 +44,7 @@ export default function ArtistCarousel({ title }) {
     };
 
     getArtistList();
-    updateSlidesToShow();
   }, []);
-
-  const slideTo = (index) => {
-    if (isSliding) return;
-    setIsSliding(true);
-    const width = carouselRef.current.offsetWidth / slidesToShow;
-    carouselRef.current.style.transition = 'transform 0.4s ease-in-out';
-    carouselRef.current.style.transform = `translateX(-${width * index}px)`;
-    setCurrentIndex(index);
-  };
-
-  const nextSlide = () => slideTo(currentIndex + 1);
-  const prevSlide = () => slideTo(currentIndex - 1);
-
-  useEffect(() => {
-    const width = carouselRef.current.offsetWidth / slidesToShow;
-    carouselRef.current.style.transition = 'none';
-    carouselRef.current.style.transform = `translateX(-${width}px)`;
-  }, [slidesToShow]);
-
-  useEffect(() => {
-    const handleTransitionEnd = () => {
-      const width = carouselRef.current.offsetWidth / slidesToShow;
-      carouselRef.current.style.transition = 'none';
-
-      if (currentIndex >= artists.length - slidesToShow) {
-        carouselRef.current.style.transform = `translateX(-${width}px)`;
-        setCurrentIndex(1);
-      } else if (currentIndex === 0) {
-        const resetIndex = artists.length - slidesToShow - 1;
-        carouselRef.current.style.transform = `translateX(-${width * resetIndex}px)`;
-        setCurrentIndex(resetIndex);
-      }
-
-      setIsSliding(false);
-    };
-
-    const node = carouselRef.current;
-    node.addEventListener('transitionend', handleTransitionEnd);
-    return () => node.removeEventListener('transitionend', handleTransitionEnd);
-  }, [currentIndex, artists.length, slidesToShow]);
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 50) {
-      diff > 0 ? nextSlide() : prevSlide();
-    }
-  };
 
   return (
     <div className={styles.carouselWrapper}>
@@ -105,55 +54,65 @@ export default function ArtistCarousel({ title }) {
           더보기
         </Link>
       </div>
-      <div
-        className={styles.carouselViewport}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className={styles.carouselTrack} ref={carouselRef}>
-          {artists.map((item) => (
-            <Link
-              to={`/artists/${item?.id}`}
-              key={`${item?.artist_name}-${item?.id}`}
-              className={styles.carouselSlide}
-            >
-              <img
-                src={item?.artist_image || '/default.jpg'}
-                alt={
-                  item?.artist_name
-                    ? `${item.artist_name} 이미지`
-                    : '작가 이미지'
-                }
-                className={styles.artistImage}
-              />
-              <div className={styles.artistText}>
-                <h3 className={styles.name}>
-                  {item?.artist_name && item.artist_name.trim() !== ''
-                    ? item.artist_name
-                    : '이름 없음'}
-                </h3>
-                <p className={styles.field}>
-                  {item?.artist_category && item.artist_category.trim() !== ''
-                    ? item.artist_category
-                    : '장르 없음'}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
 
-      <button
-        className={styles.prevButton}
-        onClick={() => !isSliding && prevSlide()}
-      >
+      {artists.length > 0 ? (
+        <Swiper
+          modules={[Navigation]}
+          onInit={handleSwiperInit}
+          spaceBetween={20}
+          slidesPerView={4}
+          loop={artists.length > 4}
+          className={styles.carouselViewport}
+          breakpoints={{
+            0: { slidesPerView: 1, spaceBetween: 10 },
+            480: { slidesPerView: 2, spaceBetween: 15 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 20 },
+          }}
+        >
+          {artists.map((item) => (
+            <SwiperSlide key={`${item?.id}`} className={styles.slideItem}>
+              <Link to={`/artists/${item?.id}`} className={styles.carouselLink}>
+                <div className={styles.imageContainer}>
+                  <img
+                    src={item?.artist_image || '/default.jpg'}
+                    alt={item?.artist_name || '작가 이미지'}
+                    className={styles.artistImage}
+                  />
+                </div>
+                <div className={styles.artistText}>
+                  <h3 className={styles.name}>
+                    {item?.artist_name && item.artist_name.trim() !== ''
+                      ? item.artist_name
+                      : '이름 없음'}
+                  </h3>
+                  <p className={styles.field}>
+                    {item?.artist_category && item.artist_category.trim() !== ''
+                      ? item.artist_category
+                      : '장르 없음'}
+                  </p>
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '5rem',
+            color: '#999',
+            fontSize: '1.4rem',
+          }}
+        >
+          등록된 작가가 없습니다.
+        </div>
+      )}
+
+      <button ref={prevRef} className={styles.prevButton}>
         &#8249;
       </button>
-      <button
-        className={styles.nextButton}
-        onClick={() => !isSliding && nextSlide()}
-      >
+      <button ref={nextRef} className={styles.nextButton}>
         &#8250;
       </button>
     </div>

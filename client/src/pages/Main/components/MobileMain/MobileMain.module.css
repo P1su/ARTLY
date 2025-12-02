@@ -91,16 +91,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
   flex-shrink: 0;
-
+  cursor: pointer;
   color: #555;
-
-  text-align: center;
+  gap: 0.8rem;
+  text-align: start;
   font-size: 1.4rem;
   font-style: normal;
   font-weight: 600;
   line-height: 17px;
+}
+
+.itemIcon {
+  width: 4rem;
+  height: 4rem;
 }
 
 .nonGalleryBox {
@@ -132,7 +136,7 @@
 
 .titleSection {
   display: flex;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.6rem;
   padding: 0 0.4rem;

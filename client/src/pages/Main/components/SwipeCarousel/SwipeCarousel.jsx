@@ -11,33 +11,25 @@ export default function SwipeCarousel({ title, category, value }) {
   const [items, setItems] = useState([]);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const swiperRef = useRef(null);
 
-  useEffect(() => {
-    if (
-      swiperRef.current &&
-      prevRef.current &&
-      nextRef.current &&
-      swiperRef.current.params?.navigation
-    ) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
-
-      swiperRef.current.navigation.destroy();
-      swiperRef.current.navigation.init();
-      swiperRef.current.navigation.update();
-    }
-  }, []);
+  const handleSwiperInit = (swiper) => {
+    swiper.params.navigation.prevEl = prevRef.current;
+    swiper.params.navigation.nextEl = nextRef.current;
+    swiper.navigation.destroy();
+    swiper.navigation.init();
+    swiper.navigation.update();
+  };
 
   useEffect(() => {
     const getExhibitionList = async () => {
       try {
-        const response = await instance.get('/api/exhibitions', {
-          params: {
-            status: 'exhibited',
-            [category]: value,
-          },
-        });
+        const params = { status: 'exhibited' };
+        if (category && value) {
+          params[category] = value;
+        }
+
+        const response = await instance.get('/api/exhibitions', { params });
+
         const parsed = response.data.map(
           ({
             id,
@@ -48,6 +40,7 @@ export default function SwipeCarousel({ title, category, value }) {
             exhibition_start_date: startDate,
             exhibition_end_date: endDate,
             exhibition_organization: organization,
+            exhibition_location: location,
           }) => ({
             id,
             image,
@@ -56,7 +49,10 @@ export default function SwipeCarousel({ title, category, value }) {
             status,
             startDate,
             endDate,
-            organization,
+            organizationName:
+              typeof organization === 'object'
+                ? organization?.name
+                : organization || location,
           }),
         );
 
@@ -67,7 +63,7 @@ export default function SwipeCarousel({ title, category, value }) {
     };
 
     getExhibitionList();
-  }, []);
+  }, [category, value]);
 
   return (
     <div className={styles.carouselWrapper}>
@@ -81,15 +77,11 @@ export default function SwipeCarousel({ title, category, value }) {
       {items.length > 0 ? (
         <Swiper
           modules={[Navigation]}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          slidesPerView='auto'
-          centeredSlides
-          loop={items.length > 2}
+          onInit={handleSwiperInit}
+          slidesPerView={'auto'}
+          centeredSlides={false}
           spaceBetween={20}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
+          loop={items.length > 3}
           className={styles.carouselViewport}
         >
           {items.map((item) => (
@@ -102,7 +94,7 @@ export default function SwipeCarousel({ title, category, value }) {
                 />
                 <div className={styles.cardText}>
                   <h3>《{item.title}》</h3>
-                  <p>{item.organization.name}</p>
+                  <p>{item.organizationName}</p>
                   <p>
                     {item.startDate} ~ {item.endDate}
                   </p>
