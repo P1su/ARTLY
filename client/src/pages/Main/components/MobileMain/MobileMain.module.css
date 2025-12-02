@@ -42,18 +42,20 @@
   display: block;
   position: absolute;
   inset: 0;
+  object-fit: cover;
+  object-position: center;
 }
 
 .tagline {
   color: #fff;
   margin-top: 1.2rem;
   text-align: right;
-  font-size: 2rem;
+  font-size: 2.3rem;
   line-height: 1.5;
-  font-weight: 600;
+  font-weight: 500;
   position: absolute;
   right: 1rem;
-  top: 32rem;
+  top: 30rem;
 }
 
 .contentContainer {
@@ -62,28 +64,26 @@
 
 .userText {
   color: #222;
-
+  margin-bottom: 0.5rem;
   font-size: 2rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 33px; /* 151.181% */
+  line-height: 33px;
   letter-spacing: -0.5px;
 }
 
 .itemContainer {
   display: flex;
-  height: 100px;
-  padding: 0 16px;
-  margin-bottom: 5rem;
-  justify-content: space-between;
+  height: 10rem;
+  padding: 0 1.6rem;
+  margin-bottom: 4rem;
+  justify-content: space-around;
   align-items: center;
-  gap: 29px;
+  gap: 3rem;
 
   border-radius: 16px;
   background: #fff;
-
-  /* shadow */
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.08);
 }
 
 .itemBox {
@@ -91,89 +91,95 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
   flex-shrink: 0;
 
   color: #555;
 
   text-align: center;
-  font-size: 13px;
+  font-size: 1.4rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 17px; /* 130.769% */
+  line-height: 17px;
 }
 
 .nonGalleryBox {
   display: flex;
   height: 5rem;
-  padding: 9px 30px 7px 30px;
+  padding: 1rem 3rem;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 1rem;
 
   border-radius: 8px;
-  background: var(--color-grey-94, #efefef);
+  background: var(--color-grey-94, #efefefa2);
 
-  color: var(--color-grey-70, #b2b2b2);
+  color: var(--color-grey-70, #999999);
   text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 20px; /* 166.667% */
+  font-size: 1.4rem;
+  line-height: 20px;
   letter-spacing: -0.2px;
 
   white-space: pre-line;
 }
 
+.listSection {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding-bottom: 5rem;
+}
+
+.titleSection {
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.6rem;
+  padding: 0 0.4rem;
+  color: #222;
+  justify-content: start;
+  align-items: center;
+}
+
 .exhibitionList {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
-  padding-bottom: 5rem;
+  gap: 2.4rem;
 }
 
 .galleryItemCard {
   display: flex;
   width: 100%;
-  padding: 12px 10px;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  padding: 0;
 
-  border-radius: 16px;
+  border-radius: 1.6rem;
+  background: #fff;
+  overflow: hidden;
 
-  /* shadow */
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0.6rem 3rem rgba(0, 0, 0, 0.117);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
-.galleryTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px; /* 141.176% */
-  letter-spacing: -0.1px;
-}
-
-.exhibitionSpan {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px; /* 141.176% */
-  letter-spacing: -0.1px;
-}
-
-.addressText {
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 19px; /* 135.714% */
-  letter-spacing: -0.1px;
+.galleryItemCard:active {
+  transform: scale(0.98);
 }
 
 .imageBox {
   position: relative;
   width: 100%;
+  height: 20rem;
+  background-color: #f5f5f5;
+}
+
+.exhibitionImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .statusBadge {
@@ -181,25 +187,72 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 1.2rem;
+  left: 1.2rem;
+  padding: 0.5rem 1rem;
 
-  width: 5rem;
-  height: 1.9rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
 
-  font-size: 0.9rem;
-  color: var(--white01);
-  border-radius: 10px;
-  background: var(--light-gray01);
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   z-index: 5;
 }
 
 .ongoing {
-  background: var(--blue01);
+  background: var(--blue01, #3665f3);
 }
 
-.exhibitionImage {
+.cardInfo {
+  padding: 1.6rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.galleryTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  height: auto;
-  border-radius: 16px;
+
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.4;
+  letter-spacing: -0.05rem;
+}
+
+.ellipsisTitle {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exhibitionSpan {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.addressText {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #767676;
+  line-height: 1.4;
+  letter-spacing: -0.03rem;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.galleryTitle svg {
+  color: #ccc;
+  min-width: 1.6rem;
+  margin-left: 0.8rem;
 }
