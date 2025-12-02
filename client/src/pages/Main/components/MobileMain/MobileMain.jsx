@@ -24,8 +24,9 @@ export default function MobileMain() {
     {
       key: 'docent',
       icon: <IcDocent />,
+
       label: '도슨트 듣기',
-      link: '/qrscan',
+      link: '/scan',
     },
     {
       key: 'book',
@@ -190,8 +191,8 @@ export default function MobileMain() {
                   : navigate(link);
               }}
             >
-              {icon}
-              {label}
+              <span className={styles.itemIcon}>{icon}</span>
+              <span className={styles.itemLabel}>{label}</span>
             </div>
           ))}
         </div>
