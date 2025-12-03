@@ -45,20 +45,22 @@ export default function ArtistCard({ artistItem, onEvent }) {
         src={imageUrl}
         alt='작가 대표 이미지'
       />
-      <h3 className={styles.artistNameTitle}>{name}</h3>
       {isDisplaying === '1' && (
         <div className={styles.statusContainer}>전시중</div>
       )}
-      <button
-        className={styles.favButton}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          handleLike();
-        }}
-      >
-        <FaStar className={isLike === '1' ? styles.likedIcon : styles.icon} />
-      </button>
+      <div className={styles.titleContainer}>
+        <h3 className={styles.artistNameTitle}>{name}</h3>
+        <button
+          className={styles.favButton}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleLike();
+          }}
+        >
+          <FaStar className={isLike === '1' ? styles.likedIcon : styles.icon} />
+        </button>
+      </div>
       <p className={styles.subParagraph}>{field}</p>
       <p className={styles.subParagraph}>{nation}</p>
     </Link>
