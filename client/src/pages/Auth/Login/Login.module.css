@@ -1,64 +1,163 @@
-.layout {
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 6rem);
+  background-color: #f9f9f9;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.loginContent {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 100%;
+  max-width: 40rem;
+}
 
-  height: calc(100vh - 6rem);
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
 }
 
 .logo {
-  margin: 2rem;
-
-  color: var(--blue01);
-  text-align: center;
-  font-family: 'Segoe UI';
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 17px;
+  color: var(--blue01, #3665f3);
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
 }
 
-.loginParagraph {
-  margin-bottom: 2.7rem;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 19px; /* 135.714% */
-  letter-spacing: -0.1px;
+.subtitle {
+  color: #666;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
-.loginButton {
+.buttonGroup {
+  width: 100%;
   display: flex;
-  width: 30rem;
-  padding: 9px 30px 7px 30px;
-  margin: 1rem;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.socialButton,
+.emailButton {
+  width: 100%;
+  height: 5rem;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  border-radius: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  transition: opacity 0.2s;
+}
 
-  border-radius: 8px;
-  background: var(--blue01);
+.socialButton:hover,
+.emailButton:hover {
+  opacity: 0.9;
+}
 
-  color: var(--white01);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px; /* 150% */
+.iconPlaceholder {
+  margin-right: 0.8rem;
+  font-size: 1.8rem;
+}
+
+.kakao {
+  background-color: #fee500;
+  color: #000000;
+}
+
+.google {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #dddddd;
+}
+
+.apple {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #999;
+  font-size: 1.3rem;
+  margin: 2.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.divider span {
+  padding: 0 1.5rem;
+  font-weight: 400;
+}
+
+.emailButton {
+  background-color: var(--blue01, #3665f3);
+  color: #ffffff;
+}
+
+.footer {
+  margin-top: 3rem;
 }
 
 .registerLink {
-  color: var(--gray02);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 19px; /* 135.714% */
-  letter-spacing: -0.1px;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  font-size: 1.4rem;
+  color: #888;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+@media (max-width: 1000px) {
+  .container {
+    padding: 4rem;
+  }
+
+  .loginContent {
+    max-width: 50rem;
+  }
+
+  .logo {
+    font-size: 4.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 2rem;
+    background-color: #fff;
+  }
+
+  .loginContent {
+    max-width: 100%;
+  }
+
+  .socialButton,
+  .emailButton {
+    height: 4rem;
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    font-size: 3.6rem;
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+  }
 }

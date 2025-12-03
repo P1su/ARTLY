@@ -1,48 +1,78 @@
 .layout {
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: calc(100vh - 6rem);
+  padding-top: 8rem;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 42rem;
+  padding: 0 2rem;
+  display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 4rem 30rem 6rem;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
 }
 
 .loginTitle {
-  color: rgb(51, 51, 51);
-  font-size: 2.8rem;
-  line-height: 1.5;
+  color: #222;
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 .subParagraph {
-  color: #666666;
-  font-size: 1.4rem;
+  color: #888;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
 .contentContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+}
 
-  border-radius: 0.8rem;
+.loginForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .submitButton {
+  width: 100%;
+  height: 4rem;
+  margin-top: 1rem;
+
   display: flex;
-  width: 300px;
-  height: 30px;
-  padding: 7px 30px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
 
-  border-radius: 20px;
-  background-color: var(--blue01);
+  border-radius: 3rem;
+  background-color: var(--blue01, #3665f3);
 
-  color: var(--white01);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
 }
 
 .submitButton:hover {
-  background-color: var(--blue02);
+  background-color: var(--blue02, #2b52c9);
 }
 
 .submitButton:disabled {
@@ -50,32 +80,26 @@
   cursor: not-allowed;
 }
 
-.loginForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.6rem;
+@media (max-width: 1000px) {
+  .container {
+    max-width: 50rem;
+  }
 
-  width: 100%;
-  padding: 2rem 10rem;
-}
-
-@media (max-width: 1072px) {
-  .layout {
-    padding: 4rem 5rem 6rem;
+  .loginTitle {
+    font-size: 2.8rem;
   }
 }
 
 @media (max-width: 700px) {
   .layout {
-    padding: 4rem 2rem 6rem;
+    padding-top: 5rem;
+  }
+  .container {
+    max-width: 100%;
   }
 
-  .contentContainer {
-    width: 100%;
-  }
-
-  .loginForm {
-    padding: 0;
+  .submitButton {
+    height: 4.2rem;
+    font-size: 1.5rem;
   }
 }
