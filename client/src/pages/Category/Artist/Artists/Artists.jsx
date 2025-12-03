@@ -1,7 +1,7 @@
 import styles from './Artists.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { instance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../apis/instance.js';
 import ListHeader from '../../components/ListHeader/ListHeader';
 import DropdownContainer from '../../components/DropdownContainer/DropdownContainer';
 import { artistFilter } from '../../../../utils/filters/artisFilter.js';
@@ -11,6 +11,7 @@ import usePagination from '../../../../hooks/usePagination';
 import ArtistCard from './components/ArtistCard/ArtistCard';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import FavButton from '../../components/FavButton/FavButton.jsx';
 
 export default function Artists() {
   const { user } = useUser();
@@ -46,7 +47,7 @@ export default function Artists() {
     try {
       setIsLoading(true);
 
-      const response = await instance.get('/api/artist', {
+      const response = await userInstance.get('/api/artist', {
         params: params,
       });
 
@@ -72,13 +73,17 @@ export default function Artists() {
         onSearch={handleSearch}
         value={query}
       />
-      <DropdownContainer
-        filterList={artistFilter}
-        onSetFilter={setArtistFilters}
-      />
+      <div className={styles.dropboxContainer}>
+        <DropdownContainer
+          filterList={artistFilter}
+          onSetFilter={setArtistFilters}
+        />
+        <FavButton onFav={handleFav} isFav={artistFilters.liked_only} />
+      </div>
+
       <TotalCounts num={artists.length} label='작가' />
       {isLoading && <LoadingSpinner />}
-      
+
       {!isLoading && artists.length === 0 && (
         <div className={styles.nonDataText}>조회된 작가가 없습니다.</div>
       )}

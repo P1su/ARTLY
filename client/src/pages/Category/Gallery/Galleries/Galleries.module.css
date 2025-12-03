@@ -13,6 +13,12 @@
   justify-content: space-between;
 }
 
+.dropBoxButtonSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

@@ -78,7 +78,7 @@
 
 .likedIcon {
   font-size: 1.8rem;
-  color: #e57373;
+  color: var(--blue01);
 }
 
 @media (max-width: 756px) {

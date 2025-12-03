@@ -11,6 +11,7 @@ import usePagination from '../../../../hooks/usePagination';
 import ExhibitionCard from './components/ExhibitionCard/ExhibitionCard';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import FavButton from '../../components/FavButton/FavButton.jsx';
 
 export default function Exhibitions() {
   const { user } = useUser();
@@ -78,11 +79,14 @@ export default function Exhibitions() {
         value={query}
       />
 
-      <DropdownContainer
-        labels={labelList}
-        filterList={exhibitionFilter}
-        onSetFilter={setExhibitionFilters}
-      />
+      <div className={styles.dropboxContainer}>
+        <DropdownContainer
+          labels={labelList}
+          filterList={exhibitionFilter}
+          onSetFilter={setExhibitionFilters}
+        />
+        <FavButton onFav={handleFav} isFav={exhibitionFilters.liked_only} />
+      </div>
 
       <TotalCounts num={exhibitions.length} label='전시회' />
       {isLoading && <LoadingSpinner />}
