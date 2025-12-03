@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { userInstance } from '../../../../../../apis/instance.js';
 import { getExhibitionStatus } from '../../../utils/getExhibitionStatus.js';
 import MapModal from '../MapModal/MapModal';
-import { FaHeart } from 'react-icons/fa6';
+import { FaStar } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 
@@ -89,7 +89,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
             handleLike();
           }}
         >
-          <FaHeart
+          <FaStar
             className={isLike === true ? styles.likedIcon : styles.icon}
           />
         </button>

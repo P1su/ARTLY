@@ -1,6 +1,6 @@
 import styles from './ArtistCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaHeart } from 'react-icons/fa6';
+import { FaStar } from 'react-icons/fa6';
 import { userInstance } from '../../../../../../apis/instance';
 
 export default function ArtistCard({ artistItem, onEvent }) {
@@ -57,7 +57,7 @@ export default function ArtistCard({ artistItem, onEvent }) {
           handleLike();
         }}
       >
-        <FaHeart className={isLike === '1' ? styles.likedIcon : styles.icon} />
+        <FaStar className={isLike === '1' ? styles.likedIcon : styles.icon} />
       </button>
       <p className={styles.subParagraph}>{field}</p>
       <p className={styles.subParagraph}>{nation}</p>
