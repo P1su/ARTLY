@@ -8,21 +8,21 @@ import LogoutModal from './LogoutModal/LogoutModal.jsx';
 
 export default function Menu({ onOpen, isOpen }) {
   const navigate = useNavigate();
-  const { isOpen: isModalOpen, handleOpenModal } = useModal();
+  // const { isOpen: isModalOpen, handleOpenModal } = useModal();
   const { user, logout } = useContext(UserContext);
 
   const handleLogout = () => {
     logout();
-    handleOpenModal();
-    //onOpen();
-    //navigate('/');
-  };
-
-  const handleCloseModal = () => {
-    handleOpenModal();
+    // handleOpenModal();
     onOpen();
     navigate('/');
   };
+
+  // const handleCloseModal = () => {
+  //   handleOpenModal();
+  //   onOpen();
+  //   navigate('/');
+  // };
 
   const handleNavigate = (path, isBook = false) => {
     onOpen();
@@ -33,7 +33,7 @@ export default function Menu({ onOpen, isOpen }) {
 
   return (
     <div className={styles.overlay} onClick={onOpen}>
-      {isModalOpen && <LogoutModal onClose={handleCloseModal} />}
+      {/* {isModalOpen && <LogoutModal onClose={handleCloseModal} />} */}
       <div
         className={`${styles.menuLayout} ${isOpen ? styles.menuVisible : styles.menuHidden}`}
         onClick={(e) => e.stopPropagation()}

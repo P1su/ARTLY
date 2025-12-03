@@ -4,10 +4,66 @@
   align-items: center;
 
   width: 100%;
+  padding: 4rem clamp(2rem, 6vw, 6rem) 8rem;
+
   font-size: 2rem;
   box-sizing: border-box;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+.tabContainer {
+  width: 100%;
+  padding: 0 4rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.userText {
+  color: #222;
+  margin: 3rem 0;
+  font-size: 2.6rem;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 33px;
+  letter-spacing: -0.5px;
+}
+
+.itemContainer {
+  display: flex;
+  height: 10rem;
+  padding: 0 1.6rem;
+  margin-bottom: 4rem;
+  justify-content: space-around;
+  align-items: center;
+  gap: 3rem;
+
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.08);
+}
+
+.itemBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: #555;
+  gap: 0.8rem;
+  text-align: start;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.itemIcon {
+  width: 4rem;
+  height: 4rem;
 }
 
 .carouselContainer {
@@ -17,13 +73,7 @@
   padding: 4rem clamp(1rem, 5vw, 4rem);
 }
 
-@media (max-width: 1500px) {
-  .mainLayout {
-    padding: 4rem clamp(2rem, 6vw, 6rem) 6rem;
-  }
-}
-
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .mainLayout {
     padding: 3rem clamp(1.5rem, 5vw, 3rem) 5rem;
   }
