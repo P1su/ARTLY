@@ -1,8 +1,8 @@
 const IcDocent = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    width='40'
-    height='31'
+    width='43'
+    height='44'
     viewBox='0 0 40 31'
     fill='none'
   >
