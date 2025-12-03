@@ -69,7 +69,7 @@ export default function Register() {
       await instance.post('/api/auth/register', formDatas);
       setModal({
         isOpen: true,
-        message: '회원가입에 성공하였습니다',
+        message: '회원가입에 성공하였습니다.',
         callback: () =>
           navigate('/login', { state: { from: location.pathname } }),
       });
