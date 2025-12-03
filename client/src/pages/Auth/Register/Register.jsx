@@ -120,18 +120,20 @@ export default function Register() {
           />
         </InputContainer>
         <InputContainer title='갤러리 관리자인가요?'>
-          <InputRadio
-            label='관리자'
-            name='admin_flag'
-            value={1}
-            onChange={handleChange}
-          />
-          <InputRadio
-            label='유저'
-            name='admin_flag'
-            value={0}
-            onChange={handleChange}
-          />
+          <div className={styles.radioGroup}>
+            <InputRadio
+              label='관리자'
+              name='admin_flag'
+              value={1}
+              onChange={handleChange}
+            />
+            <InputRadio
+              label='유저'
+              name='admin_flag'
+              value={0}
+              onChange={handleChange}
+            />
+          </div>
         </InputContainer>
         <button className={styles.submitButton} disabled={!isFormValid()}>
           회원가입
