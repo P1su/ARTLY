@@ -5,6 +5,8 @@ import useInput from '../../../hooks/useInput';
 import InputText from '../../../components/Input/InputText/InputText';
 import InputRadio from '../../../components/Input/InputRadio/InputRadio';
 import InputContainer from '../../../components/Input/InputConatiner/InputContainer';
+import { SimpleModal } from '../../../components/AlertModal/AlertModal.jsx';
+import { useState } from 'react';
 
 export default function Register() {
   const { data: formDatas, handleChange } = useInput({
@@ -14,8 +16,21 @@ export default function Register() {
     user_name: '',
     admin_flag: 0,
   });
+  const [modal, setModal] = useState({
+    isOpen: false,
+    message: '',
+    callback: null,
+  });
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleCloseModal = () => {
+    setModal((prev) => ({ ...prev, isOpen: false }));
+    // 콜백 함수가 있다면 실행 (예: 로그인 페이지로 이동)
+    if (modal.callback) {
+      modal.callback();
+    }
+  };
 
   const isValidPassword = (pwd) => {
     // 영문, 숫자, 특수문자, 8자 이상 검증
@@ -52,15 +67,35 @@ export default function Register() {
 
     try {
       await instance.post('/api/auth/register', formDatas);
-      alert('회원가입에 성공하였습니다');
-      navigate('/login', { state: { from: location.pathname } });
+      setModal({
+        isOpen: true,
+        message: '회원가입에 성공하였습니다.',
+        callback: () =>
+          navigate('/login', { state: { from: location.pathname } }),
+      });
     } catch (error) {
-      throw new Error(error);
+      let errorMessage = '회원가입 처리 중 오류가 발생했습니다.';
+
+      if (error.response && error.response.status === 409) {
+        errorMessage =
+          error.response.data.message || '이미 존재하는 아이디입니다.';
+      }
+
+      setModal({
+        isOpen: true,
+        message: errorMessage,
+        callback: null,
+      });
     }
   };
 
   return (
     <div className={styles.layout}>
+      <SimpleModal
+        isOpen={modal.isOpen}
+        message={modal.message}
+        onClose={handleCloseModal}
+      />
       <h1 className={styles.registerTitle}>회원가입</h1>
       <p className={styles.subParagraph}>아뜰리의 회원이 되어보세요</p>
       <form className={styles.form} onSubmit={postRegister}>
@@ -120,18 +155,20 @@ export default function Register() {
           />
         </InputContainer>
         <InputContainer title='갤러리 관리자인가요?'>
-          <InputRadio
-            label='관리자'
-            name='admin_flag'
-            value={1}
-            onChange={handleChange}
-          />
-          <InputRadio
-            label='유저'
-            name='admin_flag'
-            value={0}
-            onChange={handleChange}
-          />
+          <div className={styles.radioGroup}>
+            <InputRadio
+              label='관리자'
+              name='admin_flag'
+              value={1}
+              onChange={handleChange}
+            />
+            <InputRadio
+              label='유저'
+              name='admin_flag'
+              value={0}
+              onChange={handleChange}
+            />
+          </div>
         </InputContainer>
         <button className={styles.submitButton} disabled={!isFormValid()}>
           회원가입
