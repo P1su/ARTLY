@@ -9,18 +9,18 @@ import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
-    title: '갤러리 수정',
+    title: '갤러리 등록/수정',
     apiUrl: (id) => (id === 'new' ? '/api/galleries' : `/api/galleries/${id}`),
     formImageField: 'gallery_image_file',
   },
   exhibitions: {
-    title: '전시회 수정',
+    title: '전시회 등록/수정',
     apiUrl: (id) =>
       id === 'new' ? '/api/exhibitions' : `/api/exhibitions/${id}`,
     formImageField: 'exhibition_poster_file',
   },
   artworks: {
-    title: '작품 수정',
+    title: '작품 등록/수정',
     apiUrl: (id) => (id === 'new' ? '/api/arts' : `/api/arts/${id}`),
     formImageField: 'image',
   },
