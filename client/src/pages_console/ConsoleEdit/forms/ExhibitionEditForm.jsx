@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectModal.jsx';
+import Img from '../../../components/Img/Img.jsx';
 
 const getArtistId = (artist) => artist.id || artist.artist_id;
 
@@ -285,54 +286,47 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             />
           </div>
 
-          <div className={styles.inputGroup} style={{ gridColumn: '1 / -1' }}>
-            <label className={styles.label}>참여 작가 등록</label>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>홈페이지</label>
+            <input
+              className={styles.input}
+              type='url'
+              name='exhibition_homepage'
+              value={data.exhibition_homepage || ''}
+              onChange={handleInputChange}
+            />
+          </div>
 
-            <div className={styles.artistListContainer}>
+          <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+            <div className={styles.addHeaderContainer}>
+              <label className={styles.label}>참여 작가 등록</label>
               <button
                 type='button'
-                className={styles.addArtistBtn}
+                className={styles.addBtn}
                 onClick={() => setShowArtistModal(true)}
-                style={{
-                  marginBottom: '10px',
-                  padding: '8px 12px',
-                  cursor: 'pointer',
-                }}
               >
-                + 작가 검색 및 추가
+                + 작가 검색/추가
               </button>
-
-              <div
-                style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-              >
+            </div>
+            <div className={styles.artistListContainer}>
+              <div className={styles.artistList}>
                 {(data.artists || []).map((artist, index) => {
                   const id = getArtistId(artist);
                   const name = getArtistName(artist);
                   return (
-                    <div
-                      key={id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px',
-                        background: '#f5f5f5',
-                        padding: '8px',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      <span style={{ fontWeight: 'bold', flex: 1 }}>
-                        {name}
-                      </span>
+                    <div key={id || index} className={styles.artworkCard}>
+                      <Img
+                        src={artist.artist_image}
+                        alt='thumb'
+                        className={styles.artistThumb}
+                      />
+                      <span className={styles.artistName}>{name}</span>
 
                       <button
                         type='button'
+                        className={styles.artistRemoveBtn}
                         onClick={() => handleRemoveArtist(id)}
-                        style={{
-                          border: 'none',
-                          background: 'none',
-                          cursor: 'pointer',
-                          color: 'red',
-                        }}
+                        title='삭제'
                       >
                         ✕
                       </button>
@@ -344,20 +338,21 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           </div>
 
           <div className={`${styles.inputGroup} ${styles.artworkSection}`}>
-            <label className={styles.label}>출품 작품 관리</label>
-            <div className={styles.artistListContainer}>
+            <div className={styles.addHeaderContainer}>
+              <label className={styles.label}>출품 작품 관리</label>
               <button
                 type='button'
-                className={styles.addArtworkBtn}
+                className={styles.addBtn}
                 onClick={() => setShowArtworkModal(true)}
               >
                 + 작품 불러오기
               </button>
-
+            </div>
+            <div className={styles.artistListContainer}>
               <div className={styles.artworkGrid}>
                 {(data.artworks || []).map((art) => (
                   <div key={art.id} className={styles.artworkCard}>
-                    <img
+                    <Img
                       src={getArtImage(art)}
                       alt='thumb'
                       className={styles.artworkThumb}
@@ -382,17 +377,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 ))}
               </div>
             </div>
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>홈페이지</label>
-            <input
-              className={styles.input}
-              type='url'
-              name='exhibition_homepage'
-              value={data.exhibition_homepage || ''}
-              onChange={handleInputChange}
-            />
           </div>
         </div>
       </div>

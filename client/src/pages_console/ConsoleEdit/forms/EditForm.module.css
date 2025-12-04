@@ -334,15 +334,20 @@
   color: #888;
 }
 
+.addHeaderContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .artworkSection {
   grid-column: 1 / -1;
   margin-top: 2rem;
-  border-top: 0.1rem solid #eee;
   padding-top: 2rem;
 }
 
-.addArtworkBtn {
-  margin-bottom: 1rem;
+.addBtn {
   padding: 0.8rem 1.2rem;
   background-color: #fff;
   border: 0.1rem solid #ddd;
@@ -354,7 +359,7 @@
   color: #333;
 }
 
-.addArtworkBtn:hover {
+.addBtn:hover {
   background-color: #f0f0f0;
   border-color: #ccc;
 }
@@ -372,7 +377,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: #fff;
+  background: #f4f4f471;
   border: 0.1rem solid #ddd;
   padding: 0.8rem;
   border-radius: 0.4rem;
@@ -426,6 +431,68 @@
 
 .removeBtn:hover {
   color: #d9363e;
+}
+
+/* 그리드 컬럼 전체 사용 (grid-column: 1 / -1) */
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+/* 작가 추가 버튼 스타일 (기존 클래스 확장 혹은 추가) */
+.addArtistBtn {
+  margin-bottom: 1rem; /* 10px */
+  padding: 0.8rem 1.2rem; /* 8px 12px */
+  cursor: pointer;
+  /* 기존 버튼 스타일이 있다면 여기에 병합됩니다 */
+}
+
+/* 작가 목록 컨테이너 */
+.artistList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* 8px */
+}
+
+/* 개별 작가 아이템 박스 */
+.artistItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* 10px */
+  background-color: #f5f5f5;
+  padding: 0.8rem; /* 8px */
+  border-radius: 0.4rem; /* 4px */
+}
+
+/* 작가 이름 텍스트 */
+.artistName {
+  font-weight: 700; /* bold */
+  flex: 1;
+  font-size: 1.4rem; /* 필요 시 사이즈 조정 (예: 14px) */
+}
+
+.artistThumb {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 30rem;
+  background-color: #eee;
+}
+
+/* 삭제(X) 버튼 */
+.artistRemoveBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #ff4d4f; /* red보다 조금 더 세련된 빨강, 원하면 red로 변경 */
+  font-size: 1.2rem; /* 12px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+}
+
+.artistRemoveBtn:hover {
+  color: #d9363e; /* 호버 시 더 진한 색상 */
 }
 
 @media (max-width: 1500px) {
