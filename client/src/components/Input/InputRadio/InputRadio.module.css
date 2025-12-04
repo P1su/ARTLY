@@ -1,25 +1,45 @@
 .layout {
-  display: flex;
-  gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  user-select: none;
 }
 
 .radioLabel {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 500;
+  color: #333;
+  transition: color 0.2s ease;
 }
 
 .radioInput[type='radio'] {
   appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 0.2rem solid #ccc;
+  margin: 0;
+
+  width: 2rem;
+  height: 2rem;
+
+  border: 0.15rem solid #d1d5db;
   border-radius: 50%;
-  outline: none;
+  background-color: #fff;
+
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
+  position: relative;
+}
+
+.layout:hover .radioInput[type='radio'] {
+  border-color: var(--blue01);
 }
 
 .radioInput[type='radio']:checked {
-  background-color: var(--blue01);
-  border: 0.2rem solid #ffffff;
-  box-shadow: 0 0 0 0.2rem var(--blue01);
+  border-color: var(--blue01);
+
+  border-width: 0.6rem;
+}
+
+.radioInput[type='radio']:checked + .radioLabel {
+  color: var(--blue01);
+  font-weight: 600;
 }

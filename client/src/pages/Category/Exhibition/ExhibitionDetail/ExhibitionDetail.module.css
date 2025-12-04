@@ -210,7 +210,7 @@
   }
 }
 
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .layout {
     max-width: 80rem;
     padding: 2rem;

@@ -47,7 +47,7 @@ a {
   color: #fff;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 700px) {
   .footerLayout {
     align-items: start;
   }

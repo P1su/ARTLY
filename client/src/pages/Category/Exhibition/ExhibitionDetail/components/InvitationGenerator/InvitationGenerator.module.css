@@ -157,7 +157,7 @@
 }
 
 /* ===== 반응형 (768px 이하) ===== */
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   .page {
     max-width: 100%;
     padding: 60px 24px 80px;
