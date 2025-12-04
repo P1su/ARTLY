@@ -5,6 +5,7 @@ import useMap from '../../../../../Nearby/hooks/useMap';
 import { userInstance } from '../../../../../../apis/instance';
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner';
 
 export default function GalleryMapModal({ onOpen }) {
   const { coords } = useGeoLocation();
@@ -95,9 +96,7 @@ export default function GalleryMapModal({ onOpen }) {
             관심 갤러리
           </button>
         </div>
-        {isLoading && (
-          <div className={styles.loadingText}>갤러리 데이터 조회 중...</div>
-        )}
+        {isLoading && <LoadingSpinner />}
         <div className={styles.modalMap} id='gallery-map' />
         <button className={styles.closeButton} onClick={onOpen}>
           닫기
