@@ -1,5 +1,5 @@
 import styles from './ArtworkDetail.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FaStar, FaPhone, FaShare } from 'react-icons/fa6';
 import { userInstance } from '../../../../apis/instance';
@@ -23,6 +23,9 @@ export default function ArtworkDetail({
   const id = propId || artworkId;
   const navigate = useNavigate();
   const { addToast } = useToastContext();
+
+  const { pathname } = useLocation();
+  const isConsole = pathname.includes('console');
 
   const [artworkData, setArtworkData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -249,12 +252,11 @@ export default function ArtworkDetail({
         {actionButtons?.info}
       </div>
 
-      {showUserActions && exhibitions && exhibitions.length > 0 && (
+      {exhibitions && exhibitions.length > 0 && (
         <div className={styles.exhibitionSection}>
           <span className={styles.sectionTitle}>전시 정보</span>
           <div className={styles.exhibitionList}>
             {exhibitions.map((exh) => {
-              // 백엔드 데이터에 status가 없다면 날짜 비교 또는 기본값 사용
               const statusKey = exh.exhibition_status || 'ended';
               const statusInfo =
                 STATUS_CONFIG[statusKey] || STATUS_CONFIG.ended;
@@ -263,10 +265,13 @@ export default function ArtworkDetail({
                 <div
                   key={exh.id}
                   className={styles.exhibitionItem}
-                  onClick={() => navigate(`/exhibitions/${exh.id}`)}
+                  onClick={() =>
+                    isConsole
+                      ? navigate(`/console/exhibitions/${exh.id}`)
+                      : navigate(`/exhibitions/${exh.id}`)
+                  }
                 >
                   <div className={styles.exhibitionInfo}>
-                    {/* 상태 뱃지 */}
                     <span
                       className={`${styles.statusBadge} ${statusInfo.className}`}
                     >
@@ -277,7 +282,6 @@ export default function ArtworkDetail({
                       <span className={styles.exhibitionTitle}>
                         {exh.exhibition_title}
                       </span>
-                      {/* 기간 정보가 있다면 표시 */}
                       {exh.start_date && exh.end_date && (
                         <span className={styles.exhibitionDate}>
                           {exh.start_date} ~ {exh.end_date}
@@ -286,7 +290,6 @@ export default function ArtworkDetail({
                     </div>
                   </div>
 
-                  {/* 이동 화살표 아이콘 */}
                   <FaChevronRight className={styles.arrowIcon} />
                 </div>
               );
