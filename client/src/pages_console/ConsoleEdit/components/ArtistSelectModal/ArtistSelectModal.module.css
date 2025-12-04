@@ -57,7 +57,13 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1.4rem;
+  outline: none;
 }
+
+.searchBar input:focus {
+  border: 1px solid var(--blue01);
+}
+
 .searchBar button {
   padding: 0 1.5rem;
   background: #f0f2f5;
