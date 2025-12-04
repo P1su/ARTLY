@@ -77,7 +77,7 @@
   }
 }
 
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .formContainer {
     max-width: 80rem;
     padding: 1.8rem 2rem;

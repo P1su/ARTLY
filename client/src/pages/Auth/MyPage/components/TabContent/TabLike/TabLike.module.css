@@ -58,25 +58,23 @@
   margin-top: 3.2rem;
 }
 
-@media (max-width: 700px) {
-  .tabButtonContainer {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 1280px) {
+@media (max-width: 1200px) {
   .cardList {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .cardList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+  .tabButtonContainer {
+    flex-wrap: wrap;
+  }
+
   .cardList {
     grid-template-columns: 1fr;
   }

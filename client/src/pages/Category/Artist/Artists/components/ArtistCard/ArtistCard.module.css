@@ -81,7 +81,7 @@
   color: #e57373;
 }
 
-@media (max-width: 756px) {
+@media (max-width: 700px) {
   .artistNameTitle {
     color: #707070;
     font-size: 18px;

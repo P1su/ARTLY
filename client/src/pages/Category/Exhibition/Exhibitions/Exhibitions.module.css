@@ -29,7 +29,7 @@
   }
 }
 
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .layout {
     padding: 4rem 5rem 6rem;
   }
