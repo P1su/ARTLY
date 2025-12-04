@@ -19,7 +19,7 @@ export default function Login() {
           <p className={styles.subtitle}>아뜰리 계정으로 로그인하세요.</p>
         </div>
 
-        <div className={styles.buttonGroup}>
+        {/* <div className={styles.buttonGroup}>
           <button className={`${styles.socialButton} ${styles.kakao}`}>
             <RiKakaoTalkFill size='24' style={{ marginRight: '8px' }} />
             카카오 로그인
@@ -34,11 +34,11 @@ export default function Login() {
             <FaApple size='24' style={{ marginRight: '8px' }} />
             Apple로 로그인
           </button>
-        </div>
+        </div> 
 
         <div className={styles.divider}>
           <span>또는</span>
-        </div>
+        </div> */}
 
         <button className={styles.emailButton} onClick={handleNavigate}>
           보유 계정으로 로그인
