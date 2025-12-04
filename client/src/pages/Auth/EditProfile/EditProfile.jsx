@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './EditProfile.module.css';
 import { FaCog } from 'react-icons/fa';
-import { instance } from '../../../apis/instance';
+import { userInstance } from '../../../apis/instance';
 import PwModal from './PwModal/PwModal';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './../../../store/UserProvider';
+import LogoutModal from './../../../components/Menu/LogoutModal/LogoutModal';
+import WithdrawModal from './WithdrawModal/WithdrawModal';
+import Cookies from 'js-cookie';
 
 const EditProfile = () => {
   const { user, setUser } = useContext(UserContext);
@@ -17,64 +20,53 @@ const EditProfile = () => {
 
   const navigate = useNavigate();
 
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
   if (!user) {
     return <div>데이터 불러오는 중</div>;
   }
 
-  const handleUpdateUserInfo = (updatedData) => {
-      setUser({ ...user, ...updatedData });
-  };
+  const handleUpdateUserInfo = (updatedData) => setUser({ ...user, ...updatedData });
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleEditName = () => {
-    setEditingName(true);
-    setNewName(user.user_name);
-  };
-
-  const handleEditEmail = () => {
-    setEditingEmail(true);
-    setNewEmail(user.user_email);
-  };
-
-  const handleChangeName = (e) => {
-    setNewName(e.target.value);
-  };
-
-  const handleChangeEmail = (e) => {
-    setNewEmail(e.target.value);
-  };
+  const handleEditName = () => { setEditingName(true); setNewName(user.user_name); };
+  const handleEditEmail = () => { setEditingEmail(true); setNewEmail(user.user_email); };
+  const handleChangeName = (e) => setNewName(e.target.value);
+  const handleChangeEmail = (e) => setNewEmail(e.target.value);
 
   const handleSaveName = async () => {
     try {
-      await instance.put('/api/users/me', {
-        ...user,
-        user_name: newName,
-      });
+      await userInstance.put('/api/users/me', { user_name: newName });
       setUser({ ...user, user_name: newName });
       setEditingName(false);
-    } catch (error) {
-      console.error('닉네임 변경에 실패했습니다.', error);
-    }
+    } catch (error) { console.error('닉네임 변경 실패', error); }
   };
 
   const handleSaveEmail = async () => {
     try {
-      await instance.put('/api/users/me', {
-        ...user,
-        user_email: newEmail,
-      });
+      await userInstance.put('/api/users/me', { user_email: newEmail });
       setUser({ ...user, user_email: newEmail });
       setEditingEmail(false);
-    } catch (error) {
-      console.error('이메일 변경에 실패했습니다.', error);
-    }
+    } catch (error) { console.error('이메일 변경 실패', error); }
+  };
+
+  const handleLogoutClick = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    Cookies.remove('ACCESS_TOKEN'); 
+    setIsLogoutModalOpen(false);    
+    setUser(null);                  
+    navigate('/');                  
+  };
+
+  const handleWithdrawSuccess = () => {
+    Cookies.remove('ACCESS_TOKEN'); 
+    setUser(null);
+    navigate('/');
   };
 
   return (
@@ -83,6 +75,14 @@ const EditProfile = () => {
 
       <div className={styles.profileCard}>
         <div className={styles.profileInfoDetails}>
+          <div className={styles.infoRow}>
+            <span className={styles.infoLabel}>성명</span>
+
+            <span className={styles.infoValue}>
+              {user.user_name || '닉네임'}
+            </span>
+          </div>
+
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>아이디</span>
             <span className={styles.infoValue}>
@@ -94,38 +94,6 @@ const EditProfile = () => {
             >
               비밀번호 변경
             </button>
-          </div>
-
-          <div className={styles.infoRow}>
-            <span className={styles.infoLabel}>닉네임</span>
-            {editingName ? (
-              <>
-                <input
-                  type='text'
-                  className={styles.input}
-                  value={newName}
-                  onChange={handleChangeName}
-                />
-                <button
-                  className={styles.changeButton}
-                  onClick={handleSaveName}
-                >
-                  저장
-                </button>
-              </>
-            ) : (
-              <>
-                <span className={styles.infoValue}>
-                  {user.user_name || '닉네임'}
-                </span>
-                <button
-                  className={styles.changeButton}
-                  onClick={handleEditName}
-                >
-                  변경
-                </button>
-              </>
-            )}
           </div>
 
           <div className={styles.infoRow}>
@@ -174,14 +142,19 @@ const EditProfile = () => {
 
       <div className={styles.profileDetailsCard}>
         <h3 className={styles.sectionTitle}>기타</h3>
-        <div className={styles.detailsRow}>
+        <div 
+            className={styles.detailsRow} 
+            onClick={handleLogoutClick} 
+            style={{ cursor: 'pointer' }}
+        >
           <span className={styles.detailsLabel}>로그아웃</span>
         </div>
         <div className={styles.detailsRow}>
           <span className={styles.detailsLabel}>현재 버전</span>
           <span className={styles.detailsValue}>1.10.24</span>
         </div>
-        <div className={styles.detailsRow}>
+
+        <div className={styles.detailsRow} onClick={() => setIsWithdrawModalOpen(true)} style={{cursor: 'pointer'}}>
           <span className={styles.detailsLabel}>회원 탈퇴</span>
         </div>
       </div>
@@ -195,6 +168,16 @@ const EditProfile = () => {
         onClose={handleCloseModal}
         userInfo={user}
         onUpdateUserInfo={handleUpdateUserInfo}
+      />
+      <LogoutModal 
+        isOpen={isLogoutModalOpen} 
+        onClose={handleLogoutConfirm} 
+      />
+      <WithdrawModal 
+        isOpen={isWithdrawModalOpen}
+        onClose={() => setIsWithdrawModalOpen(false)}
+        userInfo={user} 
+        onWithdrawSuccess={handleWithdrawSuccess}
       />
     </div>
   );

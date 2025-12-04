@@ -63,7 +63,7 @@
   }
 }
 
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .tabNav,
   .tabContent {
     max-width: 75rem;

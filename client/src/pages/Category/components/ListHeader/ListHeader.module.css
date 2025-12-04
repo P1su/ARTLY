@@ -85,13 +85,13 @@
   width: 5rem;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1000px) {
   .searchForm {
     width: 40rem;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 700px) {
   .searchForm {
     width: 100%;
   }

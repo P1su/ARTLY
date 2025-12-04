@@ -136,9 +136,9 @@ export default function QrScanner() {
 
       <div className={styles.instructionBox}>
         <p>QR 코드를 화면에 인식해주세요.</p>
-        <button onClick={handleTestBtnClick} className={styles.test}>
+        {/*         <button onClick={handleTestBtnClick} className={styles.test}>
           전시회 관람인증 QR 테스트
-        </button>
+        </button>*/}
       </div>
     </div>
   );

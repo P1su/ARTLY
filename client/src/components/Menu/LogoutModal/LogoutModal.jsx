@@ -1,6 +1,7 @@
 import styles from './LogoutModal.module.css';
 
-export default function LogoutModal({ onClose }) {
+export default function LogoutModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div

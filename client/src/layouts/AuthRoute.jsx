@@ -20,9 +20,11 @@ export default function AuthRoute() {
   const showFooter = location.pathname !== '/notifications';
 
   return (
-    <>
-      <Outlet />
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: '1' }}>
+        <Outlet />
+      </div>
       {showFooter && <Footer />}
-    </>
+    </div>
   );
 }

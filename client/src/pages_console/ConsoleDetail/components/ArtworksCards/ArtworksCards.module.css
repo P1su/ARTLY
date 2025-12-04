@@ -7,14 +7,14 @@
 }
 
 /* 반응형: 태블릿 이상 2열 */
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .artworkGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* 반응형: 데스크탑 이상 3열 */
-@media (min-width: 1024px) {
+@media (min-width: 1000px) {
   .artworkGrid {
     grid-template-columns: repeat(3, 1fr);
   }

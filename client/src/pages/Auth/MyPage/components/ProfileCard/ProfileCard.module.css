@@ -30,7 +30,7 @@
   text-underline-position: from-font;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .layout {
     gap: 1rem;
   }
