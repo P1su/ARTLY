@@ -294,7 +294,6 @@
   color: #333;
 }
 
-/* 뱃지 공통 스타일 */
 .statusBadge {
   font-size: 1.1rem;
   font-weight: 700;
@@ -302,7 +301,6 @@
   border-radius: 0.4rem;
 }
 
-/* 상태별 컬러 */
 .exhibited {
   color: #00b894;
   background-color: #e6fffa;
@@ -322,7 +320,6 @@
   background-color: #f1f2f6;
 }
 
-/* 텍스트 스타일 */
 .emptyText {
   color: #999;
   font-size: 1.4rem;
@@ -366,10 +363,7 @@
 
 .artworkGrid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(30rem, 1fr)
-  ); /* 300px min width */
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   gap: 1rem;
 }
 
@@ -433,41 +427,35 @@
   color: #d9363e;
 }
 
-/* 그리드 컬럼 전체 사용 (grid-column: 1 / -1) */
 .fullWidth {
   grid-column: 1 / -1;
 }
 
-/* 작가 추가 버튼 스타일 (기존 클래스 확장 혹은 추가) */
 .addArtistBtn {
-  margin-bottom: 1rem; /* 10px */
-  padding: 0.8rem 1.2rem; /* 8px 12px */
+  margin-bottom: 1rem;
+  padding: 0.8rem 1.2rem;
   cursor: pointer;
-  /* 기존 버튼 스타일이 있다면 여기에 병합됩니다 */
 }
 
-/* 작가 목록 컨테이너 */
 .artistList {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem; /* 8px */
+  gap: 0.8rem;
 }
 
-/* 개별 작가 아이템 박스 */
 .artistItem {
   display: flex;
   align-items: center;
-  gap: 1rem; /* 10px */
+  gap: 1rem;
   background-color: #f5f5f5;
-  padding: 0.8rem; /* 8px */
-  border-radius: 0.4rem; /* 4px */
+  padding: 0.8rem;
+  border-radius: 0.4rem;
 }
 
-/* 작가 이름 텍스트 */
 .artistName {
-  font-weight: 700; /* bold */
+  font-weight: 700;
   flex: 1;
-  font-size: 1.4rem; /* 필요 시 사이즈 조정 (예: 14px) */
+  font-size: 1.4rem;
 }
 
 .artistThumb {
@@ -476,23 +464,6 @@
   object-fit: cover;
   border-radius: 30rem;
   background-color: #eee;
-}
-
-/* 삭제(X) 버튼 */
-.artistRemoveBtn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #ff4d4f; /* red보다 조금 더 세련된 빨강, 원하면 red로 변경 */
-  font-size: 1.2rem; /* 12px */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem;
-}
-
-.artistRemoveBtn:hover {
-  color: #d9363e; /* 호버 시 더 진한 색상 */
 }
 
 @media (max-width: 1500px) {

@@ -325,7 +325,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
 
                       <button
                         type='button'
-                        className={styles.artistRemoveBtn}
+                        className={styles.removeBtn}
                         onClick={() => handleRemoveArtist(id)}
                         title='삭제'
                       >
