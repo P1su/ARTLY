@@ -2,8 +2,9 @@ import styles from './Nearby.module.css';
 import { useState, useEffect } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
-import { instance, mapInstance, userInstance } from '../../apis/instance.js';
+import { mapInstance, userInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function Nearby() {
   const { coords, setCoords } = useGeoLocation();
@@ -77,7 +78,7 @@ export default function Nearby() {
         />
       </form>
       <div id='nearby-map' className={styles.galleryWrapper} />
-      {isLoading && <div>갤러리 데이터 조회 중..</div>}
+      {isLoading && <LoadingSpinner />}
       <NearbyGalleries results={results} onEvent={getNaerbyGalleries} />
     </div>
   );

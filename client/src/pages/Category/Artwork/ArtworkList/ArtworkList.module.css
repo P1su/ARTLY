@@ -27,7 +27,7 @@
 }
 
 /* 반응형 */
-@media (max-width: 1700px) {
+@media (max-width: 1500px) {
   .layout {
     padding: 4rem 10rem 6rem;
   }
@@ -36,7 +36,7 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1000px) {
   .layout {
     padding: 4rem 5rem 6rem;
   }

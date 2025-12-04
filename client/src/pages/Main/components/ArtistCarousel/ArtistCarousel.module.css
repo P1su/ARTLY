@@ -1,127 +1,141 @@
 .carouselWrapper {
   position: relative;
-  overflow: hidden;
-
   width: 100%;
-  height: 35rem;
-  margin: 2rem 0;
+  margin: 3rem 0;
+  padding: 0 1rem;
 }
 
 .titleContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  margin-bottom: 30px;
+  align-items: flex-end;
+  padding: 0;
+  margin-bottom: 2.5rem;
 }
 
 .carouselTitle {
-  font-size: 24px;
-  font-weight: 700;
-  margin-right: 15px;
+  font-size: 2.6rem;
+  font-weight: 650;
+  color: #111;
+  letter-spacing: -0.05rem;
 }
 
 .moreButton {
-  padding: 0.6rem 1.2rem;
-
+  padding: 0.6rem 1.6rem;
   background-color: transparent;
-
-  font-size: 1.2rem;
-  border: 0.1rem solid #ccc;
-  border-radius: 2rem;
-
+  font-size: 1.6rem;
+  color: #999;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  color: #ccc;
+  transition: color 0.2s ease;
+  text-decoration: none;
 }
 
 .moreButton:hover {
-  background-color: #f0f0f0;
+  color: #111;
+  font-weight: 600;
 }
 
 .carouselViewport {
-  overflow: hidden;
   width: 100%;
-  height: 35rem;
+  padding: 1rem 0 3rem 0 !important;
 }
 
-.carouselTrack {
+.slideItem {
   display: flex;
-  gap: 1rem;
-
-  height: 30rem;
-
-  transition: transform 0.4s ease-in-out;
-  will-change: transform;
+  justify-content: center;
 }
 
-.carouselSlide {
-  flex: 0 0 calc((100% - 4rem) / 4);
-
-  box-sizing: border-box;
-
-  background-color: white;
-
+.carouselLink {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  text-decoration: none;
+  width: 100%;
+  transition: transform 0.2s ease;
+}
 
-  width: 10rem;
-  height: 30rem;
+.carouselLink:hover {
+  transform: translateY(-0.8rem);
+}
+
+.imageContainer {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 2rem;
+  overflow: hidden;
+  margin-bottom: 1.6rem;
+  box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.08);
+  background-color: #f0f0f0;
 }
 
 .artistImage {
   width: 100%;
-  height: 20rem;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
 
-  margin-bottom: 0.8rem;
+.carouselLink:hover .artistImage {
+  transform: scale(1);
 }
 
 .artistText {
   text-align: center;
-  color: var(--black01);
+  color: #222;
 }
 
 .name {
-  font-size: 1.4rem;
-  margin-bottom: 0.3rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: #111;
 }
 
 .field {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 1.6rem;
+  color: #888;
+  font-weight: 400;
 }
 
 .prevButton,
 .nextButton {
   position: absolute;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   z-index: 10;
-
-  width: 3rem;
-  height: 3rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.5);
-
-  color: black;
-
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+  font-size: 2rem;
+  color: #333;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
 }
 
-.prevButton:hover,
-.nextButton:hover {
-  background: rgba(255, 255, 255, 0.7);
+.prevButton:disabled,
+.nextButton:disabled,
+:global(.swiper-button-disabled) {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+}
+
+.prevButton:not(:disabled):hover,
+.nextButton:not(:disabled):hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.1);
 }
 
 .prevButton {
-  left: 1rem;
+  left: 0;
 }
-
 .nextButton {
-  right: 1rem;
+  right: 0;
 }

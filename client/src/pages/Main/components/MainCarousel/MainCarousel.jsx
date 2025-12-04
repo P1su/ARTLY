@@ -91,14 +91,12 @@ export default function MainCarousel() {
                 src={item?.image}
                 alt={item?.title || item?.name}
                 className={styles.carouselImage}
-                onClick={() => {
-                  navigate(`/exhibitions/${item?.id}`);
-                }}
               />
               <div className={styles.captionBox}>
                 <h3 className={styles.title}>{item?.title}</h3>
                 <p className={styles.location}>
-                  {item?.organization.name}에서{' '}
+                  {item?.organization.name}
+                  <br />
                   {item?.period || `${item?.startDate} ~ ${item?.endDate}`}
                 </p>
                 <button

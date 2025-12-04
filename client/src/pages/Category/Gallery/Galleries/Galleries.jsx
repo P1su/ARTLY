@@ -1,5 +1,5 @@
 import styles from './Galleries.module.css';
-import { instance, userInstance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../apis/instance.js';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ListHeader from '../../components/ListHeader/ListHeader';
@@ -13,6 +13,7 @@ import useModal from './../../../../hooks/useModal';
 import GalleryMapModal from './components/GalleryMapModal/GalleryMapModal.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import FavButton from '../../components/FavButton/FavButton.jsx';
 
 export default function Galleries() {
   const { user } = useUser();
@@ -84,9 +85,12 @@ export default function Galleries() {
           filterList={galleryFilter}
           onSetFilter={setGalleryFilters}
         />
-        <button className={styles.mapButton} onClick={handleOpenModal}>
-          지도
-        </button>
+        <div className={styles.dropBoxButtonSection}>
+          <button className={styles.mapButton} onClick={handleOpenModal}>
+            지도
+          </button>
+          <FavButton onFav={handleFav} isFav={galleryFilters.liked_only} />
+        </div>
       </div>
 
       <TotalCounts num={galleries.length} label='갤러리' />

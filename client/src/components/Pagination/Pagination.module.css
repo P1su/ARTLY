@@ -46,7 +46,7 @@
   cursor: default;
 }
 
-@media (min-width: 756px) {
+@media (min-width: 700px) {
   .paginationContainer {
     width: 50rem;
     margin: auto;
