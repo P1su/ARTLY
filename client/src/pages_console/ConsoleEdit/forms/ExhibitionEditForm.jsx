@@ -7,13 +7,8 @@ import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectMo
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
-  const [artistInput, setArtistInput] = useState('');
   const [showArtistModal, setShowArtistModal] = useState(false);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
-
-  const selectedArtists = Array.isArray(data.participating_artists)
-    ? data.participating_artists
-    : [];
 
   useEffect(() => {
     if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
@@ -21,13 +16,16 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     }
   }, [data.exhibition_poster]);
 
-  const handleRemoveImage = (e) => {
-    e.stopPropagation();
-    setImagePreviewUrl(null);
-    onFileChange(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+  const getArtImage = (art) => {
+    return art.image_url || art.art_image || '/images/no-image.png';
+  };
+
+  const getArtTitle = (art) => {
+    return art.title || art.art_title || '제목 없음';
+  };
+
+  const getArtistName = (art) => {
+    return art.artist_name || art.artist?.artist_name || '작가 미상';
   };
 
   const handleInputChange = (e) => {
@@ -49,8 +47,17 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     event.target.value = '';
   };
 
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setImagePreviewUrl(null);
+    onFileChange(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSelectArtist = (artist) => {
-    const currentArtists = data.participating_artists || [];
+    const currentArtists = data.artists || [];
 
     if (currentArtists.some((a) => a.artist_id === artist.id)) {
       alert('이미 추가된 작가입니다.');
@@ -64,34 +71,29 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
 
     setData((prev) => ({
       ...prev,
-      participating_artists: [...currentArtists, newArtist],
+      artists: [...currentArtists, newArtist],
     }));
     setShowArtistModal(false);
   };
 
   const handleRemoveArtist = (id) => {
-    const updatedArtists = (data.participating_artists || []).filter(
+    const updatedArtists = (data.artists || []).filter(
       (artist) => artist.artist_id !== id,
     );
-    setData((prev) => ({ ...prev, participating_artists: updatedArtists }));
+    setData((prev) => ({ ...prev, artists: updatedArtists }));
   };
 
-  const handleSelectArtworks = (newArts) => {
-    const currentArts = data.connected_artworks || [];
-    const uniqueNewArts = newArts.filter(
-      (newArt) => !currentArts.some((exist) => exist.id === newArt.id),
-    );
-
+  const handleSelectArtworks = (selectedList) => {
     setData((prev) => ({
       ...prev,
-      connected_artworks: [...currentArts, ...uniqueNewArts],
+      artworks: selectedList,
     }));
   };
 
   const handleRemoveArtwork = (artId) => {
     setData((prev) => ({
       ...prev,
-      connected_artworks: prev.connected_artworks.filter((a) => a.id !== artId),
+      artworks: prev.artworks.filter((a) => a.id !== artId),
     }));
   };
 
@@ -126,19 +128,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       ...prev,
       exhibition_closed_day: newClosedDays.join(', '),
     }));
-  };
-
-  const handleArtistChange = (e) => {
-    setArtistInput(e.target.value);
-  };
-
-  const handleArtistBlur = () => {
-    const artistArray = artistInput
-      .split(',')
-      .map((name) => name.trim())
-      .filter((name) => name !== '');
-
-    setData((prev) => ({ ...prev, artists: artistArray }));
   };
 
   return (
@@ -308,7 +297,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               <div
                 style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
               >
-                {(data.participating_artists || []).map((artist, index) => (
+                {(data.artists || []).map((artist, index) => (
                   <div
                     key={artist.artist_id || index}
                     style={{
@@ -354,17 +343,19 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               </button>
 
               <div className={styles.artworkGrid}>
-                {(data.connected_artworks || []).map((art) => (
+                {(data.artworks || []).map((art) => (
                   <div key={art.id} className={styles.artworkCard}>
                     <img
-                      src={art.image || '/images/no-image.png'}
+                      src={getArtImage(art)}
                       alt='thumb'
                       className={styles.artworkThumb}
                     />
                     <div className={styles.artworkMeta}>
-                      <div className={styles.artworkTitle}>{art.art_title}</div>
+                      <div className={styles.artworkTitle}>
+                        {getArtTitle(art)}
+                      </div>
                       <div className={styles.artworkArtist}>
-                        {art.artist_name}
+                        {getArtistName(art) || '작가 미상'}
                       </div>
                     </div>
                     <button
@@ -413,6 +404,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         <ArtworkSelectModal
           onClose={() => setShowArtworkModal(false)}
           onSelect={handleSelectArtworks}
+          existingArtworks={data.artworks || []}
         />
       )}
     </>

@@ -3,10 +3,21 @@ import { FaSearch } from 'react-icons/fa';
 import styles from './ArtworkSelectModal.module.css';
 import { userInstance } from '../../../../apis/instance';
 
-export default function ArtworkSelectModal({ onClose, onSelect }) {
+export default function ArtworkSelectModal({
+  onClose,
+  onSelect,
+  existingArtworks = [],
+}) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [artList, setArtList] = useState([]);
   const [selectedArts, setSelectedArts] = useState([]);
+
+  // 모달이 열릴 때, 부모로부터 받은 기존 작품 목록을 선택 상태로 초기화
+  useEffect(() => {
+    if (existingArtworks && existingArtworks.length > 0) {
+      setSelectedArts(existingArtworks);
+    }
+  }, [existingArtworks]);
 
   const fetchArts = async (keyword = '') => {
     try {
@@ -32,14 +43,17 @@ export default function ArtworkSelectModal({ onClose, onSelect }) {
     setSelectedArts((prev) => {
       const isSelected = prev.some((item) => item.id === art.id);
       if (isSelected) {
+        // 이미 선택되어 있으면 제거 (체크 해제)
         return prev.filter((item) => item.id !== art.id);
       } else {
+        // 선택 안 되어 있으면 추가
         return [...prev, art];
       }
     });
   };
 
   const handleConfirm = () => {
+    // 현재 선택된 모든 리스트를 부모에게 전달 (추가+유지된 것 포함)
     onSelect(selectedArts);
     onClose();
   };
@@ -70,6 +84,7 @@ export default function ArtworkSelectModal({ onClose, onSelect }) {
           <div className={styles.listContainer}>
             {artList.length > 0 ? (
               artList.map((art) => {
+                // 현재 선택 목록에 있는지 확인
                 const isSelected = selectedArts.some((a) => a.id === art.id);
                 return (
                   <div
@@ -84,14 +99,16 @@ export default function ArtworkSelectModal({ onClose, onSelect }) {
                       className={styles.checkbox}
                     />
                     <img
-                      src={art.art_image}
+                      src={art.art_image || art.image}
                       alt={art.art_title}
                       className={styles.artistImg}
                     />
                     <div className={styles.artistInfo}>
                       <span className={styles.name}>{art.art_title}</span>
                       <span className={styles.category}>
-                        {art.artist?.artist_name || '작가미상'}
+                        {art.artist?.artist_name ||
+                          art.artist_name ||
+                          '작가미상'}
                       </span>
                     </div>
                   </div>
@@ -104,7 +121,7 @@ export default function ArtworkSelectModal({ onClose, onSelect }) {
 
           <div className={styles.footer}>
             <button className={styles.confirmBtn} onClick={handleConfirm}>
-              {selectedArts.length}개 작품 추가하기
+              선택 완료 ({selectedArts.length}개)
             </button>
           </div>
         </div>

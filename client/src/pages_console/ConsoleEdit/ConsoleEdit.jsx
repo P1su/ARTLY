@@ -1,6 +1,6 @@
 import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { userInstance } from '../../apis/instance.js';
 
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
@@ -40,6 +40,9 @@ export default function ConsoleEdit({ type }) {
   const [data, setData] = useState(null);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  const originalArtworksRef = useRef([]);
+  const originalArtistsRef = useRef([]);
 
   const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
@@ -91,6 +94,18 @@ export default function ConsoleEdit({ type }) {
 
           targetGalleryId = initialData.gallery_id;
         }
+
+        if (type === 'exhibitions' && !isCreateMode) {
+          const loadedArtworks = initialData.artworks || [];
+          originalArtworksRef.current = loadedArtworks;
+
+          const loadedArtists = initialData.artists || [];
+          originalArtistsRef.current = loadedArtists;
+          console.log(
+            `초기 로딩: 작품 ${loadedArtworks.length}개, 작가 ${loadedArtists.length}명`,
+          );
+        }
+
         if (type === 'artworks' && targetGalleryId) {
           try {
             console.log(
@@ -114,26 +129,6 @@ export default function ConsoleEdit({ type }) {
           } catch (exhError) {
             console.error('전시회 목록 로딩 실패:', exhError);
             initialData.exhibitions = [];
-          }
-        }
-        if (type === 'exhibitions' && !isCreateMode) {
-          try {
-            // API: 해당 전시회의 작품 목록 조회 (경로는 백엔드 명세 확인 필요)
-            // 예: /api/exhibitions/{id}/arts
-            const artRes = await userInstance.get(
-              `/api/exhibitions/${id}/arts`,
-            );
-            // 응답 형태에 따라 처리 (예: res.data)
-            initialData.connected_artworks = Array.isArray(artRes.data)
-              ? artRes.data
-              : [];
-            console.log(
-              '불러온 작품 수:',
-              initialData.connected_artworks.length,
-            );
-          } catch (e) {
-            console.warn('작품 목록 로딩 실패(신규 등록이면 무시):', e);
-            initialData.connected_artworks = [];
           }
         }
 
@@ -228,7 +223,94 @@ export default function ConsoleEdit({ type }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // 2. [작품 관리일 경우] 선택된 전시회들에 연결하기 (2단계)
+      const savedId = isCreateMode
+        ? response.data.data?.id || response.data.id
+        : id;
+
+      if (type === 'exhibitions' && savedId) {
+        const currentArtworks = data.artworks || [];
+        const originalArtworks = originalArtworksRef.current || [];
+
+        // 추가된 작품: 현재 목록에는 있는데 원본엔 없는 것
+        const artsToAdd = currentArtworks.filter(
+          (curr) => !originalArtworks.some((orig) => orig.id === curr.id),
+        );
+        // 삭제된 작품: 원본엔 있는데 현재 목록엔 없는 것
+        const artsToDelete = originalArtworks.filter(
+          (orig) => !currentArtworks.some((curr) => curr.id === orig.id),
+        );
+
+        try {
+          // [API] 작품 추가
+          const addPromises = artsToAdd.map((art) =>
+            userInstance.post(`/api/exhibitions/${savedId}/arts`, {
+              art_id: art.id,
+              display_order: 0,
+            }),
+          );
+
+          // [API] 작품 삭제 (DELETE /api/exhibitions/{id}/arts/{art_id})
+          const deletePromises = artsToDelete.map((art) =>
+            userInstance.delete(`/api/exhibitions/${savedId}/arts/${art.id}`),
+          );
+
+          await Promise.all([...addPromises, ...deletePromises]);
+          console.log(
+            `작품 처리결과: 추가 ${artsToAdd.length}, 삭제 ${artsToDelete.length}`,
+          );
+        } catch (err) {
+          console.error('작품 업데이트 중 오류:', err);
+        }
+
+        const currentArtists = data.artists || [];
+        const originalArtists = originalArtistsRef.current || [];
+
+        // 비교를 위해 ID 추출 함수 (artist_id 혹은 id)
+        const getArtistId = (a) => a.artist_id || a.id;
+
+        // 추가된 작가
+        const artistsToAdd = currentArtists.filter(
+          (curr) =>
+            !originalArtists.some(
+              (orig) => getArtistId(orig) === getArtistId(curr),
+            ),
+        );
+        // 삭제된 작가
+        const artistsToDelete = originalArtists.filter(
+          (orig) =>
+            !currentArtists.some(
+              (curr) => getArtistId(curr) === getArtistId(orig),
+            ),
+        );
+
+        try {
+          const newArtistIds = artistsToAdd
+            .map((a) => getArtistId(a))
+            .filter((id) => id);
+
+          if (newArtistIds.length > 0) {
+            await userInstance.post(`/api/exhibitions/${savedId}/artists`, {
+              artist_ids: newArtistIds,
+            });
+          }
+
+          const deleteArtistPromises = artistsToDelete.map((artist) => {
+            const artistId = getArtistId(artist);
+            return userInstance.delete(
+              `/api/exhibitions/${savedId}/artists/${artistId}`,
+            );
+          });
+
+          await Promise.all(deleteArtistPromises);
+          console.log(
+            `작가 처리결과: 추가 ${artistsToAdd.length}, 삭제 ${artistsToDelete.length}`,
+          );
+        } catch (err) {
+          console.error('작가 업데이트 중 오류:', err);
+          alert('작가 목록 업데이트 중 일부 오류가 발생했습니다.');
+        }
+      }
+
       if (type === 'artworks') {
         const savedArtId = isCreateMode
           ? response.data.data?.id || response.data.id
@@ -245,75 +327,6 @@ export default function ConsoleEdit({ type }) {
 
           await Promise.all(connectPromises);
           console.log(`2단계 전시회 ${selectedExhibitions.length}곳 연결 완료`);
-        }
-      }
-
-      if (type === 'exhibitions') {
-        const savedExhibitionId = isCreateMode
-          ? response.data.data?.id || response.data.id
-          : id;
-
-        const currentArtists = data.participating_artists || [];
-        const artistIds = currentArtists.map(
-          (artist) => artist.artist_id || artist.id,
-        );
-
-        const validArtistIds = artistIds.filter((id) => id);
-
-        if (savedExhibitionId) {
-          try {
-            const payload = {
-              artist_ids: validArtistIds,
-              gallery_id: data.gallery_id,
-            };
-
-            console.log('작가 저장 페이로드:', payload);
-
-            await userInstance.post(
-              `/api/exhibitions/${savedExhibitionId}/artists`,
-              payload,
-            );
-
-            console.log('2단계 작가 목록 저장 성공:', artistIds);
-          } catch (artistError) {
-            console.error('작가 저장 실패:', artistError);
-            alert('전시회는 저장되었으나, 작가 목록 저장에 실패했습니다.');
-          }
-
-          const currentArtworks = data.connected_artworks || [];
-
-          if (currentArtworks.length > 0) {
-            try {
-              // 방법 A: 한 번에 ID 목록 보내기 (백엔드가 지원한다면 가장 깔끔)
-              /*
-                    await userInstance.post(`/api/exhibitions/${savedExhibitionId}/arts/batch`, {
-                        art_ids: currentArtworks.map(art => art.id),
-                        gallery_id: data.gallery_id
-                    });
-                    */
-
-              // 방법 B: 반복문으로 하나씩 연결 (기존 'artworks' 저장 로직과 유사하게 안전한 방법)
-              // 기존 연결을 다 끊고 새로 넣을지, 추가만 할지는 백엔드 로직에 따름.
-              // 여기서는 "전시회에 작품 추가" API를 반복 호출하는 방식 예시
-
-              const artConnectPromises = currentArtworks.map((art) => {
-                return userInstance.post(
-                  `/api/exhibitions/${savedExhibitionId}/arts`,
-                  {
-                    art_id: art.id,
-                    display_order: 0, // 필요시 순서
-                    gallery_id: data.gallery_id, // ★ 권한 에러 방지용
-                  },
-                );
-              });
-
-              await Promise.all(artConnectPromises);
-              console.log(`총 ${currentArtworks.length}개 작품 연결 완료`);
-            } catch (artError) {
-              console.error('작품 연결 실패:', artError);
-              // 409 Conflict(이미 존재함) 에러는 무시해도 된다면 여기서 예외 처리
-            }
-          }
         }
       }
 
