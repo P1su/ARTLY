@@ -6,7 +6,7 @@ import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectMo
 import Img from '../../../components/Img/Img.jsx';
 
 const getArtistId = (artist) => artist.id || artist.artist_id;
-
+const getArtistImage = (artist) => artist.artist_image || artist.profile_img;
 const getArtistName = (artist) =>
   artist.artist_name ||
   artist.name ||
@@ -76,6 +76,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     const newArtist = {
       id: getArtistId(artist),
       name: getArtistName(artist),
+      artist_image: getArtistImage(artist),
     };
 
     setData((prev) => ({
@@ -316,7 +317,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                   return (
                     <div key={id || index} className={styles.artworkCard}>
                       <Img
-                        src={artist.artist_image}
+                        src={getArtistImage(artist)}
                         alt='thumb'
                         className={styles.artistThumb}
                       />
