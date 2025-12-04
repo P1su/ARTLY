@@ -135,7 +135,9 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
                     <p>작가 이름을 입력하여 검색해주세요.</p>
                   ) : (
                     <>
-                      <p>"{searchKeyword}"에 대한 검색 결과가 없습니다.</p>
+                      <p>
+                        &quot;{searchKeyword}&quot;에 대한 검색 결과가 없습니다.
+                      </p>
                       <button
                         className={styles.addNewBtn}
                         onClick={() => setIsAddingNew(true)}

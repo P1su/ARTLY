@@ -300,7 +300,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
 
           <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
             <div className={styles.addHeaderContainer}>
-              <label className={styles.label}>참여 작가 등록</label>
+              <label className={styles.label}>참여 작가</label>
               <button
                 type='button'
                 className={styles.addBtn}
@@ -311,36 +311,40 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
             <div className={styles.artistListContainer}>
               <div className={styles.artistList}>
-                {(data.artists || []).map((artist, index) => {
-                  const id = getArtistId(artist);
-                  const name = getArtistName(artist);
-                  return (
-                    <div key={id || index} className={styles.artworkCard}>
-                      <Img
-                        src={getArtistImage(artist)}
-                        alt='thumb'
-                        className={styles.artistThumb}
-                      />
-                      <span className={styles.artistName}>{name}</span>
+                {data.artists.length === 0 ? (
+                  <p className={styles.emptyText}>등록된 작가 없음</p>
+                ) : (
+                  data.artists.map((artist, index) => {
+                    const id = getArtistId(artist);
+                    const name = getArtistName(artist);
+                    return (
+                      <div key={id || index} className={styles.artworkCard}>
+                        <Img
+                          src={getArtistImage(artist)}
+                          alt='thumb'
+                          className={styles.artistThumb}
+                        />
+                        <span className={styles.artistName}>{name}</span>
 
-                      <button
-                        type='button'
-                        className={styles.removeBtn}
-                        onClick={() => handleRemoveArtist(id)}
-                        title='삭제'
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  );
-                })}
+                        <button
+                          type='button'
+                          className={styles.removeBtn}
+                          onClick={() => handleRemoveArtist(id)}
+                          title='삭제'
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
 
           <div className={`${styles.inputGroup} ${styles.artworkSection}`}>
             <div className={styles.addHeaderContainer}>
-              <label className={styles.label}>출품 작품 관리</label>
+              <label className={styles.label}>전시 작품</label>
               <button
                 type='button'
                 className={styles.addBtn}
@@ -351,31 +355,35 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
             <div className={styles.artistListContainer}>
               <div className={styles.artworkGrid}>
-                {(data.artworks || []).map((art) => (
-                  <div key={art.id} className={styles.artworkCard}>
-                    <Img
-                      src={getArtImage(art)}
-                      alt='thumb'
-                      className={styles.artworkThumb}
-                    />
-                    <div className={styles.artworkMeta}>
-                      <div className={styles.artworkTitle}>
-                        {getArtTitle(art)}
+                {data.artworks.length === 0 ? (
+                  <p className={styles.emptyText}>등록된 작품 없음</p>
+                ) : (
+                  data.artworks.map((art) => (
+                    <div key={art.id} className={styles.artworkCard}>
+                      <Img
+                        src={getArtImage(art)}
+                        alt='thumb'
+                        className={styles.artworkThumb}
+                      />
+                      <div className={styles.artworkMeta}>
+                        <div className={styles.artworkTitle}>
+                          {getArtTitle(art)}
+                        </div>
+                        <div className={styles.artworkArtist}>
+                          {getArtistNameForArt(art) || '작가 미상'}
+                        </div>
                       </div>
-                      <div className={styles.artworkArtist}>
-                        {getArtistNameForArt(art) || '작가 미상'}
-                      </div>
+                      <button
+                        type='button'
+                        className={styles.removeBtn}
+                        onClick={() => handleRemoveArtwork(art.id)}
+                        title='삭제'
+                      >
+                        ✕
+                      </button>
                     </div>
-                    <button
-                      type='button'
-                      className={styles.removeBtn}
-                      onClick={() => handleRemoveArtwork(art.id)}
-                      title='삭제'
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
