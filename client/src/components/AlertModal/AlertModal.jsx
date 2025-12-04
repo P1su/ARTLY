@@ -1,6 +1,6 @@
 import styles from './AlertModal.module.css';
 
-export function SimpleModal({ isOpen, message, onClose }) {
+export default function AlertModal({ isOpen, message, onClose }) {
   if (!isOpen) return null;
   return (
     <div className={styles.modalOverlay}>

@@ -1,22 +1,11 @@
 import styles from './ArtistDetail.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { instance, userInstance } from '../../../../apis/instance.js';
+import { userInstance } from '../../../../apis/instance.js';
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import ExhibitionsCards from '../../Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards.jsx';
-import { FaHome, FaHeart, FaShare } from 'react-icons/fa';
+import { FaHome, FaStar, FaShare } from 'react-icons/fa';
 import { useUser } from '../../../../store/UserProvider.jsx';
-
-const getExhibitionStatus = (startDate, endDate) => {
-  if (!startDate || !endDate) return 'default';
-  const today = new Date().setHours(0, 0, 0, 0);
-  const start = new Date(startDate).setHours(0, 0, 0, 0);
-  const end = new Date(endDate).setHours(0, 0, 0, 0);
-
-  if (today < start) return 'scheduled';
-  if (today > end) return 'ended';
-  return 'exhibited';
-};
 
 export default function ArtistDetail() {
   const { user } = useUser();
@@ -28,7 +17,7 @@ export default function ArtistDetail() {
   const getArtistDetail = async () => {
     if (!artistId) return;
     try {
-      const response = await instance.get(`/api/artists/${artistId}`);
+      const response = await userInstance.get(`/api/artists/${artistId}`);
       setArtistData(response.data);
     } catch (error) {
       console.error(error);
@@ -43,23 +32,19 @@ export default function ArtistDetail() {
     return <div className={styles.loading}>로딩 중...</div>;
   }
 
-  const name = artistData.artist_name || artistData.name || '작가';
-  const nation = artistData.artist_nation || artistData.nation || '';
-  const category = artistData.artist_category || artistData.field || '';
-  const image = artistData.artist_image || artistData.imageUrl || '';
-  const description =
-    artistData.artist_description || artistData.description || '';
-  const exhibitions = Array.isArray(artistData.exhibitions)
-    ? artistData.exhibitions
-    : [];
-  const artworks = Array.isArray(artistData.artworks)
-    ? artistData.artworks
-    : [];
-  const likeCount =
-    typeof artistData.like_count === 'number' ? artistData.like_count : 0;
-  const isLiked = Boolean(artistData.is_liked);
-  const homepage = artistData.artist_homepage || artistData.homepage || '';
-  const isOnExhibition = Boolean(artistData.is_on_exhibition);
+  const {
+    artist_name: name = '작가',
+    artist_nation: nation = '',
+    artist_category: category = '',
+    artist_image: image = '',
+    artist_description: description = '',
+    artist_homepage: homepage = '',
+    is_liked: isLiked,
+    is_on_exhibition: isOnExhibition,
+    like_count: likeCount,
+    exhibitions = [],
+    artworks = [],
+  } = artistData;
 
   const sanitizedHomepage = homepage
     ? homepage.startsWith('http')
@@ -146,6 +131,17 @@ export default function ArtistDetail() {
     { key: 'artworks', label: `작품 (${artworks.length || 0})` },
   ];
 
+  const getExhibitionStatus = (startDate, endDate) => {
+    if (!startDate || !endDate) return 'default';
+    const today = new Date().setHours(0, 0, 0, 0);
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    const end = new Date(endDate).setHours(0, 0, 0, 0);
+
+    if (today < start) return 'scheduled';
+    if (today > end) return 'ended';
+    return 'exhibited';
+  };
+
   const renderExhibitions = () => {
     if (!exhibitions.length) {
       return <p className={styles.emptyContent}>참여한 전시가 없습니다.</p>;
@@ -228,7 +224,7 @@ export default function ArtistDetail() {
 
         <div className={styles.btnLayout}>
           <button className={styles.actionButton} onClick={handleLike}>
-            <FaHeart
+            <FaStar
               className={`${styles.icon} ${isLiked ? styles.likedIcon : ''}`}
             />
             관심 작가

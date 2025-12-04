@@ -5,8 +5,8 @@ import useInput from '../../../hooks/useInput';
 import InputText from '../../../components/Input/InputText/InputText';
 import InputRadio from '../../../components/Input/InputRadio/InputRadio';
 import InputContainer from '../../../components/Input/InputConatiner/InputContainer';
-import { SimpleModal } from '../../../components/AlertModal/AlertModal.jsx';
 import { useState } from 'react';
+import AlertModal from './../../../components/AlertModal/AlertModal';
 
 export default function Register() {
   const { data: formDatas, handleChange } = useInput({
@@ -91,7 +91,7 @@ export default function Register() {
 
   return (
     <div className={styles.layout}>
-      <SimpleModal
+      <AlertModal
         isOpen={modal.isOpen}
         message={modal.message}
         onClose={handleCloseModal}

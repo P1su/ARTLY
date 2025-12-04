@@ -13,9 +13,9 @@ const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
     if (!userInfo) {
       return;
     }
-    
+
     const updatePayload = {
-      ...userInfo, 
+      ...userInfo,
       login_pwd: newPassword,
     };
 
@@ -24,14 +24,15 @@ const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
 
       alert('비밀번호가 성공적으로 변경되었습니다.');
 
-      onUpdateUserInfo(res.data); 
+      onUpdateUserInfo(res.data);
       setCurrentPassword(''); // 입력 필드 빈칸 만들기
       setNewPassword('');
       onClose();
     } catch (error) {
+      console.error(error);
       alert('비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.');
 
-      setCurrentPassword(''); 
+      setCurrentPassword('');
       setNewPassword('');
       return;
     }

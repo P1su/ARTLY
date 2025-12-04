@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './EditProfile.module.css';
-import { FaCog } from 'react-icons/fa';
-import { instance } from '../../../apis/instance';
+import { userInstance } from '../../../apis/instance';
 import PwModal from './PwModal/PwModal';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './../../../store/UserProvider';
@@ -22,7 +21,7 @@ const EditProfile = () => {
   }
 
   const handleUpdateUserInfo = (updatedData) => {
-      setUser({ ...user, ...updatedData });
+    setUser({ ...user, ...updatedData });
   };
 
   const handleOpenModal = () => {
@@ -33,18 +32,9 @@ const EditProfile = () => {
     setIsModalOpen(false);
   };
 
-  const handleEditName = () => {
-    setEditingName(true);
-    setNewName(user.user_name);
-  };
-
   const handleEditEmail = () => {
     setEditingEmail(true);
     setNewEmail(user.user_email);
-  };
-
-  const handleChangeName = (e) => {
-    setNewName(e.target.value);
   };
 
   const handleChangeEmail = (e) => {
@@ -53,7 +43,7 @@ const EditProfile = () => {
 
   const handleSaveName = async () => {
     try {
-      await instance.put('/api/users/me', {
+      await userInstance.put('/api/users/me', {
         ...user,
         user_name: newName,
       });
@@ -66,7 +56,7 @@ const EditProfile = () => {
 
   const handleSaveEmail = async () => {
     try {
-      await instance.put('/api/users/me', {
+      await userInstance.put('/api/users/me', {
         ...user,
         user_email: newEmail,
       });
@@ -84,6 +74,14 @@ const EditProfile = () => {
       <div className={styles.profileCard}>
         <div className={styles.profileInfoDetails}>
           <div className={styles.infoRow}>
+            <span className={styles.infoLabel}>성명</span>
+
+            <span className={styles.infoValue}>
+              {user.user_name || '닉네임'}
+            </span>
+          </div>
+
+          <div className={styles.infoRow}>
             <span className={styles.infoLabel}>아이디</span>
             <span className={styles.infoValue}>
               {user.login_id || '아이디'}
@@ -94,38 +92,6 @@ const EditProfile = () => {
             >
               비밀번호 변경
             </button>
-          </div>
-
-          <div className={styles.infoRow}>
-            <span className={styles.infoLabel}>닉네임</span>
-            {editingName ? (
-              <>
-                <input
-                  type='text'
-                  className={styles.input}
-                  value={newName}
-                  onChange={handleChangeName}
-                />
-                <button
-                  className={styles.changeButton}
-                  onClick={handleSaveName}
-                >
-                  저장
-                </button>
-              </>
-            ) : (
-              <>
-                <span className={styles.infoValue}>
-                  {user.user_name || '닉네임'}
-                </span>
-                <button
-                  className={styles.changeButton}
-                  onClick={handleEditName}
-                >
-                  변경
-                </button>
-              </>
-            )}
           </div>
 
           <div className={styles.infoRow}>
