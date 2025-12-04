@@ -41,12 +41,16 @@ export default function ConsoleEdit({ type }) {
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  // 변경 사항 비교(Diff)를 위한 원본 데이터 저장소
   const originalArtworksRef = useRef([]);
   const originalArtistsRef = useRef([]);
 
   const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
+
+  // 헬퍼: 작가 ID 추출 (서버: id / 모달: artist_id)
+  const getId = (item) => item.id || item.artist_id;
 
   const getTabNameByType = (type) => {
     switch (type) {
@@ -80,10 +84,8 @@ export default function ConsoleEdit({ type }) {
         if (isCreateMode) {
           const exhibitionId = searchParams.get('exhibition_id');
           const galleryId = searchParams.get('gallery_id');
-
           if (exhibitionId) initialData.exhibition_id = exhibitionId;
           if (galleryId) initialData.gallery_id = galleryId;
-
           targetGalleryId = galleryId;
         } else {
           const response = await userInstance.get(config.apiUrl(id));
@@ -95,32 +97,30 @@ export default function ConsoleEdit({ type }) {
           targetGalleryId = initialData.gallery_id;
         }
 
+        // [전시회] 작가 및 작품 원본 데이터 보존
         if (type === 'exhibitions' && !isCreateMode) {
+          // 작품
           const loadedArtworks = initialData.artworks || [];
           originalArtworksRef.current = loadedArtworks;
 
+          // 작가 (필드명 artists 사용)
           const loadedArtists = initialData.artists || [];
           originalArtistsRef.current = loadedArtists;
+
           console.log(
             `초기 로딩: 작품 ${loadedArtworks.length}개, 작가 ${loadedArtists.length}명`,
           );
         }
 
+        // [작품] 전시회 목록 로딩
         if (type === 'artworks' && targetGalleryId) {
           try {
-            console.log(
-              `전시회 목록 로딩 시작 (Gallery ID: ${targetGalleryId})`,
-            );
-
             const exhResponse = await userInstance.get(
               `/api/exhibitions?gallery_id=${targetGalleryId}`,
             );
-
             initialData.exhibitions = Array.isArray(exhResponse.data)
               ? exhResponse.data
               : [];
-
-            console.log('불러온 전시회 개수:', initialData.exhibitions.length);
 
             if (!isCreateMode && initialData.exhibitions_connected) {
               initialData.selected_exhibition_ids =
@@ -152,48 +152,36 @@ export default function ConsoleEdit({ type }) {
   const handleSave = async () => {
     if (isSaving || !data) return;
 
-    if (type === 'artworks') {
-      if (!data.art_title) {
-        alert('작품명을 입력해주세요.');
-        return;
-      }
-    } else if (type === 'galleries') {
-      if (!data.gallery_name) {
-        alert('갤러리명을 입력해주세요.');
-        return;
-      }
-    } /*if (type === 'exhibitions')*/ else {
-      if (isCreateMode && !data.gallery_id) {
-        alert('잘못된 접근입니다. 갤러리 정보가 없습니다.');
-        return;
-      }
-      if (!data.exhibition_title) {
-        alert('전시회명을 입력해주세요.');
-        return;
-      }
+    // 간단 유효성 검사
+    if (type === 'artworks' && !data.art_title)
+      return alert('작품명을 입력해주세요.');
+    if (type === 'galleries' && !data.gallery_name)
+      return alert('갤러리명을 입력해주세요.');
+    if (type === 'exhibitions') {
+      if (isCreateMode && !data.gallery_id)
+        return alert('갤러리 정보가 없습니다.');
+      if (!data.exhibition_title) return alert('전시회명을 입력해주세요.');
     }
 
     setIsSaving(true);
 
     try {
       const formData = new FormData();
-
-      if (!isCreateMode) {
-        formData.append('_method', 'PATCH');
-      }
+      if (!isCreateMode) formData.append('_method', 'PATCH');
 
       // 데이터 순회하며 FormData 구성
       Object.entries(data).forEach(([key, value]) => {
         if (value === undefined || value === null) return;
 
-        // SNS 배열 처리
+        // artists, artworks는 별도 API로 처리하므로 FormData에서 제외 (백엔드가 무시하면 보내도 무관)
+        if (key === 'artists' || key === 'artworks') return;
+
         if (key === 'gallery_sns' && Array.isArray(value)) {
           const validSns = value.filter((sns) => sns.type !== 'twitter');
           formData.append(key, JSON.stringify(validSns));
           return;
         }
 
-        // 객체나 배열은 문자열로 변환, 파일이 아닌 경우만
         if (typeof value === 'object' && !(value instanceof File)) {
           formData.append(key, JSON.stringify(value));
         } else {
@@ -203,21 +191,14 @@ export default function ConsoleEdit({ type }) {
 
       if (!formData.has('gallery_id')) {
         const galleryId = data.gallery_id || data.gallery?.id;
-        if (galleryId) {
-          formData.append('gallery_id', galleryId);
-        } else {
-          console.error(
-            '⚠️ 경고: gallery_id를 찾을 수 없습니다. 저장 시 권한 오류가 발생할 수 있습니다.',
-          );
-        }
+        if (galleryId) formData.append('gallery_id', galleryId);
       }
 
-      // 이미지 파일이 선택되었다면 추가
       if (selectedImageFile) {
         formData.append(config.formImageField, selectedImageFile);
       }
 
-      // 1. 메인 저장 API 호출 (작품/전시회/갤러리 생성 또는 수정)
+      // 1. 메인 저장 API 호출
       const url = config.apiUrl(id);
       const response = await userInstance.post(url, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -227,83 +208,72 @@ export default function ConsoleEdit({ type }) {
         ? response.data.data?.id || response.data.id
         : id;
 
+      // 2. [전시회] 작품 및 작가 연결 업데이트 (Diff 방식)
       if (type === 'exhibitions' && savedId) {
+        // --- A. 작품 (Artworks) ---
         const currentArtworks = data.artworks || [];
         const originalArtworks = originalArtworksRef.current || [];
 
-        // 추가된 작품: 현재 목록에는 있는데 원본엔 없는 것
         const artsToAdd = currentArtworks.filter(
-          (curr) => !originalArtworks.some((orig) => orig.id === curr.id),
+          (c) => !originalArtworks.some((o) => getId(o) === getId(c)),
         );
-        // 삭제된 작품: 원본엔 있는데 현재 목록엔 없는 것
         const artsToDelete = originalArtworks.filter(
-          (orig) => !currentArtworks.some((curr) => curr.id === orig.id),
+          (o) => !currentArtworks.some((c) => getId(c) === getId(o)),
         );
 
         try {
-          // [API] 작품 추가
           const addPromises = artsToAdd.map((art) =>
             userInstance.post(`/api/exhibitions/${savedId}/arts`, {
-              art_id: art.id,
+              art_id: getId(art),
               display_order: 0,
             }),
           );
-
-          // [API] 작품 삭제 (DELETE /api/exhibitions/{id}/arts/{art_id})
           const deletePromises = artsToDelete.map((art) =>
-            userInstance.delete(`/api/exhibitions/${savedId}/arts/${art.id}`),
+            userInstance.delete(
+              `/api/exhibitions/${savedId}/arts/${getId(art)}`,
+            ),
           );
 
           await Promise.all([...addPromises, ...deletePromises]);
           console.log(
-            `작품 처리결과: 추가 ${artsToAdd.length}, 삭제 ${artsToDelete.length}`,
+            `작품 업데이트: 추가 ${artsToAdd.length}, 삭제 ${artsToDelete.length}`,
           );
         } catch (err) {
           console.error('작품 업데이트 중 오류:', err);
         }
 
+        // --- B. 작가 (Artists) ---
         const currentArtists = data.artists || [];
         const originalArtists = originalArtistsRef.current || [];
 
-        // 비교를 위해 ID 추출 함수 (artist_id 혹은 id)
-        const getArtistId = (a) => a.artist_id || a.id;
-
-        // 추가된 작가
         const artistsToAdd = currentArtists.filter(
-          (curr) =>
-            !originalArtists.some(
-              (orig) => getArtistId(orig) === getArtistId(curr),
-            ),
+          (c) => !originalArtists.some((o) => getId(o) === getId(c)),
         );
-        // 삭제된 작가
         const artistsToDelete = originalArtists.filter(
-          (orig) =>
-            !currentArtists.some(
-              (curr) => getArtistId(curr) === getArtistId(orig),
-            ),
+          (o) => !currentArtists.some((c) => getId(c) === getId(o)),
         );
 
         try {
+          // 추가 (ID 목록 추출 후 전송)
           const newArtistIds = artistsToAdd
-            .map((a) => getArtistId(a))
-            .filter((id) => id);
-
+            .map((a) => getId(a))
+            .filter(Boolean);
           if (newArtistIds.length > 0) {
             await userInstance.post(`/api/exhibitions/${savedId}/artists`, {
               artist_ids: newArtistIds,
             });
           }
 
+          // 삭제 (개별 DELETE 요청)
           const deleteArtistPromises = artistsToDelete.map((artist) => {
-            const artistId = getArtistId(artist);
             return userInstance.delete(
-              `/api/exhibitions/${savedId}/artists/${artistId}`,
+              `/api/exhibitions/${savedId}/artists/${getId(artist)}`,
             );
           });
 
           await Promise.all(deleteArtistPromises);
           console.log(
-            `작가 처리결과: 추가 ${artistsToAdd.length}, 삭제 ${artistsToDelete.length}`,
+            `작가 업데이트: 추가 ${artistsToAdd.length}, 삭제 ${artistsToDelete.length}`,
           );
         } catch (err) {
           console.error('작가 업데이트 중 오류:', err);
@@ -311,6 +281,7 @@ export default function ConsoleEdit({ type }) {
         }
       }
 
+      // 3. [작품] 전시회 연결 (기존 로직)
       if (type === 'artworks') {
         const savedArtId = isCreateMode
           ? response.data.data?.id || response.data.id
@@ -324,9 +295,7 @@ export default function ConsoleEdit({ type }) {
               display_order: 0,
             });
           });
-
           await Promise.all(connectPromises);
-          console.log(`2단계 전시회 ${selectedExhibitions.length}곳 연결 완료`);
         }
       }
 
@@ -334,24 +303,13 @@ export default function ConsoleEdit({ type }) {
       handleAfterAction();
     } catch (error) {
       console.error('저장 오류:', error);
-      if (error.response) {
-        console.log('서버 응답 메시지:', error.response.data);
-        const msg =
-          typeof error.response.data === 'object'
-            ? error.response.data.message || JSON.stringify(error.response.data)
-            : '서버 오류가 발생했습니다.';
-        alert(`저장 실패: ${msg}`);
-      } else {
-        alert('저장 중 네트워크 오류가 발생했습니다.');
-      }
+      alert('저장 중 오류가 발생했습니다.');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleFileChange = (file) => {
-    setSelectedImageFile(file);
-  };
+  const handleFileChange = (file) => setSelectedImageFile(file);
 
   if (!data) return <div>데이터 로딩 중...</div>;
 
