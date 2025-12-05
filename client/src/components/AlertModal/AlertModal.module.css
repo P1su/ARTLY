@@ -1,49 +1,117 @@
+/* 1rem = 10px 기준 */
+
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 1000;
+  backdrop-filter: blur(0.2rem);
+  /* 오버레이 등장 애니메이션 */
+  animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+/* 닫힐 때 오버레이가 서서히 투명해지도록 하는 클래스 */
+.fadeOutOverlay {
+  animation: fadeOutOverlay 0.3s ease-in forwards;
 }
 
 .modalBox {
-  background: white;
-  width: 32rem;
-  padding: 3rem 2rem;
-  border-radius: 1.6rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 3rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 32rem;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  gap: 2rem;
+  /* 기본적으로는 투명하게 시작 (애니메이션이 처리) */
+  opacity: 0;
 }
 
 .modalMessage {
   font-size: 1.6rem;
   color: #333;
-  margin-bottom: 2.4rem;
   line-height: 1.5;
-  font-weight: 500;
+  white-space: pre-wrap;
+  margin: 0;
 }
 
 .modalButton {
-  width: 100%;
-  height: 4.4rem;
-  background-color: var(--blue01);
+  background-color: #1890ff;
   color: white;
   border: none;
+  padding: 1.2rem 0;
   border-radius: 0.8rem;
   font-size: 1.5rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
+  width: 100%;
 }
 
 .modalButton:hover {
-  background-color: var(--blue02);
+  background-color: #096dd9;
+}
+
+/* --- 애니메이션 클래스 --- */
+
+.slideUp {
+  animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.slideDown {
+  animation: slideDown 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+/* --- Keyframes --- */
+
+/* 오버레이 페이드 인/아웃 */
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 모달 슬라이드 업 (등장) */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem); /* 아래에서 시작 */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* 제자리 */
+  }
+}
+
+/* 모달 슬라이드 다운 (퇴장) */
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(2rem); /* 아래로 사라짐 */
+  }
 }
