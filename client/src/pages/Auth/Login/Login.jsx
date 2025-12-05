@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
+import { RiKakaoTalkFill } from 'react-icons/ri';
+import { FcGoogle } from 'react-icons/fc';
+import { FaApple } from 'react-icons/fa';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,7 +22,7 @@ export default function Login() {
           <p className={styles.subtitle}>아뜰리 계정으로 로그인하세요.</p>
         </div>
 
-        <div className={styles.buttonGroup}>
+        {/* <div className={styles.buttonGroup}>
           <button className={`${styles.socialButton} ${styles.kakao}`}>
             <RiKakaoTalkFill size='24' style={{ marginRight: '8px' }} />
             카카오 로그인
@@ -34,11 +37,11 @@ export default function Login() {
             <FaApple size='24' style={{ marginRight: '8px' }} />
             Apple로 로그인
           </button>
-        </div>
+        </div> 
 
         <div className={styles.divider}>
           <span>또는</span>
-        </div>
+        </div> */}
 
         <button className={styles.emailButton} onClick={handleNavigate}>
           보유 계정으로 로그인

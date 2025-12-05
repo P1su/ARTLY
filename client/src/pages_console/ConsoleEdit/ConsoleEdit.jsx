@@ -1,7 +1,7 @@
 import styles from './ConsoleEdit.module.css';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { userInstance } from '../../apis/instance.js';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEditData } from './hooks/useEditData';
+import { useEditSave } from './hooks/useEditSave';
 
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
@@ -9,18 +9,18 @@ import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
-    title: '갤러리 수정',
+    title: '갤러리 등록/수정',
     apiUrl: (id) => (id === 'new' ? '/api/galleries' : `/api/galleries/${id}`),
     formImageField: 'gallery_image_file',
   },
   exhibitions: {
-    title: '전시회 수정',
+    title: '전시회 등록/수정',
     apiUrl: (id) =>
       id === 'new' ? '/api/exhibitions' : `/api/exhibitions/${id}`,
     formImageField: 'exhibition_poster_file',
   },
   artworks: {
-    title: '작품 수정',
+    title: '작품 등록/수정',
     apiUrl: (id) => (id === 'new' ? '/api/arts' : `/api/arts/${id}`),
     formImageField: 'image',
   },
@@ -35,312 +35,47 @@ const FORM_COMPONENTS = {
 export default function ConsoleEdit({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  const [data, setData] = useState(null);
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
-
   const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
 
-  const getTabNameByType = (type) => {
-    switch (type) {
-      case 'galleries':
-        return '갤러리관리';
-      case 'exhibitions':
-        return '전시회관리';
-      case 'artworks':
-        return '작품관리';
-      default:
-        return '갤러리관리';
-    }
-  };
+  // 1. 데이터 로딩 Hook
+  const { data, setData, isLoading } = useEditData(
+    type,
+    id,
+    isCreateMode,
+    config,
+  );
 
-  const handleAfterAction = () => {
-    if (isCreateMode) {
-      navigate('/console/main', {
-        state: { activeTab: getTabNameByType(type) },
-      });
-    } else {
-      navigate(`/console/${type}/${id}`);
-    }
-  };
-
-  useEffect(() => {
-    const initData = async () => {
-      try {
-        let initialData = {};
-        let targetGalleryId = null;
-
-        if (isCreateMode) {
-          const exhibitionId = searchParams.get('exhibition_id');
-          const galleryId = searchParams.get('gallery_id');
-
-          if (exhibitionId) initialData.exhibition_id = exhibitionId;
-          if (galleryId) initialData.gallery_id = galleryId;
-
-          targetGalleryId = galleryId;
-        } else {
-          const response = await userInstance.get(config.apiUrl(id));
-          initialData =
-            typeof response.data === 'string'
-              ? JSON.parse(response.data)
-              : response.data;
-
-          targetGalleryId = initialData.gallery_id;
-        }
-        if (type === 'artworks' && targetGalleryId) {
-          try {
-            console.log(
-              `전시회 목록 로딩 시작 (Gallery ID: ${targetGalleryId})`,
-            );
-
-            const exhResponse = await userInstance.get(
-              `/api/exhibitions?gallery_id=${targetGalleryId}`,
-            );
-
-            initialData.exhibitions = Array.isArray(exhResponse.data)
-              ? exhResponse.data
-              : [];
-
-            console.log('불러온 전시회 개수:', initialData.exhibitions.length);
-
-            if (!isCreateMode && initialData.exhibitions_connected) {
-              initialData.selected_exhibition_ids =
-                initialData.exhibitions_connected.map((ex) => ex.id);
-            }
-          } catch (exhError) {
-            console.error('전시회 목록 로딩 실패:', exhError);
-            initialData.exhibitions = [];
-          }
-        }
-        if (type === 'exhibitions' && !isCreateMode) {
-          try {
-            // API: 해당 전시회의 작품 목록 조회 (경로는 백엔드 명세 확인 필요)
-            // 예: /api/exhibitions/{id}/arts
-            const artRes = await userInstance.get(
-              `/api/exhibitions/${id}/arts`,
-            );
-            // 응답 형태에 따라 처리 (예: res.data)
-            initialData.connected_artworks = Array.isArray(artRes.data)
-              ? artRes.data
-              : [];
-            console.log(
-              '불러온 작품 수:',
-              initialData.connected_artworks.length,
-            );
-          } catch (e) {
-            console.warn('작품 목록 로딩 실패(신규 등록이면 무시):', e);
-            initialData.connected_artworks = [];
-          }
-        }
-
-        setData(initialData);
-      } catch (error) {
-        console.error('데이터 초기화 실패:', error);
-        alert('데이터를 불러오지 못했습니다.');
-        navigate(`/console/${type}`);
-      }
-    };
-
-    if (config) initData();
-  }, [id, config, isCreateMode, searchParams, navigate, type]);
+  // 2. 저장 로직 Hook
+  const { handleSave, isSaving, setSelectedImageFile } = useEditSave(
+    type,
+    id,
+    isCreateMode,
+    config,
+    data,
+    navigate,
+  );
 
   const handleCancel = () => {
     if (window.confirm('수정을 취소하시겠습니까?')) {
-      handleAfterAction();
-    }
-  };
-
-  const handleSave = async () => {
-    if (isSaving || !data) return;
-
-    if (type === 'artworks') {
-      if (!data.art_title) {
-        alert('작품명을 입력해주세요.');
-        return;
-      }
-    } else if (type === 'galleries') {
-      if (!data.gallery_name) {
-        alert('갤러리명을 입력해주세요.');
-        return;
-      }
-    } /*if (type === 'exhibitions')*/ else {
-      if (isCreateMode && !data.gallery_id) {
-        alert('잘못된 접근입니다. 갤러리 정보가 없습니다.');
-        return;
-      }
-      if (!data.exhibition_title) {
-        alert('전시회명을 입력해주세요.');
-        return;
-      }
-    }
-
-    setIsSaving(true);
-
-    try {
-      const formData = new FormData();
-
-      if (!isCreateMode) {
-        formData.append('_method', 'PATCH');
-      }
-
-      // 데이터 순회하며 FormData 구성
-      Object.entries(data).forEach(([key, value]) => {
-        if (value === undefined || value === null) return;
-
-        // SNS 배열 처리
-        if (key === 'gallery_sns' && Array.isArray(value)) {
-          const validSns = value.filter((sns) => sns.type !== 'twitter');
-          formData.append(key, JSON.stringify(validSns));
-          return;
-        }
-
-        // 객체나 배열은 문자열로 변환, 파일이 아닌 경우만
-        if (typeof value === 'object' && !(value instanceof File)) {
-          formData.append(key, JSON.stringify(value));
-        } else {
-          formData.append(key, value);
-        }
-      });
-
-      if (!formData.has('gallery_id')) {
-        const galleryId = data.gallery_id || data.gallery?.id;
-        if (galleryId) {
-          formData.append('gallery_id', galleryId);
-        } else {
-          console.error(
-            '⚠️ 경고: gallery_id를 찾을 수 없습니다. 저장 시 권한 오류가 발생할 수 있습니다.',
-          );
-        }
-      }
-
-      // 이미지 파일이 선택되었다면 추가
-      if (selectedImageFile) {
-        formData.append(config.formImageField, selectedImageFile);
-      }
-
-      // 1. 메인 저장 API 호출 (작품/전시회/갤러리 생성 또는 수정)
-      const url = config.apiUrl(id);
-      const response = await userInstance.post(url, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
-      // 2. [작품 관리일 경우] 선택된 전시회들에 연결하기 (2단계)
-      if (type === 'artworks') {
-        const savedArtId = isCreateMode
-          ? response.data.data?.id || response.data.id
-          : id;
-        const selectedExhibitions = data.selected_exhibition_ids || [];
-
-        if (selectedExhibitions.length > 0 && savedArtId) {
-          const connectPromises = selectedExhibitions.map((exhibitionId) => {
-            return userInstance.post(`/api/exhibitions/${exhibitionId}/arts`, {
-              art_id: savedArtId,
-              display_order: 0,
-            });
-          });
-
-          await Promise.all(connectPromises);
-          console.log(`2단계 전시회 ${selectedExhibitions.length}곳 연결 완료`);
-        }
-      }
-
-      if (type === 'exhibitions') {
-        const savedExhibitionId = isCreateMode
-          ? response.data.data?.id || response.data.id
-          : id;
-
-        const currentArtists = data.participating_artists || [];
-        const artistIds = currentArtists.map(
-          (artist) => artist.artist_id || artist.id,
-        );
-
-        const validArtistIds = artistIds.filter((id) => id);
-
-        if (savedExhibitionId) {
-          try {
-            const payload = {
-              artist_ids: validArtistIds,
-              gallery_id: data.gallery_id,
-            };
-
-            console.log('작가 저장 페이로드:', payload);
-
-            await userInstance.post(
-              `/api/exhibitions/${savedExhibitionId}/artists`,
-              payload,
-            );
-
-            console.log('2단계 작가 목록 저장 성공:', artistIds);
-          } catch (artistError) {
-            console.error('작가 저장 실패:', artistError);
-            alert('전시회는 저장되었으나, 작가 목록 저장에 실패했습니다.');
-          }
-
-          const currentArtworks = data.connected_artworks || [];
-
-          if (currentArtworks.length > 0) {
-            try {
-              // 방법 A: 한 번에 ID 목록 보내기 (백엔드가 지원한다면 가장 깔끔)
-              /*
-                    await userInstance.post(`/api/exhibitions/${savedExhibitionId}/arts/batch`, {
-                        art_ids: currentArtworks.map(art => art.id),
-                        gallery_id: data.gallery_id
-                    });
-                    */
-
-              // 방법 B: 반복문으로 하나씩 연결 (기존 'artworks' 저장 로직과 유사하게 안전한 방법)
-              // 기존 연결을 다 끊고 새로 넣을지, 추가만 할지는 백엔드 로직에 따름.
-              // 여기서는 "전시회에 작품 추가" API를 반복 호출하는 방식 예시
-
-              const artConnectPromises = currentArtworks.map((art) => {
-                return userInstance.post(
-                  `/api/exhibitions/${savedExhibitionId}/arts`,
-                  {
-                    art_id: art.id,
-                    display_order: 0, // 필요시 순서
-                    gallery_id: data.gallery_id, // ★ 권한 에러 방지용
-                  },
-                );
-              });
-
-              await Promise.all(artConnectPromises);
-              console.log(`총 ${currentArtworks.length}개 작품 연결 완료`);
-            } catch (artError) {
-              console.error('작품 연결 실패:', artError);
-              // 409 Conflict(이미 존재함) 에러는 무시해도 된다면 여기서 예외 처리
-            }
-          }
-        }
-      }
-
-      alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
-      handleAfterAction();
-    } catch (error) {
-      console.error('저장 오류:', error);
-      if (error.response) {
-        console.log('서버 응답 메시지:', error.response.data);
-        const msg =
-          typeof error.response.data === 'object'
-            ? error.response.data.message || JSON.stringify(error.response.data)
-            : '서버 오류가 발생했습니다.';
-        alert(`저장 실패: ${msg}`);
+      const tabName =
+        type === 'galleries'
+          ? '갤러리관리'
+          : type === 'exhibitions'
+            ? '전시회관리'
+            : '작품관리';
+      if (isCreateMode) {
+        navigate('/console/main', { state: { activeTab: tabName } });
       } else {
-        alert('저장 중 네트워크 오류가 발생했습니다.');
+        navigate(`/console/${type}/${id}`);
       }
-    } finally {
-      setIsSaving(false);
     }
   };
 
-  const handleFileChange = (file) => {
-    setSelectedImageFile(file);
-  };
+  const handleFileChange = (file) => setSelectedImageFile(file);
 
-  if (!data) return <div>데이터 로딩 중...</div>;
+  if (isLoading || !data) return <div>데이터 로딩 중...</div>;
 
   return (
     <div className={styles.layout}>
@@ -365,6 +100,7 @@ export default function ConsoleEdit({ type }) {
         <button
           className={`${styles.button} ${styles.saveButton}`}
           onClick={handleSave}
+          disabled={isSaving}
         >
           {isSaving ? '저장 중...' : '저장'}
         </button>

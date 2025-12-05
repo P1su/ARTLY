@@ -1,22 +1,35 @@
 import styles from './Menu.module.css';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../store/UserProvider.jsx';
 import { useNavigate } from 'react-router-dom';
 import { menuList } from '../../utils/menu.js';
-import useModal from '../../hooks/useModal.jsx';
 import LogoutModal from './LogoutModal/LogoutModal.jsx';
+import Cookies from 'js-cookie';
 
 export default function Menu({ onOpen, isOpen }) {
   const navigate = useNavigate();
   // const { isOpen: isModalOpen, handleOpenModal } = useModal();
+  // const { isOpen: isModalOpen, handleOpenModal } = useModal();
   const { user, logout } = useContext(UserContext);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    Cookies.remove('ACCESS_TOKEN');
     logout();
-    // handleOpenModal();
+    setIsLogoutModalOpen(false);
     onOpen();
     navigate('/');
   };
+
+  // const handleCloseModal = () => {
+  //   handleOpenModal();
+  //   onOpen();
+  //   navigate('/');
+  // };
 
   // const handleCloseModal = () => {
   //   handleOpenModal();
@@ -33,7 +46,8 @@ export default function Menu({ onOpen, isOpen }) {
 
   return (
     <div className={styles.overlay} onClick={onOpen}>
-      {/* {isModalOpen && <LogoutModal onClose={handleCloseModal} />} */}
+      <LogoutModal isOpen={isLogoutModalOpen} onClose={handleLogoutConfirm} />
+
       <div
         className={`${styles.menuLayout} ${isOpen ? styles.menuVisible : styles.menuHidden}`}
         onClick={(e) => e.stopPropagation()}
@@ -120,7 +134,7 @@ export default function Menu({ onOpen, isOpen }) {
             공지사항 & FAQ
           </span>
           {user ? (
-            <span className={styles.menuSpan} onClick={handleLogout}>
+            <span className={styles.menuSpan} onClick={handleLogoutClick}>
               로그아웃
             </span>
           ) : (

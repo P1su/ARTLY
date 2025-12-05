@@ -57,7 +57,13 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1.4rem;
+  outline: none;
 }
+
+.searchBar input:focus {
+  border: 1px solid var(--blue01);
+}
+
 .searchBar button {
   padding: 0 1.5rem;
   background: #f0f2f5;
@@ -189,9 +195,14 @@
   width: 100%;
   padding: 1.2rem;
   border: 1px solid #ddd;
+  outline: none;
   border-radius: 6px;
   font-size: 1.5rem;
   margin-bottom: 2rem;
+}
+
+.addInput:focus {
+  border: 1px solid var(--blue01);
 }
 
 .formActions {
