@@ -5,6 +5,12 @@
   gap: 1.5rem;
 }
 
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .emptyStateContainer {
   display: block;
 }

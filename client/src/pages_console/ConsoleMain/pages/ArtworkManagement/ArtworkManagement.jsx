@@ -36,62 +36,52 @@ export default function ArtworkManagement({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 전시회 목록이 로드된 후 작품 로드
+  // 전시회 목록이 로드된 후 작품 전체 로드 (1회만)
   useEffect(() => {
     if (exhibitionList && exhibitionList.length > 0) {
       loadArtworks('전시회 전체');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exhibitionList]);
-
-  // 전시회 선택 변경 시 작품 재로드
-  useEffect(() => {
-    if (selectedExhibition && selectedExhibition !== '전시회 전체') {
-      loadArtworks(selectedExhibition);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedExhibition]);
+  }, [exhibitionList.length]);
 
   const handleRegister = () => {
     navigate('/console/artworks/edit/new');
   };
 
-  // 전시회 필터링
+  // 전시회 필터링 (id 기반)
   const filteredArtworkList = useMemo(() => {
-    if (selectedExhibition === '전시회 전체') {
+    if (!selectedExhibition) {
       return artworkList;
     }
+    // exhibition_id로 필터링 (artworkList에 exhibition_id 필드가 있다면 사용, 없으면 title로 매칭)
+    const selectedExhibitionTitle = exhibitionList.find(ex => ex.id === selectedExhibition)?.title;
     return artworkList.filter(
-      (artwork) => artwork.exhibition_title === selectedExhibition
+      (artwork) => artwork.exhibition_title === selectedExhibitionTitle
     );
-  }, [artworkList, selectedExhibition]);
+  }, [artworkList, selectedExhibition, exhibitionList]);
 
-  // 전시회 옵션 생성 - 작품이 있는 전시회만 포함
+  // 전시회 옵션 생성 - 작품이 있는 전시회만 표시
   const exhibitionOptions = useMemo(() => {
-    const options = [{ id: 'all', name: '전시회 전체', value: '전시회 전체' }];
+    const options = [];
 
-    if (artworkList && artworkList.length > 0) {
-      const exhibitionTitles = new Set();
-      artworkList.forEach((artwork) => {
-        if (
-          artwork.exhibition_title &&
-          artwork.exhibition_title !== '전시회 정보 없음'
-        ) {
-          exhibitionTitles.add(artwork.exhibition_title);
+    // 작품이 있는 전시회 제목 목록
+    const exhibitionsWithArtworks = new Set(
+      artworkList
+        .map((artwork) => artwork.exhibition_title)
+        .filter((title) => title && title !== '전시회 정보 없음')
+    );
+
+    if (exhibitionList) {
+      exhibitionList.forEach((exhibition) => {
+        // 해당 전시회에 작품이 있는 경우에만 추가
+        if (exhibitionsWithArtworks.has(exhibition.title)) {
+          options.push({
+            id: exhibition.id,
+            name: exhibition.title,
+            value: exhibition.id,
+          });
         }
       });
-
-      if (exhibitionList) {
-        exhibitionList.forEach((exhibition) => {
-          if (exhibitionTitles.has(exhibition.title)) {
-            options.push({
-              id: exhibition.id,
-              name: exhibition.title,
-              value: exhibition.title,
-            });
-          }
-        });
-      }
     }
 
     return options;
@@ -108,11 +98,14 @@ export default function ArtworkManagement({
   return (
     <section className={styles.contentContainer}>
       {/* 전시회 필터 드롭다운 */}
-      <LookUp
-        value={selectedExhibition}
-        onChange={onExhibitionChange}
-        options={exhibitionOptions}
-      />
+      <div className={styles.searchContainer}>
+        <LookUp
+          value={selectedExhibition}
+          onChange={onExhibitionChange}
+          options={exhibitionOptions}
+          placeholder="전시회를 선택하세요"
+        />
+      </div>
 
       <div className={styles.countAndButtonContainer}>
         <CountList count={filteredArtworkList.length} />

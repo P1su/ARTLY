@@ -27,60 +27,51 @@ export default function ExhibitionManagement({
     }
   };
 
-  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
+  // 컴포넌트 마운트 시 전체 전시회 로드 (1회만)
   useEffect(() => {
-    if (galleryList.length > 0 && selectedGallery) {
-      loadExhibitions(selectedGallery);
-    } else if (galleryList.length > 0) {
+    if (galleryList.length > 0) {
       loadExhibitions('갤러리 전체');
     }
-  }, [selectedGallery, galleryList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [galleryList.length]);
 
-  // 갤러리 필터링
+  // 갤러리 필터링 (id 기반)
   const filteredExhibitionList = useMemo(() => {
-    if (selectedGallery === '갤러리 전체') {
+    if (!selectedGallery) {
       return exhibitionList;
     }
     return exhibitionList.filter(
-      (exhibition) => exhibition.gallery_name === selectedGallery
+      (exhibition) => exhibition.gallery_id === selectedGallery
     );
   }, [exhibitionList, selectedGallery]);
 
-  // 갤러리 옵션
+  // 갤러리 옵션 - 전시회가 있는 갤러리만 표시
   const galleryOptions = useMemo(() => {
-    const options = [{ id: 'all', name: '갤러리 전체', value: '갤러리 전체' }];
+    const options = [];
 
-    const usedGalleryIds = new Set(
+    // 전시회가 있는 갤러리 ID 목록
+    const galleriesWithExhibitions = new Set(
       exhibitionList.map((ex) => ex.gallery_id).filter(Boolean)
     );
-    const usedGalleryNames = new Set(
-      exhibitionList.map((ex) => ex.gallery_name).filter(Boolean)
-    );
 
-    galleryList.forEach((gallery) => {
-      if (
-        usedGalleryIds.has(gallery.id) ||
-        usedGalleryNames.has(gallery.name)
-      ) {
-        options.push({
-          id: gallery.id,
-          name: gallery.name,
-          value: gallery.name,
-        });
-      }
-    });
+    if (galleryList) {
+      galleryList.forEach((gallery) => {
+        // 해당 갤러리에 전시회가 있는 경우에만 추가
+        if (galleriesWithExhibitions.has(gallery.id)) {
+          options.push({
+            id: gallery.id,
+            name: gallery.name,
+            value: gallery.id,
+          });
+        }
+      });
+    }
 
     return options;
   }, [galleryList, exhibitionList]);
 
-  // 선택된 갤러리 ID
-  const selectedGalleryId = useMemo(() => {
-    if (!selectedGallery || selectedGallery === '갤러리 전체') {
-      return null;
-    }
-    const gallery = galleryList.find((g) => g.name === selectedGallery);
-    return gallery?.id || null;
-  }, [selectedGallery, galleryList]);
+  // 선택된 갤러리 ID (이제 selectedGallery가 이미 id)
+  const selectedGalleryId = selectedGallery;
 
   const handleRegister = () => {
     if (!selectedGalleryId) {
@@ -101,11 +92,13 @@ export default function ExhibitionManagement({
   return (
     <section className={styles.contentContainer}>
       {/* 갤러리 필터 드롭다운 */}
-      <LookUp
-        value={selectedGallery}
-        onChange={onGalleryChange}
-        options={galleryOptions}
-      />
+      <div className={styles.searchContainer}>
+        <LookUp
+          value={selectedGallery}
+          onChange={onGalleryChange}
+          options={galleryOptions}
+        />
+      </div>
 
       <div className={styles.countAndButtonContainer}>
         <CountList count={filteredExhibitionList.length} />

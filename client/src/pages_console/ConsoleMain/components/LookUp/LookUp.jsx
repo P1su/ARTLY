@@ -33,7 +33,7 @@ export default function LookUp({
   }, [value]);
 
   // 현재 선택된 값을 표시할 텍스트 찾기
-  const displayValue = options.find(option => option.value === value)?.name || value || placeholder;
+  const displayValue = options.find(option => option.id === value)?.name || placeholder;
 
   // 입력 변경 핸들러
   const handleInputChange = (e) => {
@@ -72,7 +72,7 @@ export default function LookUp({
             {options.map((option) => (
               <div
                 key={option.id}
-                className={`${styles.dropdownItem} ${value === option.value ? styles.dropdownItemActive : ''
+                className={`${styles.dropdownItem} ${value === option.id ? styles.dropdownItemActive : ''
                   }`}
                 onClick={() => handleOptionClick(option, onChange)}
               >

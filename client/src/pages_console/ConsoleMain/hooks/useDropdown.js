@@ -21,7 +21,7 @@ export default function useDropdown(initialValue = '', placeholder = '') {
 
   const handleOptionClick = (option, onChange) => {
     setSelectedValue(option.name);
-    onChange(option.value);
+    onChange(option.id);
     setIsOpen(false);
   };
 

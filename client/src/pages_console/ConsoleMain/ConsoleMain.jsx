@@ -16,8 +16,8 @@ export default function ConsoleMain({
   const location = useLocation();
 
   const [activeTab, setActiveTab] = useState(defaultTab);
-  const [selectedGallery, setSelectedGallery] = useState(defaultGallery);
-  const [selectedExhibition, setSelectedExhibition] = useState('전시회 전체');
+  const [selectedGallery, setSelectedGallery] = useState(null);
+  const [selectedExhibition, setSelectedExhibition] = useState(null);
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -29,9 +29,9 @@ export default function ConsoleMain({
     setActiveTab(tab);
     // 탭에 따라 적절한 초기값 설정
     if (tab === '작품관리') {
-      setSelectedExhibition('전시회 전체');
+      setSelectedExhibition(null);
     } else {
-      setSelectedGallery('갤러리 전체');
+      setSelectedGallery(null);
     }
   };
 

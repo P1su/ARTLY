@@ -15,7 +15,6 @@ export default function useDeleteItem() {
   // 갤러리 목록 로드
   const loadGalleries = useCallback(
     async (search = '') => {
-      console.log('🔍 loadGalleries 호출됨, search:', search);
       try {
         setIsLoading(true);
         // 검색어가 있으면 검색 중 상태로 표시
@@ -31,9 +30,7 @@ export default function useDeleteItem() {
         // is_console을 true로 설정하여 현재 사용자의 갤러리만 가져옴
         params.append('is_console', true);
         const url = `/api/galleries${params.toString() ? `?${params.toString()}` : ''}`;
-        console.log('🔍 API URL:', url);
         const response = await userInstance.get(url);
-        console.log('🔍 API 응답:', response.data);
 
         // API 응답 데이터를 mock 데이터 형식에 맞게 변환
         const galleries = Array.isArray(response.data)
