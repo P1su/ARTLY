@@ -6,6 +6,7 @@ import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import ExhibitionsCards from '../../Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards.jsx';
 import { FaHome, FaStar, FaShare } from 'react-icons/fa';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function ArtistDetail() {
   const { user } = useUser();
@@ -180,7 +181,7 @@ export default function ArtistDetail() {
           const artworkImage = art_image || imageUrl || '';
           return (
             <div className={styles.artworkCard} key={`${id}-${artworkTitle}`}>
-              <img
+              <Img
                 className={styles.artworkImage}
                 src={artworkImage}
                 alt={artworkTitle}
@@ -206,7 +207,7 @@ export default function ArtistDetail() {
       </div>
 
       <div className={styles.card}>
-        <img
+        <Img
           className={styles.artistImage}
           src={image}
           alt={`${name} 대표 이미지`}

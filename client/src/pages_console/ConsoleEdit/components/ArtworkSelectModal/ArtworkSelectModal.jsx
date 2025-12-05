@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import styles from './ArtworkSelectModal.module.css';
 import { userInstance } from '../../../../apis/instance';
+import Img from '../../../../components/Img/Img';
 
 export default function ArtworkSelectModal({
   onClose,
@@ -98,7 +99,7 @@ export default function ArtworkSelectModal({
                       readOnly
                       className={styles.checkbox}
                     />
-                    <img
+                    <Img
                       src={art.art_image || art.image}
                       alt={art.art_title}
                       className={styles.artistImg}

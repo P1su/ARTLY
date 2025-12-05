@@ -8,6 +8,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function GalleryManagement({
   galleryList,
@@ -79,7 +80,7 @@ export default function GalleryManagement({
               onClick={() => navigate(`/console/galleries/${gallery.id}`)}
             >
               <div className={styles.cardContent}>
-                <img
+                <Img
                   src={gallery.image}
                   alt={gallery.name}
                   className={styles.galleryImage}

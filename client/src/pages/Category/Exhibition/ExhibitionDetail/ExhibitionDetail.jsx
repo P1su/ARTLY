@@ -14,6 +14,7 @@ import InvitationGenerator from './components/InvitationGenerator/InvitationGene
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -132,7 +133,10 @@ export default function ExhibitionDetail({
   const isReservable = status === 'exhibited';
 
   const infoList = [
-    { label: '전시기간', content: `${startDate} ~ ${endDate}` },
+    {
+      label: '전시기간',
+      content: startDate && endDate ? `${startDate} ~ ${endDate}` : '정보 없음',
+    },
     { label: '전시장소', content: organization },
     {
       label: '관람시간',
@@ -175,7 +179,7 @@ export default function ExhibitionDetail({
       )}
 
       <div className={styles.card}>
-        <img className={styles.posterImage} src={poster} alt='전시회 포스터' />
+        <Img className={styles.posterImage} src={poster} alt='전시회 포스터' />
 
         <section className={styles.titleSection}>
           <h1 className={styles.exhibitionTitle}>{title}</h1>

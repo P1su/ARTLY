@@ -12,7 +12,11 @@ export default function Img({ src, alt, className, ...props }) {
       return;
     }
 
-    if (src.startsWith('http')) {
+    if (
+      src.startsWith('http') ||
+      src.startsWith('data:') ||
+      src.startsWith('blob:')
+    ) {
       setImgSrc(src);
     } else {
       const cleanSrc = src.startsWith('/') ? src : `/${src}`;

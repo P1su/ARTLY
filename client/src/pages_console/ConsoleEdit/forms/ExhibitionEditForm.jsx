@@ -165,7 +165,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         >
           {imagePreviewUrl ? (
             <>
-              <img
+              <Img
                 src={imagePreviewUrl}
                 alt='전시 포스터 미리보기'
                 className={styles.previewImage}

@@ -7,6 +7,7 @@ import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 import { FaChevronRight } from 'react-icons/fa';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function ArtworkDetail({
   showUserActions = true,
@@ -161,7 +162,7 @@ export default function ArtworkDetail({
       )}
 
       <div className={styles.card}>
-        <img src={art_image} alt={art_title} className={styles.mainImage} />
+        <Img src={art_image} alt={art_title} className={styles.mainImage} />
 
         <section className={styles.titleSection}>
           <h1 className={styles.artworkTitle}>{art_title}</h1>
@@ -188,7 +189,7 @@ export default function ArtworkDetail({
         <hr className={styles.divider} />
 
         <div className={styles.artistSection}>
-          <img
+          <Img
             src={imageUrl}
             alt={finalArtistName}
             className={styles.artistImage}
@@ -312,7 +313,7 @@ export default function ArtworkDetail({
                     window.scrollTo(0, 0);
                   }}
                 >
-                  <img
+                  <Img
                     src={art.art_image}
                     alt={art.art_title}
                     className={styles.relatedImage}

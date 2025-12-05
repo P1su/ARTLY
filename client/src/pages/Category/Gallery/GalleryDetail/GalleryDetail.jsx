@@ -16,6 +16,7 @@ import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/Ar
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 // import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
 export default function GalleryDetail({
@@ -234,7 +235,7 @@ export default function GalleryDetail({
       </section>
 
       <div className={styles.card}>
-        <img
+        <Img
           className={styles.galleryImage}
           src={image}
           alt='갤러리 대표 이미지'

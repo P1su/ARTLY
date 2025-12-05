@@ -2,6 +2,7 @@ import styles from './MainCarousel.module.css';
 import { useEffect, useRef, useState } from 'react';
 import { instance } from '../../../../apis/instance.js';
 import { useNavigate } from 'react-router-dom';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function MainCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -87,7 +88,7 @@ export default function MainCarousel() {
         >
           {items.map((item) => (
             <div key={item?.id} className={styles.carouselItem}>
-              <img
+              <Img
                 src={item?.image}
                 alt={item?.title || item?.name}
                 className={styles.carouselImage}

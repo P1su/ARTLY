@@ -7,6 +7,7 @@ import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ArtworkManagement.module.css';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function ArtworkManagement({
   artworkList,
@@ -127,7 +128,7 @@ export default function ArtworkManagement({
               onClick={() => navigate(`/console/artworks/${artwork.id}`)}
             >
               <div className={styles.cardContent}>
-                <img
+                <Img
                   src={artwork.image}
                   alt={artwork.title}
                   className={styles.artworkImage}

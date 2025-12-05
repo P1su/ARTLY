@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'; // useEffect 제거
 import { FaSearch, FaPlus, FaUser } from 'react-icons/fa';
 import styles from './ArtistSelectModal.module.css';
 import { userInstance } from '../../../../apis/instance';
+import Img from '../../../../components/Img/Img';
 
 export default function ArtistSelectModal({ onClose, onSelect }) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -107,13 +108,10 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
               {artistList.length > 0 ? (
                 artistList.map((artist) => (
                   <div key={artist.id} className={styles.artistRow}>
-                    <img
-                      src={artist.artist_image || '/images/default_profile.png'}
+                    <Img
+                      src={artist.artist_image}
                       alt={artist.artist_name}
                       className={styles.artistImg}
-                      onError={(e) =>
-                        (e.target.src = 'https://via.placeholder.com/50')
-                      }
                     />
                     <div className={styles.artistInfo}>
                       <span className={styles.name}>{artist.artist_name}</span>
@@ -157,7 +155,7 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
                 onClick={() => fileInputRef.current.click()}
               >
                 {newImagePreview ? (
-                  <img src={newImagePreview} alt='Preview' />
+                  <Img src={newImagePreview} alt='Preview' />
                 ) : (
                   <div className={styles.placeholder}>
                     <FaUser />
