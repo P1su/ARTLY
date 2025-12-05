@@ -1,16 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { userInstance } from '../../../../../../apis/instance';
 import styles from "./InvitationGenerator.module.css";
+import html2canvas from 'html2canvas';
 
-export default function InvitationGenerator({ 
+export default function InvitationGenerator({
   initialTheme = "",
   initialOthers = "",
-  showTitle = true 
+  showTitle = true
 }) {
   const [theme, setTheme] = useState(initialTheme);
   const [others, setOthers] = useState(initialOthers);
   const [invitation, setInvitation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const textRefs = useRef([]);
 
   // initialTheme이나 initialOthers가 변경되면 state 업데이트
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function InvitationGenerator({
   const handleSubmit = async () => {
     setInvitation([]);
     setIsLoading(true);
-    
+
     if (!theme.trim()) {
       setInvitation(["행사 주제를 입력해주세요."]);
       setIsLoading(false);
@@ -41,7 +43,7 @@ export default function InvitationGenerator({
       });
 
       const data = response.data;
-      
+
       // API 응답 구조에 따라 수정 필요할 수 있음
       if (data && typeof data === 'string') {
         // 단일 문자열 응답인 경우
@@ -81,13 +83,13 @@ export default function InvitationGenerator({
       });
 
       const refinedData = response.data;
-      
+
       // 🔧 수정: 배열이면 첫 번째 요소, 문자열이면 그대로
       const refinedText = Array.isArray(refinedData) ? refinedData[0] : refinedData;
-      
+
       // 해당 인덱스의 초대장 문구 업데이트
-      setInvitation(prev => 
-        prev.map((item, i) => 
+      setInvitation(prev =>
+        prev.map((item, i) =>
           i === index ? refinedText : item
         )
       );
@@ -100,6 +102,53 @@ export default function InvitationGenerator({
       } else {
         alert("초대장 수정에 실패했습니다.");
       }
+    }
+  };
+
+  // 복사 기능
+  const handleCopy = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 복사되었습니다!");
+    } catch (e) {
+      console.error("복사 실패:", e);
+      // fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        alert("클립보드에 복사되었습니다!");
+      } catch (err) {
+        alert("복사에 실패했습니다.");
+      }
+      document.body.removeChild(textarea);
+    }
+  };
+
+  // 캡처 기능 - 텍스트만 캡처
+  const handleCapture = async (index) => {
+    const textElement = textRefs.current[index];
+    if (!textElement) return;
+
+    try {
+      const canvas = await html2canvas(textElement, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+      });
+
+      // 다운로드 링크 생성
+      const link = document.createElement('a');
+      link.download = `초대장_${index + 1}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      alert("이미지가 저장되었습니다!");
+    } catch (e) {
+      console.error("캡처 실패:", e);
+      alert("이미지 캡처에 실패했습니다.");
     }
   };
 
@@ -141,8 +190,8 @@ export default function InvitationGenerator({
             </button>
           ))}
         </div>
-        <button 
-          onClick={handleSubmit} 
+        <button
+          onClick={handleSubmit}
           className={styles.submitButton}
           disabled={isLoading}
         >
@@ -156,14 +205,35 @@ export default function InvitationGenerator({
             <div key={i} className={styles.resultCard}>
               <div className={styles.cardHeader}>
                 <h3>초안 {i + 1}</h3>
-                <button 
-                  className={styles.refineButton}
-                  onClick={() => handleRefine(text, i)}
-                >
-                  수정하기
-                </button>
+                <div className={styles.buttonGroup}>
+                  <button
+                    className={styles.copyButton}
+                    onClick={() => handleCopy(text)}
+                    title="복사하기"
+                  >
+                    📋 복사
+                  </button>
+                  <button
+                    className={styles.captureButton}
+                    onClick={() => handleCapture(i)}
+                    title="이미지 저장"
+                  >
+                    📷 캡처
+                  </button>
+                  <button
+                    className={styles.refineButton}
+                    onClick={() => handleRefine(text, i)}
+                  >
+                    수정하기
+                  </button>
+                </div>
               </div>
-              <p>{text}</p>
+              <div
+                className={styles.textContent}
+                ref={el => textRefs.current[i] = el}
+              >
+                <p>{text}</p>
+              </div>
             </div>
           ))
         ) : (

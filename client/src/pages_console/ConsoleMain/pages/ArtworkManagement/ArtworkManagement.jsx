@@ -10,13 +10,15 @@ import styles from './ArtworkManagement.module.css';
 
 export default function ArtworkManagement({
   artworkList,
-  selectedGallery,
-  onGalleryChange,
+  selectedExhibition,
+  onExhibitionChange,
   onDelete,
   loadArtworks,
+  loadExhibitions,
   isLoading,
   error,
   galleryList,
+  exhibitionList,
 }) {
   const navigate = useNavigate();
 
@@ -26,76 +28,67 @@ export default function ArtworkManagement({
     }
   };
 
-  // 갤러리를 ID로 변환하는 함수
-  const getGalleryId = useCallback(
-    (galleryName) => {
-      if (galleryName === '갤러리 전체') {
-        return '갤러리 전체';
-      }
-      const gallery = galleryList.find((g) => g.name === galleryName);
-      return gallery ? gallery.id : '갤러리 전체';
-    },
-    [galleryList],
-  );
-
-  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
+  // 컴포넌트 마운트 시 전시회 목록 로드
   useEffect(() => {
-    if (galleryList.length > 0 && selectedGallery) {
-      const galleryId = getGalleryId(selectedGallery);
-
-      loadArtworks(galleryId);
-    } else if (galleryList.length > 0) {
-      // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
-      loadArtworks('갤러리 전체');
+    if (loadExhibitions) {
+      loadExhibitions('갤러리 전체');
     }
-  }, [selectedGallery, galleryList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // 선택된 갤러리의 ID 계산
-  const selectedGalleryId = useMemo(() => {
-    return getGalleryId(selectedGallery);
-  }, [selectedGallery, galleryList, getGalleryId]);
+  // 전시회 목록이 로드된 후 작품 로드
+  useEffect(() => {
+    if (exhibitionList && exhibitionList.length > 0) {
+      loadArtworks('전시회 전체');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exhibitionList]);
+
+  // 전시회 선택 변경 시 작품 재로드
+  useEffect(() => {
+    if (selectedExhibition && selectedExhibition !== '전시회 전체') {
+      loadArtworks(selectedExhibition);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedExhibition]);
 
   // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
   const filteredArtworkList = artworkList.filter((artwork) => {
-    if (selectedGallery === '갤러리 전체') {
+    if (selectedExhibition === '전시회 전체') {
       return true;
     }
-    // 갤러리 ID로도 비교 (더 정확함)
-    if (artwork.gallery_id && selectedGalleryId) {
-      return String(artwork.gallery_id) === String(selectedGalleryId);
-    }
-    return artwork.gallery_name === selectedGallery;
+    return artwork.exhibition_title === selectedExhibition;
   });
 
-  // 갤러리 옵션에 "갤러리 전체" 추가
-  // 실제로 작품이 있는 갤러리만 필터링
-  const galleryOptions = useMemo(() => {
-    const options = [{ id: 'all', name: '갤러리 전체', value: '갤러리 전체' }];
+  // 전시회 옵션 생성 - 작품이 있는 전시회만 포함
+  const exhibitionOptions = useMemo(() => {
+    const options = [{ id: 'all', name: '전시회 전체', value: '전시회 전체' }];
 
-    // 작품 목록에서 실제로 사용되는 갤러리 ID/이름 추출
-    const usedGalleryIds = new Set(
-      artworkList.map((art) => art.gallery_id).filter(Boolean),
-    );
-    const usedGalleryNames = new Set(
-      artworkList.map((art) => art.gallery_name).filter(Boolean),
-    );
+    if (artworkList && artworkList.length > 0) {
+      // artworkList에서 실제로 작품이 있는 전시회만 추출
+      const exhibitionTitles = new Set();
+      artworkList.forEach((artwork) => {
+        if (artwork.exhibition_title && artwork.exhibition_title !== '전시회 정보 없음') {
+          exhibitionTitles.add(artwork.exhibition_title);
+        }
+      });
 
-    // galleryList에서 실제로 작품이 있는 갤러리만 필터링
-    galleryList.forEach((gallery) => {
-      if (
-        usedGalleryIds.has(gallery.id) ||
-        usedGalleryNames.has(gallery.name)
-      ) {
-        options.push({
-          id: gallery.id,
-          name: gallery.name,
-          value: gallery.name,
+      // exhibitionList에서 작품이 있는 전시회만 필터링
+      if (exhibitionList) {
+        exhibitionList.forEach((exhibition) => {
+          if (exhibitionTitles.has(exhibition.title)) {
+            options.push({
+              id: exhibition.id,
+              name: exhibition.title,
+              value: exhibition.title,
+            });
+          }
         });
       }
-    });
+    }
 
     return options;
-  }, [galleryList, artworkList]);
+  }, [exhibitionList, artworkList]);
 
   if (isLoading) {
     return (
@@ -117,9 +110,9 @@ export default function ArtworkManagement({
     return (
       <section className={styles.contentContainer}>
         <LookUp
-          value={selectedGallery}
-          onChange={onGalleryChange}
-          options={galleryOptions}
+          value={selectedExhibition}
+          onChange={onExhibitionChange}
+          options={exhibitionOptions}
         />
 
         <div className={styles.countAndButtonContainer}>
@@ -157,6 +150,7 @@ export default function ArtworkManagement({
                     </button>
                   </div>
                   <p className={styles.artworkArtist}>{artwork.artist}</p>
+                  <p className={styles.artworkExhibition}>{artwork.exhibition_title}</p>
                 </div>
               </div>
             </div>
@@ -170,9 +164,9 @@ export default function ArtworkManagement({
     <>
       <div className={styles.searchContainer}>
         <LookUp
-          value={selectedGallery}
-          onChange={onGalleryChange}
-          options={galleryOptions}
+          value={selectedExhibition}
+          onChange={onExhibitionChange}
+          options={exhibitionOptions}
         />
       </div>
 

@@ -16,6 +16,7 @@
   border-radius: 6px;
   box-sizing: border-box;
 }
+
 .input:focus,
 .tagInputField:focus,
 .timeInput:focus {
@@ -32,12 +33,14 @@
   margin-bottom: 0.5rem;
   border-radius: 0;
 }
+
 .gallerySubNameInput {
   font-size: 1.6rem;
   color: #666;
   border: none;
   border-radius: 0;
 }
+
 .galleryNameInput:focus,
 .gallerySubNameInput:focus {
   border-bottom: 1px solid #007bff;
@@ -136,6 +139,7 @@
   padding: 1rem 0 0 0;
   min-width: 10rem;
 }
+
 .tagInputField:focus {
   box-shadow: none;
 }
@@ -155,6 +159,7 @@
   flex-wrap: wrap;
   gap: 1.5rem;
 }
+
 .checkboxGroup label {
   display: flex;
   align-items: center;
@@ -166,6 +171,7 @@
   font-size: 1.6rem;
   font-weight: bold;
 }
+
 .snsInputGroup {
   display: grid;
   grid-template-columns: 1fr;
@@ -344,6 +350,7 @@
   .tagInputField {
     font-size: 1.4rem;
   }
+
   .timeInput {
     font-size: 1.2rem;
     padding: 0.9rem;

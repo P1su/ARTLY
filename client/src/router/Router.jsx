@@ -34,7 +34,6 @@ import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
 import ConsoleNotification from '../pages_console/ConsoleMain/pages/ConsoleNotification/ConsoleNotification';
-import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
@@ -69,7 +68,6 @@ const router = createBrowserRouter([
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
       { path: '/reservation/:exhibitionId', element: <Reservation /> },
-      { path: '/invitation', element: <InvitationGenerator /> },
       {
         path: '/reservationconfirm/:reservationId',
         element: <ReservationConfirm />,
@@ -93,7 +91,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/notification', element: <ConsoleNotification /> },
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/galleries', element: <ConsoleMain defaultTab="갤러리관리"/> },
+      { path: '/console/galleries', element: <ConsoleMain defaultTab="갤러리관리" /> },
       { path: '/console/exhibitions', element: <ConsoleMain defaultTab="전시회관리" /> },
       { path: '/console/artworks', element: <ConsoleMain defaultTab="작품관리" /> },
       { path: '/console/detail', element: <ConsoleDetail /> },

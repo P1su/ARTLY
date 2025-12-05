@@ -10,10 +10,10 @@ import {
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
-import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -185,9 +185,8 @@ export default function ExhibitionDetail({
               관심있어요
             </button>
             <button
-              className={`${styles.likeButton} ${
-                !isReservable ? styles.disabledButton : ''
-              }`}
+              className={`${styles.likeButton} ${!isReservable ? styles.disabledButton : ''
+                }`}
               disabled={!isReservable}
               onClick={() => navigate(`/reservation/${id}`)}
               title={!isReservable ? '현재 전시 기간이 아닙니다' : ''}
@@ -216,9 +215,8 @@ export default function ExhibitionDetail({
               <div className={styles.infoRow} key={label}>
                 <span className={styles.infoLabel}>{label}</span>
                 <div
-                  className={`${styles.infoContent} ${
-                    isEmpty ? styles.emptyInfo : ''
-                  }`}
+                  className={`${styles.infoContent} ${isEmpty ? styles.emptyInfo : ''
+                    }`}
                 >
                   {content}
                 </div>
@@ -277,10 +275,12 @@ export default function ExhibitionDetail({
         )}
       </DetailTabs>
 
-      {/* 초대장 문구 생성 섹션 - HEAD 기능 보존 */}
-      <div className={`${styles.card} ${styles.tabCard}`}>
-        <InvitationGenerator initialTheme={title} initialOthers='' showTitle />
-      </div>
+      {/* 초대장 문구 생성 - 콘솔에서만 표시 */}
+      {!showUserActions && (
+        <div className={`${styles.card} ${styles.tabCard}`}>
+          <InvitationGenerator initialTheme={title} initialOthers='' showTitle />
+        </div>
+      )}
 
       {showUserActions && (
         <button

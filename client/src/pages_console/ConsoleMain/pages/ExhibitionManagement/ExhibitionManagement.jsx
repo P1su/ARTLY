@@ -26,43 +26,20 @@ export default function ExhibitionManagement({
     }
   };
 
-  // 갤러리를 ID로 변환하는 함수
-  const getGalleryId = useCallback(
-    (galleryName) => {
-      if (galleryName === '갤러리 전체') {
-        return '갤러리 전체';
-      }
-      const gallery = galleryList.find((g) => g.name === galleryName);
-      return gallery ? gallery.id : '갤러리 전체';
-    },
-    [galleryList],
-  );
-
   // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
   useEffect(() => {
     if (galleryList.length > 0 && selectedGallery) {
-      const galleryId = getGalleryId(selectedGallery);
-
-      loadExhibitions(galleryId);
+      loadExhibitions(selectedGallery);
     } else if (galleryList.length > 0) {
       // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
       loadExhibitions('갤러리 전체');
     }
   }, [selectedGallery, galleryList]);
 
-  // 선택된 갤러리의 ID 계산
-  const selectedGalleryId = useMemo(() => {
-    return getGalleryId(selectedGallery);
-  }, [selectedGallery, galleryList, getGalleryId]);
-
   // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
   const filteredExhibitionList = exhibitionList.filter((exhibition) => {
     if (selectedGallery === '갤러리 전체') {
       return true;
-    }
-    // 갤러리 ID로도 비교 (더 정확함)
-    if (exhibition.gallery_id && selectedGalleryId) {
-      return String(exhibition.gallery_id) === String(selectedGalleryId);
     }
     return exhibition.gallery_name === selectedGallery;
   });
