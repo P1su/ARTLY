@@ -7,6 +7,7 @@ import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 import { FaChevronRight } from 'react-icons/fa';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function ArtworkDetail({
   showUserActions = true,
@@ -91,7 +92,7 @@ export default function ArtworkDetail({
     }
   };
 
-  if (!artworkData) return <div>로딩 중...</div>;
+  if (!artworkData) return <LoadingSpinner />;
 
   const {
     art_title,
@@ -233,8 +234,8 @@ export default function ArtworkDetail({
               <span className={styles.docentLabel}>AI Docent</span>
               <p>{art_docent}</p>
 
-              {/* 콘솔일 때 && 도슨트 오디오 url(보통 항상 존재함)이 있는 경우 재생기 표시 */}
-              {isConsole && docent_audio_path && (
+              {/* 콘솔일 때 && 도슨트 동영상 url이 없는 경우 오디오 재생기 표시 */}
+              {isConsole && !docent_video_path && (
                 <div className={styles.docentAudioWrapper}>
                   <audio
                     className={styles.docentAudio}
@@ -246,7 +247,7 @@ export default function ArtworkDetail({
                   </audio>
                 </div>
               )}
-              
+
               {/* 콘솔일 때 && 도슨트 동영상 url이 있는 경우 재생기 표시 */}
               {isConsole && docent_video_path && (
                 <div className={styles.docentVideoWrapper}>
