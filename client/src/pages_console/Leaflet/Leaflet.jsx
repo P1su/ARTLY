@@ -170,8 +170,7 @@ export default function Leaflet({ type }) {
       formData.append('title', title.trim());
       // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
       // categoryId: 해당 카테고리의 ID
-      const categoryName =
-        type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+      const categoryName = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
       formData.append('category', categoryName);
       formData.append('categoryId', id); // Owner ID passed via params
 

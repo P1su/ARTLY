@@ -34,7 +34,6 @@ import LoginDetail from './../pages/Auth/LoginDetail/LoginDetail';
 import Login from './../pages/Auth/Login/Login';
 import Leaflet from '../pages_console/Leaflet/Leaflet';
 import ConsoleNotification from '../pages_console/ConsoleMain/pages/ConsoleNotification/ConsoleNotification';
-import InvitationGenerator from '../pages/InvitationGenerator/InvitationGenerator';
 import DocentGenerator from '../pages_console/DocentGenerator/DocentGenerator';
 import NotFound from '../pages/NotFound/NotFound';
 import ConsoleEdit from './../pages_console/ConsoleEdit/ConsoleEdit';
@@ -70,7 +69,6 @@ const router = createBrowserRouter([
       { path: '/announcement', element: <Announcement /> },
       { path: '/termspolicy', element: <TermsPolicy /> },
       { path: '/reservation/:exhibitionId', element: <Reservation /> },
-      { path: '/invitation', element: <InvitationGenerator /> },
       {
         path: '/reservationconfirm/:reservationId',
         element: <ReservationConfirm />,

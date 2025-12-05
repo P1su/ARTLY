@@ -6,8 +6,8 @@
 
 .inputContainer {
   display: block;
-  padding: 1rem 1.5rem; /* 모바일용 작은 패딩 */
-  border-radius: 0.5rem; /* 모바일용 작은 둥근 모서리 */
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
   background-color: #ececee;
 }
 
@@ -30,8 +30,9 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  max-height: 20rem;
+  max-height: 18rem;
   overflow-y: auto;
+  margin-top: 0.5rem;
   border: 0.1rem solid #d1d5db;
   border-radius: 0.5rem;
   background-color: white;
@@ -41,10 +42,10 @@
 .dropdownItem {
   display: block;
   cursor: pointer;
-  padding: 1.1rem 1.5rem; /* 모바일용 패딩 */
-  min-height: 3rem; /* 모바일용 최소 높이 */
+  padding: 1rem 1.25rem;
+  min-height: 3rem;
   border-bottom: 0.1rem solid #f3f4f6;
-  font-size: 1.1rem; /* 모바일용 폰트 */
+  font-size: 1.4rem;
   color: #374151;
   font-weight: 500;
   transition: background-color 0.2s ease;
@@ -69,11 +70,11 @@
 
 /* 2. Position */
 
-/* 3. Box - 모바일 최적화 */
+/* 3. Box */
 .title {
-  margin-bottom: 0.25rem; /* 모바일용 작은 여백 */
+  margin-bottom: 0.25rem;
   padding: 0;
-  font-size: 0.75rem; /* 모바일용 작은 폰트 */
+  font-size: 1.2rem;
   font-weight: 500;
   color: #374151;
 }
@@ -82,71 +83,85 @@
   width: 100%;
   border: none;
   outline: none;
-  font-size: 1.2rem; /* 모바일용 작은 폰트 */
+  font-size: 1.4rem;
   font-weight: 500;
   background: transparent;
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .title {
-    margin-bottom: 1rem; /* 태블릿 이상에서는 더 큰 여백 */
-    font-size: 1.125rem; /* 태블릿 이상에서는 더 큰 폰트 */
-  }
-
-  .inputContainer {
-    padding: 1.8rem 2.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
-    border-radius: 0.875rem; /* 태블릿 이상에서는 더 큰 둥근 모서리 */
-  }
-
-  .inputField {
-    font-size: 1.5rem; /* 태블릿 이상에서는 더 큰 폰트 */
-  }
-
-  .dropdownItem {
-    padding: 1.125rem 1.5rem; /* 태블릿 이상에서는 더 큰 패딩 */
-    min-height: 3.5rem; /* 태블릿 이상에서는 더 큰 최소 높이 */
-    font-size: 1rem; /* 태블릿 이상에서는 더 큰 폰트 */
-  }
-
-  .chevron {
-    font-size: 1.6rem; /* 태블릿 */
-  }
-}
-
-.dropdownTrigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-/* 데스크톱 (1200px 이상) */
-@media (min-width: 1200px) {
-  .dropdownItem {
-    padding: 1.25rem 1.75rem; /* 데스크톱에서는 더 큰 패딩 */
-    min-height: 4rem; /* 데스크톱에서는 더 큰 최소 높이 */
-    font-size: 1.125rem; /* 데스크톱에서는 더 큰 폰트 */
-  }
+  color: #374151;
 }
 
 /* 6. Animation */
 .chevron {
+  font-size: 1.4rem;
+  color: #6B7280;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .chevronOpen {
   transform: rotate(180deg);
 }
 
-/* 7. 기타 속성 */
-/* 반응형 아이콘 크기 */
-.chevron {
-  font-size: 1.2rem; /* 모바일 기본 */
+/* 태블릿 (700px 이상 1000px 이하) */
+@media (min-width: 700px) {
+  .inputContainer {
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.625rem;
+  }
+
+  .title {
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+  }
+
+  .inputField {
+    font-size: 1.5rem;
+  }
+
+  .dropdownList {
+    max-height: 22rem;
+    border-radius: 0.625rem;
+  }
+
+  .dropdownItem {
+    padding: 1.125rem 1.5rem;
+    min-height: 3.25rem;
+    font-size: 1.5rem;
+  }
+
+  .chevron {
+    font-size: 1.5rem;
+  }
 }
 
-@media (min-width: 1200px) {
+/* PC (1000px 이상) */
+@media (min-width: 1000px) {
+  .inputContainer {
+    padding: 1.5rem 2rem;
+    border-radius: 0.75rem;
+  }
+
+  .title {
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+  }
+
+  .inputField {
+    font-size: 1.6rem;
+  }
+
+  .dropdownList {
+    max-height: 25rem;
+    margin-top: 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .dropdownItem {
+    padding: 1.25rem 2rem;
+    min-height: 3.5rem;
+    font-size: 1.6rem;
+  }
+
   .chevron {
-    font-size: 1.8rem; /* 데스크톱 */
+    font-size: 1.6rem;
   }
 }

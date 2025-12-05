@@ -1,144 +1,377 @@
-/* 1. Display - 모바일 우선 */
-.tableContainer {
-  display: block;
-  width: 100%;
-  border: none;
-  border-radius: 1rem;
+/* 통합 카드 컨테이너 */
+.tableCard {
   background-color: white;
+  border-radius: 1rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
-.tableFilters {
+/* 탭 헤더 */
+.tabHeader {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #E2E8F0;
+  background: linear-gradient(to bottom, #FAFBFC, #F8FAFC);
+}
+
+.tabList {
   display: flex;
   gap: 0.5rem;
-  padding: 1rem;
-  border-bottom: 1px solid #F3F4F6;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.tableFilters::-webkit-scrollbar {
+.tabList::-webkit-scrollbar {
   display: none;
 }
 
+.tabButton {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #64748B;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabButton:hover {
+  background-color: #F1F5F9;
+  color: #334155;
+}
+
+.tabButtonActive {
+  background-color: #3B82F6;
+  color: white;
+  font-weight: 600;
+}
+
+.tabButtonActive:hover {
+  background-color: #2563EB;
+  color: white;
+}
+
+/* 테이블 컨테이너 */
+.tableContainer {
+  overflow-x: auto;
+}
+
 .table {
-  display: table;
   width: 100%;
   border-collapse: collapse;
 }
 
 .tableHeader {
-  display: table-header-group;
-  background-color: #F9FAFB;
+  background-color: #FAFBFC;
+  border-bottom: 1px solid #E2E8F0;
 }
 
 .tableRow {
-  display: table-row;
-  border-bottom: 1px solid #F3F4F6;
+  border-bottom: 1px solid #E2E8F0;
+  transition: all 0.2s ease;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: #F8FAFC;
+}
+
+.tableRowSelected {
+  background-color: #EFF6FF !important;
 }
 
 .tableCell {
-  display: table-cell;
+  padding: 1rem 0.75rem;
+  font-size: 1.4rem;
+  color: #334155;
   vertical-align: middle;
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .tableFilters {
-    gap: 0.75rem;
-    padding: 1.5rem;
-  }
+/* 헤더 셀 스타일 */
+.tableHeaderCell {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #64748B;
 }
 
-/* 2. Position */
+/* 체크박스 셀 */
+.checkboxCell {
+  width: 2.5rem;
+  text-align: center;
+  padding-left: 0.75rem;
+  padding-right: 0.25rem;
+}
 
-/* 3. Box */
-.filterButton {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #6B7280;
-  background-color: transparent;
-  transition: all 0.2s ease;
+/* 커스텀 체크박스 */
+.checkboxWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.filterButton:hover {
-  background-color: #F3F4F6;
-  color: #374151;
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.filterButtonActive {
-  background-color: #EFF6FF;
-  color: #2563EB;
-  font-weight: 600;
+.checkboxCustom {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #CBD5E1;
+  border-radius: 0.25rem;
+  background-color: white;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .filterButton {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-  }
+.checkboxCustom::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
-.tableHeaderCell {
-  padding: 1rem;
-  text-align: left;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.checkbox:checked+.checkboxCustom {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
 }
 
-.tableHeaderCellCheckbox {
-  width: 3rem;
+.checkbox:checked+.checkboxCustom::after {
+  display: block;
+}
+
+.checkboxWrapper:hover .checkboxCustom {
+  border-color: #94A3B8;
+}
+
+.checkbox:checked+.checkboxCustom:hover {
+  background-color: #2563EB;
+  border-color: #2563EB;
+}
+
+/* 타입 태그 스타일 - 대상 셀에 인라인 표시 */
+.typeTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.tagGallery {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.tagExhibition {
+  background-color: #D1FAE5;
+  color: #047857;
+}
+
+.tagArt {
+  background-color: #FEE2E2;
+  color: #DC2626;
+}
+
+.tagDefault {
+  background-color: #F1F5F9;
+  color: #64748B;
+}
+
+/* 카테고리 이름 */
+.categoryName {
+  font-weight: 500;
+  color: #1E293B;
+}
+
+/* 사용자 이름 */
+.userName {
+  color: #475569;
+}
+
+/* 날짜 셀 */
+.dateCell {
+  color: #94A3B8;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+/* 빈 상태 */
+.emptyState {
+  padding: 4rem 2rem;
   text-align: center;
 }
 
-.tableCell {
-  padding: 1rem;
-  font-size: 0.95rem;
-  color: #111827;
+.emptyIcon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
+.emptyText {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+.emptySubtext {
+  font-size: 1.3rem;
+  color: #94A3B8;
+}
+
+/* 태블릿 (700px 이상 1000px 이하) */
+@media (min-width: 700px) {
+  .tabHeader {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tabList {
+    gap: 0.75rem;
+  }
+
+  .tabButton {
+    padding: 0.7rem 1.25rem;
+    font-size: 1.4rem;
+  }
+
   .tableHeaderCell {
-    padding: 1.2rem;
-    font-size: 1rem;
+    padding: 1.125rem 1.5rem;
+    font-size: 1.4rem;
   }
 
   .tableCell {
-    padding: 1.2rem;
-    font-size: 1.1rem;
+    padding: 1.125rem 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .checkboxCell {
+    width: 4rem;
+    padding-left: 1.25rem;
+  }
+
+  .checkboxCustom {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .checkboxCustom::after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+  }
+
+  .typeTag {
+    padding: 0.3rem 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .dateCell {
+    font-size: 1.4rem;
+  }
+
+  .emptyState {
+    padding: 5rem 2.5rem;
+  }
+
+  .emptyIcon {
+    font-size: 4rem;
+  }
+
+  .emptyText {
+    font-size: 1.6rem;
+  }
+
+  .emptySubtext {
+    font-size: 1.4rem;
   }
 }
 
-/* 4. Background */
-.tableRow:hover {
-  background-color: #F9FAFB;
-}
+/* PC (1000px 이상) */
+@media (min-width: 1000px) {
+  .tabHeader {
+    padding: 1.5rem 1.75rem;
+  }
 
-/* 5. Font */
-.tableCellGray {
-  color: #6B7280;
-}
+  .tabList {
+    gap: 1rem;
+  }
 
-/* 6. Animation */
-.filterButton {
-  transition: all 0.2s ease;
-}
+  .tabButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.5rem;
+  }
 
-.tableRow {
-  transition: background-color 0.2s ease;
-}
+  .tableHeaderCell {
+    padding: 1.25rem 1.75rem;
+    font-size: 1.5rem;
+  }
 
-/* 7. 기타 속성 */
-.filterButton {
-  cursor: pointer;
+  .tableCell {
+    padding: 1.25rem 1.75rem;
+    font-size: 1.6rem;
+  }
+
+  .checkboxCell {
+    width: 4.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .checkboxCustom {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .checkboxCustom::after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 11px;
+  }
+
+  .typeTag {
+    padding: 0.35rem 0.875rem;
+    font-size: 1.3rem;
+  }
+
+  .dateCell {
+    font-size: 1.5rem;
+  }
+
+  .emptyState {
+    padding: 6rem 3rem;
+  }
+
+  .emptyIcon {
+    font-size: 4.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .emptyText {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .emptySubtext {
+    font-size: 1.5rem;
+  }
 }
