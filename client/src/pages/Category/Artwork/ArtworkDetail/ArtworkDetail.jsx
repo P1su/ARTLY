@@ -237,14 +237,21 @@ export default function ArtworkDetail({
               {/* 콘솔일 때 && 도슨트 동영상 url이 없는 경우 오디오 재생기 표시 */}
               {isConsole && !docent_video_path && (
                 <div className={styles.docentAudioWrapper}>
-                  <audio
-                    className={styles.docentAudio}
-                    controls
-                    preload='metadata'
-                    src={docent_audio_path}
-                  >
-                    브라우저가 오디오 재생을 지원하지 않습니다.
-                  </audio>
+                  {docent_audio_path ? (
+                    <audio
+                      className={styles.docentAudio}
+                      controls
+                      preload='metadata'
+                      src={docent_audio_path}
+                    >
+                      브라우저가 오디오 재생을 지원하지 않습니다.
+                    </audio>
+                  ) : (
+                    <p className={styles.docentPlaceholder}>
+                      아직 오디오가 생성되지 않았습니다.<br />
+                      '도슨트' 탭에서 도슨트 음성/동영상을 생성해보세요.
+                    </p>
+                  )}
                 </div>
               )}
 
