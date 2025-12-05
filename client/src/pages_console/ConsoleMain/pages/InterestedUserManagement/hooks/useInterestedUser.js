@@ -105,86 +105,180 @@ export default function useInterestedUser({ galleryList = [], exhibitionList = [
     return dateB - dateA; // 내림차순 (최신순)
   });
 
-  // 탭 변경 핸들러
-  const handleTabChange = async (tab) => {
+  // 탭 변경 핸들러 - 현재 검색어가 있으면 검색어와 함께 로드
+  const handleTabChange = async (tab, currentSearchQuery = '') => {
     setActiveTab(tab);
 
-    if (tab === 'all') {
-      try {
-        setIsLoading(true);
-        const token = localStorage.getItem('ACCESS_TOKEN');
-        const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
-          userInstance.get('/api/users/console/likes?liked_type=gallery', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          userInstance.get('/api/users/console/likes?liked_type=exhibition', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          userInstance.get('/api/users/console/likes?liked_type=art', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+    // 검색어가 있으면 검색 함수 사용, 없으면 일반 로드
+    if (currentSearchQuery && currentSearchQuery.length >= 2) {
+      // 검색어가 있을 때는 performSearch 로직과 동일하게 처리
+      if (tab === 'all') {
+        try {
+          setIsLoading(true);
+          const token = localStorage.getItem('ACCESS_TOKEN');
 
-        // 각 타입별로 필터링 적용
-        const filteredGalleryData = filterByOwnership(galleryResponse.data || [], 'gallery');
-        const filteredExhibitionData = filterByOwnership(exhibitionResponse.data || [], 'exhibition');
-        const filteredArtData = filterByOwnership(artResponse.data || [], 'art');
+          const galleryParams = new URLSearchParams();
+          galleryParams.append('liked_type', 'gallery');
+          galleryParams.append('search', currentSearchQuery);
 
-        const allUsers = [
-          ...filteredGalleryData.map((item) => ({
-            id: item.id,
-            userId: item.user_id || item.user?.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.gallery?.gallery_name || '정보 없음',
-            date: item.create_dtm
-              ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
-              : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: item.gallery?.gallery_name || '갤러리 정보 없음',
-            exhibitionName: '전시회 정보 없음',
-            artworkName: '작품 정보 없음',
-            type: 'gallery',
-          })),
-          ...filteredExhibitionData.map((item) => ({
-            id: item.id,
-            userId: item.user_id || item.user?.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.exhibition?.exhibition_title || '정보 없음',
-            date: item.create_dtm
-              ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
-              : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: '갤러리 정보 없음',
-            exhibitionName: item.exhibition?.exhibition_title || '전시회 정보 없음',
-            artworkName: '작품 정보 없음',
-            type: 'exhibition',
-          })),
-          ...filteredArtData.map((item) => ({
-            id: item.id,
-            userId: item.user_id || item.user?.id,
-            name: item.user?.user_name || '사용자 정보 없음',
-            category: item.art?.art_title || '정보 없음',
-            date: item.create_dtm
-              ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
-              : '날짜 정보 없음',
-            userName: item.user?.user_name || '사용자 정보 없음',
-            galleryName: '갤러리 정보 없음',
-            exhibitionName: '전시회 정보 없음',
-            artworkName: item.art?.art_title || '작품 정보 없음',
-            type: 'art',
-          })),
-        ];
+          const exhibitionParams = new URLSearchParams();
+          exhibitionParams.append('liked_type', 'exhibition');
+          exhibitionParams.append('search', currentSearchQuery);
 
-        setInterestedUserList(allUsers);
-      } catch (err) {
-        setError(err.message);
-        console.error('전체 관심유저 목록 로드 실패:', err);
-        setInterestedUserList([]);
-      } finally {
-        setIsLoading(false);
+          const artParams = new URLSearchParams();
+          artParams.append('liked_type', 'art');
+          artParams.append('search', currentSearchQuery);
+
+          const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
+            userInstance.get(`/api/users/console/likes?${galleryParams.toString()}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            userInstance.get(`/api/users/console/likes?${exhibitionParams.toString()}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            userInstance.get(`/api/users/console/likes?${artParams.toString()}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+          const filteredGalleryData = filterByOwnership(galleryResponse.data || [], 'gallery');
+          const filteredExhibitionData = filterByOwnership(exhibitionResponse.data || [], 'exhibition');
+          const filteredArtData = filterByOwnership(artResponse.data || [], 'art');
+
+          const allUsers = [
+            ...filteredGalleryData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.gallery?.gallery_name || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: item.gallery?.gallery_name || '갤러리 정보 없음',
+              exhibitionName: '전시회 정보 없음',
+              artworkName: '작품 정보 없음',
+              type: 'gallery',
+            })),
+            ...filteredExhibitionData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.exhibition?.exhibition_title || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: '갤러리 정보 없음',
+              exhibitionName: item.exhibition?.exhibition_title || '전시회 정보 없음',
+              artworkName: '작품 정보 없음',
+              type: 'exhibition',
+            })),
+            ...filteredArtData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.art?.art_title || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: '갤러리 정보 없음',
+              exhibitionName: '전시회 정보 없음',
+              artworkName: item.art?.art_title || '작품 정보 없음',
+              type: 'art',
+            })),
+          ];
+
+          setInterestedUserList(allUsers);
+        } catch (err) {
+          setError(err.message);
+          console.error('검색+탭전환 실패:', err);
+          setInterestedUserList([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        await loadInterestedUsers(tab, currentSearchQuery);
       }
     } else {
-      await loadInterestedUsers(tab);
+      // 검색어가 없을 때는 기존 로직
+      if (tab === 'all') {
+        try {
+          setIsLoading(true);
+          const token = localStorage.getItem('ACCESS_TOKEN');
+          const [galleryResponse, exhibitionResponse, artResponse] = await Promise.all([
+            userInstance.get('/api/users/console/likes?liked_type=gallery', {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            userInstance.get('/api/users/console/likes?liked_type=exhibition', {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            userInstance.get('/api/users/console/likes?liked_type=art', {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+          const filteredGalleryData = filterByOwnership(galleryResponse.data || [], 'gallery');
+          const filteredExhibitionData = filterByOwnership(exhibitionResponse.data || [], 'exhibition');
+          const filteredArtData = filterByOwnership(artResponse.data || [], 'art');
+
+          const allUsers = [
+            ...filteredGalleryData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.gallery?.gallery_name || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: item.gallery?.gallery_name || '갤러리 정보 없음',
+              exhibitionName: '전시회 정보 없음',
+              artworkName: '작품 정보 없음',
+              type: 'gallery',
+            })),
+            ...filteredExhibitionData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.exhibition?.exhibition_title || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: '갤러리 정보 없음',
+              exhibitionName: item.exhibition?.exhibition_title || '전시회 정보 없음',
+              artworkName: '작품 정보 없음',
+              type: 'exhibition',
+            })),
+            ...filteredArtData.map((item) => ({
+              id: item.id,
+              userId: item.user_id || item.user?.id,
+              name: item.user?.user_name || '사용자 정보 없음',
+              category: item.art?.art_title || '정보 없음',
+              date: item.create_dtm
+                ? new Date(item.create_dtm).toLocaleDateString('ko-KR')
+                : '날짜 정보 없음',
+              userName: item.user?.user_name || '사용자 정보 없음',
+              galleryName: '갤러리 정보 없음',
+              exhibitionName: '전시회 정보 없음',
+              artworkName: item.art?.art_title || '작품 정보 없음',
+              type: 'art',
+            })),
+          ];
+
+          setInterestedUserList(allUsers);
+        } catch (err) {
+          setError(err.message);
+          console.error('전체 관심유저 목록 로드 실패:', err);
+          setInterestedUserList([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        await loadInterestedUsers(tab);
+      }
     }
   };
 

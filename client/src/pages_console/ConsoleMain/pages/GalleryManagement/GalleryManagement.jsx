@@ -14,7 +14,6 @@ export default function GalleryManagement({
   onDelete,
   loadGalleries,
   isLoading,
-
   isSearching,
   error,
 }) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
 import LookUp from '../../components/LookUp/LookUp';
@@ -53,46 +53,34 @@ export default function ArtworkManagement({
   }, [selectedExhibition]);
 
   const handleRegister = () => {
-    let url = '/console/artworks/edit/new';
-
-    // 특정 갤러리가 선택되어 있다면 ID를 함께 보냄
-    if (selectedGalleryId && selectedGalleryId !== '갤러리 전체') {
-      url += `?gallery_id=${selectedGalleryId}`;
-    }
-
-    navigate(url);
+    navigate('/console/artworks/edit/new');
   };
 
-  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
-  useEffect(() => {
-    // 갤러리 리스트가 로드된 상태라면
-    if (galleryList.length > 0) {
-      loadArtworks(selectedGalleryId);
-    }
-  }, [selectedGalleryId, galleryList, loadArtworks]);
-
-  // 서버 필터링 보완용 클라이언트 필터링
-  const filteredArtworkList = artworkList.filter((artwork) => {
+  // 전시회 필터링
+  const filteredArtworkList = useMemo(() => {
     if (selectedExhibition === '전시회 전체') {
-      return true;
+      return artworkList;
     }
-    return artwork.exhibition_title === selectedExhibition;
-  });
+    return artworkList.filter(
+      (artwork) => artwork.exhibition_title === selectedExhibition
+    );
+  }, [artworkList, selectedExhibition]);
 
   // 전시회 옵션 생성 - 작품이 있는 전시회만 포함
   const exhibitionOptions = useMemo(() => {
     const options = [{ id: 'all', name: '전시회 전체', value: '전시회 전체' }];
 
     if (artworkList && artworkList.length > 0) {
-      // artworkList에서 실제로 작품이 있는 전시회만 추출
       const exhibitionTitles = new Set();
       artworkList.forEach((artwork) => {
-        if (artwork.exhibition_title && artwork.exhibition_title !== '전시회 정보 없음') {
+        if (
+          artwork.exhibition_title &&
+          artwork.exhibition_title !== '전시회 정보 없음'
+        ) {
           exhibitionTitles.add(artwork.exhibition_title);
         }
       });
 
-      // exhibitionList에서 작품이 있는 전시회만 필터링
       if (exhibitionList) {
         exhibitionList.forEach((exhibition) => {
           if (exhibitionTitles.has(exhibition.title)) {
@@ -117,24 +105,25 @@ export default function ArtworkManagement({
     );
   }
 
-  if (filteredArtworkList.length > 0) {
-    return (
-      <section className={styles.contentContainer}>
-        <LookUp
-          value={selectedExhibition}
-          onChange={onExhibitionChange}
-          options={exhibitionOptions}
+  return (
+    <section className={styles.contentContainer}>
+      {/* 전시회 필터 드롭다운 */}
+      <LookUp
+        value={selectedExhibition}
+        onChange={onExhibitionChange}
+        options={exhibitionOptions}
+      />
+
+      <div className={styles.countAndButtonContainer}>
+        <CountList count={filteredArtworkList.length} />
+        <RegisterButton
+          buttonText="+작품 등록"
+          onButtonClick={handleRegister}
         />
+      </div>
 
-        <div className={styles.countAndButtonContainer}>
-          <CountList count={filteredArtworkList.length} />
-          <RegisterButton
-            buttonText='+작품 등록'
-            onButtonClick={handleRegister}
-          />
-        </div>
-
-        <section className={styles.contentContainer}>
+      {filteredArtworkList.length > 0 ? (
+        <section className={styles.cardContainer}>
           {filteredArtworkList.map((artwork) => (
             <div
               key={artwork.id}
@@ -161,41 +150,24 @@ export default function ArtworkManagement({
                     </button>
                   </div>
                   <p className={styles.artworkArtist}>{artwork.artist}</p>
-                  <p className={styles.artworkExhibition}>{artwork.exhibition_title}</p>
+                  <p className={styles.artworkExhibition}>
+                    {artwork.exhibition_title}
+                  </p>
                 </div>
               </div>
             </div>
           ))}
         </section>
-      </section>
-    );
-  }
-
-  return (
-    <>
-      <div className={styles.searchContainer}>
-        <LookUp
-          value={selectedExhibition}
-          onChange={onExhibitionChange}
-          options={exhibitionOptions}
-        />
-      </div>
-
-      <div className={styles.countAndButtonContainer}>
-        <CountList count={0} />
-        <RegisterButton
-          buttonText='+작품 등록'
-          onButtonClick={handleRegister}
-        />
-      </div>
-
-      <section className={styles.emptyStateContainer}>
-        <EmptyState
-          message='등록된 작품이 없어요.'
-          buttonText='+작품 등록'
-          onButtonClick={handleRegister}
-        />
-      </section>
-    </>
+      ) : (
+        <section className={styles.emptyStateContainer}>
+          <EmptyState
+            message="등록된 작품이 없어요."
+            buttonText="+작품 등록"
+            onButtonClick={handleRegister}
+          />
+        </section>
+      )}
+    </section>
   );
 }
+

@@ -60,7 +60,6 @@ export default function InterestedUserManagement({
         })
         .filter((id) => id != null);
 
-
       if (userIds.length === 0) {
         alert('선택된 사용자들의 ID를 찾을 수 없습니다.');
         return;
@@ -81,7 +80,6 @@ export default function InterestedUserManagement({
         }
       );
 
-
       alert(`${userIds.length}명에게 앱 알림이 성공적으로 발송되었습니다.`);
 
       setIsAlarmModalOpen(false);
@@ -97,6 +95,11 @@ export default function InterestedUserManagement({
     } finally {
       setIsSending(false);
     }
+  };
+
+  // 탭 변경 시 현재 검색어를 함께 전달하는 래퍼 함수
+  const handleTabChangeWithSearch = (tab) => {
+    handleTabChange(tab, searchQuery);
   };
 
   return (
@@ -142,7 +145,7 @@ export default function InterestedUserManagement({
             onSelectAll={handleSelectAll}
             isAllSelected={isAllSelected}
             activeTab={activeTab}
-            onTabChange={handleTabChange}
+            onTabChange={handleTabChangeWithSearch}
           />
         )}
       </div>
