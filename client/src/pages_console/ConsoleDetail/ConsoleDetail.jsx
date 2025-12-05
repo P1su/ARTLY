@@ -6,6 +6,7 @@ import QrModal from './components/QrModal/QrModal';
 import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const DETAIL_CONFIG = {
   galleries: {
@@ -106,7 +107,7 @@ export default function ConsoleDetail({ type }) {
     ),
   };
 
-  if (!data) return <div>데이터 로딩 중...</div>;
+  if (!data) return <LoadingSpinner />;
 
   return (
     <div className={styles.layout}>
