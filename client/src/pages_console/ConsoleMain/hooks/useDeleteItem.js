@@ -6,6 +6,7 @@ export default function useDeleteItem() {
   const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
+
   const [artworkList, setArtworkList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -211,6 +212,9 @@ export default function useDeleteItem() {
         setArtworkList((prev) => prev.filter((item) => item.id !== id));
         await userInstance.delete(`/api/arts/${id}`);
       }
+      alert(
+        `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
+      );
     } catch (err) {
       setError(err.message);
       console.error('삭제 실패:', err);

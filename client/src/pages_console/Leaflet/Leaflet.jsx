@@ -36,7 +36,8 @@ export default function Leaflet({ type }) {
         setIsLoading(true);
 
         // Owner 모드로 통일: 카테고리와 ID로 조회
-        const category = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+        const category =
+          type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
         const res = await userInstance.get(`/api/leaflet`, {
           params: {
             category: category,
@@ -67,7 +68,9 @@ export default function Leaflet({ type }) {
             }
             // 나머지 이미지를 내지로 설정
             if (leafletData.image_urls.length > 1) {
-              const innerImages = leafletData.image_urls.slice(1).map(url => ({ url }));
+              const innerImages = leafletData.image_urls
+                .slice(1)
+                .map((url) => ({ url }));
               setImageList(innerImages);
             }
           }
@@ -99,8 +102,6 @@ export default function Leaflet({ type }) {
     const viewerUrl = `/view/leaflet/${type}/${id}`;
     window.open(viewerUrl, '_blank');
   };
-
-
 
   const handleDelete = async () => {
     if (!leafletId) return;
@@ -189,7 +190,10 @@ export default function Leaflet({ type }) {
         setExistingLeaflet(res.data);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.response?.data?.error || '리플렛 저장 중 오류가 발생했습니다.';
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        '리플렛 저장 중 오류가 발생했습니다.';
       toast.error(errorMessage, {
         position: 'top-center',
         duration: 5000,
@@ -208,7 +212,8 @@ export default function Leaflet({ type }) {
       <div className={styles.mainContentContainer}>
         <div className={styles.panelHeaderBox}>
           <p className={styles.panelHeaderParagraph}>
-            리플렛/도록을 만들 이미지를 등록해주세요.<br />
+            리플렛/도록을 만들 이미지를 등록해주세요.
+            <br />
             전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
           </p>
         </div>
@@ -216,10 +221,10 @@ export default function Leaflet({ type }) {
         <div className={styles.titleInputBox}>
           <label className={styles.titleLabel}>리플렛 제목</label>
           <input
-            type="text"
+            type='text'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="리플렛 제목을 입력하세요"
+            placeholder='리플렛 제목을 입력하세요'
             className={styles.titleInput}
             disabled={isLoading}
           />
@@ -269,7 +274,6 @@ export default function Leaflet({ type }) {
           )}
         </div>
       </div>
-
-    </div >
+    </div>
   );
 }

@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './PwModal.module.css';
 import { FaTimes } from 'react-icons/fa';
 import { userInstance } from '../../../../apis/instance';
+import AlertModal from '../../../../components/AlertModal/AlertModal'; 
 
 const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentPassword('');
+      setNewPassword('');
+      setErrorMessage('');
+      setIsAlertOpen(false);
+    }
+  }, [isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
 
-    if (!userInfo) {
+    if (!userInfo) return;
+    
+    if (!currentPassword || !newPassword) {
+      setErrorMessage('모든 항목을 입력해주세요.');
       return;
     }
     
+    if (currentPassword === newPassword) {
+      setErrorMessage('현재 비밀번호와 다른 새로운 비밀번호를 입력해주세요.');
+      return;
+    }
+
     const updatePayload = {
       ...userInfo, 
       login_pwd: newPassword,
@@ -22,19 +44,18 @@ const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
     try {
       const res = await userInstance.put('/api/users/me', updatePayload);
 
-      alert('비밀번호가 성공적으로 변경되었습니다.');
-
       onUpdateUserInfo(res.data); 
-      setCurrentPassword(''); // 입력 필드 빈칸 만들기
-      setNewPassword('');
-      onClose();
-    } catch (error) {
-      alert('비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.');
+      setIsAlertOpen(true);
 
-      setCurrentPassword(''); 
-      setNewPassword('');
-      return;
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.');
     }
+  };
+
+  const handleAlertClose = () => {
+    setIsAlertOpen(false);
+    onClose(); 
   };
 
   if (!isOpen) return null;
@@ -62,22 +83,35 @@ const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
                 <input
                   type='password'
                   placeholder='현재 비밀번호'
-                  className={styles.input}
+                  className={`${styles.input} ${errorMessage ? styles.inputError : ''}`}
                   value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  onChange={(e) => {
+                    setCurrentPassword(e.target.value);
+                    if (errorMessage) setErrorMessage('');
+                  }}
                   required
                 />
               </div>
               <div className={styles.formGroup}>
                 <input
                   type='password'
-                  placeholder='변경할 비밀번호'
-                  className={styles.input}
+                  placeholder='새 비밀번호'
+                  className={`${styles.input} ${errorMessage ? styles.inputError : ''}`}
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value);
+                    if (errorMessage) setErrorMessage('');
+                  }}
                   required
                 />
               </div>
+
+              {errorMessage && (
+                <div className={styles.errorMessage}>
+                  {errorMessage}
+                </div>
+              )}
+
               <button className={styles.submitButton} type='submit'>
                 변경 완료
               </button>
@@ -85,6 +119,11 @@ const PwModal = ({ isOpen, onClose, userInfo, onUpdateUserInfo }) => {
           </div>
         </div>
       </div>
+      <AlertModal 
+        isOpen={isAlertOpen} 
+        message="비밀번호가 성공적으로 변경되었습니다." 
+        onClose={handleAlertClose} 
+      />
     </div>
   );
 };

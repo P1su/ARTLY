@@ -118,3 +118,18 @@
 .submitButton:hover {
   background-color: #007bff;
 }
+
+.errorMessage {
+  color: #ff4d4f; 
+  font-size: 0.9rem;
+  margin-top: -10px; 
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 4px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}

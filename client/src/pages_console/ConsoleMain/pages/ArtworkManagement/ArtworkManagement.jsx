@@ -52,7 +52,26 @@ export default function ArtworkManagement({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExhibition]);
 
-  // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
+  const handleRegister = () => {
+    let url = '/console/artworks/edit/new';
+
+    // 특정 갤러리가 선택되어 있다면 ID를 함께 보냄
+    if (selectedGalleryId && selectedGalleryId !== '갤러리 전체') {
+      url += `?gallery_id=${selectedGalleryId}`;
+    }
+
+    navigate(url);
+  };
+
+  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
+  useEffect(() => {
+    // 갤러리 리스트가 로드된 상태라면
+    if (galleryList.length > 0) {
+      loadArtworks(selectedGalleryId);
+    }
+  }, [selectedGalleryId, galleryList, loadArtworks]);
+
+  // 서버 필터링 보완용 클라이언트 필터링
   const filteredArtworkList = artworkList.filter((artwork) => {
     if (selectedExhibition === '전시회 전체') {
       return true;
@@ -98,14 +117,6 @@ export default function ArtworkManagement({
     );
   }
 
-  if (error) {
-    return (
-      <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
-      </div>
-    );
-  }
-
   if (filteredArtworkList.length > 0) {
     return (
       <section className={styles.contentContainer}>
@@ -119,7 +130,7 @@ export default function ArtworkManagement({
           <CountList count={filteredArtworkList.length} />
           <RegisterButton
             buttonText='+작품 등록'
-            onButtonClick={() => navigate(`/console/artworks/edit/new`)}
+            onButtonClick={handleRegister}
           />
         </div>
 
@@ -174,12 +185,16 @@ export default function ArtworkManagement({
         <CountList count={0} />
         <RegisterButton
           buttonText='+작품 등록'
-          onButtonClick={() => alert('작품 등록')}
+          onButtonClick={handleRegister}
         />
       </div>
 
       <section className={styles.emptyStateContainer}>
-        <EmptyState message='등록된 작품이 없어요.' buttonText='+작품 등록' />
+        <EmptyState
+          message='등록된 작품이 없어요.'
+          buttonText='+작품 등록'
+          onButtonClick={handleRegister}
+        />
       </section>
     </>
   );

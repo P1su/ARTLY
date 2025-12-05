@@ -1,21 +1,31 @@
 import styles from './ArtworkDetail.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FaStar, FaPhone, FaShare } from 'react-icons/fa6';
 import { userInstance } from '../../../../apis/instance';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
+import { FaChevronRight } from 'react-icons/fa';
 
 export default function ArtworkDetail({
   showUserActions = true,
   id: propId,
   actionButtons,
 }) {
+  const STATUS_CONFIG = {
+    exhibited: { label: '진행중', className: styles.exhibited },
+    scheduled: { label: '예정', className: styles.scheduled },
+    ended: { label: '종료', className: styles.ended },
+  };
+
   const { artworkId } = useParams();
   const id = propId || artworkId;
   const navigate = useNavigate();
   const { addToast } = useToastContext();
+
+  const { pathname } = useLocation();
+  const isConsole = pathname.includes('console');
 
   const [artworkData, setArtworkData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -91,15 +101,22 @@ export default function ArtworkDetail({
     art_material,
     art_size,
     art_docent,
-    art_docent_video, // 파라미터명 변경 가능성 있음
+    art_docent_video,
     gallery_phone,
     artist = {},
     artist_name,
+    exhibitions = [],
   } = artworkData;
 
-  const finalArtistName = artist.artist_name || artist_name || 'Unknown Artist';
-  const artistImage = artist.artist_image || '/images/default_profile.png';
-  const relatedArtworks = artist.artworks || [];
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
+  const finalArtistName =
+    artist?.artist_name || artist_name || 'Unknown Artist';
+  const imageUrl =
+    artist?.artist_image && !artist?.artist_image.startsWith('http')
+      ? `${BASE_URL}/${artist?.artist_image}`
+      : artist?.artist_image;
+  const relatedArtworks = artist?.artworks || [];
 
   const filteredRelatedArtworks = relatedArtworks.filter(
     (art) => String(art.id) !== String(id),
@@ -172,23 +189,32 @@ export default function ArtworkDetail({
 
         <div className={styles.artistSection}>
           <img
-            src={artistImage}
+            src={imageUrl}
             alt={finalArtistName}
             className={styles.artistImage}
-            onError={(e) =>
-              (e.target.src = 'https://via.placeholder.com/100?text=Artist')
-            } // 배포 전 변경 예정
           />
           <span className={styles.artistName}>{finalArtistName}</span>
         </div>
 
         <div className={styles.infoList}>
-          {infoList.map(({ label, content }) => (
-            <div className={styles.infoRow} key={label}>
-              <span className={styles.infoLabel}>{label}</span>
-              <div className={styles.infoContent}>{content}</div>
-            </div>
-          ))}
+          {infoList.map(({ label, content }) => {
+            const isEmpty =
+              !content ||
+              (typeof content === 'string' && content.trim() === '정보 없음');
+
+            return (
+              <div className={styles.infoRow} key={label}>
+                <span className={styles.infoLabel}>{label}</span>
+                <div
+                  className={`${styles.infoContent} ${
+                    isEmpty ? styles.emptyInfo : ''
+                  }`}
+                >
+                  {content}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className={styles.descriptionSection}>
@@ -212,10 +238,10 @@ export default function ArtworkDetail({
                   <video
                     className={styles.docentVideo}
                     controls
-                    preload="metadata"
+                    preload='metadata'
                     src={art_docent_video}
                   >
-                    Your browser does not support the video tag.
+                    브라우저가 비디오 재생을 지원하지 않습니다.
                   </video>
                 </div>
               )}
@@ -225,6 +251,52 @@ export default function ArtworkDetail({
 
         {actionButtons?.info}
       </div>
+
+      {exhibitions && exhibitions.length > 0 && (
+        <div className={styles.exhibitionSection}>
+          <span className={styles.sectionTitle}>전시 정보</span>
+          <div className={styles.exhibitionList}>
+            {exhibitions.map((exh) => {
+              const statusKey = exh.exhibition_status || 'ended';
+              const statusInfo =
+                STATUS_CONFIG[statusKey] || STATUS_CONFIG.ended;
+
+              return (
+                <div
+                  key={exh.id}
+                  className={styles.exhibitionItem}
+                  onClick={() =>
+                    isConsole
+                      ? navigate(`/console/exhibitions/${exh.id}`)
+                      : navigate(`/exhibitions/${exh.id}`)
+                  }
+                >
+                  <div className={styles.exhibitionInfo}>
+                    <span
+                      className={`${styles.statusBadge} ${statusInfo.className}`}
+                    >
+                      {statusInfo.label}
+                    </span>
+
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className={styles.exhibitionTitle}>
+                        {exh.exhibition_title}
+                      </span>
+                      {exh.start_date && exh.end_date && (
+                        <span className={styles.exhibitionDate}>
+                          {exh.start_date} ~ {exh.end_date}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <FaChevronRight className={styles.arrowIcon} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {showUserActions && (
         <div className={styles.recommendSection}>

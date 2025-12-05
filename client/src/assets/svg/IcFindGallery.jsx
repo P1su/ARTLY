@@ -2,7 +2,7 @@ const IcFindGallery = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='39'
-    height='36'
+    height='41'
     viewBox='0 0 39 36'
     fill='none'
   >

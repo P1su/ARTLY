@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { userInstance } from '../../../../../../apis/instance.js';
 import { getExhibitionStatus } from '../../../utils/getExhibitionStatus.js';
 import MapModal from '../MapModal/MapModal';
-import { FaHeart } from 'react-icons/fa6';
+import { FaStar } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 
@@ -18,17 +18,18 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     exhibition_location: location,
     exhibition_start_date: startDate,
     exhibition_end_date: endDate,
+    exhibition_status: status,
     is_liked: isLike,
   } = exhibitionItem;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const exhibitionStatus = getExhibitionStatus(startDate, endDate);
+  //const exhibitionStatus = getExhibitionStatus(startDate, endDate);
 
   const statusLabel =
-    exhibitionStatus === 'ongoing'
+    status === 'exhibited'
       ? '전시 중'
-      : exhibitionStatus === 'upcoming'
+      : status === 'upcoming'
         ? '전시 예정'
         : '전시 종료';
 
@@ -70,7 +71,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
       {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
         <div
-          className={`${styles.statusContainer} ${exhibitionStatus === 'ongoing' && styles.ongoing}`}
+          className={`${styles.statusContainer} ${status === 'exhibited' && styles.ongoing}`}
         >
           {statusLabel}
         </div>
@@ -89,7 +90,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
             handleLike();
           }}
         >
-          <FaHeart
+          <FaStar
             className={isLike === true ? styles.likedIcon : styles.icon}
           />
         </button>

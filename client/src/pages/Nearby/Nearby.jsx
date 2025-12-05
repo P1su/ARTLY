@@ -2,8 +2,9 @@ import styles from './Nearby.module.css';
 import { useState, useEffect } from 'react';
 import useGeoLocation from './hooks/useGeoLocation';
 import useMap from './hooks/useMap';
-import { instance, mapInstance } from '../../apis/instance.js';
+import { mapInstance, userInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function Nearby() {
   const { coords, setCoords } = useGeoLocation();
@@ -40,28 +41,28 @@ export default function Nearby() {
     }
   };
 
+  const getNaerbyGalleries = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await userInstance.get('/api/galleries', {
+        params: {
+          latitude: lat,
+          longitude: lng,
+          distance: 5000,
+        },
+      });
+
+      setResults(response.data);
+    } catch (error) {
+      console.error(error);
+      alert('주변 갤러리를 불러오는데 실패했습니다');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getNaerbyGalleries = async () => {
-      try {
-        setIsLoading(true);
-
-        const response = await instance.get('/api/galleries', {
-          params: {
-            latitude: lat,
-            longitude: lng,
-            distance: 5000,
-          },
-        });
-
-        setResults(response.data);
-      } catch (error) {
-        console.error(error);
-        alert('주변 갤러리를 불러오는데 실패했습니다');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getNaerbyGalleries();
   }, [lat, lng]);
 
@@ -73,12 +74,12 @@ export default function Nearby() {
           className={styles.searchInput}
           value={query}
           onChange={handleChange}
-          placeholder='주소를 입력해주세요'
+          placeholder='주소를 입력해주세요(시,군/구/동 단위)'
         />
       </form>
       <div id='nearby-map' className={styles.galleryWrapper} />
-      {isLoading && <div>갤러리 데이터 조회 중..</div>}
-      <NearbyGalleries results={results} />
+      {isLoading && <LoadingSpinner />}
+      <NearbyGalleries results={results} onEvent={getNaerbyGalleries} />
     </div>
   );
 }

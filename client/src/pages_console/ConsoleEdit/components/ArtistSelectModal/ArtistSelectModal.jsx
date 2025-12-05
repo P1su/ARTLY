@@ -1,32 +1,36 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react'; // useEffect 제거
 import { FaSearch, FaPlus, FaUser } from 'react-icons/fa';
-import { userInstance } from '../../../../apis/instance.js'; // 경로 확인
 import styles from './ArtistSelectModal.module.css';
+import { userInstance } from '../../../../apis/instance';
 
 export default function ArtistSelectModal({ onClose, onSelect }) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [artistList, setArtistList] = useState([]);
   const [isAddingNew, setIsAddingNew] = useState(false);
 
+  const [hasSearched, setHasSearched] = useState(false);
+
   const [newArtistName, setNewArtistName] = useState('');
   const [newArtistImage, setNewArtistImage] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState(null);
   const fileInputRef = useRef(null);
 
-  const fetchArtists = async (keyword = '') => {
+  const fetchArtists = async (keyword) => {
+    if (!keyword || keyword.trim() === '') {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
+
     try {
       const res = await userInstance.get('/api/artist', {
         params: { search: keyword },
       });
       setArtistList(res.data || []);
+      setHasSearched(true);
     } catch (error) {
       console.error('작가 검색 실패:', error);
     }
   };
-
-  useEffect(() => {
-    fetchArtists();
-  }, []);
 
   const handleSearch = (e) => {
     if (e.key === 'Enter') {
@@ -47,40 +51,32 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
       alert('작가 이름을 입력해주세요.');
       return;
     }
-    alert('구현 예정입니다.');
-    // const formData = new FormData();
-    // formData.append('artist_name', newArtistName);
-    // // 필요한 경우 카테고리 등 추가 (API 명세에 따라 수정)
-    // // formData.append('artist_category', 'Painting');
+    try {
+      const formData = new FormData();
+      formData.append('artist_name', newArtistName);
+      if (newArtistImage) formData.append('artist_image', newArtistImage);
 
-    // if (newArtistImage) {
-    //   formData.append('artist_image_file', newArtistImage);
-    // }
+      const response = await userInstance.post('/api/artists', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
-    // try {
-    //   // [수정] 등록도 마찬가지로 /api/artist (단수형)
-    //   const res = await userInstance.post('/api/artists', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
+      alert('작가가 성공적으로 등록되었습니다.');
+      const createdArtist = response.data.data || response.data;
 
-    //   alert('작가가 등록되었습니다.');
-
-    //   // 등록 성공 후, 응답 데이터 구조 확인하여 선택 처리
-    //   // 보통 res.data에 등록된 작가 객체가 옴
-    //   const newArtist = res.data;
-
-    //   // 안전장치: 만약 res.data가 아니라면 목록을 다시 불러와서 이름으로 찾기
-    //   if (!newArtist || !newArtist.id) {
-    //     fetchArtists(newArtistName);
-    //     setIsAddingNew(false);
-    //     return;
-    //   }
-
-    //   onSelect(newArtist);
-    // } catch (error) {
-    //   console.error('작가 등록 실패:', error);
-    //   alert('작가 등록에 실패했습니다.');
-    // }
+      if (createdArtist && createdArtist.id) {
+        onSelect(createdArtist);
+      } else {
+        setIsAddingNew(false);
+        setNewArtistName('');
+        setNewArtistImage(null);
+        setNewImagePreview(null);
+        setSearchKeyword(newArtistName);
+        fetchArtists(newArtistName);
+      }
+    } catch (error) {
+      console.error('작가 등록 실패:', error);
+      alert('작가 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -94,20 +90,20 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
         </div>
 
         <div className={styles.body}>
-          <div className={styles.searchBar}>
-            <input
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              onKeyDown={handleSearch}
-              placeholder='작가 이름 검색'
-            />
-            <button onClick={() => fetchArtists(searchKeyword)}>
-              <FaSearch />
-            </button>
-          </div>
-
           {!isAddingNew ? (
             <div className={styles.listContainer}>
+              <div className={styles.searchBar}>
+                <input
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  onKeyDown={handleSearch}
+                  placeholder='작가 이름 검색'
+                  autoFocus
+                />
+                <button onClick={() => fetchArtists(searchKeyword)}>
+                  <FaSearch />
+                </button>
+              </div>
               {artistList.length > 0 ? (
                 artistList.map((artist) => (
                   <div key={artist.id} className={styles.artistRow}>
@@ -135,20 +131,27 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
                 ))
               ) : (
                 <div className={styles.emptyState}>
-                  <p>검색 결과가 없습니다.</p>
-                  <button
-                    className={styles.addNewBtn}
-                    onClick={() => setIsAddingNew(true)}
-                  >
-                    <FaPlus /> 새 작가 등록하기
-                  </button>
+                  {!hasSearched ? (
+                    <p>작가 이름을 입력하여 검색해주세요.</p>
+                  ) : (
+                    <>
+                      <p>
+                        &quot;{searchKeyword}&quot;에 대한 검색 결과가 없습니다.
+                      </p>
+                      <button
+                        className={styles.addNewBtn}
+                        onClick={() => setIsAddingNew(true)}
+                      >
+                        <FaPlus /> 새 작가 등록하기
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
           ) : (
             <div className={styles.addFormContainer}>
               <p className={styles.addTitle}>새로운 작가 등록</p>
-
               <div
                 className={styles.imageUploadCircle}
                 onClick={() => fileInputRef.current.click()}
@@ -168,14 +171,12 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
                   hidden
                 />
               </div>
-
               <input
                 className={styles.addInput}
                 placeholder='작가 이름 입력'
                 value={newArtistName}
                 onChange={(e) => setNewArtistName(e.target.value)}
               />
-
               <div className={styles.formActions}>
                 <button
                   className={styles.cancelBtn}

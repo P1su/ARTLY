@@ -1,0 +1,26 @@
+.clickedFavButton,
+.favButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 3rem;
+  height: 3rem;
+  border: 0.1rem solid #dddddd;
+  border-radius: 50%;
+
+  background-color: #fff;
+  color: #666666;
+
+  font-size: 1.4rem;
+
+  cursor: pointer;
+}
+
+.clickedFavButton {
+  border: 0.1rem solid var(--blue01);
+  color: var(--blue01);
+}
+.clickedIcon {
+  color: var(--blue01);
+}

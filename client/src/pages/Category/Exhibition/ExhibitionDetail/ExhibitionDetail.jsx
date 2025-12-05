@@ -138,7 +138,7 @@ export default function ExhibitionDetail({
       label: '관람시간',
       content:
         startTime && endTime
-          ? `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`
+          ? `${startTime.slice(0, 5)} ~ ${endTime.slice(0, 5)}`
           : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
@@ -148,7 +148,10 @@ export default function ExhibitionDetail({
     },
     { label: '전화번호', content: phone || '정보 없음' },
     { label: '주소', content: exhibitionLocation || '정보 없음' },
-    { label: '참여작가', content: artists.join(', ') || '정보 없음' },
+    {
+      label: '참여작가',
+      content: artists.map((a) => a.artist_name).join(', ') || '정보 없음',
+    },
   ];
 
   const detailTabs = [

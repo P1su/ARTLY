@@ -23,7 +23,7 @@
 .card {
   background-color: #ffffff;
   border-radius: 1.5rem;
-  padding: 3rem;
+  padding: 5rem;
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3rem;
   overflow: hidden;
@@ -43,11 +43,11 @@
 
 .posterImage {
   width: 100%;
-  max-width: 45rem;
+  max-width: 70rem;
   display: block;
   margin: 0 auto 3rem auto;
   height: auto;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 0.8rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -201,16 +201,22 @@
     gap: 1.2rem;
     font-size: 1.5rem;
   }
+  .card {
+    padding: 4.5rem;
+  }
   .icon,
   .likedIcon {
     font-size: 2.8rem;
   }
 }
 
-@media (max-width: 1072px) {
+@media (max-width: 1000px) {
   .layout {
     max-width: 80rem;
     padding: 2rem;
+  }
+  .card {
+    padding: 3.5rem;
   }
   .likeButton {
     gap: 0.8rem;
@@ -227,8 +233,11 @@
     max-width: 100%;
     padding: 1.5rem;
   }
+  .posterImage {
+    max-width: 30rem;
+  }
   .card {
-    padding: 1.5rem;
+    padding: 2.5rem 1.5rem;
   }
   .breadcrumb {
     font-size: 1.4rem;
@@ -245,6 +254,9 @@
   }
   .likeButton {
     font-size: 1.4rem;
+  }
+  .likedIcon {
+    font-size: 2rem;
   }
   .icon {
     font-size: 2rem;

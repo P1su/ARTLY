@@ -3,7 +3,7 @@ import GalleryCard from '../GalleryCard/GalleryCard';
 import usePagination from '../../../../hooks/usePagination';
 import Pagination from '../../../../components/Pagination/Pagination';
 
-export default function NearbyGalleries({ results }) {
+export default function NearbyGalleries({ results, onEvent }) {
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, results);
 
   return (
@@ -17,7 +17,7 @@ export default function NearbyGalleries({ results }) {
       </div>
       {results.length === 0 && <div>조회된 데이터가 없습니다.</div>}
       {pageItems.map((item) => (
-        <GalleryCard key={item.id} galleryItem={item} />
+        <GalleryCard key={item.id} galleryItem={item} onEvent={onEvent} />
       ))}
       <div className={styles.paginationRow}>
         <Pagination

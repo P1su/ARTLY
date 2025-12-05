@@ -1,22 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 
-/**
- * 디바운스가 적용된 검색 hook
- * @param {Function} onSearch - 검색 실행 함수 (query를 파라미터로 받음)
- * @param {Function} onEmptySearch - 빈 문자열일 때 실행할 함수 (선택적)
- * @param {Function} onSearchValueChange - 검색어 변경 시 부모에 전달할 함수 (선택적)
- * @param {Function} onClearSearch - 검색어 초기화 시 추가로 실행할 함수 (선택적)
- * @param {number} minLength - 최소 검색 글자 수 (기본값: 2)
- * @param {number} delay - 디바운스 지연 시간 ms (기본값: 500)
- * @returns {Object} { searchValue, handleSearchChange, clearSearch }
- */
 export default function useDebounceSearch({
   onSearch,
   onEmptySearch,
   onSearchValueChange,
   onClearSearch,
-  minLength = 2,
-  delay = 500
+  minLength = 1,
+  delay = 500,
 }) {
   const [searchValue, setSearchValue] = useState('');
   const searchTimeoutRef = useRef(null);
@@ -54,7 +44,6 @@ export default function useDebounceSearch({
     }, delay);
   };
 
-  // 검색어 초기화 함수
   const clearSearch = () => {
     handleSearchChange('');
 
@@ -64,7 +53,6 @@ export default function useDebounceSearch({
     }
   };
 
-  // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
@@ -76,7 +64,6 @@ export default function useDebounceSearch({
   return {
     searchValue,
     handleSearchChange,
-    clearSearch
+    clearSearch,
   };
 }
-

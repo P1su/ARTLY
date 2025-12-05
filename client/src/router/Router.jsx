@@ -47,6 +47,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: '/', element: <Main /> },
+
       { path: '/exhibitions', element: <Exhibitions /> },
       { path: '/galleries', element: <Galleries /> },
       { path: '/artists', element: <Artists /> },
@@ -91,9 +92,18 @@ const router = createBrowserRouter([
     children: [
       { path: '/console/notification', element: <ConsoleNotification /> },
       { path: '/console/main', element: <ConsoleMain /> },
-      { path: '/console/galleries', element: <ConsoleMain defaultTab="갤러리관리" /> },
-      { path: '/console/exhibitions', element: <ConsoleMain defaultTab="전시회관리" /> },
-      { path: '/console/artworks', element: <ConsoleMain defaultTab="작품관리" /> },
+      {
+        path: '/console/galleries',
+        element: <ConsoleMain defaultTab='갤러리관리' />,
+      },
+      {
+        path: '/console/exhibitions',
+        element: <ConsoleMain defaultTab='전시회관리' />,
+      },
+      {
+        path: '/console/artworks',
+        element: <ConsoleMain defaultTab='작품관리' />,
+      },
       { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
@@ -125,11 +135,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/console/galleries/leaflet/:id',
-        element: <Leaflet type="galleries" />,
+        element: <Leaflet type='galleries' />,
       },
       {
         path: '/console/exhibitions/leaflet/:id',
-        element: <Leaflet type="exhibitions" />,
+        element: <Leaflet type='exhibitions' />,
       },
       {
         path: '/console/poster',

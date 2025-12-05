@@ -20,7 +20,8 @@ export default function ExhibitionManagement({
 }) {
   const navigate = useNavigate();
 
-  const handleDelete = (id) => {
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
     if (window.confirm('정말로 이 전시회를 삭제하시겠습니까?')) {
       onDelete(id, 'exhibition');
     }
@@ -74,18 +75,19 @@ export default function ExhibitionManagement({
     return options;
   }, [galleryList, exhibitionList]);
 
+  const handleRegister = () => {
+    if (!selectedGalleryId || selectedGalleryId === '갤러리 전체') {
+      alert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
+      return;
+    }
+
+    navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGalleryId}`);
+  };
+
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
         <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
       </div>
     );
   }
@@ -103,7 +105,7 @@ export default function ExhibitionManagement({
           <CountList count={filteredExhibitionList.length} />
           <RegisterButton
             buttonText='+전시회 등록'
-            onButtonClick={() => navigate(`/console/exhibitions/edit/new`)}
+            onButtonClick={handleRegister}
           />
         </div>
 

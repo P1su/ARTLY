@@ -1,36 +1,41 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
+import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
+import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectModal.jsx';
+import Img from '../../../components/Img/Img.jsx';
+
+const getArtistId = (artist) => artist.id || artist.artist_id;
+const getArtistImage = (artist) => artist.artist_image || artist.profile_img;
+const getArtistName = (artist) =>
+  artist.artist_name ||
+  artist.name ||
+  artist.artist?.artist_name ||
+  '이름 없음';
+
+const getArtImage = (art) => {
+  return art.image_url || art.art_image || '/images/no-image.png';
+};
+
+const getArtTitle = (art) => {
+  return art.title || art.art_title || '제목 없음';
+};
+
+const getArtistNameForArt = (art) => {
+  return art.artist_name || art.artist?.artist_name || '작가 미상';
+};
 
 export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
-  // const [artistInput, setArtistInput] = useState('');
-  // const [artistIdInput, setArtistIdInput] = useState('');
-  // const [artistRoleInput, setArtistRoleInput] = useState('');
-
-  // useEffect(() => {
-  //   if (Array.isArray(data.artists)) {
-  //     setArtistInput(data.artists.join(', '));
-  //   } else if (typeof data.artists === 'string') {
-  //     setArtistInput(data.artists);
-  //   }
-  // }, [data.artists]);
+  const [showArtistModal, setShowArtistModal] = useState(false);
+  const [showArtworkModal, setShowArtworkModal] = useState(false);
 
   useEffect(() => {
     if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
       setImagePreviewUrl(data.exhibition_poster);
     }
   }, [data.exhibition_poster]);
-
-  const handleRemoveImage = (e) => {
-    e.stopPropagation(); // 부모의 클릭 이벤트(파일 열기) 전파 방지
-    setImagePreviewUrl(null);
-    onFileChange(null); // 부모 컴포넌트의 선택된 파일 초기화
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +54,57 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       setImagePreviewUrl(previewUrl);
     }
     event.target.value = '';
+  };
+
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setImagePreviewUrl(null);
+    onFileChange(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleSelectArtist = (artist) => {
+    const currentArtists = data.artists || [];
+
+    if (currentArtists.some((a) => getArtistId(a) === getArtistId(artist))) {
+      alert('이미 추가된 작가입니다.');
+      return;
+    }
+
+    const newArtist = {
+      id: getArtistId(artist),
+      name: getArtistName(artist),
+      artist_image: getArtistImage(artist),
+    };
+
+    setData((prev) => ({
+      ...prev,
+      artists: [...currentArtists, newArtist],
+    }));
+    setShowArtistModal(false);
+  };
+
+  const handleRemoveArtist = (targetId) => {
+    const updatedArtists = (data.artists || []).filter(
+      (artist) => getArtistId(artist) !== targetId,
+    );
+    setData((prev) => ({ ...prev, artists: updatedArtists }));
+  };
+
+  const handleSelectArtworks = (selectedList) => {
+    setData((prev) => ({
+      ...prev,
+      artworks: selectedList,
+    }));
+  };
+
+  const handleRemoveArtwork = (targetId) => {
+    const updatedArtworks = (data.artworks || []).filter(
+      (art) => (art.id || art.art_id) !== targetId,
+    );
+    setData((prev) => ({ ...prev, artworks: updatedArtworks }));
   };
 
   const daysOfWeek = [
@@ -83,56 +139,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       exhibition_closed_day: newClosedDays.join(', '),
     }));
   };
-
-  // // [추가] 입력 중일 때는 문자열만 업데이트
-  // const handleArtistChange = (e) => {
-  //   setArtistInput(e.target.value);
-  // };
-
-  // // [추가] 입력창에서 나갈 때(포커스 해제) 배열로 변환하여 원본 data 업데이트
-  // const handleArtistBlur = () => {
-  //   // 콤마(,)를 기준으로 자르고 앞뒤 공백 제거
-  //   const artistArray = artistInput
-  //     .split(',')
-  //     .map((name) => name.trim())
-  //     .filter((name) => name !== ''); // 빈 문자열 제거
-
-  //   setData((prev) => ({ ...prev, artists: artistArray }));
-  // };
-  // // [핵심 기능] 작가 개별 등록 함수 (메인 저장과 별개로 동작)
-  // const handleAddArtist = async () => {
-  //   if (!artistIdInput) {
-  //     alert('작가 ID를 입력해주세요.');
-  //     return;
-  //   }
-
-  //   // API 명세에 맞춘 payload
-  //   const payload = {
-  //     artist_id: parseInt(artistIdInput, 10), // 정수로 변환
-  //     role: artistRoleInput || 'Artist', // 역할이 없으면 기본값
-  //   };
-
-  //   try {
-  //     // 전시회 ID는 data.id에 있다고 가정
-  //     await userInstance.post(`/api/exhibitions/${data.id}/artworks`, payload);
-
-  //     alert('작가가 성공적으로 등록되었습니다.');
-
-  //     // 입력창 초기화
-  //     setArtistIdInput('');
-  //     setArtistRoleInput('');
-
-  //     // (선택사항) 목록 갱신이 필요하다면 부모 컴포넌트에서 재조회 함수를 받아서 호출해야 함
-  //     // 임시로 화면에 반영하는 로직 (실제 데이터 구조에 맞춰 수정 필요)
-  //     // setData(prev => ({
-  //     //   ...prev,
-  //     //   artists: [...(prev.artists || []), `ID:${payload.artist_id}`]
-  //     // }));
-  //   } catch (error) {
-  //     console.error('작가 등록 실패:', error);
-  //     alert('작가 등록에 실패했습니다. ID를 확인해주세요.');
-  //   }
-  // };
 
   return (
     <>
@@ -281,66 +287,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             />
           </div>
 
-          {/* 작가 수정 부분 교체
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>참여 작가 (쉼표로 구분)</label>
-            <input
-              className={styles.input}
-              name='artists'
-              value={artistInput} // data.artists 대신 artistInput 사용
-              onChange={handleArtistChange} // 입력 핸들러 교체
-              onBlur={handleArtistBlur} // 저장 핸들러 추가
-              placeholder='예: 홍길동, 김철수, 이영희'
-            />
-          </div> */}
-
-          {/* <div className={styles.inputGroup}>
-            <label className={styles.label}>참여 작가 등록</label>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <input
-                type='number'
-                className={styles.input}
-                placeholder='작가 ID (숫자)'
-                value={artistIdInput}
-                onChange={(e) => setArtistIdInput(e.target.value)}
-                style={{ flex: 1 }}
-              />
-              <input
-                type='text'
-                className={styles.input}
-                placeholder='역할 (예: Main Artist)'
-                value={artistRoleInput}
-                onChange={(e) => setArtistRoleInput(e.target.value)}
-                style={{ flex: 1 }}
-              />
-              <button
-                type='button'
-                onClick={handleAddArtist}
-                style={{
-                  padding: '0 2rem',
-                  backgroundColor: '#4a5bba',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '1.4rem',
-                }}
-              >
-                등록
-              </button>
-            </div>
-            <div
-              style={{ marginTop: '1rem', fontSize: '1.4rem', color: '#666' }}
-            >
-              현재 등록된 작가:{' '}
-              {Array.isArray(data.artists)
-                ? data.artists.join(', ')
-                : typeof data.artists === 'string'
-                  ? data.artists
-                  : '없음'}
-            </div>
-          </div> */}
-
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>
             <input
@@ -350,6 +296,96 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               value={data.exhibition_homepage || ''}
               onChange={handleInputChange}
             />
+          </div>
+
+          <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
+            <div className={styles.addHeaderContainer}>
+              <label className={styles.label}>참여 작가</label>
+              <button
+                type='button'
+                className={styles.addBtn}
+                onClick={() => setShowArtistModal(true)}
+              >
+                + 작가 검색/추가
+              </button>
+            </div>
+            <div className={styles.artistListContainer}>
+              <div className={styles.artistList}>
+                {data.artists.length === 0 ? (
+                  <p className={styles.emptyText}>등록된 작가 없음</p>
+                ) : (
+                  data.artists.map((artist, index) => {
+                    const id = getArtistId(artist);
+                    const name = getArtistName(artist);
+                    return (
+                      <div key={id || index} className={styles.artworkCard}>
+                        <Img
+                          src={getArtistImage(artist)}
+                          alt='thumb'
+                          className={styles.artistThumb}
+                        />
+                        <span className={styles.artistName}>{name}</span>
+
+                        <button
+                          type='button'
+                          className={styles.removeBtn}
+                          onClick={() => handleRemoveArtist(id)}
+                          title='삭제'
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className={`${styles.inputGroup} ${styles.artworkSection}`}>
+            <div className={styles.addHeaderContainer}>
+              <label className={styles.label}>전시 작품</label>
+              <button
+                type='button'
+                className={styles.addBtn}
+                onClick={() => setShowArtworkModal(true)}
+              >
+                + 작품 불러오기
+              </button>
+            </div>
+            <div className={styles.artistListContainer}>
+              <div className={styles.artworkGrid}>
+                {data.artworks.length === 0 ? (
+                  <p className={styles.emptyText}>등록된 작품 없음</p>
+                ) : (
+                  data.artworks.map((art) => (
+                    <div key={art.id} className={styles.artworkCard}>
+                      <Img
+                        src={getArtImage(art)}
+                        alt='thumb'
+                        className={styles.artworkThumb}
+                      />
+                      <div className={styles.artworkMeta}>
+                        <div className={styles.artworkTitle}>
+                          {getArtTitle(art)}
+                        </div>
+                        <div className={styles.artworkArtist}>
+                          {getArtistNameForArt(art) || '작가 미상'}
+                        </div>
+                      </div>
+                      <button
+                        type='button'
+                        className={styles.removeBtn}
+                        onClick={() => handleRemoveArtwork(art.id)}
+                        title='삭제'
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -361,6 +397,21 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           onChange={handleDescriptionChange}
         />
       </div>
+
+      {showArtistModal && (
+        <ArtistSelectModal
+          onClose={() => setShowArtistModal(false)}
+          onSelect={handleSelectArtist}
+        />
+      )}
+
+      {showArtworkModal && (
+        <ArtworkSelectModal
+          onClose={() => setShowArtworkModal(false)}
+          onSelect={handleSelectArtworks}
+          existingArtworks={data.artworks || []}
+        />
+      )}
     </>
   );
 }

@@ -5,8 +5,6 @@ import {
   FaStar,
   FaShare,
   FaInstagram,
-  FaTwitter,
-  FaFacebook,
   FaYoutube,
   FaLink,
   FaLocationDot,
@@ -125,8 +123,6 @@ export default function GalleryDetail({
 
   const SNS_ICONS = {
     instagram: FaInstagram,
-    // twitter: FaTwitter,
-    // facebook: FaFacebook,
     youtube: FaYoutube,
     default: FaLink,
   };
@@ -162,12 +158,15 @@ export default function GalleryDetail({
     console.error('SNS 데이터 파싱 오류:', e);
     snsArray = [];
   }
+
+  const validSns = snsArray.filter((sns) => sns.url && sns.url.trim() !== '');
+
   const infoList = [
     {
       label: '관람시간',
       content:
         startTime && endTime
-          ? `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`
+          ? `${startTime.slice(0, 5)} ~ ${endTime.slice(0, 5)}`
           : '정보 없음',
     },
     { label: '휴관일', content: closedDay || '정보 없음' },
@@ -180,9 +179,9 @@ export default function GalleryDetail({
     {
       label: 'SNS',
       content:
-        Array.isArray(snsArray) && snsArray.length > 0 ? (
+        validSns.length > 0 ? (
           <div className={styles.inlineSns}>
-            {snsArray.map(({ type, url }) => {
+            {validSns.map(({ type, url }) => {
               const snsType = type?.toLowerCase();
               const Icon = SNS_ICONS[snsType] || SNS_ICONS.default;
 
@@ -191,7 +190,7 @@ export default function GalleryDetail({
               return (
                 <a
                   key={`${type}-${url}`}
-                  href={url || '#'}
+                  href={url}
                   target='_blank'
                   rel='noopener noreferrer'
                   className={styles.snsLink}
@@ -206,7 +205,7 @@ export default function GalleryDetail({
         ),
     },
   ];
-  console.log(snsArray);
+
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length || 0})` },
