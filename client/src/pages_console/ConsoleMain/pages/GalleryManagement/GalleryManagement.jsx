@@ -30,9 +30,17 @@ export default function GalleryManagement({
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('정말로 이 갤러리를 삭제하시겠습니까?')) {
-      onDelete(id, 'gallery');
+      // 1. 삭제 동작 수행 (비동기 대기)
+      await onDelete(id, 'gallery');
+
+      // 2. 삭제 완료 후, 현재 페이지로 이동하며 activeTab 상태를 '갤러리관리'로 고정
+      // replace: true를 사용하여 뒤로가기 기록 꼬임 방지
+      navigate('/console/main', {
+        state: { activeTab: '갤러리관리' },
+        replace: true,
+      });
     }
   };
 
@@ -61,7 +69,9 @@ export default function GalleryManagement({
         </div>
       ) : error ? (
         <div className={styles.contentContainer}>
-          <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
+          <div className={styles.errorMessage}>
+            오류가 발생했습니다: {error}
+          </div>
         </div>
       ) : filteredGalleryList.length > 0 ? (
         <section className={styles.contentContainer}>
