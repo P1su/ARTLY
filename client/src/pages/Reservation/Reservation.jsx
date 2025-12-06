@@ -4,6 +4,7 @@ import { FaCheck } from 'react-icons/fa';
 import styles from './Reservation.module.css';
 import { userInstance } from '../../apis/instance';
 import Img from '../../components/Img/Img';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function Reservation() {
   const { exhibitionId } = useParams();
@@ -11,6 +12,7 @@ export default function Reservation() {
   const [exhibition, setExhibition] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { showAlert } = useAlert();
 
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState('');
@@ -189,7 +191,7 @@ export default function Reservation() {
 
   const handleNextStep = async () => {
     if (step === 1 && !selectedDate) {
-      alert('날짜를 선택해주세요.');
+      showAlert('날짜를 선택해주세요.');
       return;
     }
 
@@ -199,7 +201,7 @@ export default function Reservation() {
         !reservationInfo.phone ||
         !reservationInfo.email)
     ) {
-      alert('예약자 정보를 모두 입력해주세요.');
+      showAlert('예약자 정보를 모두 입력해주세요.');
       return;
     }
 
@@ -219,7 +221,7 @@ export default function Reservation() {
         console.log('예약 완료:', response.data);
       } catch (error) {
         console.error('예약 실패:', error);
-        alert('예약 처리 중 문제가 발생했습니다.');
+        showAlert('예약 처리 중 문제가 발생했습니다.');
         return;
       }
     }

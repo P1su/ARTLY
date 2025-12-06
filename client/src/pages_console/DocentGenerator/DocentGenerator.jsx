@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './DocentGenerator.module.css';
 import { userInstance } from '../../apis/instance';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function DocentGenerator({ autoGenerate = false }) {
   const { id } = useParams();
@@ -11,6 +12,8 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
+
+  const { showAlert } = useAlert();
 
   const navigate = useNavigate();
   const productName = art?.art_title || '작품명';
@@ -53,10 +56,12 @@ export default function DocentGenerator({ autoGenerate = false }) {
   }, [id]);
 
   const handleSave = async () => {
-    if (!id) return alert('유효한 작품 ID가 필요합니다.');
-    if (!docentText.trim()) return alert('도슨트 내용을 입력해주세요.');
+    if (!id) return showAlert('유효한 작품 ID가 필요합니다.');
+    if (!docentText.trim()) return showAlert('도슨트 내용을 입력해주세요.');
     if (!art)
-      return alert('작품 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+      return showAlert(
+        '작품 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.',
+      );
 
     try {
       setSaving(true);
@@ -98,11 +103,11 @@ export default function DocentGenerator({ autoGenerate = false }) {
 
       /* TODO: TTS 및 동영상 생성 API 연결 */
 
-      alert(response.data?.message || '도슨트가 저장되었습니다.');
+      showAlert('도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
       navigate(`/console/artworks/${id}`);
     } catch (e) {
-      alert(e.response?.data?.message || '도슨트 저장 중 오류가 발생했습니다.');
+      showAlert('도슨트 저장 중 오류가 발생했습니다.');
     } finally {
       setSaving(false);
     }

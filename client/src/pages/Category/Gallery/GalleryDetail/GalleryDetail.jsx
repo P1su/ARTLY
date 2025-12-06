@@ -17,7 +17,7 @@ import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import Img from '../../../../components/Img/Img.jsx';
-// import { useToastContext } from '../../../../store/ToastProvider.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function GalleryDetail({
   showUserActions = true,
@@ -29,13 +29,13 @@ export default function GalleryDetail({
   const navigate = useNavigate();
   const { user } = useUser();
 
-  // const { addToast } = useToastContext();
-
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
   const [showLikePopup, setShowLikePopup] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
   const [showMapModal, setShowMapModal] = useState(false);
+
+  const { showAlert } = useAlert();
 
   const fetchGalleryDetail = async () => {
     if (!id) return;
@@ -78,10 +78,6 @@ export default function GalleryDetail({
           liked_id: id,
           liked_type: 'gallery',
         });
-        // addToast({
-        //   title: '좋아하는 갤러리로 추가 완료!',
-        //   message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
-        // });
       }
 
       await userInstance.post('/api/likes', payload);
@@ -112,10 +108,10 @@ export default function GalleryDetail({
 
       try {
         document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
+        showAlert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
+        showAlert('링크 복사에 실패했습니다.', 'error');
       } finally {
         document.body.removeChild(textarea);
       }
@@ -209,7 +205,7 @@ export default function GalleryDetail({
 
   const detailTabs = [
     { key: 'info', label: '정보' },
-    { key: 'artworks', label: `작품(${artworks.length || 0})` },
+    // { key: 'artworks', label: `작품(${artworks.length || 0})` },
     { key: 'exhibitions', label: `전시(${exhibitions.length || 0})` },
   ];
 

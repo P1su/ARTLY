@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import DocentSection from './components/DocentSection/DocentSection';
 import Img from '../../components/Img/Img.jsx';
+import { useAlert } from '../../store/AlertProvider.jsx';
 
 const paginateScript = (script, maxLength = 300) => {
   return Array.from({ length: Math.ceil(script?.length / maxLength) }, (_, i) =>
@@ -12,7 +13,7 @@ const paginateScript = (script, maxLength = 300) => {
 };
 
 export default function Artwork() {
-  const [artwork, setArtwork] = useState([]);
+  const [artwork, setArtwork] = useState({});
   const {
     art_image: image,
     art_title: title,
@@ -21,6 +22,7 @@ export default function Artwork() {
     artist_name: artist,
   } = artwork;
   const { artId } = useParams();
+  const { showAlert } = useAlert();
   const scriptPages = paginateScript(script);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function Artwork() {
         setArtwork(response.data);
       } catch (error) {
         console.error(error);
-        alert('데이터를 받아오는 중 오류가 발생했습니다.');
+        showAlert('데이터를 받아오는 중 오류가 발생했습니다.');
       }
     };
     getArtwork();

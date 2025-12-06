@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
 import LookUp from '../../components/LookUp/LookUp';
@@ -8,6 +8,8 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ExhibitionManagement.module.css';
 import Img from '../../../../components/Img/Img.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
+import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function ExhibitionManagement({
   exhibitionList,
@@ -20,91 +22,79 @@ export default function ExhibitionManagement({
   galleryList,
 }) {
   const navigate = useNavigate();
+  const { showConfirm } = useConfirm();
+  const { showAlert } = useAlert();
 
-  const handleDelete = (e, id) => {
+  const handleDelete = async (e, id) => {
     e.stopPropagation();
-    if (window.confirm('정말로 이 전시회를 삭제하시겠습니까?')) {
-      onDelete(id, 'exhibition');
+    const isConfirmed = await showConfirm(
+      '정말로 이 전시회를 삭제하시겠습니까?',
+      true,
+    );
+
+    // 2. 확인을 눌렀을 때만 삭제 및 이동 수행
+    if (isConfirmed) {
+      await onDelete(id, 'exhibition');
+
+      // 삭제 완료 후 탭 유지를 위해 이동
+      navigate('/console/main', {
+        state: { activeTab: '전시회관리' },
+        replace: true,
+      });
     }
   };
 
-  // 갤러리를 ID로 변환하는 함수
-  const getGalleryId = useCallback(
-    (galleryName) => {
-      if (galleryName === '갤러리 전체') {
-        return '갤러리 전체';
-      }
-      const gallery = galleryList.find((g) => g.name === galleryName);
-      return gallery ? gallery.id : '갤러리 전체';
-    },
-    [galleryList],
-  );
-
-  // 컴포넌트 마운트 시 및 갤러리 선택 변경 시 API 호출
+  // 컴포넌트 마운트 시 전체 전시회 로드 (1회만)
   useEffect(() => {
-    if (galleryList.length > 0 && selectedGallery) {
-      const galleryId = getGalleryId(selectedGallery);
-
-      loadExhibitions(galleryId);
-    } else if (galleryList.length > 0) {
-      // galleryList는 있지만 selectedGallery가 없거나 비어있을 경우 초기 로드
+    if (galleryList.length > 0) {
       loadExhibitions('갤러리 전체');
     }
-  }, [selectedGallery, galleryList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [galleryList.length]);
 
-  // 선택된 갤러리의 ID 계산
-  const selectedGalleryId = useMemo(() => {
-    return getGalleryId(selectedGallery);
-  }, [selectedGallery, galleryList, getGalleryId]);
-
-  // 서버 필터링이 제대로 작동하지 않는 경우를 대비해 클라이언트 필터링 추가
-  const filteredExhibitionList = exhibitionList.filter((exhibition) => {
-    if (selectedGallery === '갤러리 전체') {
-      return true;
+  // 갤러리 필터링 (id 기반)
+  const filteredExhibitionList = useMemo(() => {
+    if (!selectedGallery) {
+      return exhibitionList;
     }
-    // 갤러리 ID로도 비교 (더 정확함)
-    if (exhibition.gallery_id && selectedGalleryId) {
-      return String(exhibition.gallery_id) === String(selectedGalleryId);
-    }
-    return exhibition.gallery_name === selectedGallery;
-  });
+    return exhibitionList.filter(
+      (exhibition) => exhibition.gallery_id === selectedGallery,
+    );
+  }, [exhibitionList, selectedGallery]);
 
-  // 갤러리 옵션에 "갤러리 전체" 추가
-  // 실제로 전시회가 있는 갤러리만 필터링
+  // 갤러리 옵션 - 전시회가 있는 갤러리만 표시
   const galleryOptions = useMemo(() => {
-    const options = [{ id: 'all', name: '갤러리 전체', value: '갤러리 전체' }];
+    const options = [];
 
-    // 전시회 목록에서 실제로 사용되는 갤러리 ID/이름 추출
-    const usedGalleryIds = new Set(
+    // 전시회가 있는 갤러리 ID 목록
+    const galleriesWithExhibitions = new Set(
       exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
     );
-    const usedGalleryNames = new Set(
-      exhibitionList.map((ex) => ex.gallery_name).filter(Boolean),
-    );
 
-    // galleryList에서 실제로 전시회가 있는 갤러리만 필터링
-    galleryList.forEach((gallery) => {
-      if (
-        usedGalleryIds.has(gallery.id) ||
-        usedGalleryNames.has(gallery.name)
-      ) {
-        options.push({
-          id: gallery.id,
-          name: gallery.name,
-          value: gallery.name,
-        });
-      }
-    });
+    if (galleryList) {
+      galleryList.forEach((gallery) => {
+        // 해당 갤러리에 전시회가 있는 경우에만 추가
+        if (galleriesWithExhibitions.has(gallery.id)) {
+          options.push({
+            id: gallery.id,
+            name: gallery.name,
+            value: gallery.id,
+          });
+        }
+      });
+    }
 
     return options;
   }, [galleryList, exhibitionList]);
 
+  // 선택된 갤러리 ID (이제 selectedGallery가 이미 id)
+  const selectedGalleryId = selectedGallery;
+
   const handleRegister = () => {
-    if (!selectedGalleryId || selectedGalleryId === '갤러리 전체') {
-      alert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
+    if (!selectedGalleryId) {
+      showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
       return;
     }
-
     navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGalleryId}`);
   };
 
@@ -116,24 +106,27 @@ export default function ExhibitionManagement({
     );
   }
 
-  if (filteredExhibitionList.length > 0) {
-    return (
-      <section className={styles.contentContainer}>
+  return (
+    <section className={styles.contentContainer}>
+      {/* 갤러리 필터 드롭다운 */}
+      <div className={styles.searchContainer}>
         <LookUp
           value={selectedGallery}
           onChange={onGalleryChange}
           options={galleryOptions}
         />
+      </div>
 
-        <div className={styles.countAndButtonContainer}>
-          <CountList count={filteredExhibitionList.length} />
-          <RegisterButton
-            buttonText='+전시회 등록'
-            onButtonClick={handleRegister}
-          />
-        </div>
+      <div className={styles.countAndButtonContainer}>
+        <CountList count={filteredExhibitionList.length} />
+        <RegisterButton
+          buttonText='+전시회 등록'
+          onButtonClick={handleRegister}
+        />
+      </div>
 
-        <section className={styles.contentContainer}>
+      {filteredExhibitionList.length > 0 ? (
+        <section className={styles.cardContainer}>
           {filteredExhibitionList.map((exhibition) => (
             <div
               key={exhibition.id}
@@ -165,34 +158,14 @@ export default function ExhibitionManagement({
             </div>
           ))}
         </section>
-      </section>
-    );
-  }
-
-  return (
-    <>
-      <div className={styles.searchContainer}>
-        <LookUp
-          value={selectedGallery}
-          onChange={onGalleryChange}
-          options={galleryOptions}
-        />
-      </div>
-
-      <div className={styles.countAndButtonContainer}>
-        <CountList count={0} />
-        <RegisterButton
-          buttonText='+전시회 등록'
-          onButtonClick={() => alert('전시회 등록')}
-        />
-      </div>
-
-      <section className={styles.emptyStateContainer}>
-        <EmptyState
-          message='등록된 전시회가 없어요.'
-          buttonText='+전시회 등록'
-        />
-      </section>
-    </>
+      ) : (
+        <section className={styles.emptyStateContainer}>
+          <EmptyState
+            message='등록된 전시회가 없어요.'
+            buttonText='+전시회 등록'
+          />
+        </section>
+      )}
+    </section>
   );
 }

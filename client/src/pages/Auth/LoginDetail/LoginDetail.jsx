@@ -7,6 +7,7 @@ import useInput from '../../../hooks/useInput';
 import InputText from '../../../components/Input/InputText/InputText';
 import SupportSection from './components/SupportSection/SupportSection';
 import { requestFCMToken } from '../../../apis/FcmService.js';
+import { useAlert } from '../../../store/AlertProvider.jsx';
 
 export default function LoginDetail() {
   const { data: loginDatas, handleChange } = useInput({
@@ -17,6 +18,7 @@ export default function LoginDetail() {
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';
+  const { showAlert } = useAlert();
 
   const { login } = useContext(UserContext);
 
@@ -44,9 +46,9 @@ export default function LoginDetail() {
       }
     } catch (error) {
       if (error.status === 401) {
-        alert('아이디 및 비밀번호를 확인해주세요');
+        showAlert('아이디 및 비밀번호를 확인해주세요');
       } else {
-        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        showAlert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
     }
   };

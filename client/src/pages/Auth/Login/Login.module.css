@@ -19,8 +19,7 @@
 
 .header {
   text-align: center;
-  /* margin-bottom: 4rem; (소셜 로그인 없애기 전의 코드) */ 
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 .logo {
@@ -42,6 +41,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .socialButton,
@@ -115,6 +115,8 @@
 
 .footer {
   margin-top: 3rem;
+  color: #999;
+  font-size: 1.3rem;
 }
 
 .registerLink {

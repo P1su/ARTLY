@@ -3,6 +3,7 @@ import { FaSearch, FaPlus, FaUser } from 'react-icons/fa';
 import styles from './ArtistSelectModal.module.css';
 import { userInstance } from '../../../../apis/instance';
 import Img from '../../../../components/Img/Img';
+import { useAlert } from '../../../../store/AlertProvider';
 
 export default function ArtistSelectModal({ onClose, onSelect }) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -15,10 +16,11 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
   const [newArtistImage, setNewArtistImage] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState(null);
   const fileInputRef = useRef(null);
+  const { showAlert } = useAlert();
 
   const fetchArtists = async (keyword) => {
     if (!keyword || keyword.trim() === '') {
-      alert('검색어를 입력해주세요.');
+      showAlert('검색어를 입력해주세요.');
       return;
     }
 
@@ -49,7 +51,7 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
 
   const handleAddNewArtist = async () => {
     if (!newArtistName.trim()) {
-      alert('작가 이름을 입력해주세요.');
+      showAlert('작가 이름을 입력해주세요.');
       return;
     }
     try {
@@ -61,7 +63,7 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      alert('작가가 성공적으로 등록되었습니다.');
+      showAlert('작가가 성공적으로 등록되었습니다.');
       const createdArtist = response.data.data || response.data;
 
       if (createdArtist && createdArtist.id) {
@@ -76,7 +78,7 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
       }
     } catch (error) {
       console.error('작가 등록 실패:', error);
-      alert('작가 등록 중 오류가 발생했습니다.');
+      showAlert('작가 등록 중 오류가 발생했습니다.');
     }
   };
 

@@ -7,22 +7,22 @@ import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
 import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
-import AlertModal from '../../components/AlertModal/AlertModal';
+
+import { useConfirm } from '../../store/ConfirmProvider';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function Leaflet({ type }) {
   const { id } = useParams(); // *주의: 이것은 categoryId (전시/갤러리 ID)*
   const navigate = useNavigate();
 
+  const { showConfirm } = useConfirm();
+  const { showAlert } = useAlert();
+
+  // id는 항상 Owner(Gallery/Exhibition) ID입니다.
   const [leafletId, setLeafletId] = useState(null);
   const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [existingLeaflet, setExistingLeaflet] = useState(null);
-
-  const [modalState, setModalState] = useState({
-    isOpen: false,
-    message: '',
-    callback: null,
-  });
 
   const {
     imageList,
@@ -36,15 +36,6 @@ export default function Leaflet({ type }) {
     coverDropzone,
     innerDropzone,
   } = useImageUpload();
-
-  const showAlert = (message, callback = null) => {
-    setModalState({ isOpen: true, message, callback });
-  };
-
-  const handleCloseModal = () => {
-    setModalState((prev) => ({ ...prev, isOpen: false }));
-    if (modalState.callback) modalState.callback();
-  };
 
   const goBack = () => {
     navigate(`/console/${type}/${id}`);
@@ -98,6 +89,11 @@ export default function Leaflet({ type }) {
         }
       } catch (error) {
         console.error('리플렛 조회 실패:', error);
+
+        // 404는 리플렛이 없는 경우이므로 에러 처리하지 않음 (생성 모드)
+        if (error.response?.status !== 404) {
+          showAlert('리플렛 데이터를 불러오는데 실패했습니다.', 'error');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -115,16 +111,25 @@ export default function Leaflet({ type }) {
 
   const handleDelete = async () => {
     if (!leafletId) return;
-    if (!window.confirm('정말로 이 리플렛을 삭제하시겠습니까?')) return;
+
+    const isConfirmed = await showConfirm(
+      '정말로 이 리플렛을 삭제하시겠습니까?',
+      true,
+    );
+
+    if (!isConfirmed) return;
 
     try {
       setIsLoading(true);
       await userInstance.delete(`/api/leaflet/${leafletId}`);
-      showAlert('리플렛이 삭제되었습니다.', () => {
-        goBack();
-      });
+
+      showAlert('리플렛이 삭제되었습니다.');
+
+      // 삭제 후 이동
+      navigate(`/console/${type}/${id}`);
     } catch (error) {
-      showAlert('리플렛 삭제 실패');
+      console.error('리플렛 삭제 실패:', error);
+      showAlert('리플렛 삭제에 실패했습니다.', 'error');
       setIsLoading(false);
     }
   };
@@ -261,16 +266,10 @@ export default function Leaflet({ type }) {
           }
         }
 
-        showAlert('리플렛이 성공적으로 저장되었습니다!', () => {
-          setLeafletId(newLeafletId);
-          setExistingLeaflet(res.data);
-          // 저장 후 상태가 URL 모드로 전환된 것처럼 처리하기 위해 새로고침 효과를 주거나
-          // 현재 상태를 리프레시 하는 것이 좋습니다. (여기선 간단히 ID 갱신)
-        });
+        showAlert('리플렛이 성공적으로 저장되었습니다.');
       }
     } catch (error) {
-      console.error('Upload Error:', error);
-      showAlert('리플렛 저장 중 오류가 발생했습니다.');
+      showAlert('리플렛 저장 중 오류가 발생했습니다.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -280,12 +279,6 @@ export default function Leaflet({ type }) {
 
   return (
     <div className={styles.layout}>
-      <AlertModal
-        isOpen={modalState.isOpen}
-        message={modalState.message}
-        onClose={handleCloseModal}
-      />
-
       <div className={styles.mainContentContainer}>
         <div className={styles.headerSection}>
           <button

@@ -1,67 +1,117 @@
-/* 1rem = 10px 기준 */
-
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
+  align-items: center;
+
+  z-index: 99999;
   backdrop-filter: blur(0.2rem);
-  /* 오버레이 등장 애니메이션 */
+
   animation: fadeInOverlay 0.3s ease-out forwards;
 }
 
-/* 닫힐 때 오버레이가 서서히 투명해지도록 하는 클래스 */
 .fadeOutOverlay {
   animation: fadeOutOverlay 0.3s ease-in forwards;
 }
 
 .modalBox {
-  background-color: white;
+  background: white;
   padding: 3rem;
   border-radius: 1.2rem;
   box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 32rem;
-  text-align: center;
+
+  min-width: 32rem;
+  max-width: 42rem;
+  width: auto;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 2rem;
-  /* 기본적으로는 투명하게 시작 (애니메이션이 처리) */
   opacity: 0;
 }
 
 .modalMessage {
   font-size: 1.6rem;
-  color: #333;
-  line-height: 1.5;
-  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #444;
   margin: 0;
+
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  font-weight: 500;
+}
+
+.errorMessage {
+  color: #e14744;
+  font-weight: 500;
 }
 
 .modalButton {
-  background-color: #1890ff;
-  color: white;
-  border: none;
+  width: 100%;
   padding: 1.2rem 0;
   border-radius: 0.8rem;
-  font-size: 1.5rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.6rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-  width: 100%;
+  transition: all 0.2s;
+  outline: none;
 }
 
-.modalButton:hover {
-  background-color: #096dd9;
+.modalButton:hover,
+.modalButton:focus {
+  background-color: #0056b3;
+  transform: translateY(-0.1rem);
 }
 
-/* --- 애니메이션 클래스 --- */
+.errorButton {
+  background-color: #ff4f4c;
+}
+
+.errorButton:hover,
+.errorButton:focus {
+  background-color: #dd3f3c;
+}
+
+@media (max-width: 1000px) {
+  .modalBox {
+    max-width: 38rem;
+    padding: 2.8rem;
+  }
+
+  .modalMessage {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .modalBox {
+    width: 85%;
+    min-width: auto;
+    max-width: none;
+    padding: 2.4rem;
+  }
+
+  .modalMessage {
+    font-size: 1.4rem;
+  }
+
+  .modalButton {
+    padding: 1.2rem 0;
+    font-size: 1.4rem;
+  }
+}
 
 .slideUp {
   animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
@@ -71,9 +121,6 @@
   animation: slideDown 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
-/* --- Keyframes --- */
-
-/* 오버레이 페이드 인/아웃 */
 @keyframes fadeInOverlay {
   from {
     opacity: 0;
@@ -92,19 +139,17 @@
   }
 }
 
-/* 모달 슬라이드 업 (등장) */
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(2rem); /* 아래에서 시작 */
+    transform: translateY(2rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0); /* 제자리 */
+    transform: translateY(0);
   }
 }
 
-/* 모달 슬라이드 다운 (퇴장) */
 @keyframes slideDown {
   from {
     opacity: 1;
@@ -112,6 +157,6 @@
   }
   to {
     opacity: 0;
-    transform: translateY(2rem); /* 아래로 사라짐 */
+    transform: translateY(2rem);
   }
 }
