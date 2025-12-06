@@ -7,6 +7,7 @@ import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ExhibitionManagement.module.css';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ExhibitionManagement({
   exhibitionList,
@@ -19,6 +20,8 @@ export default function ExhibitionManagement({
   galleryList,
 }) {
   const navigate = useNavigate();
+
+  const { showAlert } = useAlert();
 
   const handleDelete = (e, id) => {
     e.stopPropagation();
@@ -41,7 +44,7 @@ export default function ExhibitionManagement({
       return exhibitionList;
     }
     return exhibitionList.filter(
-      (exhibition) => exhibition.gallery_id === selectedGallery
+      (exhibition) => exhibition.gallery_id === selectedGallery,
     );
   }, [exhibitionList, selectedGallery]);
 
@@ -51,7 +54,7 @@ export default function ExhibitionManagement({
 
     // 전시회가 있는 갤러리 ID 목록
     const galleriesWithExhibitions = new Set(
-      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean)
+      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
     );
 
     if (galleryList) {
@@ -75,7 +78,7 @@ export default function ExhibitionManagement({
 
   const handleRegister = () => {
     if (!selectedGalleryId) {
-      alert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
+      showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
       return;
     }
     navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGalleryId}`);
@@ -103,7 +106,7 @@ export default function ExhibitionManagement({
       <div className={styles.countAndButtonContainer}>
         <CountList count={filteredExhibitionList.length} />
         <RegisterButton
-          buttonText="+전시회 등록"
+          buttonText='+전시회 등록'
           onButtonClick={handleRegister}
         />
       </div>
@@ -144,12 +147,11 @@ export default function ExhibitionManagement({
       ) : (
         <section className={styles.emptyStateContainer}>
           <EmptyState
-            message="등록된 전시회가 없어요."
-            buttonText="+전시회 등록"
+            message='등록된 전시회가 없어요.'
+            buttonText='+전시회 등록'
           />
         </section>
       )}
     </section>
   );
 }
-

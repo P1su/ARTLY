@@ -1,18 +1,20 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 import { userInstance } from '../../../../../../apis/instance';
-import styles from "./InvitationGenerator.module.css";
+import styles from './InvitationGenerator.module.css';
 import html2canvas from 'html2canvas';
+import { useAlert } from '../../../../../../store/AlertProvider';
 
 export default function InvitationGenerator({
-  initialTheme = "",
-  initialOthers = "",
-  showTitle = true
+  initialTheme = '',
+  initialOthers = '',
+  showTitle = true,
 }) {
   const [theme, setTheme] = useState(initialTheme);
   const [others, setOthers] = useState(initialOthers);
   const [invitation, setInvitation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const textRefs = useRef([]);
+  const { showAlert } = useAlert();
 
   // initialTheme이나 initialOthers가 변경되면 state 업데이트
   useEffect(() => {
@@ -20,10 +22,10 @@ export default function InvitationGenerator({
     if (initialOthers !== undefined) setOthers(initialOthers);
   }, [initialTheme, initialOthers]);
 
-  const date = new Date().toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const date = new Date().toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   const handleSubmit = async () => {
@@ -31,18 +33,21 @@ export default function InvitationGenerator({
     setIsLoading(true);
 
     if (!theme.trim()) {
-      setInvitation(["행사 주제를 입력해주세요."]);
+      setInvitation(['행사 주제를 입력해주세요.']);
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await userInstance.post("/api/console/invitation/create", {
-        eventTopic: theme,
-        userRequirements: others || ""
-      });
+      const response = await userInstance.post(
+        '/api/console/invitation/create',
+        {
+          eventTopic: theme,
+          userRequirements: others || '',
+        },
+      );
 
-      const data = response.data;
+      const { data } = response;
 
       // API 응답 구조에 따라 수정 필요할 수 있음
       if (data && typeof data === 'string') {
@@ -55,14 +60,14 @@ export default function InvitationGenerator({
         // invitations 속성이 있는 경우
         setInvitation(data.invitations);
       } else {
-        setInvitation(["초대장이 생성되었습니다."]);
+        setInvitation(['초대장이 생성되었습니다.']);
       }
     } catch (e) {
-      console.error("API 호출 실패:", e);
+      console.error('API 호출 실패:', e);
       if (e.response?.status === 401) {
-        setInvitation(["로그인이 필요합니다. 다시 로그인해주세요."]);
+        setInvitation(['로그인이 필요합니다. 다시 로그인해주세요.']);
       } else if (e.response?.status === 403) {
-        setInvitation(["권한이 없습니다."]);
+        setInvitation(['권한이 없습니다.']);
       } else {
         setInvitation([`API 호출 오류: ${e.message}`]);
       }
@@ -76,31 +81,34 @@ export default function InvitationGenerator({
     if (!invitationText.trim()) return;
 
     try {
-      const response = await userInstance.post("/api/console/invitation/refine", {
-        selectedInvitation: invitationText,
-        eventTopic: theme,
-        userRequirements: "더 세련되게 다시 작성해주세요"
-      });
+      const response = await userInstance.post(
+        '/api/console/invitation/refine',
+        {
+          selectedInvitation: invitationText,
+          eventTopic: theme,
+          userRequirements: '더 세련되게 다시 작성해주세요',
+        },
+      );
 
       const refinedData = response.data;
 
       // 🔧 수정: 배열이면 첫 번째 요소, 문자열이면 그대로
-      const refinedText = Array.isArray(refinedData) ? refinedData[0] : refinedData;
+      const refinedText = Array.isArray(refinedData)
+        ? refinedData[0]
+        : refinedData;
 
       // 해당 인덱스의 초대장 문구 업데이트
-      setInvitation(prev =>
-        prev.map((item, i) =>
-          i === index ? refinedText : item
-        )
+      setInvitation((prev) =>
+        prev.map((item, i) => (i === index ? refinedText : item)),
       );
     } catch (e) {
-      console.error("수정 API 호출 실패:", e);
+      console.error('수정 API 호출 실패:', e);
       if (e.response?.status === 401) {
-        alert("로그인이 필요합니다. 다시 로그인해주세요.");
+        showAlert('로그인이 필요합니다. 다시 로그인해주세요.');
       } else if (e.response?.status === 403) {
-        alert("권한이 없습니다.");
+        showAlert('권한이 없습니다.');
       } else {
-        alert("초대장 수정에 실패했습니다.");
+        showAlert('초대장 수정에 실패했습니다.');
       }
     }
   };
@@ -109,9 +117,9 @@ export default function InvitationGenerator({
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("클립보드에 복사되었습니다!");
+      showAlert('클립보드에 복사되었습니다!');
     } catch (e) {
-      console.error("복사 실패:", e);
+      console.error('복사 실패:', e);
       // fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -119,9 +127,9 @@ export default function InvitationGenerator({
       textarea.select();
       try {
         document.execCommand('copy');
-        alert("클립보드에 복사되었습니다!");
+        showAlert('클립보드에 복사되었습니다!');
       } catch (err) {
-        alert("복사에 실패했습니다.");
+        showAlert('복사에 실패했습니다.');
       }
       document.body.removeChild(textarea);
     }
@@ -145,10 +153,10 @@ export default function InvitationGenerator({
       link.href = canvas.toDataURL('image/png');
       link.click();
 
-      alert("이미지가 저장되었습니다!");
+      showAlert('이미지가 저장되었습니다!');
     } catch (e) {
-      console.error("캡처 실패:", e);
-      alert("이미지 캡처에 실패했습니다.");
+      console.error('캡처 실패:', e);
+      showAlert('이미지 캡처에 실패했습니다.');
     }
   };
 
@@ -159,10 +167,10 @@ export default function InvitationGenerator({
       <div className={styles.formArea}>
         <label className={styles.label}>행사 주제</label>
         <input
-          type="text"
+          type='text'
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          placeholder="예: 시간의 결, 색으로 그리다"
+          placeholder='예: 시간의 결, 색으로 그리다'
           className={styles.input}
         />
 
@@ -170,32 +178,34 @@ export default function InvitationGenerator({
         <textarea
           value={others}
           onChange={(e) => setOthers(e.target.value)}
-          placeholder="예: 장애인의 날 기념, 문구 포함 등"
+          placeholder='예: 장애인의 날 기념, 문구 포함 등'
           className={styles.textarea}
         />
 
         <div className={styles.tagContainer}>
-          {["#계절감", "#기념", "#감성", "#감사", "#초대", "#특별함"].map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              className={styles.tagButton}
-              onClick={() =>
-                setOthers((prev) =>
-                  prev.includes(tag) ? prev : prev ? `${prev}, ${tag}` : tag
-                )
-              }
-            >
-              {tag}
-            </button>
-          ))}
+          {['#계절감', '#기념', '#감성', '#감사', '#초대', '#특별함'].map(
+            (tag) => (
+              <button
+                key={tag}
+                type='button'
+                className={styles.tagButton}
+                onClick={() =>
+                  setOthers((prev) =>
+                    prev.includes(tag) ? prev : prev ? `${prev}, ${tag}` : tag,
+                  )
+                }
+              >
+                {tag}
+              </button>
+            ),
+          )}
         </div>
         <button
           onClick={handleSubmit}
           className={styles.submitButton}
           disabled={isLoading}
         >
-          {isLoading ? "생성 중..." : "초대장 생성"}
+          {isLoading ? '생성 중...' : '초대장 생성'}
         </button>
       </div>
 
@@ -209,14 +219,14 @@ export default function InvitationGenerator({
                   <button
                     className={styles.copyButton}
                     onClick={() => handleCopy(text)}
-                    title="복사하기"
+                    title='복사하기'
                   >
                     📋 복사
                   </button>
                   <button
                     className={styles.captureButton}
                     onClick={() => handleCapture(i)}
-                    title="이미지 저장"
+                    title='이미지 저장'
                   >
                     📷 캡처
                   </button>
@@ -230,7 +240,7 @@ export default function InvitationGenerator({
               </div>
               <div
                 className={styles.textContent}
-                ref={el => textRefs.current[i] = el}
+                ref={(el) => (textRefs.current[i] = el)}
               >
                 <p>{text}</p>
               </div>

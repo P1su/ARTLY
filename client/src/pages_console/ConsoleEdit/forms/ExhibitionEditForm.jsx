@@ -4,6 +4,7 @@ import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectModal.jsx';
 import Img from '../../../components/Img/Img.jsx';
+import { useAlert } from '../../../store/AlertProvider.jsx';
 
 const getArtistId = (artist) => artist.id || artist.artist_id;
 const getArtistImage = (artist) => artist.artist_image || artist.profile_img;
@@ -12,6 +13,8 @@ const getArtistName = (artist) =>
   artist.name ||
   artist.artist?.artist_name ||
   '이름 없음';
+
+const { showAlert } = useAlert();
 
 const getArtImage = (art) => {
   return art.image_url || art.art_image || '/images/no-image.png';
@@ -69,7 +72,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     const currentArtists = data.artists || [];
 
     if (currentArtists.some((a) => getArtistId(a) === getArtistId(artist))) {
-      alert('이미 추가된 작가입니다.');
+      showAlert('이미 추가된 작가입니다.');
       return;
     }
 
@@ -311,7 +314,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
             <div className={styles.artistListContainer}>
               <div className={styles.artistList}>
-                {data.artists.length === 0 ? (
+                {!data.artists || data.artists.length === 0 ? (
                   <p className={styles.emptyText}>등록된 작가 없음</p>
                 ) : (
                   data.artists.map((artist, index) => {
@@ -355,7 +358,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             </div>
             <div className={styles.artistListContainer}>
               <div className={styles.artworkGrid}>
-                {data.artworks.length === 0 ? (
+                {!data.artworks || data.artworks.length === 0 ? (
                   <p className={styles.emptyText}>등록된 작품 없음</p>
                 ) : (
                   data.artworks.map((art) => (

@@ -7,6 +7,7 @@ import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 import { FaChevronRight } from 'react-icons/fa';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ArtworkDetail({
   showUserActions = true,
@@ -18,6 +19,8 @@ export default function ArtworkDetail({
     scheduled: { label: '예정', className: styles.scheduled },
     ended: { label: '종료', className: styles.ended },
   };
+
+  const { showAlert } = useAlert();
 
   const { artworkId } = useParams();
   const id = propId || artworkId;
@@ -87,7 +90,7 @@ export default function ArtworkDetail({
     } else {
       navigator.clipboard
         .writeText(url)
-        .then(() => alert('링크가 복사되었습니다.'));
+        .then(() => showAlert('링크가 복사되었습니다.'));
     }
   };
 

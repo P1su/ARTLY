@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { userInstance } from '../../../apis/instance.js';
+import { useAlert } from '../../../store/AlertProvider.jsx';
 
 const getId = (item) => item.id || item.artist_id;
 
 export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
   const [isSaving, setIsSaving] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const { showAlert } = useAlert();
 
   const validate = () => {
     if (type === 'artworks' && !data.art_title) return '작품명을 입력해주세요.';
@@ -120,7 +122,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
       );
     } catch (err) {
       console.error('연결 데이터 업데이트 실패:', err);
-      alert('연결 데이터 저장 중 일부 오류가 발생했습니다.');
+      showAlert('연결 데이터 저장 중 일부 오류가 발생했습니다.');
     }
   };
 
@@ -141,7 +143,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     if (isSaving || !data) return;
 
     const errorMsg = validate();
-    if (errorMsg) return alert(errorMsg);
+    if (errorMsg) return showAlert(errorMsg);
 
     setIsSaving(true);
 
@@ -163,7 +165,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
         await handleArtworkConnections(savedId);
       }
 
-      alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
+      showAlert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
 
       // 저장 후 이동 로직
       const tabName =
@@ -179,7 +181,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
       }
     } catch (error) {
       console.error('저장 오류:', error);
-      alert('저장 중 오류가 발생했습니다.');
+      showAlert('저장 중 오류가 발생했습니다.');
     } finally {
       setIsSaving(false);
     }
