@@ -211,7 +211,7 @@ export default function GalleryDetail({
 
   const detailTabs = [
     { key: 'info', label: '정보' },
-    { key: 'artworks', label: `작품(${artworks.length || 0})` },
+    // { key: 'artworks', label: `작품(${artworks.length || 0})` },
     { key: 'exhibitions', label: `전시(${exhibitions.length || 0})` },
   ];
 

@@ -159,7 +159,7 @@ export default function ExhibitionDetail({
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length})` },
-    { key: 'exhibitions', label: `전시(${relatedExhibitions.length})` },
+    // { key: 'exhibitions', label: `연관 전시(${relatedExhibitions.length})` },
   ];
 
   return (
