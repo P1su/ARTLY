@@ -14,8 +14,6 @@ const getArtistName = (artist) =>
   artist.artist?.artist_name ||
   '이름 없음';
 
-const { showAlert } = useAlert();
-
 const getArtImage = (art) => {
   return art.image_url || art.art_image || '/images/no-image.png';
 };
@@ -33,6 +31,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const fileInputRef = useRef(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {

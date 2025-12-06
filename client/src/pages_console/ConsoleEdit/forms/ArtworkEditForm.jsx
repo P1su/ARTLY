@@ -14,6 +14,23 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
     ended: '종료',
     default: '정보없음',
   };
+  const STATUS_PRIORITY = {
+    exhibited: 1, // 진행중 (가장 위)
+    scheduled: 2, // 예정
+    ended: 3, // 종료 (가장 아래)
+  };
+  const rawExhibitions = data.exhibitions || [];
+
+  // 우선순위에 따라 정렬된 새 배열 생성
+  const sortedExhibitions = [...rawExhibitions].sort((a, b) => {
+    const statusA = a.exhibition_status;
+    const statusB = b.exhibition_status;
+
+    const priorityA = STATUS_PRIORITY[statusA] || 99; // 정의 안 된 상태는 맨 뒤로
+    const priorityB = STATUS_PRIORITY[statusB] || 99;
+
+    return priorityA - priorityB;
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -170,8 +187,8 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
           <div className={styles.inputGroup}>
             <label className={styles.label}>작품 등록된 전시회</label>
             <div className={styles.exhibitionListWrapper}>
-              {data.exhibitions && data.exhibitions.length > 0 ? (
-                data.exhibitions.map((exh) => {
+              {sortedExhibitions && sortedExhibitions.length > 0 ? (
+                sortedExhibitions.map((exh) => {
                   const statusKey = exh.exhibition_status || 'default';
 
                   return (

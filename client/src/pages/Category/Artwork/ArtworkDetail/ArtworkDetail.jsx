@@ -14,13 +14,13 @@ export default function ArtworkDetail({
   id: propId,
   actionButtons,
 }) {
+  const { showAlert } = useAlert();
+
   const STATUS_CONFIG = {
     exhibited: { label: '진행중', className: styles.exhibited },
     scheduled: { label: '예정', className: styles.scheduled },
     ended: { label: '종료', className: styles.ended },
   };
-
-  const { showAlert } = useAlert();
 
   const { artworkId } = useParams();
   const id = propId || artworkId;
@@ -113,6 +113,18 @@ export default function ArtworkDetail({
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
+  const STATUS_PRIORITY = {
+    exhibited: 1, // 진행중 (가장 위)
+    scheduled: 2, // 예정
+    ended: 3, // 종료 (가장 아래)
+  };
+
+  const sortedExhibitions = [...exhibitions].sort((a, b) => {
+    const priorityA = STATUS_PRIORITY[a.exhibition_status] || 99; // 정의되지 않은 상태는 맨 뒤로
+    const priorityB = STATUS_PRIORITY[b.exhibition_status] || 99;
+
+    return priorityA - priorityB;
+  });
   const finalArtistName =
     artist?.artist_name || artist_name || 'Unknown Artist';
   const imageUrl =
@@ -255,11 +267,11 @@ export default function ArtworkDetail({
         {actionButtons?.info}
       </div>
 
-      {exhibitions && exhibitions.length > 0 && (
+      {sortedExhibitions && sortedExhibitions.length > 0 && (
         <div className={styles.exhibitionSection}>
           <span className={styles.sectionTitle}>전시 정보</span>
           <div className={styles.exhibitionList}>
-            {exhibitions.map((exh) => {
+            {sortedExhibitions.map((exh) => {
               const statusKey = exh.exhibition_status || 'ended';
               const statusInfo =
                 STATUS_CONFIG[statusKey] || STATUS_CONFIG.ended;
