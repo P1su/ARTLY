@@ -97,7 +97,7 @@ export default function InvitationGenerator() {
       } else if (e.response?.status === 403) {
         showAlert('권한이 없습니다.');
       } else {
-        showAlert('초대장 수정에 실패했습니다.');
+        showAlert('초대장 수정에 실패했습니다.', 'error');
       }
     }
   };

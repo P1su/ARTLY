@@ -8,6 +8,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
+import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function GalleryManagement({
   galleryList,
@@ -17,6 +18,7 @@ export default function GalleryManagement({
   isSearching,
   error,
 }) {
+  const { showConfirm } = useConfirm();
   const navigate = useNavigate();
 
   // 디바운스 검색 hook 사용
@@ -31,12 +33,13 @@ export default function GalleryManagement({
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
 
   const handleDelete = async (id) => {
-    if (window.confirm('정말로 이 갤러리를 삭제하시겠습니까?')) {
-      // 1. 삭제 동작 수행 (비동기 대기)
-      await onDelete(id, 'gallery');
+    const isConfirmed = await showConfirm(
+      '정말로 이 갤러리를 삭제하시겠습니까?',
+      true,
+    );
 
-      // 2. 삭제 완료 후, 현재 페이지로 이동하며 activeTab 상태를 '갤러리관리'로 고정
-      // replace: true를 사용하여 뒤로가기 기록 꼬임 방지
+    if (isConfirmed) {
+      await onDelete(id, 'gallery');
       navigate('/console/main', {
         state: { activeTab: '갤러리관리' },
         replace: true,

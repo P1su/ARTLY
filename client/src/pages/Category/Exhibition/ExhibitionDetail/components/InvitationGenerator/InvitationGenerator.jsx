@@ -108,7 +108,7 @@ export default function InvitationGenerator({
       } else if (e.response?.status === 403) {
         showAlert('권한이 없습니다.');
       } else {
-        showAlert('초대장 수정에 실패했습니다.');
+        showAlert('초대장 수정에 실패했습니다.', 'error');
       }
     }
   };
@@ -129,7 +129,7 @@ export default function InvitationGenerator({
         document.execCommand('copy');
         showAlert('클립보드에 복사되었습니다!');
       } catch (err) {
-        showAlert('복사에 실패했습니다.');
+        showAlert('복사에 실패했습니다.', 'error');
       }
       document.body.removeChild(textarea);
     }
@@ -156,7 +156,7 @@ export default function InvitationGenerator({
       showAlert('이미지가 저장되었습니다!');
     } catch (e) {
       console.error('캡처 실패:', e);
-      showAlert('이미지 캡처에 실패했습니다.');
+      showAlert('이미지 캡처에 실패했습니다.', 'error');
     }
   };
 

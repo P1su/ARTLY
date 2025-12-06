@@ -59,7 +59,7 @@ export default function Nearby() {
       setResults(response.data);
     } catch (error) {
       console.error(error);
-      showAlert('주변 갤러리를 불러오는데 실패했습니다');
+      showAlert('주변 갤러리를 불러오는데 실패했습니다', 'error');
     } finally {
       setIsLoading(false);
     }

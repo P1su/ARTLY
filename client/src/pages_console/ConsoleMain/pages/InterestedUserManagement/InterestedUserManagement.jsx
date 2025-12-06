@@ -93,7 +93,7 @@ export default function InterestedUserManagement({
         err.message ||
         '알 수 없는 오류가 발생했습니다.';
       setSendError(msg);
-      showAlert(`알림 발송에 실패했습니다.\n${msg}`);
+      showAlert(`알림 발송에 실패했습니다.\n${msg}`, 'error');
     } finally {
       setIsSending(false);
     }

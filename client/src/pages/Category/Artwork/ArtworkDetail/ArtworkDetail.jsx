@@ -25,7 +25,6 @@ export default function ArtworkDetail({
   const { artworkId } = useParams();
   const id = propId || artworkId;
   const navigate = useNavigate();
-  const { addToast } = useToastContext();
 
   const { pathname } = useLocation();
   const isConsole = pathname.includes('console');
@@ -68,11 +67,7 @@ export default function ArtworkDetail({
       }
     } catch (error) {
       console.error('관심 처리 실패:', error);
-      addToast({
-        title: '오류',
-        message: '좋아요 처리에 실패했습니다.',
-        type: 'error',
-      });
+      showAlert('좋아요 처리에 실패했습니다.', 'error');
     }
   };
 

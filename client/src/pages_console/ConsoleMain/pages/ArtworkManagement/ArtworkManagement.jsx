@@ -8,6 +8,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ArtworkManagement.module.css';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
+import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function ArtworkManagement({
   artworkList,
@@ -22,16 +23,23 @@ export default function ArtworkManagement({
   exhibitionList,
 }) {
   const navigate = useNavigate();
+  const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
 
   const handleDelete = async (id) => {
-    if (window.confirm('정말로 이 작품을 삭제하시겠습니까?')) {
+    const isConfirmed = await showConfirm(
+      '정말로 이 작품을 삭제하시겠습니까?',
+      true,
+    );
+
+    if (isConfirmed) {
       await onDelete(id, 'artwork');
+
+      navigate('/console/main', {
+        state: { activeTab: '작품관리' },
+        replace: true,
+      });
     }
-    navigate('/console/main', {
-      state: { activeTab: '작품관리' },
-      replace: true,
-    });
   };
 
   // 1. 처음 마운트 시 전시회 목록 로드

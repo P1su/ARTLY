@@ -105,7 +105,7 @@ export default function QrModal({ data, onClose, type }) {
       })
       .catch((err) => {
         console.error('이미지 변환 실패:', err);
-        showAlert('이미지 다운로드에 실패했습니다.');
+        showAlert('이미지 다운로드에 실패했습니다.', 'error');
       });
   };
 

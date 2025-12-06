@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HiX } from 'react-icons/hi';
 import styles from './AlarmModal.module.css';
 import { useAlert } from '../../../../store/AlertProvider';
+import { useConfirm } from '../../../../store/ConfirmProvider';
 
 export default function AlarmModal({
   isOpen,
@@ -10,6 +11,7 @@ export default function AlarmModal({
   onSendAlarm,
   isSending = false,
 }) {
+  const { showConfirm } = useConfirm();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { showAlert } = useAlert();
@@ -38,10 +40,11 @@ export default function AlarmModal({
       return;
     }
 
-    const ok = window.confirm(
-      '해당 사용자에게 앱 알림 메시지를 보내시겠습니까? 바로 발송되며, 취소할 수 없습니다.',
+    const isConfirmed = await showConfirm(
+      '해당 사용자에게 앱 알림 메시지를 보내시겠습니까?\n바로 발송되며, 취소할 수 없습니다.',
     );
-    if (!ok) return;
+
+    if (!isConfirmed) return;
 
     await onSendAlarm(title.trim(), content.trim());
 
