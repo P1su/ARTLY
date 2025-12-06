@@ -6,32 +6,39 @@ export default function useImageUpload() {
   const [coverImage, setCoverImage] = useState(null);
 
   // 이미지 파일 선택 (내지용 - 여러 개)
+  // 이미지 파일 선택 (내지용 - 여러 개)
   const handleImageChange = (e) => {
+    // e.target이 존재하는지 확인
+    if (!e.target || !e.target.files) return;
+
     const fileList = Array.from(e.target.files);
-    const imagePromiseList = fileList.map(file => {
+    const imagePromiseList = fileList.map((file) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (event) => {
+          // 변수명 충돌 방지를 위해 e -> event로 변경
           resolve({
             file,
-            url: e.target.result,
-            name: file.name
+            url: event.target.result,
+            name: file.name,
           });
         };
         reader.readAsDataURL(file);
       });
     });
 
-    Promise.all(imagePromiseList).then(newImageList => {
-      setImageList(prev => [...prev, ...newImageList]);
-      // 파일 입력 필드 초기화
-      e.target.value = '';
+    Promise.all(imagePromiseList).then((newImageList) => {
+      setImageList((prev) => [...prev, ...newImageList]);
+      // [수정된 부분] e.target이 여전히 유효한지 확인 후 초기화
+      if (e.target) {
+        e.target.value = '';
+      }
     });
   };
 
   // 이미지 제거 (내지용)
   const handleRemoveImage = (index) => {
-    setImageList(prev => prev.filter((_, i) => i !== index));
+    setImageList((prev) => prev.filter((_, i) => i !== index));
   };
 
   // 표지 이미지 설정
@@ -41,7 +48,7 @@ export default function useImageUpload() {
       setCoverImage({
         file,
         url: e.target.result,
-        name: file.name
+        name: file.name,
       });
     };
     reader.readAsDataURL(file);
@@ -73,21 +80,21 @@ export default function useImageUpload() {
 
   // 드래그 앤 드롭으로 이미지 처리
   const handleDrop = (acceptedFileList, type = 'inner') => {
-    const imagePromiseList = acceptedFileList.map(file => {
+    const imagePromiseList = acceptedFileList.map((file) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           resolve({
             file,
             url: e.target.result,
-            name: file.name
+            name: file.name,
           });
         };
         reader.readAsDataURL(file);
       });
     });
 
-    Promise.all(imagePromiseList).then(newImageList => {
+    Promise.all(imagePromiseList).then((newImageList) => {
       if (type === 'cover') {
         // 첫 번째 이미지만 표지로 설정
         if (newImageList.length > 0) {
@@ -95,7 +102,7 @@ export default function useImageUpload() {
         }
       } else {
         // 내지에 추가
-        setImageList(prev => [...prev, ...newImageList]);
+        setImageList((prev) => [...prev, ...newImageList]);
       }
     });
   };
@@ -103,25 +110,25 @@ export default function useImageUpload() {
   // 표지용 드래그 앤 드롭 설정
   const coverDropzone = useDropzone({
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp']
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp'],
     },
     multiple: false,
     onDrop: (acceptedFileList) => handleDrop(acceptedFileList, 'cover'),
     onDropRejected: (rejectedFileList) => {
       console.log('표지 이미지 업로드 실패:', rejectedFileList);
-    }
+    },
   });
 
   // 내지용 드래그 앤 드롭 설정
   const innerDropzone = useDropzone({
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp']
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.webp'],
     },
     multiple: true,
     onDrop: (acceptedFileList) => handleDrop(acceptedFileList, 'inner'),
     onDropRejected: (rejectedFileList) => {
       console.log('내지 이미지 업로드 실패:', rejectedFileList);
-    }
+    },
   });
 
   return {
@@ -136,7 +143,6 @@ export default function useImageUpload() {
     // 드래그 앤 드롭 관련
     coverDropzone,
     innerDropzone,
-    handleDrop
+    handleDrop,
   };
 }
-

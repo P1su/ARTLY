@@ -220,6 +220,23 @@ export default function LeafletViewer() {
       <header className={styles.header}>
         <h1 className={styles.title}>{title}</h1>
         {/* 뒤로 가기 (탭 닫기 아님, SPA 이동) */}
+        <button
+          className={styles.closeBtn}
+          onClick={() => navigate(-1)}
+          aria-label='닫기'
+        >
+          <svg
+            width='24'
+            height='24'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+          >
+            <line x1='18' y1='6' x2='6' y2='18' />
+            <line x1='6' y1='6' x2='18' y2='18' />
+          </svg>
+        </button>
       </header>
 
       {/* 뷰어 영역 */}

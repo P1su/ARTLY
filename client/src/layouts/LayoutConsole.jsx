@@ -11,7 +11,7 @@ export default function LayoutConsole() {
       <div style={{ flex: 1 }}>
         <Outlet />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
