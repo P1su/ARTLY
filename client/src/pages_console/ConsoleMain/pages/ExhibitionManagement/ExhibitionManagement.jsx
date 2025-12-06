@@ -23,11 +23,15 @@ export default function ExhibitionManagement({
 
   const { showAlert } = useAlert();
 
-  const handleDelete = (e, id) => {
+  const handleDelete = async (e, id) => {
     e.stopPropagation();
     if (window.confirm('정말로 이 전시회를 삭제하시겠습니까?')) {
       onDelete(id, 'exhibition');
     }
+    navigate('/console/main', {
+      state: { activeTab: '전시회관리' },
+      replace: true,
+    });
   };
 
   // 컴포넌트 마운트 시 전체 전시회 로드 (1회만)

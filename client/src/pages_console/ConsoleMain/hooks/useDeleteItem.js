@@ -13,7 +13,6 @@ export default function useDeleteItem() {
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
   const { showAlert } = useAlert();
-
   // 갤러리 목록 로드
   const loadGalleries = useCallback(
     async (search = '') => {
@@ -112,12 +111,16 @@ export default function useDeleteItem() {
   );
 
   // 작품 목록 로드
+  // useDeleteItem.js 내부
+
   const loadArtworks = useCallback(
     async (exhibitionTitle = '') => {
       try {
         setIsLoading(true);
-        // 실제 API 호출
+
+        // 1. API 호출
         const params = new URLSearchParams();
+        // 전체 조회가 아닐 때만 파라미터 추가
         if (exhibitionTitle && exhibitionTitle !== '전시회 전체') {
           params.append('exhibition_title', exhibitionTitle);
         }
@@ -125,70 +128,44 @@ export default function useDeleteItem() {
 
         const response = await userInstance.get(url);
 
-        // API 응답 데이터를 mock 데이터 형식에 맞게 변환
-        // 사용자의 전시회에 속한 작품만 필터링
-        const userExhibitionIds = exhibitionList
-          ? exhibitionList.map((e) => Number(e.id))
-          : [];
-
+        // 2. 데이터 변환 (필터링 로직 제거!)
         const artworks = Array.isArray(response.data)
-          ? response.data
-              .filter((item) => {
-                // exhibitionList가 비어있으면 필터링하지 않음
-                if (!exhibitionList || exhibitionList.length === 0) {
-                  return true;
-                }
-                // 작품이 속한 전시회가 사용자의 전시회 목록에 있는지 확인
-                const firstExhibition =
-                  item.exhibitions && item.exhibitions.length > 0
-                    ? item.exhibitions[0]
-                    : null;
-                const exhibitionId = firstExhibition
-                  ? Number(firstExhibition.id)
+          ? response.data.map((item) => {
+              // 전시회 정보가 없을 수도 있으므로 안전하게 처리
+              const firstExhibition =
+                item.exhibitions && item.exhibitions.length > 0
+                  ? item.exhibitions[0]
                   : null;
-                const isIncluded =
-                  exhibitionId !== null &&
-                  userExhibitionIds.includes(exhibitionId);
-                return isIncluded;
-              })
-              .map((item) => {
-                // exhibitions 배열에서 첫 번째 전시회의 갤러리 정보 추출
-                const firstExhibition =
-                  item.exhibitions && item.exhibitions.length > 0
-                    ? item.exhibitions[0]
-                    : null;
-                const galleryName =
-                  firstExhibition?.gallery?.gallery_name || '갤러리 정보 없음';
-                const galleryId =
-                  firstExhibition?.gallery_id ||
-                  firstExhibition?.gallery?.id ||
-                  null;
-                const exhibitionTitle =
-                  firstExhibition?.exhibition_title || '전시회 정보 없음';
 
-                return {
-                  id: item.id,
-                  title: item.art_title,
-                  artist: item.artist?.artist_name || '작가 정보 없음',
-                  image: item.art_image || null,
-                  gallery_name: galleryName,
-                  gallery_id: galleryId,
-                  exhibition_title: exhibitionTitle,
-                  value: exhibitionTitle,
-                };
-              })
+              return {
+                id: item.id,
+                title: item.art_title || item.title, // 필드명 안전하게
+                artist:
+                  item.artist?.artist_name ||
+                  item.artist_name ||
+                  '작가 정보 없음',
+                image: item.art_image || item.image_url || item.image, // 백엔드 필드명에 맞춰 확인 필요
+
+                // 아래 정보는 전체 조회 시 없을 수도 있음
+                gallery_name: firstExhibition?.gallery?.gallery_name || '',
+                exhibition_title: firstExhibition?.exhibition_title || '',
+              };
+            })
           : [];
 
+        // 3. 상태 업데이트
         setArtworkList(artworks);
       } catch (err) {
         setError(err.message);
+
         console.error('작품 목록 로드 실패:', err);
+
         setArtworkList([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [exhibitionList],
+    [], // 의존성 배열도 비워두는 게 안전함 (exhibitionList 의존 X)
   );
 
   // 사용자 정보가 있을 때 갤러리 목록 로드 (최초 1회만)
