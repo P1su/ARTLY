@@ -16,10 +16,10 @@ export default function InterestedUserManagement({
   exhibitionList = [],
   artworkList = [],
 }) {
+  const { showAlert } = useAlert();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sendError, setSendError] = useState(null);
-  const { showAlert } = useAlert();
 
   const {
     selectedUserList,

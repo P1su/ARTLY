@@ -6,18 +6,15 @@ import { ToastProvider } from './store/ToastProvider';
 import './styles/style.css';
 import { RouterProvider } from 'react-router-dom';
 import FallbackUI from './components/FallbackUI/FallbackUI';
-import { AlertProvider } from './store/AlertProvider';
 
 function App() {
   return (
     <ErrorBoundary fallback={<div>연결에 실패했습니다.</div>}>
       <Suspense fallback={<FallbackUI />}>
         <UserProvider>
-          <AlertProvider>
-            <ToastProvider>
-              <RouterProvider router={router} />
-            </ToastProvider>
-          </AlertProvider>
+          <ToastProvider>
+            <RouterProvider router={router} />
+          </ToastProvider>
         </UserProvider>
       </Suspense>
     </ErrorBoundary>

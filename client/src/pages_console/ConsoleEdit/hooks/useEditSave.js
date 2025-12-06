@@ -194,7 +194,11 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
         await handleArtworkConnections(savedId);
       }
 
-      showAlert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
+      showAlert(
+        isCreateMode
+          ? `${type === 'galleries' ? '갤러리가' : type === 'exhibitions' ? '전시회가' : '작품이'} 등록되었습니다.`
+          : '수정되었습니다.',
+      );
 
       // 저장 후 이동 로직
       const tabName =

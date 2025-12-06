@@ -1,5 +1,5 @@
-import { createContext, useState, useCallback, useContext } from 'react';
-import AlertModal from '../components/AlertModal/AlertModal'; // 경로 확인 필요
+import { createContext, useContext, useState, useCallback } from 'react';
+import AlertModal from '../components/AlertModal/AlertModal';
 
 const AlertContext = createContext();
 
@@ -7,12 +7,14 @@ export function AlertProvider({ children }) {
   const [alertState, setAlertState] = useState({
     isOpen: false,
     message: '',
+    type: 'default', // 'default' | 'error'
   });
 
-  const showAlert = useCallback((message) => {
+  const showAlert = useCallback((message, type = 'default') => {
     setAlertState({
       isOpen: true,
       message: message,
+      type: type,
     });
   }, []);
 
@@ -26,17 +28,16 @@ export function AlertProvider({ children }) {
       <AlertModal
         isOpen={alertState.isOpen}
         message={alertState.message}
+        type={alertState.type}
         onClose={closeAlert}
       />
     </AlertContext.Provider>
   );
 }
 
-// 편하게 쓰기 위한 커스텀 훅
 export const useAlert = () => {
   const context = useContext(AlertContext);
-  if (!context) {
-    throw new Error('useAlert must be used within an AlertProvider');
-  }
+  if (!context)
+    throw new Error('useAlert는 AlertProvider 내에서 사용해야 합니다.');
   return context;
 };

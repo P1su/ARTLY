@@ -194,31 +194,57 @@ export default function useDeleteItem() {
 
   const handleDelete = async (id, type) => {
     try {
-      // 삭제 중임을 표시하지 않고 즉시 UI에서 제거 (낙관적 업데이트)
+      // 1. 낙관적 업데이트 (일단 화면에서 지움)
       if (type === 'gallery') {
         setGalleryList((prev) => prev.filter((item) => item.id !== id));
-        await userInstance.delete(`/api/galleries/${id}`);
       } else if (type === 'exhibition') {
         setExhibitionList((prev) => prev.filter((item) => item.id !== id));
-        await userInstance.delete(`/api/exhibitions/${id}`);
       } else if (type === 'artwork') {
         setArtworkList((prev) => prev.filter((item) => item.id !== id));
-        await userInstance.delete(`/api/arts/${id}`);
       }
+
+      // 2. API 호출
+      let response;
+      if (type === 'gallery') {
+        response = await userInstance.delete(`/api/galleries/${id}`);
+      } else if (type === 'exhibition') {
+        response = await userInstance.delete(`/api/exhibitions/${id}`);
+      } else if (type === 'artwork') {
+        response = await userInstance.delete(`/api/arts/${id}`);
+      }
+
+      if (
+        typeof response.data === 'string' &&
+        (response.data.includes('Fatal error') ||
+          response.data.includes('Integrity constraint violation'))
+      ) {
+        throw new Error('FOREIGN_KEY_ERROR');
+      }
+
       showAlert(
         `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
       );
     } catch (err) {
-      setError(err.message);
       console.error('삭제 실패:', err);
-      showAlert('삭제에 실패했습니다. 다시 시도해주세요.');
-      // 삭제 실패 시 데이터를 다시 로드하여 복구
+
+      // 5. 에러 종류에 따른 빨간 모달 띄우기
+      if (err.message === 'FOREIGN_KEY_ERROR') {
+        showAlert(
+          `${type === 'gallery' ? '갤러리를' : type === 'exhibition' ? '전시회를' : '작품을 '} 삭제할 수 없습니다.\n해당 ${type === 'gallery' ? '갤러리' : '전시회'}에 등록된 하위 데이터(${type === 'gallery' ? '전시' : '작가, 작품'} 등)를 먼저 삭제해주세요.`,
+          'error', // 빨간색 타입 전달
+        );
+      } else {
+        // 그 외 일반 에러
+        showAlert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+      }
+
+      // 6. 삭제 실패했으니 화면 복구 (데이터 다시 로드)
       if (type === 'gallery') {
         loadGalleries();
       } else if (type === 'exhibition') {
-        loadExhibitions('갤러리 전체');
+        loadExhibitions('갤러리 전체'); // 혹은 현재 선택된 갤러리값 전달
       } else if (type === 'artwork') {
-        loadArtworks('전시회 전체');
+        loadArtworks(''); // 전체 로드
       }
     }
   };
