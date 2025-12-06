@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
 import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
+import { useConfirm } from '../../store/ConfirmProvider';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function Leaflet({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { showConfirm } = useConfirm();
+  const { showAlert } = useAlert();
+
   // id는 항상 Owner(Gallery/Exhibition) ID입니다.
   const [leafletId, setLeafletId] = useState(null);
   const [title, setTitle] = useState('');
@@ -79,9 +83,7 @@ export default function Leaflet({ type }) {
         console.error('리플렛 조회 실패:', error);
         // 404는 리플렛이 없는 경우이므로 에러 처리하지 않음 (생성 모드)
         if (error.response?.status !== 404) {
-          toast.error('리플렛 데이터를 불러오는데 실패했습니다.', {
-            position: 'top-center',
-          });
+          showAlert('리플렛 데이터를 불러오는데 실패했습니다.', 'error');
         }
       } finally {
         setIsLoading(false);
@@ -93,11 +95,7 @@ export default function Leaflet({ type }) {
 
   const handlePreview = () => {
     if (!leafletId) {
-      toast.error('먼저 리플렛을 생성해주세요!', {
-        position: 'top-center',
-        duration: 3000,
-      });
-      return;
+      showAlert('먼저 리플렛을 생성해주세요.');
     }
     const viewerUrl = `/view/leaflet/${type}/${id}`;
     window.open(viewerUrl, '_blank');
@@ -106,25 +104,30 @@ export default function Leaflet({ type }) {
   const handleDelete = async () => {
     if (!leafletId) return;
 
-    if (!window.confirm('정말로 이 리플렛을 삭제하시겠습니까?')) {
-      return;
-    }
+    // [변경 전]
+    // if (!window.confirm('정말로 이 리플렛을 삭제하시겠습니까?')) {
+    //   return;
+    // }
+
+    // [변경 후]
+    // 비동기 확인 대기 (두 번째 인자 true = 빨간색 버튼)
+    const isConfirmed = await showConfirm(
+      '정말로 이 리플렛을 삭제하시겠습니까?',
+      true,
+    );
+
+    if (!isConfirmed) return;
 
     try {
       setIsLoading(true);
       await userInstance.delete(`/api/leaflet/${leafletId}`);
-      toast.success('리플렛이 삭제되었습니다.', {
-        position: 'top-center',
-      });
+      showAlert('리플렛이 삭제되었습니다.');
 
       // 삭제 후 이동
-      // 항상 Owner 상세 페이지로 이동
       navigate(`/console/${type}/${id}`);
     } catch (error) {
       console.error('리플렛 삭제 실패:', error);
-      toast.error('리플렛 삭제에 실패했습니다.', {
-        position: 'top-center',
-      });
+      showAlert('리플렛 삭제에 실패했습니다.', 'error');
       setIsLoading(false);
     }
   };
@@ -133,17 +136,11 @@ export default function Leaflet({ type }) {
   const handleUpload = async () => {
     // 제목과 표지 이미지 필수
     if (!title.trim()) {
-      toast.error('리플렛 제목을 입력해주세요!', {
-        position: 'top-center',
-      });
-      return;
+      showAlert('리플렛 제목을 입력해주세요.');
     }
 
     if (!coverImage?.file) {
-      toast.error('표지 이미지를 업로드해주세요!', {
-        position: 'top-center',
-      });
-      return;
+      showAlert('표지 이미지를 업로드 해주세요.');
     }
 
     try {
@@ -170,7 +167,8 @@ export default function Leaflet({ type }) {
       formData.append('title', title.trim());
       // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
       // categoryId: 해당 카테고리의 ID
-      const categoryName = type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+      const categoryName =
+        type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
       formData.append('category', categoryName);
       formData.append('categoryId', id); // Owner ID passed via params
 
@@ -180,9 +178,7 @@ export default function Leaflet({ type }) {
         },
       });
 
-      toast.success('리플렛이 성공적으로 생성되었습니다!', {
-        position: 'top-center',
-      });
+      showAlert('리플렛이 성공적으로 생성되었습니다.');
 
       // 생성 후 leafletId 업데이트 (페이지 유지)
       if (res.data.id) {
@@ -190,14 +186,7 @@ export default function Leaflet({ type }) {
         setExistingLeaflet(res.data);
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        '리플렛 저장 중 오류가 발생했습니다.';
-      toast.error(errorMessage, {
-        position: 'top-center',
-        duration: 5000,
-      });
+      showAlert('리플렛 저장 중 오류가 발생했습니다.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -207,8 +196,6 @@ export default function Leaflet({ type }) {
 
   return (
     <div className={styles.layout}>
-      <Toaster />
-
       <div className={styles.mainContentContainer}>
         <div className={styles.panelHeaderBox}>
           <p className={styles.panelHeaderParagraph}>

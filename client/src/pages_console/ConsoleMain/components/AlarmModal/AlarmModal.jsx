@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { HiX } from 'react-icons/hi';
 import styles from './AlarmModal.module.css';
+import { useAlert } from '../../../../store/AlertProvider';
+import { useConfirm } from '../../../../store/ConfirmProvider';
 
 export default function AlarmModal({
   isOpen,
@@ -9,8 +11,10 @@ export default function AlarmModal({
   onSendAlarm,
   isSending = false,
 }) {
+  const { showConfirm } = useConfirm();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { showAlert } = useAlert();
 
   const handleClose = () => {
     setTitle('');
@@ -22,24 +26,25 @@ export default function AlarmModal({
 
   const handleSend = async () => {
     if (!title.trim()) {
-      alert('제목을 입력해주세요.');
+      showAlert('제목을 입력해주세요.');
       return;
     }
 
     if (!content.trim()) {
-      alert('알림 내용을 입력해주세요.');
+      showAlert('알림 내용을 입력해주세요.');
       return;
     }
 
     if (selectedUsersCount === 0) {
-      alert('선택된 사용자가 없습니다. 사용자를 선택해주세요.');
+      showAlert('선택된 사용자가 없습니다. 사용자를 선택해주세요.');
       return;
     }
 
-    const ok = window.confirm(
-      '해당 사용자에게 앱 알림 메시지를 보내시겠습니까? 바로 발송되며, 취소할 수 없습니다.'
+    const isConfirmed = await showConfirm(
+      '해당 사용자에게 앱 알림 메시지를 보내시겠습니까?\n바로 발송되며, 취소할 수 없습니다.',
     );
-    if (!ok) return;
+
+    if (!isConfirmed) return;
 
     await onSendAlarm(title.trim(), content.trim());
 
@@ -65,9 +70,9 @@ export default function AlarmModal({
         <div className={styles.formGroup}>
           <label className={styles.label}>제목</label>
           <input
-            type="text"
+            type='text'
             className={styles.input}
-            placeholder="제목을 입력하세요"
+            placeholder='제목을 입력하세요'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -77,7 +82,7 @@ export default function AlarmModal({
           <label className={styles.label}>알림내용 (최대 80자)</label>
           <textarea
             className={styles.textarea}
-            placeholder="알림 내용을 입력하세요"
+            placeholder='알림 내용을 입력하세요'
             maxLength={80}
             value={content}
             onChange={(e) => setContent(e.target.value)}

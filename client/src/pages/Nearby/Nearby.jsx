@@ -5,6 +5,7 @@ import useMap from './hooks/useMap';
 import { mapInstance, userInstance } from '../../apis/instance.js';
 import NearbyGalleries from './components/NearbyGalleries/NearbyGalleries';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.jsx';
+import { useAlert } from '../../store/AlertProvider.jsx';
 
 export default function Nearby() {
   const { coords, setCoords } = useGeoLocation();
@@ -12,6 +13,8 @@ export default function Nearby() {
   const [isLoading, setIsLoading] = useState(false);
   const { lat, lng } = coords;
   const [query, setQuery] = useState('');
+
+  const { showAlert } = useAlert();
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -37,7 +40,7 @@ export default function Nearby() {
       });
     } catch (error) {
       console.error(error);
-      alert('올바른 주소값을 입력해주세요');
+      showAlert('올바른 주소값을 입력해주세요');
     }
   };
 
@@ -56,7 +59,7 @@ export default function Nearby() {
       setResults(response.data);
     } catch (error) {
       console.error(error);
-      alert('주변 갤러리를 불러오는데 실패했습니다');
+      showAlert('주변 갤러리를 불러오는데 실패했습니다', 'error');
     } finally {
       setIsLoading(false);
     }

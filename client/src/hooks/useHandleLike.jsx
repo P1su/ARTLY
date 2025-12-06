@@ -13,7 +13,6 @@ const useHandleLike = () => {
         });
       } catch (error) {
         console.error(error);
-        alert('좋아요 실패');
       }
     };
 
@@ -25,7 +24,6 @@ const useHandleLike = () => {
         });
       } catch (error) {
         console.error(error);
-        alert('좋아요 실패');
       }
     };
 

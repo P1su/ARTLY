@@ -3,11 +3,13 @@ import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
 import styles from './QrModal.module.css';
 import { userInstance } from '../../../../apis/instance';
+import { useAlert } from '../../../../store/AlertProvider';
 
 export default function QrModal({ data, onClose, type }) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasContent, setHasContent] = useState(false);
   const [qrUrl, setQrUrl] = useState('');
+  const { showAlert } = useAlert();
 
   const qrContainerRef = useRef(null);
 
@@ -103,7 +105,7 @@ export default function QrModal({ data, onClose, type }) {
       })
       .catch((err) => {
         console.error('이미지 변환 실패:', err);
-        alert('이미지 다운로드에 실패했습니다.');
+        showAlert('이미지 다운로드에 실패했습니다.', 'error');
       });
   };
 
