@@ -30,16 +30,16 @@
 }
 
 .layout:hover .radioInput[type='radio'] {
-  border-color: var(--blue01);
+  border-color: var(--primary);
 }
 
 .radioInput[type='radio']:checked {
-  border-color: var(--blue01);
+  border-color: var(--primary);
 
   border-width: 0.6rem;
 }
 
 .radioInput[type='radio']:checked + .radioLabel {
-  color: var(--blue01);
+  color: var(--primary);
   font-weight: 600;
 }

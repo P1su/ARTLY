@@ -8,7 +8,7 @@
 
   height: 6rem;
   padding: 1.5rem;
-  border-bottom: 2px solid var(--blue01);
+  border-bottom: 2px solid var(--primary);
 
   background-color: var(--white01);
   color: white;
@@ -18,7 +18,7 @@
 
 .logoSpan {
   font-family: 'Segoe-UI';
-  color: var(--blue01);
+  color: var(--primary);
   font-size: 2.5rem;
 }
 

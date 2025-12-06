@@ -1,6 +1,6 @@
 /* 컨테이너 - 모바일 우선 */
 .layout {
-  position: relative; 
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -50,13 +50,11 @@
   .panelHeaderBox {
     margin-bottom: 2.4rem; /* 원래 크기로 복원 */
   }
-  
+
   .panelHeaderParagraph {
     font-size: 1.4rem; /* 원래 크기로 복원 */
   }
 }
-
-
 
 /* 제목 입력 필드 */
 .titleInputBox {
@@ -95,11 +93,11 @@
   .titleInputBox {
     margin-bottom: 2.5rem;
   }
-  
+
   .titleLabel {
     font-size: 1.4rem;
   }
-  
+
   .titleInput {
     font-size: 1.6rem;
     padding: 1.2rem;
@@ -137,12 +135,12 @@
   .coverSectionBox {
     margin-bottom: 2rem; /* 원래 크기로 복원 */
   }
-  
+
   .coverLabelSpan {
     font-size: 1.2rem; /* 원래 크기로 복원 */
     margin-bottom: 1rem;
   }
-  
+
   .coverAreaBox {
     width: 10rem; /* 원래 크기로 복원 */
     height: 16rem;
@@ -224,7 +222,10 @@
 
 .innerPagesGridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); /* 원래 크기로 복원 */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(12rem, 1fr)
+  ); /* 원래 크기로 복원 */
   gap: 1rem;
   min-height: 20rem;
 }
@@ -365,7 +366,7 @@
   width: 100%;
   border: none;
   border-radius: 0;
-  background-color: #4682B4;
+  background-color: #4682b4;
   overflow: hidden;
   height: 3rem;
 }
@@ -414,8 +415,6 @@
   background-color: transparent;
 }
 
-
-
 .deleteButton {
   flex: 1;
   padding: 0.5rem 0.75rem;
@@ -455,8 +454,6 @@
   border-right: none;
 }
 
-
-
 .previewButton:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
@@ -466,17 +463,16 @@
   background-color: #6c757d;
 }
 
-
 /* 반응형 디자인 */
 @media (max-width: 102.4rem) {
   .mainContentContainer {
     padding: 1.6rem;
   }
-  
+
   .innerPagesGridContainer {
     grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   }
-  
+
   .innerPageItemBox,
   .addInnerPageButton {
     width: 15rem;
@@ -488,19 +484,19 @@
   .mainContentContainer {
     padding: 1.6rem;
   }
-  
+
   .panelHeaderBox h3 {
     font-size: 1.8rem;
   }
-  
+
   .coverAreaBox {
     height: 25rem;
   }
-  
+
   .innerPagesGridContainer {
     grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   }
-  
+
   .innerPageItemBox,
   .addInnerPageButton {
     width: 15rem;

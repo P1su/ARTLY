@@ -23,7 +23,7 @@
 }
 
 .logo {
-  color: var(--blue01, #3665f3);
+  color: var(--primary, #3665f3);
   font-family: 'Segoe UI', sans-serif;
   font-size: 4rem;
   font-weight: 800;
@@ -109,7 +109,7 @@
 }
 
 .emailButton {
-  background-color: var(--blue01, #3665f3);
+  background-color: var(--primary, #3665f3);
   color: #ffffff;
 }
 
