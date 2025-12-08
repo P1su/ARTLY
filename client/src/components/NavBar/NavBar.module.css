@@ -25,7 +25,7 @@
 
   padding: 0 5rem;
 
-  color: var(--gray06);
+  color: var(--white02);
 }
 
 .menuItem {
@@ -40,13 +40,13 @@
 
 .defaultLink,
 .activeLink {
-  color: var(--gray06);
+  color: var(--white01);
 
   text-decoration: none;
   font-size: 1.6rem;
 }
 
 .activeLink {
-  color: #000000;
+  color: var(--white01);
   font-weight: 500;
 }
