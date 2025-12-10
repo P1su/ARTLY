@@ -12,12 +12,14 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
+  const [useArtistImage, setUseArtistImage] = useState(false);
 
   const { showAlert } = useAlert();
 
   const navigate = useNavigate();
   const productName = art?.art_title || '작품명';
   const artist = art?.artist_name || art?.artist?.artist_name || '작가명';
+  const artistImage = art?.artist?.artist_image || null;
   const imageUrl =
     art?.art_image ||
     'https://images.unsplash.com/photo-1570393080660-de4e4a15a247?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTF8fEFydHxlbnwwfHwwfHx8MA%3D%3D';
@@ -101,13 +103,19 @@ export default function DocentGenerator({ autoGenerate = false }) {
         },
       });
 
-      /* TODO: TTS 및 동영상 생성 API 연결 */
+      const docentResponse = await userInstance.post(`/api/docents/${id}`, {
+        type: confirmChecked ? "video" : "audio",
+        script: docentText,
+        avatar_image_url: useArtistImage ? artistImage : null,
+        art_name: productName,
+      });
 
       showAlert('도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
       navigate(`/console/artworks/${id}`);
     } catch (e) {
       showAlert('도슨트 저장 중 오류가 발생했습니다.');
+      console.error(e);
     } finally {
       setSaving(false);
     }
@@ -189,7 +197,19 @@ export default function DocentGenerator({ autoGenerate = false }) {
                   생성된 동영상은 작품 관리 페이지에서 확인하실 수 있습니다.
                 </li>
                 <li>동영상 생성 시 일정량의 비용이 청구됩니다.</li>
+
+                <li>작가 도슨트: 체크 시 작가의 사진을 이용해 도슨트 영상을 생성합니다. 작가 본인의 동의를 얻은 후 이용하시기 바랍니다.</li>
               </ul>
+
+              <label className={styles.nestedCheckboxLabel}>
+                <input
+                  type='checkbox'
+                  checked={useArtistImage}
+                  onChange={(e) => setUseArtistImage(e.target.checked)}
+                  className={styles.checkbox}
+                />
+                <span className={styles.checkboxText}>작가 도슨트 생성</span>
+              </label>
             </div>
           </div>
 
