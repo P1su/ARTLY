@@ -12,14 +12,13 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
-  const [useArtistImage, setUseArtistImage] = useState(false);
+  const [artistFile, setArtistFile] = useState(null);
 
   const { showAlert } = useAlert();
 
   const navigate = useNavigate();
   const productName = art?.art_title || '작품명';
   const artist = art?.artist_name || art?.artist?.artist_name || '작가명';
-  const artistImage = art?.artist?.artist_image || null;
   const imageUrl =
     art?.art_image ||
     'https://images.unsplash.com/photo-1570393080660-de4e4a15a247?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTF8fEFydHxlbnwwfHwwfHx8MA%3D%3D';
@@ -103,12 +102,14 @@ export default function DocentGenerator({ autoGenerate = false }) {
         },
       });
 
-      const docentResponse = await userInstance.post(`/api/docents/${id}`, {
-        type: confirmChecked ? "video" : "audio",
-        script: docentText,
-        avatar_image_url: useArtistImage ? artistImage : null,
-        art_name: productName,
-      });
+      const df = new FormData();
+      df.append('docent_script', docentText);
+      df.append('art_name', productName);
+      if (artistFile) 
+        df.append('docent_image', artistFile);
+
+      // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
+      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
 
       showAlert('도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
@@ -196,20 +197,23 @@ export default function DocentGenerator({ autoGenerate = false }) {
                 <li>
                   생성된 동영상은 작품 관리 페이지에서 확인하실 수 있습니다.
                 </li>
-                <li>동영상 생성 시 일정량의 비용이 청구됩니다.</li>
-
-                <li>작가 도슨트: 체크 시 작가의 사진을 이용해 도슨트 영상을 생성합니다. 작가 본인의 동의를 얻은 후 이용하시기 바랍니다.</li>
+                <li>음성 도슨트를 재생성하더라도 동영상 도슨트까지 자동 갱신되지는 않습니다.</li>
+                <li>========================================</li>
+                <li>인물 이미지를 첨부하여 생성할 수 있습니다. 인물 본인의 동의를 얻은 후 이용하시기 바랍니다.</li>
               </ul>
 
-              <label className={styles.nestedCheckboxLabel}>
-                <input
-                  type='checkbox'
-                  checked={useArtistImage}
-                  onChange={(e) => setUseArtistImage(e.target.checked)}
-                  className={styles.checkbox}
-                />
-                <span className={styles.checkboxText}>작가 도슨트 생성</span>
-              </label>
+              <div className={styles.fileInputArea}>
+                <label className={styles.fileInputLabel}>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    onChange={(e) => setArtistFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                    className={styles.fileInput}
+                  />
+                  <span className={styles.checkboxText}></span>
+                </label>
+                {artistFile && <div className={styles.fileName}>{artistFile.name}</div>}
+              </div>
             </div>
           </div>
 
