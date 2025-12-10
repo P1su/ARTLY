@@ -80,19 +80,20 @@ const EditProfile = () => {
     navigate('/');
   };
 
+  const handleContact = () => {
+    window.location.href = "mailto:oddlemon@oddlemon.co.kr"; 
+  };
+
+  const handleTerms = () => {
+    navigate('/termspolicy');
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.pageTitle}>내정보</h2>
 
       <div className={styles.profileCard}>
         <div className={styles.profileInfoDetails}>
-          <div className={styles.infoRow}>
-            <span className={styles.infoLabel}>성명</span>
-
-            <span className={styles.infoValue}>
-              {user.user_name || '닉네임'}
-            </span>
-          </div>
 
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>성명</span>
@@ -151,10 +152,18 @@ const EditProfile = () => {
 
       <div className={styles.profileStatsCard}>
         <h3 className={styles.sectionTitle}>고객센터</h3>
-        <div className={styles.statsRow}>
+        <div 
+          className={styles.statsRow} 
+          onClick={handleContact} 
+          style={{ cursor: 'pointer' }}
+        >
           <span className={styles.statsItem}>1:1 문의</span>
         </div>
-        <div className={styles.statsRow}>
+        <div 
+          className={styles.statsRow}
+          onClick={handleTerms}
+          style={{ cursor: 'pointer' }}
+        >
           <span className={styles.statsItem}>서비스 약관</span>
         </div>
       </div>
