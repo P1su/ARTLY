@@ -2,48 +2,116 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 2000;
+  align-items: center;
+  z-index: 99999;
 }
 
 .modalBox {
   background: white;
-  width: 32rem;
-  padding: 3rem 2rem;
-  border-radius: 1.6rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.2);
+
+  min-width: 32rem;
+  max-width: 42rem;
+  width: auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modalMessage {
   font-size: 1.6rem;
-  color: #333;
+  line-height: 1.6;
+  color: #444;
   margin-bottom: 2.4rem;
-  line-height: 1.5;
+
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  font-weight: 500;
+}
+
+.errorMessage {
+  color: #e14744;
   font-weight: 500;
 }
 
 .modalButton {
   width: 100%;
-  height: 4.4rem;
-  background-color: var(--blue01);
-  color: white;
-  border: none;
+  padding: 1.2rem 0;
   border-radius: 0.8rem;
-  font-size: 1.5rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.6rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  outline: none;
 }
 
-.modalButton:hover {
-  background-color: var(--blue02);
+.modalButton:hover,
+.modalButton:focus {
+  background-color: #0056b3;
+  transform: translateY(-0.1rem);
+}
+
+.errorButton {
+  background-color: #ff4f4c;
+}
+
+.errorButton:hover,
+.errorButton:focus {
+  background-color: #dd3f3c;
+}
+
+@media (max-width: 1000px) {
+  .modalBox {
+    max-width: 38rem;
+    padding: 2.8rem;
+  }
+
+  .modalMessage {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .modalBox {
+    width: 85%;
+    min-width: auto;
+    max-width: none;
+    padding: 2.4rem;
+  }
+
+  .modalMessage {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  .modalButton {
+    padding: 1.2rem 0;
+    font-size: 1.4rem;
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

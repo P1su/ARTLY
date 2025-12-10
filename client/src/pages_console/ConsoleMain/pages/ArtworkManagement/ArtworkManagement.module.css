@@ -5,6 +5,12 @@
   gap: 1.5rem;
 }
 
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .emptyStateContainer {
   display: block;
 }
@@ -72,12 +78,9 @@
 .artworkCard {
   padding: 1.5rem;
   border: none;
-  /* Remove border */
   border-radius: 1rem;
-  /* 16px radius */
   background-color: white;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  /* Subtle shadow */
   transition: all 0.2s ease;
 }
 
@@ -85,7 +88,6 @@
   width: 8rem;
   height: 8rem;
   border-radius: 0.75rem;
-  /* Rounded image */
   flex-shrink: 0;
   object-fit: cover;
 }
@@ -117,6 +119,10 @@
   margin-bottom: 0.75rem;
 }
 
+.artworkExhibition {
+  margin-bottom: 0.75rem;
+}
+
 /* 4. Background */
 .emptyStateContainer {
   background-color: white;
@@ -128,7 +134,7 @@
 
 /* 5. Font */
 .artworkTitle {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #111827;
   margin: 0;
@@ -136,19 +142,24 @@
 }
 
 .artworkArtist {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   color: #4B5563;
 }
 
 .galleryName {
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #6B7280;
+}
+
+.artworkExhibition {
+  font-size: 1.3rem;
+  color: #9CA3AF;
 }
 
 .emptyMessage {
   text-align: center;
   padding: 2rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #6b7280;
 }
 
@@ -158,12 +169,45 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
+/* 태블릿 (700px 이상 1000px 이하) */
+@media (min-width: 700px) {
   .contentContainer {
     gap: 1.5rem;
   }
 
+  .emptyStateContainer {
+    padding: 2.5rem;
+  }
+
+  .searchContainer {
+    margin-bottom: 1.75rem;
+  }
+
+  .artworkCard {
+    padding: 1.75rem;
+  }
+
+  .artworkImage {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .artworkTitle {
+    font-size: 1.5rem;
+  }
+
+  .artworkArtist {
+    font-size: 1.35rem;
+  }
+
+  .countAndButtonContainer {
+    padding: 0 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* PC (1000px 이상) */
+@media (min-width: 1000px) {
   .emptyStateContainer {
     padding: 3rem;
   }
@@ -182,11 +226,19 @@
   }
 
   .artworkTitle {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .artworkArtist {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+  }
+
+  .galleryName {
+    font-size: 1.4rem;
+  }
+
+  .artworkExhibition {
+    font-size: 1.4rem;
   }
 
   .countAndButtonContainer {

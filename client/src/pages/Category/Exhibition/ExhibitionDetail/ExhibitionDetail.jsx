@@ -10,10 +10,11 @@ import {
 import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import { userInstance } from '../../../../apis/instance.js';
 import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitions.jsx';
-import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -24,6 +25,7 @@ export default function ExhibitionDetail({
   const id = propId || exhibitionId;
   const { user } = useUser();
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const [exhibitionData, setExhibitionData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -91,10 +93,10 @@ export default function ExhibitionDetail({
 
       try {
         document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
+        showAlert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
+        showAlert('링크 복사에 실패했습니다.', 'error');
       } finally {
         document.body.removeChild(textarea);
       }
@@ -157,7 +159,7 @@ export default function ExhibitionDetail({
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length})` },
-    { key: 'exhibitions', label: `전시(${relatedExhibitions.length})` },
+    // { key: 'exhibitions', label: `연관 전시(${relatedExhibitions.length})` },
   ];
 
   return (
@@ -280,10 +282,16 @@ export default function ExhibitionDetail({
         )}
       </DetailTabs>
 
-      {/* 초대장 문구 생성 섹션 - HEAD 기능 보존 */}
-      <div className={`${styles.card} ${styles.tabCard}`}>
-        <InvitationGenerator initialTheme={title} initialOthers='' showTitle />
-      </div>
+      {/* 초대장 문구 생성 - 콘솔에서만 표시 */}
+      {!showUserActions && (
+        <div className={`${styles.card} ${styles.tabCard}`}>
+          <InvitationGenerator
+            initialTheme={title}
+            initialOthers=''
+            showTitle
+          />
+        </div>
+      )}
 
       {showUserActions && (
         <button

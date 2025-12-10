@@ -7,8 +7,12 @@ import tabMyViewFilter from '../../../../../../utils/filters/tabMyViewFilter';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AttendanceModal from '../../AttendanceModal/AttendanceModal';
 import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import { useConfirm } from '../../../../../../store/ConfirmProvider.jsx';
+import { useAlert } from '../../../../../../store/AlertProvider.jsx';
 
 export default function TabMyView() {
+  const { showConfirm } = useConfirm();
+  const { showAlert } = useAlert(); // 에러 처리용
   const location = useLocation();
   const [reservations, setReservations] = useState([]);
   const [filter, setFilter] = useState({
@@ -75,18 +79,25 @@ export default function TabMyView() {
   };
 
   const handleStatusChange = async (id) => {
-    const confirm = window.confirm('예약을 취소하시겠습니까?');
-    if (!confirm) return;
+    const isConfirmed = await showConfirm('예약을 취소하시겠습니까?', true);
+
+    if (!isConfirmed) return;
 
     try {
       await userInstance.delete(`/api/reservations/${id}`);
+
       setReservations((prev) =>
         prev.map((res) =>
           res.id === id ? { ...res, reservation_status: 'canceled' } : res,
         ),
       );
+
+      // (선택사항) 성공 알림이 필요하다면
+      showAlert('예약이 취소되었습니다.');
     } catch (err) {
       console.error('예약 취소 실패:', err);
+      // 에러 알림도 커스텀으로 통일
+      showAlert('예약 취소 중 오류가 발생했습니다.', 'error');
     }
   };
 
@@ -137,10 +148,10 @@ export default function TabMyView() {
                 type='reservation'
               />
             ))
+          ) : !isLoading ? (
+            <p className={styles.emptyText}>예약한 전시가 없습니다.</p>
           ) : (
-            !isLoading ? (
-              <p className={styles.emptyText}>예약한 전시가 없습니다.</p>
-            ) : ( <LoadingSpinner />)
+            <LoadingSpinner />
           )}
         </div>
       </section>

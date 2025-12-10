@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { userInstance } from '../../../apis/instance.js';
+import { useAlert } from '../../../store/AlertProvider.jsx';
 
 export const useEditData = (type, id, isCreateMode, config) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     const initData = async () => {
@@ -56,7 +58,7 @@ export const useEditData = (type, id, isCreateMode, config) => {
         setData(initialData);
       } catch (error) {
         console.error('데이터 초기화 실패:', error);
-        alert('데이터를 불러오지 못했습니다.');
+        showAlert('데이터를 불러오지 못했습니다.');
         navigate(`/console/${type}`);
       } finally {
         setIsLoading(false);

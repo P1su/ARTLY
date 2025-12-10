@@ -1,30 +1,30 @@
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 100px 50px 120px;
+  padding: 80px 50px 100px;
   background: #fff;
 }
 
 .title {
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 70px;
+  margin-bottom: 60px;
 }
 
 /* ===== 폼 영역 ===== */
 .formArea {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 32px;
   width: 100%;
 }
 
 /* ✅ 라벨 강조 */
 .label {
-  font-size: 1.8rem; /* 1.5 → 1.8 */
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #111827;
 }
 
@@ -32,9 +32,9 @@
 .textarea {
   width: 100%;
   border: 2px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 22px 26px;
-  font-size: 1.4rem;
+  border-radius: 12px;
+  padding: 18px 22px;
+  font-size: 1.6rem;
   box-sizing: border-box;
   background: #fff;
 }
@@ -47,23 +47,23 @@
 }
 
 .textarea {
-  min-height: 280px;
+  min-height: 200px;
   resize: vertical;
 }
 
 .tagContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
 .tagButton {
   background: #eff6ff;
   border: none;
   color: #1d4ed8;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   border-radius: 9999px;
-  padding: 10px 20px;
+  padding: 10px 18px;
   cursor: pointer;
   transition: background-color 0.15s;
 }
@@ -77,12 +77,12 @@
   background: #2563eb;
   color: white;
   border: none;
-  border-radius: 14px;
-  padding: 22px 0;
+  border-radius: 12px;
+  padding: 18px 0;
   font-weight: 700;
   font-size: 1.6rem;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 16px;
   transition: background 0.15s ease;
 }
 
@@ -97,33 +97,79 @@
 
 /* ===== 결과 영역 ===== */
 .resultArea {
-  margin-top: 80px;
+  margin-top: 60px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 24px;
 }
 
 .resultCard {
-  padding: 30px 34px;
+  padding: 24px 28px;
   border: 2px solid #e5e7eb;
-  border-radius: 16px;
+  border-radius: 14px;
   background: #fafafa;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;
+}
+
+.textContent {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
   white-space: pre-line;
-  line-height: 2;
-  font-size: 1.5rem;
+  line-height: 1.9;
+  font-size: 1.6rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.textContent p {
+  margin: 0;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .cardHeader h3 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: #374151;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.copyButton,
+.captureButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.copyButton:hover {
+  background: #2563eb;
+}
+
+.captureButton {
+  background: #8b5cf6;
+}
+
+.captureButton:hover {
+  background: #7c3aed;
 }
 
 .refineButton {
@@ -131,8 +177,8 @@
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 1rem;
+  padding: 8px 14px;
+  font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -142,71 +188,152 @@
   background: #059669;
 }
 
-/* ✅ 점선 placeholder 복원 */
+/* ✅ 점선 placeholder */
 .placeholder {
   border: 3px dashed #cbd5e1;
-  border-radius: 16px;
-  min-height: 360px;
+  border-radius: 14px;
+  min-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #9ca3af;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-align: center;
   background-color: #ffffff;
 }
 
-/* ===== 반응형 (768px 이하) ===== */
-@media (max-width: 700px) {
+/* ===== 태블릿 (1000px 이하) ===== */
+@media (max-width: 1000px) {
   .page {
-    max-width: 100%;
-    padding: 60px 24px 80px;
+    padding: 60px 32px 80px;
   }
 
   .title {
-    font-size: 2.2rem;
-    margin-bottom: 40px;
+    font-size: 2.4rem;
+    margin-bottom: 48px;
+  }
+
+  .formArea {
+    gap: 28px;
   }
 
   .label {
-    font-size: 1.4rem; /* 모바일에서도 충분히 크도록 */
-    margin-bottom: 10px;
+    font-size: 1.5rem;
   }
 
   .input,
   .textarea {
-    font-size: 1.1rem;
-    padding: 18px 20px;
+    font-size: 1.5rem;
+    padding: 16px 18px;
+  }
+
+  .textarea {
+    min-height: 180px;
+  }
+
+  .tagButton {
+    font-size: 1.3rem;
+    padding: 8px 14px;
+  }
+
+  .submitButton {
+    font-size: 1.5rem;
+    padding: 16px 0;
+  }
+
+  .resultArea {
+    margin-top: 48px;
+    gap: 20px;
+  }
+
+  .resultCard {
+    padding: 20px 22px;
+  }
+
+  .textContent {
+    font-size: 1.5rem;
+    padding: 16px;
+  }
+
+  .cardHeader h3 {
+    font-size: 1.4rem;
+  }
+
+  .copyButton,
+  .captureButton,
+  .refineButton {
+    font-size: 1.2rem;
+    padding: 7px 12px;
+  }
+
+  .placeholder {
+    min-height: 240px;
+    font-size: 1.4rem;
+  }
+}
+
+/* ===== 모바일 (700px 이하) ===== */
+@media (max-width: 700px) {
+  .page {
+    padding: 40px 16px 60px;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 32px;
+  }
+
+  .formArea {
+    gap: 20px;
+  }
+
+  .label {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .input,
+  .textarea {
+    font-size: 1.4rem;
+    padding: 14px 16px;
     border-radius: 10px;
   }
 
   .textarea {
-    min-height: 220px;
+    min-height: 150px;
   }
 
   .tagContainer {
-    gap: 10px;
+    gap: 8px;
   }
 
   .tagButton {
-    font-size: 1rem;
-    padding: 8px 16px;
+    font-size: 1.2rem;
+    padding: 8px 12px;
   }
 
   .submitButton {
     width: 100%;
-    font-size: 1.3rem;
-    padding: 20px 0;
+    font-size: 1.4rem;
+    padding: 14px 0;
+    border-radius: 10px;
   }
 
-  .placeholder {
-    min-height: 260px;
-    font-size: 1.1rem;
+  .resultArea {
+    margin-top: 36px;
+    gap: 16px;
   }
 
   .resultCard {
-    font-size: 1.2rem;
-    padding: 22px 24px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .textContent {
+    font-size: 1.4rem;
+    padding: 14px;
+    line-height: 1.8;
+    border-radius: 8px;
   }
 
   .cardHeader {
@@ -215,9 +342,26 @@
     align-items: flex-start;
   }
 
+  .cardHeader h3 {
+    font-size: 1.3rem;
+  }
+
+  .buttonGroup {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .copyButton,
+  .captureButton,
   .refineButton {
-    align-self: flex-end;
-    font-size: 0.9rem;
-    padding: 6px 12px;
+    font-size: 1.1rem;
+    padding: 6px 10px;
+  }
+
+  .placeholder {
+    min-height: 200px;
+    font-size: 1.3rem;
+    padding: 20px;
   }
 }

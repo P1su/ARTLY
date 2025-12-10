@@ -7,13 +7,17 @@ import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 import { FaChevronRight } from 'react-icons/fa';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+
 
 export default function ArtworkDetail({
   showUserActions = true,
   id: propId,
   actionButtons,
 }) {
+  const { showAlert } = useAlert();
+
   const STATUS_CONFIG = {
     exhibited: { label: '진행중', className: styles.exhibited },
     scheduled: { label: '예정', className: styles.scheduled },
@@ -23,7 +27,6 @@ export default function ArtworkDetail({
   const { artworkId } = useParams();
   const id = propId || artworkId;
   const navigate = useNavigate();
-  const { addToast } = useToastContext();
 
   const { pathname } = useLocation();
   const isConsole = pathname.includes('console');
@@ -66,11 +69,7 @@ export default function ArtworkDetail({
       }
     } catch (error) {
       console.error('관심 처리 실패:', error);
-      addToast({
-        title: '오류',
-        message: '좋아요 처리에 실패했습니다.',
-        type: 'error',
-      });
+      showAlert('좋아요 처리에 실패했습니다.', 'error');
     }
   };
 
@@ -88,7 +87,7 @@ export default function ArtworkDetail({
     } else {
       navigator.clipboard
         .writeText(url)
-        .then(() => alert('링크가 복사되었습니다.'));
+        .then(() => showAlert('링크가 복사되었습니다.'));
     }
   };
 
@@ -112,6 +111,18 @@ export default function ArtworkDetail({
 
   const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
+  const STATUS_PRIORITY = {
+    exhibited: 1, // 진행중 (가장 위)
+    scheduled: 2, // 예정
+    ended: 3, // 종료 (가장 아래)
+  };
+
+  const sortedExhibitions = [...exhibitions].sort((a, b) => {
+    const priorityA = STATUS_PRIORITY[a.exhibition_status] || 99; // 정의되지 않은 상태는 맨 뒤로
+    const priorityB = STATUS_PRIORITY[b.exhibition_status] || 99;
+
+    return priorityA - priorityB;
+  });
   const finalArtistName =
     artist?.artist_name || artist_name || 'Unknown Artist';
   const imageUrl =
@@ -275,11 +286,11 @@ export default function ArtworkDetail({
         {actionButtons?.info}
       </div>
 
-      {exhibitions && exhibitions.length > 0 && (
+      {sortedExhibitions && sortedExhibitions.length > 0 && (
         <div className={styles.exhibitionSection}>
           <span className={styles.sectionTitle}>전시 정보</span>
           <div className={styles.exhibitionList}>
-            {exhibitions.map((exh) => {
+            {sortedExhibitions.map((exh) => {
               const statusKey = exh.exhibition_status || 'ended';
               const statusInfo =
                 STATUS_CONFIG[statusKey] || STATUS_CONFIG.ended;

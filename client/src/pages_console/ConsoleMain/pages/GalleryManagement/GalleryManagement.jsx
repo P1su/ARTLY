@@ -8,16 +8,17 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
+import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function GalleryManagement({
   galleryList,
   onDelete,
   loadGalleries,
   isLoading,
-
   isSearching,
   error,
 }) {
+  const { showConfirm } = useConfirm();
   const navigate = useNavigate();
 
   // 디바운스 검색 hook 사용
@@ -31,46 +32,51 @@ export default function GalleryManagement({
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
 
-  const handleDelete = (id) => {
-    if (window.confirm('정말로 이 갤러리를 삭제하시겠습니까?')) {
-      onDelete(id, 'gallery');
+  const handleDelete = async (id) => {
+    const isConfirmed = await showConfirm(
+      '정말로 이 갤러리를 삭제하시겠습니까?',
+      true,
+    );
+
+    if (isConfirmed) {
+      await onDelete(id, 'gallery');
+      navigate('/console/main', {
+        state: { activeTab: '갤러리관리' },
+        replace: true,
+      });
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className={styles.contentContainer}>
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.contentContainer}>
-        <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
-      </div>
-    );
-  }
-
-  if (filteredGalleryList.length > 0) {
-    return (
-      <div className={styles.contentContainer}>
+  return (
+    <div className={styles.contentContainer}>
+      <div className={styles.searchContainer}>
         <LookUp
           value={searchValue}
           onChange={handleSearchChange}
           placeholder='갤러리 검색'
           isInput
         />
+      </div>
 
-        <div className={styles.countAndButtonContainer}>
-          <CountList count={filteredGalleryList.length} />
-          <RegisterButton
-            buttonText='+갤러리 등록'
-            onButtonClick={() => navigate(`/console/galleries/edit/new`)}
-          />
+      <div className={styles.countAndButtonContainer}>
+        <CountList count={filteredGalleryList.length} />
+        <RegisterButton
+          buttonText='+갤러리 등록'
+          onButtonClick={() => navigate(`/console/galleries/edit/new`)}
+        />
+      </div>
+
+      {isLoading ? (
+        <div className={styles.contentContainer}>
+          <LoadingSpinner />
         </div>
-
+      ) : error ? (
+        <div className={styles.contentContainer}>
+          <div className={styles.errorMessage}>
+            오류가 발생했습니다: {error}
+          </div>
+        </div>
+      ) : filteredGalleryList.length > 0 ? (
         <section className={styles.contentContainer}>
           {filteredGalleryList.map((gallery) => (
             <div
@@ -112,35 +118,14 @@ export default function GalleryManagement({
             </div>
           ))}
         </section>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className={styles.searchContainer}>
-        <LookUp
-          value={searchValue}
-          onChange={handleSearchChange}
-          placeholder='갤러리 검색'
-          isInput
-        />
-      </div>
-
-      <div className={styles.countAndButtonContainer}>
-        <CountList count={0} />
-        <RegisterButton
-          buttonText='+갤러리 등록'
-          onButtonClick={() => alert('갤러리 등록')}
-        />
-      </div>
-
-      <section className={styles.emptyStateContainer}>
-        <EmptyState
-          message='등록된 갤러리가 없어요.'
-          buttonText='+갤러리 등록'
-        />
-      </section>
-    </>
+      ) : (
+        <section className={styles.emptyStateContainer}>
+          <EmptyState
+            message='등록된 갤러리가 없어요.'
+            buttonText='+갤러리 등록'
+          />
+        </section>
+      )}
+    </div>
   );
 }

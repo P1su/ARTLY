@@ -27,12 +27,19 @@ const EditProfile = () => {
     return <div>데이터 불러오는 중</div>;
   }
 
-  const handleUpdateUserInfo = (updatedData) => setUser({ ...user, ...updatedData });
+  const handleUpdateUserInfo = (updatedData) =>
+    setUser({ ...user, ...updatedData });
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleEditName = () => { setEditingName(true); setNewName(user.user_name); };
-  const handleEditEmail = () => { setEditingEmail(true); setNewEmail(user.user_email); };
+  const handleEditName = () => {
+    setEditingName(true);
+    setNewName(user.user_name);
+  };
+  const handleEditEmail = () => {
+    setEditingEmail(true);
+    setNewEmail(user.user_email);
+  };
   const handleChangeName = (e) => setNewName(e.target.value);
   const handleChangeEmail = (e) => setNewEmail(e.target.value);
 
@@ -41,7 +48,9 @@ const EditProfile = () => {
       await userInstance.put('/api/users/me', { user_name: newName });
       setUser({ ...user, user_name: newName });
       setEditingName(false);
-    } catch (error) { console.error('닉네임 변경 실패', error); }
+    } catch (error) {
+      console.error('닉네임 변경 실패', error);
+    }
   };
 
   const handleSaveEmail = async () => {
@@ -49,7 +58,9 @@ const EditProfile = () => {
       await userInstance.put('/api/users/me', { user_email: newEmail });
       setUser({ ...user, user_email: newEmail });
       setEditingEmail(false);
-    } catch (error) { console.error('이메일 변경 실패', error); }
+    } catch (error) {
+      console.error('이메일 변경 실패', error);
+    }
   };
 
   const handleLogoutClick = () => {
@@ -57,14 +68,14 @@ const EditProfile = () => {
   };
 
   const handleLogoutConfirm = () => {
-    Cookies.remove('ACCESS_TOKEN'); 
-    setIsLogoutModalOpen(false);    
-    setUser(null);                  
-    navigate('/');                  
+    Cookies.remove('ACCESS_TOKEN');
+    setIsLogoutModalOpen(false);
+    setUser(null);
+    navigate('/');
   };
 
   const handleWithdrawSuccess = () => {
-    Cookies.remove('ACCESS_TOKEN'); 
+    Cookies.remove('ACCESS_TOKEN');
     setUser(null);
     navigate('/');
   };
@@ -75,6 +86,14 @@ const EditProfile = () => {
 
       <div className={styles.profileCard}>
         <div className={styles.profileInfoDetails}>
+          <div className={styles.infoRow}>
+            <span className={styles.infoLabel}>성명</span>
+
+            <span className={styles.infoValue}>
+              {user.user_name || '닉네임'}
+            </span>
+          </div>
+
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>성명</span>
 
@@ -142,10 +161,10 @@ const EditProfile = () => {
 
       <div className={styles.profileDetailsCard}>
         <h3 className={styles.sectionTitle}>기타</h3>
-        <div 
-            className={styles.detailsRow} 
-            onClick={handleLogoutClick} 
-            style={{ cursor: 'pointer' }}
+        <div
+          className={styles.detailsRow}
+          onClick={handleLogoutClick}
+          style={{ cursor: 'pointer' }}
         >
           <span className={styles.detailsLabel}>로그아웃</span>
         </div>
@@ -154,7 +173,11 @@ const EditProfile = () => {
           <span className={styles.detailsValue}>1.10.24</span>
         </div>
 
-        <div className={styles.detailsRow} onClick={() => setIsWithdrawModalOpen(true)} style={{cursor: 'pointer'}}>
+        <div
+          className={styles.detailsRow}
+          onClick={() => setIsWithdrawModalOpen(true)}
+          style={{ cursor: 'pointer' }}
+        >
           <span className={styles.detailsLabel}>회원 탈퇴</span>
         </div>
       </div>
@@ -169,14 +192,11 @@ const EditProfile = () => {
         userInfo={user}
         onUpdateUserInfo={handleUpdateUserInfo}
       />
-      <LogoutModal 
-        isOpen={isLogoutModalOpen} 
-        onClose={handleLogoutConfirm} 
-      />
-      <WithdrawModal 
+      <LogoutModal isOpen={isLogoutModalOpen} onClose={handleLogoutConfirm} />
+      <WithdrawModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
-        userInfo={user} 
+        userInfo={user}
         onWithdrawSuccess={handleWithdrawSuccess}
       />
     </div>

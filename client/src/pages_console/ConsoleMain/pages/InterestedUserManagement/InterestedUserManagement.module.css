@@ -2,38 +2,13 @@
 .contentContainer {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  /* Increased gap */
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .contentContainer {
-    gap: 1.5rem;
-  }
-}
-
-.emptyStateContainer {
-  display: block;
-  width: 100%;
-  padding: 2rem;
-  border: none;
-  border-radius: 1rem;
-  background-color: white;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .emptyStateContainer {
-    padding: 3rem;
-  }
+  gap: 1.25rem;
 }
 
 /* 5. 레이아웃 */
 .searchContainer {
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .countAndButtonContainer {
@@ -41,11 +16,69 @@
   padding: 0 0.5rem;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
+/* 로딩 및 에러 상태 */
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.errorContainer {
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.errorMessage {
+  text-align: center;
+  padding: 1.5rem;
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+/* 태블릿 (700px 이상 1000px 이하) */
+@media (min-width: 700px) {
+  .contentContainer {
+    gap: 1.5rem;
+  }
+
+  .searchContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .countAndButtonContainer {
+    padding: 0 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .loadingContainer {
+    padding: 4rem 2rem;
+  }
+
+  .errorContainer {
+    padding: 2rem;
+  }
+
+  .errorMessage {
+    padding: 2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* PC (1000px 이상) */
+@media (min-width: 1000px) {
+  .contentContainer {
+    gap: 1.5rem;
+  }
+
   .searchContainer {
     margin-bottom: 2rem;
   }
@@ -54,10 +87,12 @@
     padding: 0 1rem;
     margin-bottom: 1.5rem;
   }
-}
 
-.errorMessage {
-  text-align: center;
-  padding: 2rem;
-  color: #ef4444;
+  .loadingContainer {
+    padding: 5rem 2rem;
+  }
+
+  .errorMessage {
+    font-size: 0.95rem;
+  }
 }

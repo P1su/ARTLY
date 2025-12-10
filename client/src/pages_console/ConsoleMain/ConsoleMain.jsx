@@ -16,7 +16,8 @@ export default function ConsoleMain({
   const location = useLocation();
 
   const [activeTab, setActiveTab] = useState(defaultTab);
-  const [selectedGallery, setSelectedGallery] = useState(defaultGallery);
+  const [selectedGallery, setSelectedGallery] = useState(null);
+  const [selectedExhibition, setSelectedExhibition] = useState(null);
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -26,7 +27,12 @@ export default function ConsoleMain({
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    setSelectedGallery('갤러리 전체'); // 탭 변경 시 갤러리 선택 초기화
+    // 탭에 따라 적절한 초기값 설정
+    if (tab === '작품관리') {
+      setSelectedExhibition(null);
+    } else {
+      setSelectedGallery(null);
+    }
   };
 
   // 데이터
@@ -81,18 +87,27 @@ export default function ConsoleMain({
         )}
         {activeTab === '작품관리' && (
           <ArtworkManagement
+            key={activeTab}
             artworkList={artworkList}
-            selectedGallery={selectedGallery}
-            onGalleryChange={setSelectedGallery}
+            selectedExhibition={selectedExhibition}
+            onExhibitionChange={setSelectedExhibition}
             onDelete={handleDelete}
             loadArtworks={loadArtworks}
+            loadExhibitions={loadExhibitions}
             isLoading={isLoading}
             error={error}
             galleryList={galleryList}
+            exhibitionList={exhibitionList}
           />
         )}
 
-        {activeTab === '관심유저관리' && <InterestedUserManagement />}
+        {activeTab === '관심유저관리' && (
+          <InterestedUserManagement
+            galleryList={galleryList}
+            exhibitionList={exhibitionList}
+            artworkList={artworkList}
+          />
+        )}
       </div>
     </div>
   );

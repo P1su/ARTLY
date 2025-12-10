@@ -6,6 +6,7 @@ import DetailTabs from '../../../../components/DetailTabs/DetailTabs.jsx';
 import ExhibitionsCards from '../../Gallery/GalleryDetail/components/ExhibitionsCards/ExhibitionsCards.jsx';
 import { FaHome, FaStar, FaShare } from 'react-icons/fa';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ArtistDetail() {
   const { user } = useUser();
@@ -14,6 +15,7 @@ export default function ArtistDetail() {
   const [artistData, setArtistData] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
 
+  const { showAlert } = useAlert();
   const getArtistDetail = async () => {
     if (!artistId) return;
     try {
@@ -102,10 +104,10 @@ export default function ArtistDetail() {
       textarea.select();
       try {
         document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
+        showAlert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
+        showAlert('링크 복사에 실패했습니다.', 'error');
       } finally {
         document.body.removeChild(textarea);
       }

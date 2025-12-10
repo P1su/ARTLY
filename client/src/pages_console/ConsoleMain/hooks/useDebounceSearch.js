@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function useDebounceSearch({
   onSearch,
@@ -11,47 +11,47 @@ export default function useDebounceSearch({
   const [searchValue, setSearchValue] = useState('');
   const searchTimeoutRef = useRef(null);
 
-  // useCallback으로 감싸서 렌더링 최적화
-  const handleSearchChange = useCallback(
-    (query) => {
-      setSearchValue(query);
+  // 검색어 변경 핸들러 (디바운스 적용)
+  const handleSearchChange = (query) => {
+    setSearchValue(query);
 
-      if (onSearchValueChange) {
-        onSearchValueChange(query);
+    // 부모 컴포넌트에 검색어 변경 알림 (선택적)
+    if (onSearchValueChange) {
+      onSearchValueChange(query);
+    }
+
+    // 이전 타이머 취소
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // 입력값 없으면 빈 검색 실행 또는 전체 목록 로드
+    if (!query.trim()) {
+      if (onEmptySearch) {
+        onEmptySearch();
       }
+      return;
+    }
 
-      // 이전 타이머 취소
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
+    // 최소 글자 수 미만이면 검색 안 함
+    if (query.trim().length < minLength) {
+      return;
+    }
 
-      // 1. 입력값이 없을 때
-      if (!query.trim()) {
-        if (onEmptySearch) {
-          onEmptySearch();
-        }
-        return;
-      }
+    // 디바운스: delay ms 후에 검색 실행
+    searchTimeoutRef.current = setTimeout(() => {
+      onSearch(query);
+    }, delay);
+  };
 
-      // 2. 최소 글자 수 미만일 때 (검색 안 함)
-      if (query.trim().length < minLength) {
-        return;
-      }
-
-      // 3. 디바운스 검색 실행
-      searchTimeoutRef.current = setTimeout(() => {
-        onSearch(query);
-      }, delay);
-    },
-    [onSearch, onEmptySearch, onSearchValueChange, minLength, delay],
-  ); // 의존성 배열 추가
-
-  const clearSearch = useCallback(() => {
+  const clearSearch = () => {
     handleSearchChange('');
+
+    // 추가 로직이 있으면 실행
     if (onClearSearch) {
       onClearSearch();
     }
-  }, [handleSearchChange, onClearSearch]);
+  };
 
   useEffect(() => {
     return () => {
