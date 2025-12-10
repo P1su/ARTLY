@@ -9,12 +9,14 @@ import useUserSelection from './hooks/useUserSelection';
 import useInterestedUser from './hooks/useInterestedUser';
 import styles from './InterestedUserManagement.module.css';
 import { userInstance } from '../../../../apis/instance';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function InterestedUserManagement({
   galleryList = [],
   exhibitionList = [],
   artworkList = [],
 }) {
+  const { showAlert } = useAlert();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sendError, setSendError] = useState(null);
@@ -54,14 +56,14 @@ export default function InterestedUserManagement({
       const userIds = selectedUserList
         .map((selectedId) => {
           const found = interestedUserList.find(
-            (user) => String(user.id) === String(selectedId)
+            (user) => String(user.id) === String(selectedId),
           );
           return found?.userId ?? null;
         })
         .filter((id) => id != null);
 
       if (userIds.length === 0) {
-        alert('선택된 사용자들의 ID를 찾을 수 없습니다.');
+        showAlert('선택된 사용자들의 ID를 찾을 수 없습니다.');
         return;
       }
 
@@ -77,10 +79,10 @@ export default function InterestedUserManagement({
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
-      alert(`${userIds.length}명에게 앱 알림이 성공적으로 발송되었습니다.`);
+      showAlert(`${userIds.length}명에게 앱 알림이 성공적으로 발송되었습니다.`);
 
       setIsAlarmModalOpen(false);
       clearSelection();
@@ -91,7 +93,7 @@ export default function InterestedUserManagement({
         err.message ||
         '알 수 없는 오류가 발생했습니다.';
       setSendError(msg);
-      alert(`알림 발송에 실패했습니다.\n${msg}`);
+      showAlert(`알림 발송에 실패했습니다.\n${msg}`, 'error');
     } finally {
       setIsSending(false);
     }
@@ -108,14 +110,14 @@ export default function InterestedUserManagement({
         <LookUp
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="사용자명, 갤러리명, 전시회명, 작품명 검색"
-          isInput={true}
+          placeholder='사용자명, 갤러리명, 전시회명, 작품명 검색'
+          isInput
         />
 
         <div className={styles.countAndButtonContainer}>
           <CountList count={interestedUserList.length} />
           <RegisterButton
-            buttonText="알림 보내기"
+            buttonText='알림 보내기'
             onButtonClick={() => setIsAlarmModalOpen(true)}
             disabled={selectedUserList.length === 0 || isSending}
           />

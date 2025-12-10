@@ -4,6 +4,7 @@ import styles from './DocentSection.module.css';
 import DocentAudioPlayer from './DocentAudioPlayer/DocentAudioPlayer';
 import BtnOption from './BtnOption/BtnOption';
 import useModal from '../../../../hooks/useModal';
+import { useAlert } from '../../../../store/AlertProvider';
 
 export default function DocentSection({ script }) {
   const [playbackRate, setPlaybackRate] = useState(1.0);
@@ -14,7 +15,7 @@ export default function DocentSection({ script }) {
   };*/
 
   const speedOptions = [0.5, 1.0, 1.25, 1.5, 2.0];
-
+  const { showAlert } = useAlert();
   console.log(isOpen);
   return (
     <section className={styles.sectionContainer}>
@@ -47,7 +48,7 @@ export default function DocentSection({ script }) {
           <button
             className={styles.optionButton}
             onClick={() => {
-              alert('음성 언어 변경 기능은 현재 준비중입니다.');
+              showAlert('음성 언어 변경 기능은 현재 준비중입니다.');
             }}
           >
             한국어

@@ -16,6 +16,7 @@ import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/Ar
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 // import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
 export default function GalleryDetail({
@@ -35,6 +36,8 @@ export default function GalleryDetail({
   const [showLikePopup, setShowLikePopup] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
   const [showMapModal, setShowMapModal] = useState(false);
+
+  const { showAlert } = useAlert();
 
   const fetchGalleryDetail = async () => {
     if (!id) return;
@@ -111,10 +114,10 @@ export default function GalleryDetail({
 
       try {
         document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
+        showAlert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
+        showAlert('링크 복사에 실패했습니다.', 'error');
       } finally {
         document.body.removeChild(textarea);
       }
@@ -208,7 +211,7 @@ export default function GalleryDetail({
 
   const detailTabs = [
     { key: 'info', label: '정보' },
-    { key: 'artworks', label: `작품(${artworks.length || 0})` },
+    // { key: 'artworks', label: `작품(${artworks.length || 0})` },
     { key: 'exhibitions', label: `전시(${exhibitions.length || 0})` },
   ];
 

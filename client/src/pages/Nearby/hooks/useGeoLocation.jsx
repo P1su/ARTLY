@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useAlert } from '../../../store/AlertProvider';
 
 const useGeoLocation = () => {
   const [coords, setCoords] = useState({
     lat: 37.3595704,
     lng: 127.105399,
   });
+  const { showAlert } = useAlert();
 
   const onSuccess = (position) => {
     const lat = position.coords.latitude;
@@ -14,12 +16,12 @@ const useGeoLocation = () => {
   };
 
   const onError = (error) => {
-    alert(`에러코드(${error.code}): ${error.message}`);
+    showAlert(`에러코드(${error.code}): ${error.message}`);
   };
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      alert('위치 정보를 파악할 수 없습니다!');
+      showAlert('위치 정보를 파악할 수 없습니다!');
     } else {
       navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }
