@@ -8,6 +8,8 @@ import { useToastContext } from '../../../../store/ToastProvider.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
 import { FaChevronRight } from 'react-icons/fa';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+
 
 export default function ArtworkDetail({
   showUserActions = true,
@@ -89,7 +91,7 @@ export default function ArtworkDetail({
     }
   };
 
-  if (!artworkData) return <div>로딩 중...</div>;
+  if (!artworkData) return <LoadingSpinner />;
 
   const {
     art_title,
@@ -99,7 +101,8 @@ export default function ArtworkDetail({
     art_material,
     art_size,
     art_docent,
-    art_docent_video,
+    docent_audio_path,
+    docent_video_path,
     gallery_phone,
     artist = {},
     artist_name,
@@ -242,14 +245,35 @@ export default function ArtworkDetail({
               <span className={styles.docentLabel}>AI Docent</span>
               <p>{art_docent}</p>
 
-              {/* 도슨트 동영상 url이 있는 경우 재생기 표시*/}
-              {art_docent_video && (
+              {/* 콘솔일 때 && 도슨트 동영상 url이 없는 경우 오디오 재생기 표시 */}
+              {isConsole && !docent_video_path && (
+                <div className={styles.docentAudioWrapper}>
+                  {docent_audio_path ? (
+                    <audio
+                      className={styles.docentAudio}
+                      controls
+                      preload='metadata'
+                      src={docent_audio_path}
+                    >
+                      브라우저가 오디오 재생을 지원하지 않습니다.
+                    </audio>
+                  ) : (
+                    <p className={styles.docentPlaceholder}>
+                      아직 오디오가 생성되지 않았습니다.<br />
+                      '도슨트' 탭에서 도슨트 음성/동영상을 생성해보세요.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* 콘솔일 때 && 도슨트 동영상 url이 있는 경우 재생기 표시 */}
+              {isConsole && docent_video_path && (
                 <div className={styles.docentVideoWrapper}>
                   <video
                     className={styles.docentVideo}
                     controls
                     preload='metadata'
-                    src={art_docent_video}
+                    src={docent_video_path}
                   >
                     브라우저가 비디오 재생을 지원하지 않습니다.
                   </video>
