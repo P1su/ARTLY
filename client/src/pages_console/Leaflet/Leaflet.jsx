@@ -7,6 +7,7 @@ import useImageUpload from './hooks/useImageUpload';
 import { userInstance } from '../../apis/instance';
 import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 export default function Leaflet({ type }) {
   const { id } = useParams();
@@ -104,13 +105,6 @@ export default function Leaflet({ type }) {
   const handleDelete = async () => {
     if (!leafletId) return;
 
-    // [변경 전]
-    // if (!window.confirm('정말로 이 리플렛을 삭제하시겠습니까?')) {
-    //   return;
-    // }
-
-    // [변경 후]
-    // 비동기 확인 대기 (두 번째 인자 true = 빨간색 버튼)
     const isConfirmed = await showConfirm(
       '정말로 이 리플렛을 삭제하시겠습니까?',
       true,
@@ -196,17 +190,14 @@ export default function Leaflet({ type }) {
 
   return (
     <div className={styles.layout}>
+      <div className={styles.layoutTitle}>
+        리플렛 제작
+        <button className={styles.backButton}>
+          <FaChevronLeft />
+        </button>
+      </div>
       <div className={styles.mainContentContainer}>
-        <div className={styles.panelHeaderBox}>
-          <p className={styles.panelHeaderParagraph}>
-            리플렛/도록을 만들 이미지를 등록해주세요.
-            <br />
-            전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
-          </p>
-        </div>
-
-        <div className={styles.titleInputBox}>
-          <label className={styles.titleLabel}>리플렛 제목</label>
+        <div className={styles.card}>
           <input
             type='text'
             value={title}
@@ -215,50 +206,51 @@ export default function Leaflet({ type }) {
             className={styles.titleInput}
             disabled={isLoading}
           />
+          <p className={styles.panelHeaderParagraph}>
+            리플렛/도록을 만들 이미지를 등록해주세요.
+            <br />
+            전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
+          </p>
+          <Cover
+            coverImage={coverImage}
+            setCoverImage={setCoverImage}
+            openFileDialogForCover={openFileDialogForCover}
+            coverDropzone={coverDropzone}
+          />
+
+          <Inner
+            imageList={imageList}
+            setImageList={setImageList}
+            handleImageChange={handleImageChange}
+            handleRemoveImage={handleRemoveImage}
+            openFileDialogForInner={openFileDialogForInner}
+            innerDropzone={innerDropzone}
+          />
         </div>
 
-        <Cover
-          coverImage={coverImage}
-          setCoverImage={setCoverImage}
-          openFileDialogForCover={openFileDialogForCover}
-          coverDropzone={coverDropzone}
-        />
+        <button
+          className={styles.previewButton}
+          onClick={handlePreview}
+          disabled={isEmpty}
+        >
+          미리 보기
+        </button>
 
-        <Inner
-          imageList={imageList}
-          setImageList={setImageList}
-          handleImageChange={handleImageChange}
-          handleRemoveImage={handleRemoveImage}
-          openFileDialogForInner={openFileDialogForInner}
-          innerDropzone={innerDropzone}
-        />
-
-        <div className={styles.combinedButtonBox}>
+        <div className={styles.buttonField}>
           <button
-            className={styles.leftButton}
-            onClick={handlePreview}
-            disabled={isEmpty}
+            className={styles.createButton}
+            onClick={handleUpload}
+            disabled={isEmpty || isLoading}
           >
-            리플렛/도록 보기
+            {!leafletId ? '생성하기' : '수정하기'}
           </button>
-
-          {!leafletId ? (
-            <button
-              className={styles.rightButton}
-              onClick={handleUpload}
-              disabled={isEmpty || isLoading}
-            >
-              {isLoading ? '처리 중...' : '생성'}
-            </button>
-          ) : (
-            <button
-              className={styles.deleteButton}
-              onClick={handleDelete}
-              disabled={isLoading}
-            >
-              삭제
-            </button>
-          )}
+          <button
+            className={styles.deleteButton}
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
+            삭제하기
+          </button>
         </div>
       </div>
     </div>
