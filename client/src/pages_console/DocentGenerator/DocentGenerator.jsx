@@ -12,6 +12,7 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
+  const [artistFile, setArtistFile] = useState(null);
 
   const { showAlert } = useAlert();
 
@@ -101,13 +102,21 @@ export default function DocentGenerator({ autoGenerate = false }) {
         },
       });
 
-      /* TODO: TTS 및 동영상 생성 API 연결 */
+      const df = new FormData();
+      df.append('docent_script', docentText);
+      df.append('art_name', productName);
+      if (artistFile) 
+        df.append('docent_image', artistFile);
+
+      // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
+      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
 
       showAlert('도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
       navigate(`/console/artworks/${id}`);
     } catch (e) {
       showAlert('도슨트 저장 중 오류가 발생했습니다.');
+      console.error(e);
     } finally {
       setSaving(false);
     }
@@ -188,8 +197,23 @@ export default function DocentGenerator({ autoGenerate = false }) {
                 <li>
                   생성된 동영상은 작품 관리 페이지에서 확인하실 수 있습니다.
                 </li>
-                <li>동영상 생성 시 일정량의 비용이 청구됩니다.</li>
+                <li>음성 도슨트를 재생성하더라도 동영상 도슨트까지 자동 갱신되지는 않습니다.</li>
+                <li>========================================</li>
+                <li>인물 이미지를 첨부하여 생성할 수 있습니다. 인물 본인의 동의를 얻은 후 이용하시기 바랍니다.</li>
               </ul>
+
+              <div className={styles.fileInputArea}>
+                <label className={styles.fileInputLabel}>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    onChange={(e) => setArtistFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                    className={styles.fileInput}
+                  />
+                  <span className={styles.checkboxText}></span>
+                </label>
+                {artistFile && <div className={styles.fileName}>{artistFile.name}</div>}
+              </div>
             </div>
           </div>
 
