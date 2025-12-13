@@ -174,6 +174,30 @@
   margin: 0;
 }
 
+.docentAudioWrapper {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.docentAudio {
+  width: 100%;
+  max-width: 720px;
+  outline: none;
+}
+
+.docentPlaceholder {
+  width: 100%;
+  max-width: 720px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #999;
+  font-size: 1.4rem;
+  background-color: #f0f0f0;
+  border-radius: 0.4rem;
+  margin: 0;
+}
+
 .docentVideoWrapper {
   margin-top: 12px;
   display: flex;
