@@ -10,7 +10,6 @@ import { FaChevronRight } from 'react-icons/fa';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
-
 export default function ArtworkDetail({
   showUserActions = true,
   id: propId,
@@ -254,13 +253,12 @@ export default function ArtworkDetail({
                       controls
                       preload='metadata'
                       src={docent_audio_path}
-                    >
-                      브라우저가 오디오 재생을 지원하지 않습니다.
-                    </audio>
+                    />
                   ) : (
                     <p className={styles.docentPlaceholder}>
-                      아직 오디오가 생성되지 않았습니다.<br />
-                      '도슨트' 탭에서 도슨트 음성/동영상을 생성해보세요.
+                      아직 오디오가 생성되지 않았습니다.
+                      <br />
+                      도슨트 탭에서 도슨트 음성/동영상을 생성해보세요.
                     </p>
                   )}
                 </div>
