@@ -191,6 +191,8 @@ export default function Leaflet({ type }) {
         },
       );
 
+      showAlert('리플렛이 성공적으로 수정되었습니다.');
+
       setLeafletId(res.data.id);
     } catch (error) {
       console.error(error);
@@ -203,7 +205,12 @@ export default function Leaflet({ type }) {
     <div className={styles.layout}>
       <div className={styles.layoutTitle}>
         리플렛 제작
-        <button className={styles.backButton}>
+        <button
+          className={styles.backButton}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <FaChevronLeft />
         </button>
       </div>
