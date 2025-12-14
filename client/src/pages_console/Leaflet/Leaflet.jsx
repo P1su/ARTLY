@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
-import useImageUpload from './hooks/useImageUpload';
+import useLeaflet from './hooks/useLeaflet';
 import { userInstance } from '../../apis/instance';
 import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
@@ -26,13 +26,9 @@ export default function Leaflet({ type }) {
     setImageList,
     coverImage,
     setCoverImage,
-    handleImageChange,
-    handleRemoveImage,
-    openFileDialogForCover,
-    openFileDialogForInner,
     coverDropzone,
     innerDropzone,
-  } = useImageUpload();
+  } = useLeaflet();
 
   // 기존 리플렛 데이터 조회
   useEffect(() => {
@@ -141,9 +137,10 @@ export default function Leaflet({ type }) {
       setIsLoading(true);
 
       // 수정 모드일 경우: 기존 리플렛 먼저 삭제
+      /*
       if (leafletId && existingLeaflet) {
         await userInstance.delete(`/api/leaflet/${leafletId}`);
-      }
+      }*/
 
       // 생성: POST 요청
       const formData = new FormData();
@@ -186,6 +183,8 @@ export default function Leaflet({ type }) {
     }
   };
 
+  const patchLeaflet = () => {};
+
   const isEmpty = !coverImage && imageList.length === 0;
 
   return (
@@ -214,16 +213,12 @@ export default function Leaflet({ type }) {
           <Cover
             coverImage={coverImage}
             setCoverImage={setCoverImage}
-            openFileDialogForCover={openFileDialogForCover}
             coverDropzone={coverDropzone}
           />
 
           <Inner
             imageList={imageList}
             setImageList={setImageList}
-            handleImageChange={handleImageChange}
-            handleRemoveImage={handleRemoveImage}
-            openFileDialogForInner={openFileDialogForInner}
             innerDropzone={innerDropzone}
           />
         </div>
