@@ -6,9 +6,6 @@ import { useAlert } from '../../store/AlertProvider';
 
 export default function DocentGenerator({ autoGenerate = false }) {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { showAlert } = useAlert();
-
   const [art, setArt] = useState(null);
   const [docentText, setDocentText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,30 +14,31 @@ export default function DocentGenerator({ autoGenerate = false }) {
   const [confirmChecked, setConfirmChecked] = useState(false);
   const [artistFile, setArtistFile] = useState(null);
 
+  const { showAlert } = useAlert();
+
+  const navigate = useNavigate();
   const productName = art?.art_title || '작품명';
   const artist = art?.artist_name || art?.artist?.artist_name || '작가명';
   const imageUrl =
     art?.art_image ||
     'https://images.unsplash.com/photo-1570393080660-de4e4a15a247?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTF8fEFydHxlbnwwfHwwfHx8MA%3D%3D';
 
-  const fetchArtDetail = async () => {
-    if (!id) return;
+  const fetchArtDetail = async (id) => {
     setLoading(true);
     setErrorMsg('');
-
     try {
-      const res = await userInstance.get(`/api/arts/${id}`);
-      const data = res.data?.data ?? res.data;
+      const response = await userInstance.get(`/api/arts/${id}`);
+      const payload = response.data?.data ?? response.data;
 
-      if (!data) {
+      if (!payload) {
         setErrorMsg('작품 정보를 찾을 수 없습니다.');
         setArt(null);
         setDocentText('');
         return;
       }
 
-      setArt(data);
-      setDocentText(data.art_docent || '');
+      setArt(payload);
+      setDocentText(payload?.art_docent || '');
     } catch (e) {
       setErrorMsg(
         e.response?.data?.message ||
@@ -54,38 +52,54 @@ export default function DocentGenerator({ autoGenerate = false }) {
   };
 
   useEffect(() => {
-    fetchArtDetail();
+    if (!id) return;
+    fetchArtDetail(id);
   }, [id]);
 
   const handleSave = async () => {
-    if (!id) {
-      showAlert('유효한 작품 ID가 필요합니다.');
-      return;
-    }
-
-    if (!docentText.trim()) {
-      showAlert('도슨트 내용을 입력해주세요.');
-      return;
-    }
-
-    if (!art) {
-      showAlert('작품 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
-
-    setSaving(true);
+    if (!id) return showAlert('유효한 작품 ID가 필요합니다.');
+    if (!docentText.trim()) return showAlert('도슨트 내용을 입력해주세요.');
+    if (!art)
+      return showAlert(
+        '작품 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.',
+      );
 
     try {
+      setSaving(true);
+
       const formData = new FormData();
+      formData.append('_method', 'PATCH');
+
+      // 업데이트할 필드들만 추가 (null이 아닌 값들만)
+      if (art.art_title) formData.append('art_title', art.art_title);
+      if (art.art_description)
+        formData.append('art_description', art.art_description);
+      if (art.artist_id) formData.append('artist_id', art.artist_id);
+      if (art.artist_name) formData.append('artist_name', art.artist_name);
+      if (art.art_material) formData.append('art_material', art.art_material);
+      if (art.art_size) formData.append('art_size', art.art_size);
+      if (art.art_year) formData.append('art_year', art.art_year);
+      if (art.art_price) formData.append('art_price', art.art_price);
+
+      // 도슨트는 항상 추가 (업데이트 대상)
       formData.append('art_docent', docentText);
-      formData.append('generate_video', confirmChecked);
 
-      if (artistFile) {
-        formData.append('artist_image', artistFile);
+      // 이미지 관련 필드들
+      if (art.art_image && typeof art.art_image === 'string') {
+        formData.append('art_image', art.art_image);
       }
+      if (art.art_images) formData.append('art_images', art.art_images);
+      if (art.art_image_mime)
+        formData.append('art_image_mime', art.art_image_mime);
+      if (art.art_image_name)
+        formData.append('art_image_name', art.art_image_name);
+      if (art.art_image_size)
+        formData.append('art_image_size', art.art_image_size);
 
-      await userInstance.put(`/api/arts/${id}/docent`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await userInstance.post(`/api/arts/${id}`, formData, {
+        headers: {
+          'Content-Type': undefined,
+        },
       });
 
       const df = new FormData();
@@ -98,6 +112,7 @@ export default function DocentGenerator({ autoGenerate = false }) {
       userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
 
       showAlert('도슨트가 저장되었습니다.');
+      await fetchArtDetail(id);
       navigate(`/console/artworks/${id}`);
     } catch (e) {
       showAlert('도슨트 저장 중 오류가 발생했습니다.');
@@ -108,15 +123,17 @@ export default function DocentGenerator({ autoGenerate = false }) {
   };
 
   const handleCancel = () => {
-    if (confirm('취소 시 변경 정보가 저장되지 않습니다. 취소하시겠습니까?')) {
+    const isConfirmed = confirm(
+      '취소 시 변경 정보가 저장되지 않습니다. 취소하시겠습니까?',
+    );
+    if (isConfirmed) {
       setDocentText(art?.art_docent || '');
       navigate(`/console/artworks/${id}`);
     }
   };
 
-  if (!id) {
+  if (!id)
     return <div className={styles.container}>유효한 작품 ID가 없습니다.</div>;
-  }
 
   return (
     <div className={styles.container}>
@@ -124,7 +141,13 @@ export default function DocentGenerator({ autoGenerate = false }) {
         <div className={styles.guide}>작품 정보를 불러오는 중...</div>
       ) : (
         <>
-          <img src={imageUrl} alt={productName} className={styles.image} />
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt={productName || '작품'}
+              className={styles.image}
+            />
+          )}
 
           <div className={styles.info}>
             <div className={styles.productName}>{productName}</div>
@@ -198,11 +221,10 @@ export default function DocentGenerator({ autoGenerate = false }) {
             <button
               className={styles.saveBtn}
               onClick={handleSave}
-              disabled={saving || loading || !!errorMsg}
+              disabled={saving || !!errorMsg || loading}
             >
               {saving ? '저장 중...' : '저장'}
             </button>
-
             <button
               className={styles.cancelBtn}
               onClick={handleCancel}
