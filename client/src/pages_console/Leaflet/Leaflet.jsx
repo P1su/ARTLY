@@ -28,6 +28,9 @@ export default function Leaflet({ type }) {
     setCoverImage,
     coverDropzone,
     innerDropzone,
+    openFileDialogForCover,
+    openFileDialogForInner,
+    handleRemoveImage,
   } = useLeaflet();
 
   // 기존 리플렛 데이터 조회
@@ -135,20 +138,10 @@ export default function Leaflet({ type }) {
 
     try {
       setIsLoading(true);
-
-      // 수정 모드일 경우: 기존 리플렛 먼저 삭제
-      /*
-      if (leafletId && existingLeaflet) {
-        await userInstance.delete(`/api/leaflet/${leafletId}`);
-      }*/
-
-      // 생성: POST 요청
       const formData = new FormData();
 
-      // 표지 먼저
       formData.append('image[]', coverImage.file);
 
-      // 내지들
       imageList.forEach((img) => {
         if (img.file) {
           formData.append('image[]', img.file);
@@ -156,8 +149,6 @@ export default function Leaflet({ type }) {
       });
 
       formData.append('title', title.trim());
-      // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
-      // categoryId: 해당 카테고리의 ID
       const categoryName =
         type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
       formData.append('category', categoryName);
@@ -183,7 +174,28 @@ export default function Leaflet({ type }) {
     }
   };
 
-  const patchLeaflet = () => {};
+  const patchLeaflet = async () => {
+    try {
+      const payload = {
+        title: title.trim(),
+        //image_urls: imageList.map((img) => img.url),
+      };
+
+      const res = await userInstance.patch(
+        `/api/leaflet/${leafletId}`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      setLeafletId(res.data.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const isEmpty = !coverImage && imageList.length === 0;
 
@@ -214,12 +226,15 @@ export default function Leaflet({ type }) {
             coverImage={coverImage}
             setCoverImage={setCoverImage}
             coverDropzone={coverDropzone}
+            openFileDialogForCover={openFileDialogForCover}
           />
 
           <Inner
             imageList={imageList}
             setImageList={setImageList}
             innerDropzone={innerDropzone}
+            handleRemoveImage={handleRemoveImage}
+            openFileDialogForInner={openFileDialogForInner}
           />
         </div>
 
@@ -234,7 +249,7 @@ export default function Leaflet({ type }) {
         <div className={styles.buttonField}>
           <button
             className={styles.createButton}
-            onClick={handleUpload}
+            onClick={!leafletId ? handleUpload : patchLeaflet}
             disabled={isEmpty || isLoading}
           >
             {!leafletId ? '생성하기' : '수정하기'}

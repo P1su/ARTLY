@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './Cover.module.css';
-import useLeaflet from '../../hooks/useLeaflet';
 
-export default function Cover({ coverImage, setCoverImage, coverDropzone }) {
-  const { openFileDialogForCover } = useLeaflet;
-
+export default function Cover({
+  coverImage,
+  setCoverImage,
+  coverDropzone,
+  openFileDialogForCover,
+}) {
   return (
     <div className={styles.coverSectionBox}>
       <div className={styles.coverLabelSpan}>표지</div>

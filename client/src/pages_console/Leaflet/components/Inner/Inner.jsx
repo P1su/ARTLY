@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import styles from './Inner.module.css';
-import useLeaflet from '../../hooks/useLeaflet';
 
-export default function Inner({ imageList, setImageList, innerDropzone }) {
+export default function Inner({
+  imageList,
+  setImageList,
+  innerDropzone,
+  handleRemoveImage,
+  openFileDialogForInner,
+}) {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
-  const { handleRemoveImage, openFileDialogForInner } = useLeaflet;
 
   const handleDragStart = (e, index) => {
     e.stopPropagation(); // 드롭존 이벤트와 충돌 방지
