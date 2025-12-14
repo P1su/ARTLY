@@ -2,15 +2,17 @@
 .tableCard {
   background-color: white;
   border-radius: 1rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
 /* 탭 헤더 */
 .tabHeader {
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #E2E8F0;
-  background: linear-gradient(to bottom, #FAFBFC, #F8FAFC);
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(to bottom, #fafbfc, #f8fafc);
 }
 
 .tabList {
@@ -30,7 +32,7 @@
   border-radius: 0.5rem;
   font-size: 1.3rem;
   font-weight: 500;
-  color: #64748B;
+  color: #64748b;
   background-color: transparent;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -38,19 +40,14 @@
 }
 
 .tabButton:hover {
-  background-color: #F1F5F9;
+  background-color: #f1f5f9;
   color: #334155;
 }
 
 .tabButtonActive {
-  background-color: #3B82F6;
+  background-color: var(--secondary);
   color: white;
   font-weight: 600;
-}
-
-.tabButtonActive:hover {
-  background-color: #2563EB;
-  color: white;
 }
 
 /* 테이블 컨테이너 */
@@ -64,12 +61,12 @@
 }
 
 .tableHeader {
-  background-color: #FAFBFC;
-  border-bottom: 1px solid #E2E8F0;
+  background-color: #fafbfc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .tableRow {
-  border-bottom: 1px solid #E2E8F0;
+  border-bottom: 1px solid #e2e8f0;
   transition: all 0.2s ease;
 }
 
@@ -78,11 +75,11 @@
 }
 
 .tableRow:hover {
-  background-color: #F8FAFC;
+  background-color: #f8fafc;
 }
 
 .tableRowSelected {
-  background-color: #EFF6FF !important;
+  background-color: #eff6ff !important;
 }
 
 .tableCell {
@@ -98,7 +95,7 @@
   text-align: left;
   font-size: 1.3rem;
   font-weight: 500;
-  color: #64748B;
+  color: #64748b;
 }
 
 /* 체크박스 셀 */
@@ -127,7 +124,7 @@
 .checkboxCustom {
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid #CBD5E1;
+  border: 2px solid #cbd5e1;
   border-radius: 0.25rem;
   background-color: white;
   transition: all 0.2s ease;
@@ -147,22 +144,22 @@
   transform: rotate(45deg);
 }
 
-.checkbox:checked+.checkboxCustom {
-  background-color: #3B82F6;
-  border-color: #3B82F6;
+.checkbox:checked + .checkboxCustom {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
 }
 
-.checkbox:checked+.checkboxCustom::after {
+.checkbox:checked + .checkboxCustom::after {
   display: block;
 }
 
 .checkboxWrapper:hover .checkboxCustom {
-  border-color: #94A3B8;
+  border-color: #94a3b8;
 }
 
-.checkbox:checked+.checkboxCustom:hover {
-  background-color: #2563EB;
-  border-color: #2563EB;
+.checkbox:checked + .checkboxCustom:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
 }
 
 /* 타입 태그 스타일 - 대상 셀에 인라인 표시 */
@@ -178,29 +175,29 @@
 }
 
 .tagGallery {
-  background-color: #DBEAFE;
-  color: #1D4ED8;
+  background-color: #dbeafe;
+  color: #1d4ed8;
 }
 
 .tagExhibition {
-  background-color: #D1FAE5;
+  background-color: #d1fae5;
   color: #047857;
 }
 
 .tagArt {
-  background-color: #FEE2E2;
-  color: #DC2626;
+  background-color: #fee2e2;
+  color: #dc2626;
 }
 
 .tagDefault {
-  background-color: #F1F5F9;
-  color: #64748B;
+  background-color: #f1f5f9;
+  color: #64748b;
 }
 
 /* 카테고리 이름 */
 .categoryName {
   font-weight: 500;
-  color: #1E293B;
+  color: #1e293b;
 }
 
 /* 사용자 이름 */
@@ -210,7 +207,7 @@
 
 /* 날짜 셀 */
 .dateCell {
-  color: #94A3B8;
+  color: #94a3b8;
   font-size: 1.2rem;
   white-space: nowrap;
 }
@@ -235,7 +232,7 @@
 
 .emptySubtext {
   font-size: 1.3rem;
-  color: #94A3B8;
+  color: #94a3b8;
 }
 
 /* 태블릿 (700px 이상 1000px 이하) */
