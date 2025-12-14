@@ -88,13 +88,20 @@ export default function DocentGenerator({ autoGenerate = false }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
+      const df = new FormData();
+      df.append('docent_script', docentText);
+      df.append('art_name', productName);
+      if (artistFile) 
+        df.append('docent_image', artistFile);
+
+      // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
+      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
+
       showAlert('도슨트가 저장되었습니다.');
       navigate(`/console/artworks/${id}`);
     } catch (e) {
-      showAlert(
-        e.response?.data?.message || '도슨트 저장 중 오류가 발생했습니다.',
-        'error',
-      );
+      showAlert('도슨트 저장 중 오류가 발생했습니다.');
+      console.error(e);
     } finally {
       setSaving(false);
     }
@@ -155,38 +162,36 @@ export default function DocentGenerator({ autoGenerate = false }) {
               </span>
             </label>
 
-            {confirmChecked && (
-              <div className={styles.expandedContent}>
-                <ul className={styles.expandedList}>
-                  <li>
-                    저장 후 동영상 생성까지 수십 초에서 수 분이 소요될 수
-                    있습니다.
-                  </li>
-                  <li>
-                    생성된 동영상은 작품 관리 페이지에서 확인할 수 있습니다.
-                  </li>
-                  <li>
-                    음성 도슨트를 재생성해도 동영상은 자동 갱신되지 않습니다.
-                  </li>
-                </ul>
+            <div
+              className={`${styles.expandedContent} ${confirmChecked ? styles.expandedActive : ''}`}
+            >
+              <p className={styles.expandedTitle}>도슨트 동영상 안내</p>
+              <ul className={styles.expandedList}>
+                <li>
+                  변경사항 저장 후, 동영상이 생성되는 데에 수십 초에서 수 분이
+                  소요될 수 있습니다.
+                </li>
+                <li>
+                  생성된 동영상은 작품 관리 페이지에서 확인하실 수 있습니다.
+                </li>
+                <li>음성 도슨트를 재생성하더라도 동영상 도슨트까지 자동 갱신되지는 않습니다.</li>
+                <li>========================================</li>
+                <li>인물 이미지를 첨부하여 생성할 수 있습니다. 인물 본인의 동의를 얻은 후 이용하시기 바랍니다.</li>
+              </ul>
 
-                <div className={styles.fileInputArea}>
-                  <label className={styles.fileInputLabel}>
-                    <input
-                      type='file'
-                      accept='image/*'
-                      onChange={(e) =>
-                        setArtistFile(e.target.files?.[0] || null)
-                      }
-                      className={styles.fileInput}
-                    />
-                  </label>
-                  {artistFile && (
-                    <div className={styles.fileName}>{artistFile.name}</div>
-                  )}
-                </div>
+              <div className={styles.fileInputArea}>
+                <label className={styles.fileInputLabel}>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    onChange={(e) => setArtistFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                    className={styles.fileInput}
+                  />
+                  <span className={styles.checkboxText}></span>
+                </label>
+                {artistFile && <div className={styles.fileName}>{artistFile.name}</div>}
               </div>
-            )}
+            </div>
           </div>
 
           <div className={styles.buttonRow}>
