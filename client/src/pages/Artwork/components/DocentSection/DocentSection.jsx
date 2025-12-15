@@ -9,14 +9,9 @@ import { useAlert } from '../../../../store/AlertProvider';
 export default function DocentSection({ artwork }) {
   const [playbackRate, setPlaybackRate] = useState(1.0);
   const { isOpen, handleOpenModal } = useModal();
-  /*
-  const handleSpeedChange = (id) => {
-    setPlaybackRate(parseFloat(id.replace('x', '')));
-  };*/
 
   const speedOptions = [0.5, 1.0, 1.25, 1.5, 2.0];
   const { showAlert } = useAlert();
-  console.log(isOpen);
   return (
     <section className={styles.sectionContainer}>
       <DocentAudioPlayer artwork={artwork} playbackRate={playbackRate} />
@@ -54,27 +49,7 @@ export default function DocentSection({ artwork }) {
             한국어
           </button>
         </div>
-        {/*
-          <div>
-                  <BtnOption
-        label='음성 언어'
-        options={[
-          { id: 'ko', label: '한국어' },
-          { id: 'en', label: '영어' },
-        ]}
-        onChange={() => alert('음성 언어 변경 기능은 현재 준비중입니다.')}
-      />
-      <BtnOption
-        label='재생 속도'
-        options={[
-          { id: '1x', label: '1배속' },
-          { id: '1.5x', label: '1.5배속' },
-          { id: '2x', label: '2배속' },
-        ]}
-        onChange={handleSpeedChange}
-        selectedId={`${playbackRate}x`}
-          </div>
-       /> */}
+        
       </div>
     </section>
   );
