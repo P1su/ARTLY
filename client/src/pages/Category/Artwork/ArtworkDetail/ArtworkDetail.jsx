@@ -302,9 +302,9 @@ export default function ArtworkDetail({
       {showUserActions && relatedArtworks.length > 0 && (
         <div className={styles.recommendSection}>
           <h3 className={styles.sectionTitle}>작가의 다른 작품</h3>
-          {filteredRelatedArtworks.length > 0 ? (
+          {relatedArtworks.length > 0 ? (
             <div className={styles.relatedGrid}>
-              {filteredRelatedArtworks.map((art) => (
+              {relatedArtworks.map((art) => (
                 <div
                   key={art.id}
                   className={styles.relatedCard}
