@@ -81,7 +81,7 @@
 
 .likedIcon {
   font-size: 2.2rem;
-  color: #3f51b5;
+  color: var(--blue01);
 }
 
 .containerLayout {

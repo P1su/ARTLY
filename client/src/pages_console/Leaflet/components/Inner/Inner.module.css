@@ -1,32 +1,33 @@
-/* 내지 섹션 - 모바일 우선 */
 .innerPagesSectionBox {
-  margin-bottom: 2rem; /* 모바일용 작은 마진 */
+  margin-bottom: 2rem;
 }
 
 .innerPagesLabelSpan {
-  font-size: 1.2rem; /* 모바일용 작은 폰트 */
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 500;
   margin-bottom: 1rem;
   color: #333;
 }
 
 .innerPagesGridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); /* 모바일용 크기 */
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
   gap: 1rem;
   min-height: 20rem;
 }
 
 .innerPageItemBox {
   position: relative;
-  width: 12rem; /* 모바일용 크기 */
+  width: 12rem;
   height: 20rem;
   border: 0.1rem solid #ddd;
   border-radius: 0.6rem;
   overflow: hidden;
   box-sizing: border-box;
   cursor: move;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .innerPageItemBox:hover {
@@ -133,23 +134,26 @@
   .innerPagesSectionBox {
     margin-bottom: 3.2rem; /* 태블릿용 큰 마진 */
   }
-  
+
   .innerPagesLabelSpan {
     font-size: 1.6rem; /* 태블릿용 큰 폰트 */
     margin-bottom: 1.2rem;
   }
-  
+
   .innerPagesGridContainer {
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); /* 태블릿용 크기 */
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(15rem, 1fr)
+    ); /* 태블릿용 크기 */
     gap: 1.2rem;
     min-height: 25rem;
   }
-  
+
   .innerPageItemBox {
     width: 15rem; /* 태블릿용 크기 */
     height: 25rem;
   }
-  
+
   .addInnerPageButton {
     width: 15rem; /* 태블릿용 크기 */
     height: 25rem;

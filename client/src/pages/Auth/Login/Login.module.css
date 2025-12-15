@@ -19,21 +19,14 @@
 
 .header {
   text-align: center;
-  margin-bottom: 4rem;
-}
-
-.logo {
-  color: var(--blue01, #3665f3);
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 4rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 }
 
 .subtitle {
   color: #666;
   font-size: 1.5rem;
   font-weight: 400;
+  padding-top: 0.5rem;
 }
 
 .buttonGroup {
@@ -109,7 +102,7 @@
 }
 
 .emailButton {
-  background-color: var(--blue01, #3665f3);
+  background-color: var(--primary, #3665f3);
   color: #ffffff;
 }
 

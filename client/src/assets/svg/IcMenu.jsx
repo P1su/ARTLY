@@ -6,9 +6,9 @@ const IcMenu = () => (
     viewBox='0 0 24 24'
     fill='none'
   >
-    <path d='M2 12H22' stroke='black' strokeWidth='2' strokeLinecap='round' />
-    <path d='M2 4H22' stroke='black' strokeWidth='2' strokeLinecap='round' />
-    <path d='M2 20H22' stroke='black' strokeWidth='2' strokeLinecap='round' />
+    <path d='M2 12H22' stroke='white' strokeWidth='2' strokeLinecap='round' />
+    <path d='M2 4H22' stroke='white' strokeWidth='2' strokeLinecap='round' />
+    <path d='M2 20H22' stroke='white' strokeWidth='2' strokeLinecap='round' />
   </svg>
 );
 
