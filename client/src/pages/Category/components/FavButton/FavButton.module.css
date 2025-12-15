@@ -18,9 +18,9 @@
 }
 
 .clickedFavButton {
-  border: 0.1rem solid var(--blue01);
-  color: var(--blue01);
+  border: 0.1rem solid var(--primary);
+  color: var(--primary);
 }
 .clickedIcon {
-  color: var(--blue01);
+  color: var(--primary);
 }

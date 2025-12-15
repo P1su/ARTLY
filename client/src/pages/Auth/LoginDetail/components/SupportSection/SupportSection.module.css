@@ -37,7 +37,7 @@
 }
 
 .termLink {
-  color: var(--blue01);
+  color: var(--primary);
 }
 
 .registerButton {
@@ -49,9 +49,9 @@
   gap: 8px;
 
   border-radius: 8px;
-  border: 1px solid var(--blue01);
+  border: 1px solid var(--primary);
 
-  color: var(--blue01);
+  color: var(--primary);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;

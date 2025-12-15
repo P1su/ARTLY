@@ -34,12 +34,7 @@
 
 .active {
   color: var(--white01);
-  background-color: var(--blue01);
-
-  color: var(--white01);
-  background-color: var(--blue01);
-
-  color: white;
+  background-color: var(--primary);
 }
 
 .disabled {

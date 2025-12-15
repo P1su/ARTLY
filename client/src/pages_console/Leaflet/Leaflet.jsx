@@ -3,10 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
-import useImageUpload from './hooks/useImageUpload';
+import useLeaflet from './hooks/useLeaflet';
 import { userInstance } from '../../apis/instance';
 import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 export default function Leaflet({ type }) {
   const { id } = useParams();
@@ -25,13 +26,12 @@ export default function Leaflet({ type }) {
     setImageList,
     coverImage,
     setCoverImage,
-    handleImageChange,
-    handleRemoveImage,
-    openFileDialogForCover,
-    openFileDialogForInner,
     coverDropzone,
     innerDropzone,
-  } = useImageUpload();
+    openFileDialogForCover,
+    openFileDialogForInner,
+    handleRemoveImage,
+  } = useLeaflet();
 
   // 기존 리플렛 데이터 조회
   useEffect(() => {
@@ -104,13 +104,6 @@ export default function Leaflet({ type }) {
   const handleDelete = async () => {
     if (!leafletId) return;
 
-    // [변경 전]
-    // if (!window.confirm('정말로 이 리플렛을 삭제하시겠습니까?')) {
-    //   return;
-    // }
-
-    // [변경 후]
-    // 비동기 확인 대기 (두 번째 인자 true = 빨간색 버튼)
     const isConfirmed = await showConfirm(
       '정말로 이 리플렛을 삭제하시겠습니까?',
       true,
@@ -145,19 +138,10 @@ export default function Leaflet({ type }) {
 
     try {
       setIsLoading(true);
-
-      // 수정 모드일 경우: 기존 리플렛 먼저 삭제
-      if (leafletId && existingLeaflet) {
-        await userInstance.delete(`/api/leaflet/${leafletId}`);
-      }
-
-      // 생성: POST 요청
       const formData = new FormData();
 
-      // 표지 먼저
       formData.append('image[]', coverImage.file);
 
-      // 내지들
       imageList.forEach((img) => {
         if (img.file) {
           formData.append('image[]', img.file);
@@ -165,8 +149,6 @@ export default function Leaflet({ type }) {
       });
 
       formData.append('title', title.trim());
-      // category: 4개 중 택 1 (image, artCategory, exhibitionCategory, galleryCategory)
-      // categoryId: 해당 카테고리의 ID
       const categoryName =
         type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
       formData.append('category', categoryName);
@@ -192,21 +174,48 @@ export default function Leaflet({ type }) {
     }
   };
 
+  const patchLeaflet = async () => {
+    try {
+      const payload = {
+        title: title.trim(),
+        //image_urls: imageList.map((img) => img.url),
+      };
+
+      const res = await userInstance.patch(
+        `/api/leaflet/${leafletId}`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      showAlert('리플렛이 성공적으로 수정되었습니다.');
+
+      setLeafletId(res.data.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const isEmpty = !coverImage && imageList.length === 0;
 
   return (
     <div className={styles.layout}>
+      <div className={styles.layoutTitle}>
+        리플렛 제작
+        <button
+          className={styles.backButton}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <FaChevronLeft />
+        </button>
+      </div>
       <div className={styles.mainContentContainer}>
-        <div className={styles.panelHeaderBox}>
-          <p className={styles.panelHeaderParagraph}>
-            리플렛/도록을 만들 이미지를 등록해주세요.
-            <br />
-            전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
-          </p>
-        </div>
-
-        <div className={styles.titleInputBox}>
-          <label className={styles.titleLabel}>리플렛 제목</label>
+        <div className={styles.card}>
           <input
             type='text'
             value={title}
@@ -215,50 +224,50 @@ export default function Leaflet({ type }) {
             className={styles.titleInput}
             disabled={isLoading}
           />
+          <p className={styles.panelHeaderParagraph}>
+            리플렛/도록을 만들 이미지를 등록해주세요.
+            <br />
+            전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
+          </p>
+          <Cover
+            coverImage={coverImage}
+            setCoverImage={setCoverImage}
+            coverDropzone={coverDropzone}
+            openFileDialogForCover={openFileDialogForCover}
+          />
+
+          <Inner
+            imageList={imageList}
+            setImageList={setImageList}
+            innerDropzone={innerDropzone}
+            handleRemoveImage={handleRemoveImage}
+            openFileDialogForInner={openFileDialogForInner}
+          />
         </div>
 
-        <Cover
-          coverImage={coverImage}
-          setCoverImage={setCoverImage}
-          openFileDialogForCover={openFileDialogForCover}
-          coverDropzone={coverDropzone}
-        />
+        <button
+          className={styles.previewButton}
+          onClick={handlePreview}
+          disabled={isEmpty}
+        >
+          미리 보기
+        </button>
 
-        <Inner
-          imageList={imageList}
-          setImageList={setImageList}
-          handleImageChange={handleImageChange}
-          handleRemoveImage={handleRemoveImage}
-          openFileDialogForInner={openFileDialogForInner}
-          innerDropzone={innerDropzone}
-        />
-
-        <div className={styles.combinedButtonBox}>
+        <div className={styles.buttonField}>
           <button
-            className={styles.leftButton}
-            onClick={handlePreview}
-            disabled={isEmpty}
+            className={styles.createButton}
+            onClick={!leafletId ? handleUpload : patchLeaflet}
+            disabled={isEmpty || isLoading}
           >
-            리플렛/도록 보기
+            {!leafletId ? '생성하기' : '수정하기'}
           </button>
-
-          {!leafletId ? (
-            <button
-              className={styles.rightButton}
-              onClick={handleUpload}
-              disabled={isEmpty || isLoading}
-            >
-              {isLoading ? '처리 중...' : '생성'}
-            </button>
-          ) : (
-            <button
-              className={styles.deleteButton}
-              onClick={handleDelete}
-              disabled={isLoading}
-            >
-              삭제
-            </button>
-          )}
+          <button
+            className={styles.deleteButton}
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
+            삭제하기
+          </button>
         </div>
       </div>
     </div>

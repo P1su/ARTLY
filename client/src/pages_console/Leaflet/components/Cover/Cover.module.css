@@ -4,8 +4,8 @@
 }
 
 .coverLabelSpan {
-  font-size: 1.2rem; /* 내지와 동일한 폰트 */
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 500;
   margin-bottom: 1rem;
   color: #333;
 }
@@ -116,12 +116,12 @@
   .coverSectionBox {
     margin-bottom: 2rem; /* 태블릿용 큰 마진 */
   }
-  
+
   .coverLabelSpan {
     font-size: 1.6rem; /* 내지와 동일한 폰트 */
     margin-bottom: 1.2rem;
   }
-  
+
   .coverAreaBox {
     width: 15rem; /* 태블릿용 크기 */
     height: 25rem;

@@ -62,7 +62,7 @@
   height: 4.8rem;
 
   background: var(
-    --blue01,
+    --primary,
     #3665f3
   ); /* 브랜드 컬러 변수 없으면 #3665f3 등 직접 입력 */
   border: none;

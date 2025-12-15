@@ -206,7 +206,7 @@
 }
 
 .ongoing {
-  background: var(--blue01, #3665f3);
+  background: var(--primary);
 }
 
 .cardInfo {

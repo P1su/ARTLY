@@ -7,6 +7,7 @@ import NavBar from '../NavBar/NavBar';
 import IcMenu from '../../assets/svg/IcMenu';
 import IcBell from './../../assets/svg/IcBell';
 import { UserContext } from '../../store/UserProvider';
+import IcLogo from '../../assets/svg/IcLogo';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,17 +34,17 @@ export default function Header() {
     handleClose();
 
     if (user && user.admin_flag === '1') {
-      navigate('/console/notification');  
+      navigate('/console/notification');
     } else {
-      navigate('/notifications');          
+      navigate('/notifications');
     }
   };
 
   return (
     <header className={styles.headerLayout}>
-      <span className={styles.logoSpan} onClick={handleHome}>
-        ARTLY
-      </span>
+      <button className={styles.logoButton} onClick={handleHome}>
+        <IcLogo />
+      </button>
 
       {isDesktop && <NavBar />}
 
@@ -52,7 +53,7 @@ export default function Header() {
         <button
           className={styles.notificationButton}
           onClick={handleNotificationClick}
-          aria-label="알림"
+          aria-label='알림'
         >
           <IcBell />
         </button>
