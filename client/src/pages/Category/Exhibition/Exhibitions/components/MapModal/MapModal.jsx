@@ -42,7 +42,7 @@ export default function MapModal({ item, onClose }) {
     {
       key: 'price',
       label: '관람료',
-      content: price.toLocaleString() || '무료',
+      content: price !== 0 ? `${price.toLocaleString()}원` : '무료',
     },
   ];
 

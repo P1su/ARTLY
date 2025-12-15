@@ -8,8 +8,10 @@ import { FaStar } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 import Img from '../../../../../../components/Img/Img.jsx';
+import { useAlert } from '../../../../../../store/AlertProvider.jsx';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
+  const { showAlert } = useAlert();
   const { user } = useUser();
   const {
     id,
@@ -35,6 +37,10 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
         : '전시 종료';
 
   const handleOpen = () => {
+    if (!location) {
+      showAlert('해당 전시회의 주소가 없습니다.');
+      return;
+    }
     setIsOpen((prev) => !prev);
     document.body.style.overflow = 'hidden';
   };
