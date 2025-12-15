@@ -137,10 +137,12 @@ export default function ArtworkDetail({
       ? `${BASE_URL}/${artist.artist_image}`
       : artist.artist_image;
 
-  const audioUrl = docent_audio_path?.startsWith('http')
-    ? docent_audio_path
-    : docent_audio_path
-      ? `${BASE_URL}/${docent_audio_path}`
+  const audioUrl = docent_audio_path
+      ? `${BASE_URL}/media/${docent_audio_path}`
+      : null;
+
+  const videoUrl = docent_video_path
+      ? `${BASE_URL}/media/${docent_video_path}`
       : null;
 
   const relatedArtworks = (artist?.artworks || []).filter(
@@ -231,7 +233,7 @@ export default function ArtworkDetail({
               <span className={styles.docentLabel}>AI Docent</span>
               <p>{art_docent}</p>
 
-              {isConsole && !docent_video_path && audioUrl && (
+              {isConsole && !videoUrl && audioUrl && (
                 <audio
                   className={styles.docentAudio}
                   controls
@@ -240,12 +242,12 @@ export default function ArtworkDetail({
                 />
               )}
 
-              {isConsole && docent_video_path && (
+              {isConsole && videoUrl && (
                 <video
                   className={styles.docentVideo}
                   controls
                   preload='metadata'
-                  src={docent_video_path}
+                  src={videoUrl}
                 />
               )}
             </div>
