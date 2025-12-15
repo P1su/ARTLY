@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'; // useNavigate 추가
 import ActionBar from './components/ActionBar/ActionBar';
 import GalleryManagement from './pages/GalleryManagement/GalleryManagement';
 import ExhibitionManagement from './pages/ExhibitionManagement/ExhibitionManagement';
@@ -7,13 +8,15 @@ import InterestedUserManagement from './pages/InterestedUserManagement/Intereste
 
 import useDeleteItem from './hooks/useDeleteItem';
 import styles from './ConsoleMain.module.css';
-import { useLocation } from 'react-router-dom';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function ConsoleMain({
   defaultTab = '갤러리관리',
   defaultGallery = '갤러리 전체',
 }) {
+  const { showAlert } = useAlert();
   const location = useLocation();
+  const navigate = useNavigate(); // navigate 훅 사용
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [selectedGallery, setSelectedGallery] = useState(null);
@@ -27,7 +30,6 @@ export default function ConsoleMain({
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    // 탭에 따라 적절한 초기값 설정
     if (tab === '작품관리') {
       setSelectedExhibition(null);
     } else {
@@ -35,10 +37,8 @@ export default function ConsoleMain({
     }
   };
 
-  // 데이터
   const tabList = ['갤러리관리', '전시회관리', '작품관리', '관심유저관리'];
 
-  // 커스텀 훅 사용
   const {
     galleryList,
     exhibitionList,
@@ -52,6 +52,13 @@ export default function ConsoleMain({
     error,
   } = useDeleteItem();
 
+  useEffect(() => {
+    if (error) {
+      showAlert('로그인이 만료되었습니다. 다시 로그인 해주세요.');
+      navigate('/login', { replace: true });
+    }
+  }, [error, navigate]);
+
   return (
     <div className={styles.layout}>
       <div className={styles.tabSection}>
@@ -63,50 +70,54 @@ export default function ConsoleMain({
       </div>
 
       <div className={styles.content}>
-        {activeTab === '갤러리관리' && (
-          <GalleryManagement
-            galleryList={galleryList}
-            onDelete={handleDelete}
-            loadGalleries={loadGalleries}
-            isLoading={isLoading}
-            isSearching={isSearching}
-            error={error}
-          />
-        )}
-        {activeTab === '전시회관리' && (
-          <ExhibitionManagement
-            exhibitionList={exhibitionList}
-            selectedGallery={selectedGallery}
-            onGalleryChange={setSelectedGallery}
-            onDelete={handleDelete}
-            loadExhibitions={loadExhibitions}
-            isLoading={isLoading}
-            error={error}
-            galleryList={galleryList}
-          />
-        )}
-        {activeTab === '작품관리' && (
-          <ArtworkManagement
-            key={activeTab}
-            artworkList={artworkList}
-            selectedExhibition={selectedExhibition}
-            onExhibitionChange={setSelectedExhibition}
-            onDelete={handleDelete}
-            loadArtworks={loadArtworks}
-            loadExhibitions={loadExhibitions}
-            isLoading={isLoading}
-            error={error}
-            galleryList={galleryList}
-            exhibitionList={exhibitionList}
-          />
-        )}
-
-        {activeTab === '관심유저관리' && (
-          <InterestedUserManagement
-            galleryList={galleryList}
-            exhibitionList={exhibitionList}
-            artworkList={artworkList}
-          />
+        {/* 에러가 없고 데이터가 있을 때만 렌더링되도록 조건부 처리 */}
+        {!error && (
+          <>
+            {activeTab === '갤러리관리' && (
+              <GalleryManagement
+                galleryList={galleryList}
+                onDelete={handleDelete}
+                loadGalleries={loadGalleries}
+                isLoading={isLoading}
+                isSearching={isSearching}
+                error={error}
+              />
+            )}
+            {activeTab === '전시회관리' && (
+              <ExhibitionManagement
+                exhibitionList={exhibitionList}
+                selectedGallery={selectedGallery}
+                onGalleryChange={setSelectedGallery}
+                onDelete={handleDelete}
+                loadExhibitions={loadExhibitions}
+                isLoading={isLoading}
+                error={error}
+                galleryList={galleryList}
+              />
+            )}
+            {activeTab === '작품관리' && (
+              <ArtworkManagement
+                key={activeTab}
+                artworkList={artworkList}
+                selectedExhibition={selectedExhibition}
+                onExhibitionChange={setSelectedExhibition}
+                onDelete={handleDelete}
+                loadArtworks={loadArtworks}
+                loadExhibitions={loadExhibitions}
+                isLoading={isLoading}
+                error={error}
+                galleryList={galleryList}
+                exhibitionList={exhibitionList}
+              />
+            )}
+            {activeTab === '관심유저관리' && (
+              <InterestedUserManagement
+                galleryList={galleryList}
+                exhibitionList={exhibitionList}
+                artworkList={artworkList}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function LayoutConsole() {
   if (user.admin_flag === 1) {
     return <Navigate to='/' replace />;
   }
+
   return (
     <>
       <ScrollToTop />

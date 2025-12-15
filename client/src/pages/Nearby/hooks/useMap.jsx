@@ -25,7 +25,6 @@ const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
         mapRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // 2. 마커 업데이트

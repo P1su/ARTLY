@@ -48,7 +48,6 @@ export default function ArtworkManagement({
     if (loadExhibitions) {
       loadExhibitions('갤러리 전체');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 2. ★ 핵심 수정: 전시회 선택이 바뀔 때마다, 해당 전시회의 '제목'을 찾아 API 재요청
