@@ -51,7 +51,7 @@ export default function Artwork() {
             <span className={styles.text}>{artist}</span>
           </div>
         </div>
-        <DocentSection script={script} />
+        <DocentSection artwork={artwork} />
       </section>
     </main>
   );
