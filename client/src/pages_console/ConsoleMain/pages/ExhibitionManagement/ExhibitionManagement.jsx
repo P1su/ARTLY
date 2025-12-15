@@ -49,7 +49,6 @@ export default function ExhibitionManagement({
     if (galleryList.length > 0) {
       loadExhibitions('갤러리 전체');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [galleryList.length]);
 
   // 갤러리 필터링 (id 기반)

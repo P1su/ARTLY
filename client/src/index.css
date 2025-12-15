@@ -57,6 +57,10 @@ h6 {
   margin: 0;
 }
 
+textarea {
+  font-family: 'Pretendard-Variable', 'Noto-sans', sans-serif;
+}
+
 #root {
   display: flex;
   flex-direction: column;
