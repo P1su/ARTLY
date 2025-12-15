@@ -1,21 +1,23 @@
 import { useRef, useState, useEffect } from 'react';
 import styles from './DocentAudioPlayer.module.css';
 import { FaPlay, FaStop, FaPause } from 'react-icons/fa';
+import LoadingSpinner from '../../../../../components/LoadingSpinner/LoadingSpinner';
+import { instance } from '../../../../../apis/instance';
 
-export default function DocentAudioPlayer({ script, playbackRate }) {
+export default function DocentAudioPlayer({ artwork, playbackRate }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioReady, setIsAudioReady] = useState(false);
   const [changedPlaybackRate, setChangedPlaybackRate] = useState(playbackRate);
   const audioRef = useRef(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
-  // get audio content when script changes
+  // get audio content when artwork changes
   useEffect(() => {
     let isMounted = true;
     setIsAudioReady(false);
 
     const fetchAudio = async () => {
-      console.log('Fetching audio for script:', `${script.substr(0, 50)}...`);
-      const audioContent = await callTTS();
+      const audioContent = await fetchAudioFromServer();
 
       if (audioContent && isMounted) {
         console.log('Audio content fetched successfully');
@@ -38,7 +40,7 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
         audioRef.current.currentTime = 0;
       }
     };
-  }, [script]);
+  }, [artwork]);
 
   // update playback rate immediately when it changes
   useEffect(() => {
@@ -48,25 +50,26 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
     }
   }, [playbackRate]);
 
-  // call Google TTS API to get audio content
-  const callTTS = async () => {
-    const response = await fetch(
-      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${import.meta.env.VITE_GCloud_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input: { text: script },
-          voice: { languageCode: 'ko-KR', name: 'ko-KR-Chirp3-HD-Kore' }, //Aoede, Kore, Leda, Orus, Puck...
-          audioConfig: { audioEncoding: 'MP3' },
-        }),
-      },
-    );
+  const fetchAudioFromServer = async () => {
+    try {
+      const response = await instance.get(`/media/${artwork.docent_audio_path}`);
+      const data = response.data?.data ?? response.data ?? response;
+      return data;
+    } catch (error) {
+      console.error('Error fetching audio from server:', error);
+      return null;
+    } 
+  };
 
-    const data = await response.json();
-    const { audioContent } = data;
-
-    if (audioContent) return audioContent;
+  const fetchViedoFromServer = async () => {
+    try {
+      const response = await instance.get(`/media/${artwork.docent_video_path}`);
+      const data = response.data?.data ?? response.data ?? response;
+      return data;
+    } catch (error) {
+      console.error('Error fetching video from server:', error);
+      return null;
+    }
   };
 
   // handle play/pause button click
@@ -97,7 +100,7 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
         onClick={handlePlayPauseClick}
         disabled={!isAudioReady}
       >
-        {!isAudioReady ? '로딩 중...' : isPlaying ? <FaPause /> : <FaPlay />}
+        {!isAudioReady ? <LoadingSpinner /> : isPlaying ? <FaPause /> : <FaPlay />}
       </button>
       <button
         className={styles.audioButton}

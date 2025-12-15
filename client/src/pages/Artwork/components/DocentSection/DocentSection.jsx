@@ -6,7 +6,7 @@ import BtnOption from './BtnOption/BtnOption';
 import useModal from '../../../../hooks/useModal';
 import { useAlert } from '../../../../store/AlertProvider';
 
-export default function DocentSection({ script }) {
+export default function DocentSection({ artwork }) {
   const [playbackRate, setPlaybackRate] = useState(1.0);
   const { isOpen, handleOpenModal } = useModal();
   /*
@@ -19,7 +19,7 @@ export default function DocentSection({ script }) {
   console.log(isOpen);
   return (
     <section className={styles.sectionContainer}>
-      <DocentAudioPlayer script={script} playbackRate={playbackRate} />
+      <DocentAudioPlayer artwork={artwork} playbackRate={playbackRate} />
       <div className={styles.controlsContainer}>
         {isOpen && (
           <div className={styles.speedContainer}>
