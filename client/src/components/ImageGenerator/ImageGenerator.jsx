@@ -13,10 +13,12 @@ export default function ImageGenerator() {
       const response = await instance.post('/api/console/images/generate', {
         text: userPrompt,
       });
-
+      setLoading(true);
       console.log(response);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
   /*
@@ -217,8 +219,6 @@ export default function ImageGenerator() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>전시회 포스터 이미지 생성</h1>
-
       <div className={styles.contentBox}>
         <div className={styles.inputSection}>
           <label className={styles.label}>배경 스타일 설명</label>
@@ -233,7 +233,7 @@ export default function ImageGenerator() {
             className={styles.generateButton}
             disabled={loading}
           >
-            {loading ? '이미지 생성 중...' : '이미지 생성'}
+            {loading ? '이미지 생성 중...' : '포스터 이미지 생성'}
           </button>
         </div>
 

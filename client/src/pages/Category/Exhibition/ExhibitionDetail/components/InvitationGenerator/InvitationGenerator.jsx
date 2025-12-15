@@ -162,10 +162,8 @@ export default function InvitationGenerator({
 
   return (
     <div className={styles.page}>
-      {showTitle && <h1 className={styles.title}>초대장 문구 생성</h1>}
-
       <div className={styles.formArea}>
-        <label className={styles.label}>행사 주제</label>
+        <label className={styles.label}>전시회 주제</label>
         <input
           type='text'
           value={theme}
@@ -174,7 +172,7 @@ export default function InvitationGenerator({
           className={styles.input}
         />
 
-        <label className={styles.label}>요청사항</label>
+        <label className={styles.label}>요구사항</label>
         <textarea
           value={others}
           onChange={(e) => setOthers(e.target.value)}
@@ -234,7 +232,7 @@ export default function InvitationGenerator({
                     className={styles.refineButton}
                     onClick={() => handleRefine(text, i)}
                   >
-                    수정하기
+                    문구 다듬기
                   </button>
                 </div>
               </div>
