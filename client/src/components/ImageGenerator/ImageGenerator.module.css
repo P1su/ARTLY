@@ -74,18 +74,15 @@
 }
 
 .downloadButton {
+  width: 100%;
   margin-top: 16px;
-  background-color: #22c55e;
+  background-color: var(--secondary);
   color: white;
   padding: 10px 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s;
-}
-
-.downloadButton:hover {
-  background-color: #16a34a;
 }
 
 .imagePlaceholder {

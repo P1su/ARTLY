@@ -8,12 +8,14 @@ export default function ImageGenerator() {
   const [loading, setLoading] = useState(false);
 
   const postImageGenerate = async () => {
+    setLoading(true);
+
     try {
       const response = await instance.post('/api/console/images/generate', {
         text: userPrompt,
       });
-      setLoading(true);
       console.log(response);
+      setImageUrl(response.data.image);
     } catch (error) {
       console.error(error);
     } finally {

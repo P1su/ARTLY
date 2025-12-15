@@ -176,28 +176,10 @@ export default function InvitationGenerator({
         <textarea
           value={others}
           onChange={(e) => setOthers(e.target.value)}
-          placeholder='예: 장애인의 날 기념, 문구 포함 등'
+          placeholder='예: #감사함, #전시, #초대 등'
           className={styles.textarea}
         />
 
-        <div className={styles.tagContainer}>
-          {['#계절감', '#기념', '#감성', '#감사', '#초대', '#특별함'].map(
-            (tag) => (
-              <button
-                key={tag}
-                type='button'
-                className={styles.tagButton}
-                onClick={() =>
-                  setOthers((prev) =>
-                    prev.includes(tag) ? prev : prev ? `${prev}, ${tag}` : tag,
-                  )
-                }
-              >
-                {tag}
-              </button>
-            ),
-          )}
-        </div>
         <button
           onClick={handleSubmit}
           className={styles.submitButton}
