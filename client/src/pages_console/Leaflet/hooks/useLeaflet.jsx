@@ -6,15 +6,21 @@ export default function useLeaflet() {
   const [coverImage, setCoverImage] = useState(null);
 
   // 이미지 파일 선택 (내지용 - 여러 개)
+  // 이미지 파일 선택 (내지용 - 여러 개)
   const handleImageChange = (e) => {
+    // e.target이 존재하는지 확인
+    if (!e.target || !e.target.files) return;
+
     const fileList = Array.from(e.target.files);
     const imagePromiseList = fileList.map((file) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (event) => {
+          // 변수명 충돌 방지를 위해 e -> event로 변경
           resolve({
             file,
-            url: e.target.result,
+            url: event.target.result,
+
             name: file.name,
           });
         };
@@ -24,8 +30,10 @@ export default function useLeaflet() {
 
     Promise.all(imagePromiseList).then((newImageList) => {
       setImageList((prev) => [...prev, ...newImageList]);
-      // 파일 입력 필드 초기화
-      e.target.value = '';
+      // [수정된 부분] e.target이 여전히 유효한지 확인 후 초기화
+      if (e.target) {
+        e.target.value = '';
+      }
     });
   };
 

@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Leaflet.module.css';
+
+// 컴포넌트 import
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
 import useLeaflet from './hooks/useLeaflet';
 import { userInstance } from '../../apis/instance';
+
 import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
 import { FaChevronLeft } from 'react-icons/fa6';
 
 export default function Leaflet({ type }) {
-  const { id } = useParams();
+  const { id } = useParams(); // *주의: 이것은 categoryId (전시/갤러리 ID)*
   const navigate = useNavigate();
+
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
 
@@ -33,28 +37,25 @@ export default function Leaflet({ type }) {
     handleRemoveImage,
   } = useLeaflet();
 
-  // 기존 리플렛 데이터 조회
+  const goBack = () => {
+    navigate(`/console/${type}/${id}`);
+  };
+
+  // 리플렛 조회
   useEffect(() => {
     const fetchLeaflet = async () => {
       try {
         setIsLoading(true);
-
-        // Owner 모드로 통일: 카테고리와 ID로 조회
         const category =
           type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
+
         const res = await userInstance.get(`/api/leaflet`, {
-          params: {
-            category: category,
-            category_id: id,
-          },
+          params: { category, category_id: id },
         });
 
-        // 응답 처리
         let leafletData = null;
         if (Array.isArray(res.data)) {
-          if (res.data.length > 0) {
-            leafletData = res.data[0];
-          }
+          if (res.data.length > 0) leafletData = res.data[0];
         } else {
           leafletData = res.data;
         }
@@ -64,23 +65,31 @@ export default function Leaflet({ type }) {
           setLeafletId(leafletData.id);
           setTitle(leafletData.title || '');
 
-          // 기존 이미지 URL을 표시
           if (leafletData.image_urls && leafletData.image_urls.length > 0) {
-            // 첫 번째 이미지를 표지로 설정
+            // 표지
             if (leafletData.image_urls[0]) {
-              setCoverImage({ url: leafletData.image_urls[0] });
+              setCoverImage({
+                url: leafletData.image_urls[0],
+                file: null,
+                isNew: false,
+              });
             }
-            // 나머지 이미지를 내지로 설정
+            // 내지
             if (leafletData.image_urls.length > 1) {
               const innerImages = leafletData.image_urls
                 .slice(1)
-                .map((url) => ({ url }));
+                .map((url) => ({
+                  url,
+                  file: null,
+                  isNew: false,
+                }));
               setImageList(innerImages);
             }
           }
         }
       } catch (error) {
         console.error('리플렛 조회 실패:', error);
+
         // 404는 리플렛이 없는 경우이므로 에러 처리하지 않음 (생성 모드)
         if (error.response?.status !== 404) {
           showAlert('리플렛 데이터를 불러오는데 실패했습니다.', 'error');
@@ -89,16 +98,15 @@ export default function Leaflet({ type }) {
         setIsLoading(false);
       }
     };
-
     fetchLeaflet();
-  }, [id, type]);
+  }, [id, type, setCoverImage, setImageList]);
 
   const handlePreview = () => {
     if (!leafletId) {
-      showAlert('먼저 리플렛을 생성해주세요.');
+      showAlert('먼저 리플렛을 생성해주세요!');
+      return;
     }
-    const viewerUrl = `/view/leaflet/${type}/${id}`;
-    window.open(viewerUrl, '_blank');
+    navigate(`/view/leaflet/${type}/${id}`);
   };
 
   const handleDelete = async () => {
@@ -114,6 +122,7 @@ export default function Leaflet({ type }) {
     try {
       setIsLoading(true);
       await userInstance.delete(`/api/leaflet/${leafletId}`);
+
       showAlert('리플렛이 삭제되었습니다.');
 
       // 삭제 후 이동
@@ -125,47 +134,140 @@ export default function Leaflet({ type }) {
     }
   };
 
-  // 리플렛 생성
-  const handleUpload = async () => {
-    // 제목과 표지 이미지 필수
-    if (!title.trim()) {
-      showAlert('리플렛 제목을 입력해주세요.');
-    }
+  /**
+   * [이미지 변환 함수]
+   * URL을 File 객체로 변환합니다. 캐시 문제 방지 및 에러 핸들링 강화.
+   */
+  const convertUrlToFile = async (url, index) => {
+    try {
+      // 캐시 방지를 위해 타임스탬프 추가
+      const fetchUrl = url.includes('?')
+        ? `${url}&t=${Date.now()}`
+        : `${url}?t=${Date.now()}`;
 
-    if (!coverImage?.file) {
-      showAlert('표지 이미지를 업로드 해주세요.');
+      const response = await fetch(fetchUrl, { mode: 'cors' });
+
+      if (!response.ok) {
+        throw new Error(`이미지 로드 실패: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const ext = blob.type.split('/')[1] || 'jpg';
+      // 파일명 충돌 방지를 위해 고유 이름 생성
+      const fileName = `reupload_${Date.now()}_${index}.${ext}`;
+
+      return new File([blob], fileName, { type: blob.type });
+    } catch (error) {
+      console.error(`이미지(${url}) 변환 중 오류:`, error);
+      return null; // 실패 시 null 반환
+    }
+  };
+
+  /**
+   * [통합 업로드 핸들러]
+   * 전략:
+   * 1. 단순 텍스트/순서 변경만 있고 새 파일이 없다면 -> PATCH (가볍게 처리)
+   * 2. 파일 추가/삭제 등 복잡한 수정이라면 ->
+   * (1) 모든 이미지(URL 포함)를 File 객체로 완벽 변환
+   * (2) 변환 실패 검사 (누락 방지)
+   * (3) 새 리플렛 생성 (POST)
+   * (4) 성공 시 기존 리플렛 삭제 (DELETE)
+   */
+  const handleUpload = async () => {
+    if (!title.trim()) {
+      showAlert('리플렛 제목을 입력해주세요!');
+      return;
+    }
+    if (!coverImage) {
+      showAlert('표지 이미지를 업로드해주세요!');
+      return;
     }
 
     try {
       setIsLoading(true);
-      const formData = new FormData();
 
-      formData.append('image[]', coverImage.file);
-
-      imageList.forEach((img) => {
-        if (img.file) {
-          formData.append('image[]', img.file);
-        }
-      });
-
-      formData.append('title', title.trim());
       const categoryName =
         type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
-      formData.append('category', categoryName);
-      formData.append('categoryId', id); // Owner ID passed via params
 
-      const res = await userInstance.post('/api/leaflet', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      // 전체 이미지 목록 (표지 + 내지 순서대로)
+      const allItems = [coverImage, ...imageList];
+
+      // 새 파일(업로드한 파일)이 하나라도 있는지 확인
+      const hasNewFile = allItems.some((item) => item.file);
+
+      // --- CASE 1: 순서만 바꾸거나 텍스트만 수정 (새 파일 없음) ---
+      if (leafletId && existingLeaflet && !hasNewFile) {
+        console.log('단순 정보/순서 변경 -> PATCH');
+
+        const orderedImageUrls = allItems.map((item) => item.url);
+
+        await userInstance.patch(`/api/leaflet/${leafletId}`, {
+          title: title.trim(),
+          category: categoryName,
+          image_urls: orderedImageUrls,
+        });
+
+        showAlert('리플렛 정보가 수정되었습니다!');
+        return;
+      }
+
+      // --- CASE 2: 파일 추가/삭제/변경 (POST 후 DELETE 전략) ---
+      console.log('이미지 변경 감지 -> 전체 재생성 프로세스 시작');
+
+      // 1. 모든 이미지를 File 객체로 준비
+      const filePromises = allItems.map(async (item, index) => {
+        if (item.file) return item.file; // 이미 파일이면 OK
+        return await convertUrlToFile(item.url, index); // URL이면 변환
       });
 
-      showAlert('리플렛이 성공적으로 생성되었습니다.');
+      const files = await Promise.all(filePromises);
 
-      // 생성 후 leafletId 업데이트 (페이지 유지)
-      if (res.data.id) {
-        setLeafletId(res.data.id);
-        setExistingLeaflet(res.data);
+      // 2. 변환 실패(null) 확인 - 여기서 이미지가 누락되는지 체크
+      const validFiles = files.filter((f) => f !== null);
+
+      if (validFiles.length !== allItems.length) {
+        // 원래 개수와 변환된 개수가 다르면, 일부 이미지를 불러오지 못한 것임
+        // 여기서 저장을 멈춰야 이미지가 사라지는 것을 막을 수 있음
+        console.error('변환 실패한 이미지가 있습니다.');
+        showAlert(
+          '기존 이미지를 불러오는 데 실패했습니다. 네트워크 상태를 확인하거나 이미지를 다시 올려주세요.',
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      // 3. FormData 생성
+      const formData = new FormData();
+      validFiles.forEach((file) => {
+        formData.append('image[]', file);
+      });
+      formData.append('title', title.trim());
+      formData.append('category', categoryName);
+      formData.append('categoryId', id);
+
+      // 4. [중요] 새 리플렛 생성 (POST)
+      const res = await userInstance.post('/api/leaflet', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      // 5. 생성 성공 시, 기존 리플렛 삭제 (DELETE)
+      // *생성이 실패하면 여기까지 안 오므로 데이터는 안전함*
+      if (res.data && res.data.id) {
+        const newLeafletId = res.data.id;
+
+        if (leafletId) {
+          try {
+            console.log(
+              `새 리플렛(${newLeafletId}) 생성 완료. 구 리플렛(${leafletId}) 삭제 시도.`,
+            );
+            await userInstance.delete(`/api/leaflet/${leafletId}`);
+          } catch (delError) {
+            console.warn('기존 리플렛 삭제 실패 (무시):', delError);
+            // 삭제 실패해도 새건 만들어졌으니 큰 문제는 아님
+          }
+        }
+
+        showAlert('리플렛이 성공적으로 저장되었습니다.');
       }
     } catch (error) {
       showAlert('리플렛 저장 중 오류가 발생했습니다.', 'error');
@@ -215,59 +317,79 @@ export default function Leaflet({ type }) {
         </button>
       </div>
       <div className={styles.mainContentContainer}>
-        <div className={styles.card}>
-          <input
-            type='text'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder='리플렛 제목을 입력하세요'
-            className={styles.titleInput}
-            disabled={isLoading}
-          />
-          <p className={styles.panelHeaderParagraph}>
-            리플렛/도록을 만들 이미지를 등록해주세요.
-            <br />
-            전체 이미지를 합쳐서 하나의 책처럼 구성됩니다.
-          </p>
-          <Cover
-            coverImage={coverImage}
-            setCoverImage={setCoverImage}
-            coverDropzone={coverDropzone}
-            openFileDialogForCover={openFileDialogForCover}
-          />
+        <div className={styles.formSection}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>리플렛 제목</label>
+            <input
+              type='text'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder='제목을 입력해주세요.'
+              className={styles.textInput}
+              disabled={isLoading}
+            />
+          </div>
 
-          <Inner
-            imageList={imageList}
-            setImageList={setImageList}
-            innerDropzone={innerDropzone}
-            handleRemoveImage={handleRemoveImage}
-            openFileDialogForInner={openFileDialogForInner}
-          />
+          <div className={styles.contentGrid}>
+            <div className={styles.leftColumn}>
+              <Cover
+                coverImage={coverImage}
+                setCoverImage={setCoverImage}
+                openFileDialogForCover={openFileDialogForCover}
+                coverDropzone={coverDropzone}
+              />
+            </div>
+
+            <div className={styles.rightColumn}>
+              <Inner
+                imageList={imageList}
+                setImageList={setImageList}
+                // handleImageChange={handleImageChange}
+                handleRemoveImage={handleRemoveImage}
+                openFileDialogForInner={openFileDialogForInner}
+                innerDropzone={innerDropzone}
+              />
+            </div>
+          </div>
         </div>
 
-        <button
-          className={styles.previewButton}
-          onClick={handlePreview}
-          disabled={isEmpty}
-        >
-          미리 보기
-        </button>
+        <div className={styles.actionFooter}>
+          <div className={styles.buttonGroup}>
+            <button
+              className={`${styles.actionButton} ${styles.previewBtn}`}
+              onClick={handlePreview}
+              disabled={isEmpty}
+            >
+              미리보기
+            </button>
 
-        <div className={styles.buttonField}>
-          <button
-            className={styles.createButton}
-            onClick={!leafletId ? handleUpload : patchLeaflet}
-            disabled={isEmpty || isLoading}
-          >
-            {!leafletId ? '생성하기' : '수정하기'}
-          </button>
-          <button
-            className={styles.deleteButton}
-            onClick={handleDelete}
-            disabled={isLoading}
-          >
-            삭제하기
-          </button>
+            {!leafletId ? (
+              <button
+                className={`${styles.actionButton} ${styles.submitBtn}`}
+                onClick={handleUpload}
+                disabled={isEmpty || isLoading}
+              >
+                {isLoading ? '생성 중...' : '리플렛 생성하기'}
+              </button>
+            ) : (
+              <div className={styles.editModeButtons}>
+                <button
+                  className={`${styles.actionButton} ${styles.submitBtn}`}
+                  onClick={handleUpload}
+                  disabled={isEmpty || isLoading}
+                >
+                  {isLoading ? '저장 중...' : '수정사항 저장'}
+                </button>
+                <button
+                  className={`${styles.actionButton} ${styles.deleteBtn}`}
+                  onClick={handleDelete}
+                  disabled={isLoading}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

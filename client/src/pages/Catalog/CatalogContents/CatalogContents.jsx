@@ -1,3 +1,4 @@
+import Img from '../../../components/Img/Img';
 import styles from './CatalogContents.module.css';
 
 export default function CatalogContents({
@@ -7,23 +8,23 @@ export default function CatalogContents({
   onPrev,
   onNext,
   isFirst,
-  isLast
+  isLast,
 }) {
   return (
     <div className={styles.container}>
       {!isFirst && (
-        <button onClick={onPrev} className={styles.arrowLeft}>〈</button>
+        <button onClick={onPrev} className={styles.arrowLeft}>
+          〈
+        </button>
       )}
       {!isLast && (
-        <button onClick={onNext} className={styles.arrowRight}>〉</button>
+        <button onClick={onNext} className={styles.arrowRight}>
+          〉
+        </button>
       )}
       <div className={styles.page}>
         {data.image && (
-          <img
-            src={data.image}
-            alt={data.title}
-            className={styles.image}
-          />
+          <Img src={data.image} alt={data.title} className={styles.image} />
         )}
         <h2 className={styles.title}>{data.title}</h2>
         <p className={styles.meta}>

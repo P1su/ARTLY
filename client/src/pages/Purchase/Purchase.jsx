@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Purchase.module.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import Img from '../../components/Img/Img';
 
 export default function Purchase() {
   const { reservationId } = useParams();
@@ -49,7 +50,7 @@ export default function Purchase() {
 
   const renderProductInfo = () => (
     <div className={styles.productBox}>
-      <img
+      <Img
         src={exhibition.imageUrl}
         alt='전시 이미지'
         className={styles.productImage}

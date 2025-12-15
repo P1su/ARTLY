@@ -1,3 +1,4 @@
+import Img from '../../../../components/Img/Img';
 import styles from './ArtworksCards.module.css';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -11,7 +12,7 @@ export default function ArtworksCards({ artworks }) {
 
   return (
     <section className={styles.artworkGrid}>
-      {artworks.map(({ id, image_url, title, materials, size, year }) => {
+      {artworks.map(({ id, image_url, title, artist_name }) => {
         // 콘솔 페이지 여부에 따라 동적으로 경로 설정
         const destinationPath = isConsolePage
           ? `/console/artworks/${id}`
@@ -19,11 +20,10 @@ export default function ArtworksCards({ artworks }) {
 
         return (
           <Link className={styles.artworkCard} key={id} to={destinationPath}>
-            <img className={styles.artworkImage} src={image_url} alt={title} />
+            <Img className={styles.artworkImage} src={image_url} alt={title} />
             <div className={styles.artworkInfo}>
               <h4 className={styles.title}>{title}</h4>
-              <p className={styles.materials}>{materials}</p>
-              <p className={styles.details}>{`${size}, ${year}`}</p>
+              <p className={styles.materials}>{artist_name}</p>
             </div>
           </Link>
         );

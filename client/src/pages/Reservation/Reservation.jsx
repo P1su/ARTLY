@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
 import styles from './Reservation.module.css';
 import { userInstance } from '../../apis/instance';
+import Img from '../../components/Img/Img';
 import { useAlert } from '../../store/AlertProvider';
 
 export default function Reservation() {
@@ -474,7 +475,7 @@ export default function Reservation() {
             {reservationInfo.name}님의 관람 예약이 완료되었습니다.
           </div>
           <div className={styles.reservationSummary}>
-            <img
+            <Img
               className={styles.summaryImage}
               src={exhibition.exhibition_poster}
             />

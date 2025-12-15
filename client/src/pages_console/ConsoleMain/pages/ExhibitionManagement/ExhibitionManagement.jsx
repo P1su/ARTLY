@@ -7,6 +7,7 @@ import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import styles from './ExhibitionManagement.module.css';
+import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
@@ -133,7 +134,7 @@ export default function ExhibitionManagement({
               onClick={() => navigate(`/console/exhibitions/${exhibition.id}`)}
             >
               <div className={styles.cardContent}>
-                <img
+                <Img
                   src={exhibition.image}
                   alt={exhibition.title}
                   className={styles.galleryImage}
