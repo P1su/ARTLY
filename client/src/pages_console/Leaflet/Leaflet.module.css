@@ -1,14 +1,41 @@
-/* 1rem = 10px 기준 */
-
 .layout {
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
-  background-color: #f8f9fa;
+
   color: #333;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
+
+  background-color: #f0f2f5;
+}
+
+.layoutTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  width: 100%;
+  height: 5.5rem;
+
+  background-color: var(--white01);
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.backButton {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
 }
 
 .mainContentContainer {
@@ -32,7 +59,7 @@
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 1rem;
   border-radius: 50%;
   transition: background-color 0.2s;
   color: #333;
@@ -43,21 +70,6 @@
 
 .backButton:hover {
   background-color: #e9ecef;
-}
-
-.pageTitle {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #111;
-  margin: 0 0 1.2rem 0;
-  letter-spacing: -0.05rem;
-}
-
-.pageDescription {
-  font-size: 1.5rem;
-  color: #666;
-  line-height: 1.6;
-  margin: 0;
 }
 
 .formSection {
@@ -227,8 +239,84 @@
   }
 }
 
-/* 모바일 (700px 이하) */
-@media (max-width: 700px) {
+.panelHeaderParagraph {
+  font-size: 1.4rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  gap: 1rem;
+
+  background-color: var(--white01);
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.titleInput {
+  width: 100%;
+  box-sizing: border-box;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0.5rem;
+  border-radius: 0;
+
+  padding: 1.2rem;
+}
+
+.titleInput:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.titleInput:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.previewButton {
+  width: 100%;
+  border-radius: 8px;
+  padding: 1.2rem 0;
+  background-color: #e4e6eb;
+}
+
+.buttonField {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.createButton,
+.deleteButton {
+  width: 50%;
+  font-size: 1.3rem;
+  padding: 1.2rem 0;
+  border-radius: 8px;
+}
+
+.createButton {
+  background-color: #007bff;
+  color: var(--white01);
+}
+
+.deleteButton {
+  background-color: #e4e6eb;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1000px) {
   .mainContentContainer {
     padding: 1.6rem;
     padding-bottom: 9rem;

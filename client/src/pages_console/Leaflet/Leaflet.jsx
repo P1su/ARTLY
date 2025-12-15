@@ -5,11 +5,12 @@ import styles from './Leaflet.module.css';
 // 컴포넌트 import
 import Cover from './components/Cover/Cover';
 import Inner from './components/Inner/Inner';
-import useImageUpload from './hooks/useImageUpload';
+import useLeaflet from './hooks/useLeaflet';
 import { userInstance } from '../../apis/instance';
 
 import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 export default function Leaflet({ type }) {
   const { id } = useParams(); // *주의: 이것은 categoryId (전시/갤러리 ID)*
@@ -29,13 +30,12 @@ export default function Leaflet({ type }) {
     setImageList,
     coverImage,
     setCoverImage,
-    handleImageChange,
-    handleRemoveImage,
-    openFileDialogForCover,
-    openFileDialogForInner,
     coverDropzone,
     innerDropzone,
-  } = useImageUpload();
+    openFileDialogForCover,
+    openFileDialogForInner,
+    handleRemoveImage,
+  } = useLeaflet();
 
   const goBack = () => {
     navigate(`/console/${type}/${id}`);
@@ -185,6 +185,7 @@ export default function Leaflet({ type }) {
 
     try {
       setIsLoading(true);
+
       const categoryName =
         type === 'galleries' ? 'galleryCategory' : 'exhibitionCategory';
 
@@ -275,39 +276,47 @@ export default function Leaflet({ type }) {
     }
   };
 
+  const patchLeaflet = async () => {
+    try {
+      const payload = {
+        title: title.trim(),
+        //image_urls: imageList.map((img) => img.url),
+      };
+
+      const res = await userInstance.patch(
+        `/api/leaflet/${leafletId}`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      showAlert('리플렛이 성공적으로 수정되었습니다.');
+
+      setLeafletId(res.data.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const isEmpty = !coverImage && imageList.length === 0;
 
   return (
     <div className={styles.layout}>
+      <div className={styles.layoutTitle}>
+        리플렛 제작
+        <button
+          className={styles.backButton}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <FaChevronLeft />
+        </button>
+      </div>
       <div className={styles.mainContentContainer}>
-        <div className={styles.headerSection}>
-          <button
-            className={styles.backButton}
-            onClick={goBack}
-            aria-label='뒤로 가기'
-          >
-            <svg
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            >
-              <path d='M19 12H5M12 19l-7-7 7-7' />
-            </svg>
-          </button>
-          <div>
-            <h2 className={styles.pageTitle}>리플렛 제작</h2>
-            <p className={styles.pageDescription}>
-              관람객에게 보여줄 디지털 리플렛을 제작합니다. 표지와 내지를
-              구성해보세요.
-            </p>
-          </div>
-        </div>
-
         <div className={styles.formSection}>
           <div className={styles.inputGroup}>
             <label className={styles.label}>리플렛 제목</label>
@@ -315,7 +324,7 @@ export default function Leaflet({ type }) {
               type='text'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder='예: 2024 특별 기획전 - 빛의 기록'
+              placeholder='제목을 입력해주세요.'
               className={styles.textInput}
               disabled={isLoading}
             />
@@ -335,7 +344,7 @@ export default function Leaflet({ type }) {
               <Inner
                 imageList={imageList}
                 setImageList={setImageList}
-                handleImageChange={handleImageChange}
+                // handleImageChange={handleImageChange}
                 handleRemoveImage={handleRemoveImage}
                 openFileDialogForInner={openFileDialogForInner}
                 innerDropzone={innerDropzone}

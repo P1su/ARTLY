@@ -58,7 +58,7 @@
   font-size: 0.9rem;
   color: var(--white01);
   border-radius: 10px;
-  background: var(--blue01);
+  background: var(--primary);
   z-index: 5;
 }
 
@@ -87,7 +87,7 @@
 
 .likedIcon {
   font-size: 1.8rem;
-  color: var(--blue01);
+  color: var(--primary);
 }
 
 @media (max-width: 700px) {

@@ -4,10 +4,10 @@ import styles from './Inner.module.css';
 export default function Inner({
   imageList,
   setImageList,
-  handleImageChange,
+
+  innerDropzone,
   handleRemoveImage,
   openFileDialogForInner,
-  innerDropzone,
 }) {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
@@ -56,6 +56,7 @@ export default function Inner({
     listWithoutItem.splice(dropIndex, 0, imageList[draggedIndex]);
 
     setImageList(listWithoutItem);
+
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
@@ -66,7 +67,6 @@ export default function Inner({
         <span className={styles.innerPagesLabelSpan}>내지 이미지</span>
         <span className={styles.countBadge}>{imageList.length}장</span>
       </div>
-
       <div
         {...innerDropzone.getRootProps()}
         className={`${styles.innerPagesGridContainer} ${innerDropzone.isDragActive ? styles.dropzoneActive : ''}`}
@@ -98,6 +98,13 @@ export default function Inner({
 
             <div className={styles.pageNumberBadge}>{index + 1}</div>
 
+            {/* =======
+            <img
+              src={image.url}
+              alt={image.name}
+              className={styles.innerPageImage}
+            />
+>>>>>>> develop */}
             <button
               className={styles.removeInnerPageButton}
               onClick={(e) => {

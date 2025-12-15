@@ -55,11 +55,11 @@
 .clickedFavButton {
   border: 0.1rem solid #274bb5;
   background-color: #ffebee;
-  color: #376aed;
+  color: var(--primary);
 }
 
 .clickedIcon {
-  color: #376aed;
+  color: var(--primary);
 }
 
 .loadingText {

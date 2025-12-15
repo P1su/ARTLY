@@ -4,8 +4,8 @@ import styles from './Cover.module.css';
 export default function Cover({
   coverImage,
   setCoverImage,
-  openFileDialogForCover,
   coverDropzone,
+  openFileDialogForCover,
 }) {
   return (
     <div className={styles.coverSectionBox}>
@@ -47,11 +47,6 @@ export default function Cover({
           </div>
         )}
       </div>
-      <p className={styles.helpText}>
-        리플렛의 첫 화면입니다.
-        <br />
-        이미지가 잘리지 않게 전체 비율로 표시됩니다.
-      </p>
     </div>
   );
 }

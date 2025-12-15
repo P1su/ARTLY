@@ -14,6 +14,7 @@
 .innerPagesLabelSpan {
   font-size: 1.6rem;
   font-weight: 700;
+
   color: #333;
 }
 
@@ -30,11 +31,11 @@
 .innerPagesGridContainer {
   display: grid;
   /* 카드 너비 최소 140px, 화면 꽉 차게 자동 배열 */
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 1.6rem;
 
   width: 100%;
-  min-height: 40rem;
+  min-height: 30rem;
   padding: 2rem;
   background-color: #fafafa;
   border: 0.2rem dashed #e1e4e8;
@@ -172,7 +173,6 @@
   font-weight: 500;
 }
 
-/* 반응형 모바일 (2열 고정) */
 @media (max-width: 700px) {
   .innerPagesGridContainer {
     grid-template-columns: repeat(2, 1fr); /* 모바일에서는 2개씩 보기 */

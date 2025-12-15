@@ -15,25 +15,25 @@
   border-radius: 9999px;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #6B7280;
+  color: #6b7280;
   background-color: transparent;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .actionButton:hover {
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   color: #374151;
 }
 
 .actionButtonActive {
-  background-color: #2563eb;
+  background-color: var(--primary);
   color: white;
   font-weight: 600;
 }
 
 .actionButtonActive:hover {
-  background-color: #1d4ed8;
+  background-color: var(--primary);
   color: white;
 }
 

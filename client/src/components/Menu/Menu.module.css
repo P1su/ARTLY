@@ -116,7 +116,7 @@
 }
 
 .menuSpan:hover {
-  color: var(--blue01);
+  color: var(--primary);
 }
 
 .divider {

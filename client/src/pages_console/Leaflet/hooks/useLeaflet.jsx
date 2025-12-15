@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-export default function useImageUpload() {
+export default function useLeaflet() {
   const [imageList, setImageList] = useState([]);
   const [coverImage, setCoverImage] = useState(null);
 
@@ -20,6 +20,7 @@ export default function useImageUpload() {
           resolve({
             file,
             url: event.target.result,
+
             name: file.name,
           });
         };

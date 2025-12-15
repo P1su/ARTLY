@@ -41,6 +41,6 @@
   box-shadow: 2px -3px 6px 0 rgba(0, 0, 0, 0.12);
   border: none;
   border-bottom: 0.2rem solid transparent;
-  color: var(--blue01);
+  color: var(--primary);
   font-weight: 600;
 }
