@@ -7,6 +7,7 @@ import { FaChevronRight } from 'react-icons/fa';
 import { userInstance } from '../../../../apis/instance';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
@@ -138,12 +139,12 @@ export default function ArtworkDetail({
       : artist.artist_image;
 
   const audioUrl = docent_audio_path
-      ? `${BASE_URL}/media/${docent_audio_path}`
-      : null;
+    ? `${BASE_URL}/media/${docent_audio_path}`
+    : null;
 
   const videoUrl = docent_video_path
-      ? `${BASE_URL}/media/${docent_video_path}`
-      : null;
+    ? `${BASE_URL}/media/${docent_video_path}`
+    : null;
 
   const relatedArtworks = (artist?.artworks || []).filter(
     (art) => String(art.id) !== String(id),
@@ -170,7 +171,7 @@ export default function ArtworkDetail({
       )}
 
       <div className={styles.card}>
-        <img src={art_image} alt={art_title} className={styles.mainImage} />
+        <Img src={art_image} alt={art_title} className={styles.mainImage} />
 
         <section className={styles.titleSection}>
           <h1 className={styles.artworkTitle}>{art_title}</h1>
@@ -201,7 +202,7 @@ export default function ArtworkDetail({
         <hr className={styles.divider} />
 
         <div className={styles.artistSection}>
-          <img
+          <Img
             src={imageUrl}
             alt={finalArtistName}
             className={styles.artistImage}
@@ -301,25 +302,42 @@ export default function ArtworkDetail({
       {showUserActions && relatedArtworks.length > 0 && (
         <div className={styles.recommendSection}>
           <h3 className={styles.sectionTitle}>작가의 다른 작품</h3>
-          <div className={styles.relatedGrid}>
-            {relatedArtworks.map((art) => (
-              <div
-                key={art.id}
-                className={styles.relatedCard}
-                onClick={() => {
-                  navigate(`/artworks/${art.id}`);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                <img
-                  src={art.art_image}
-                  alt={art.art_title}
-                  className={styles.relatedImage}
-                />
-                <h4>{art.art_title}</h4>
-              </div>
-            ))}
-          </div>
+          {filteredRelatedArtworks.length > 0 ? (
+            <div className={styles.relatedGrid}>
+              {filteredRelatedArtworks.map((art) => (
+                <div
+                  key={art.id}
+                  className={styles.relatedCard}
+                  onClick={() => {
+                    navigate(`/artworks/${art.id}`);
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <Img
+                    src={art.art_image}
+                    alt={art.art_title}
+                    className={styles.relatedImage}
+                  />
+                  <div className={styles.relatedInfo}>
+                    <h4 className={styles.relatedTitle}>{art.art_title}</h4>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.card}>
+              <p className={styles.emptyContent}>
+                작가의 다른 작품이 없습니다.
+              </p>
+            </div>
+          )}
+
+          <button
+            className={styles.backButton}
+            onClick={() => navigate('/artworks')}
+          >
+            목록으로
+          </button>
         </div>
       )}
 

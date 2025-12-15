@@ -6,6 +6,7 @@ import 'swiper/css/navigation';
 import styles from './SwipeCarousel.module.css';
 import { Link } from 'react-router-dom';
 import { instance } from '../../../../apis/instance.js';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function SwipeCarousel({ title, category, value }) {
   const [items, setItems] = useState([]);
@@ -87,7 +88,7 @@ export default function SwipeCarousel({ title, category, value }) {
           {items.map((item) => (
             <SwiperSlide key={item.id} className={styles.carouselSlide}>
               <Link to={`/exhibitions/${item.id}`} className={styles.slideCard}>
-                <img
+                <Img
                   src={item.image}
                   alt={item.title}
                   className={styles.carouselImage}

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { userInstance } from './../../../../apis/instance';
 import { FaStar } from 'react-icons/fa6';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function GalleryCard({ galleryItem, onEvent }) {
   const { user } = useUser();
@@ -52,7 +53,7 @@ export default function GalleryCard({ galleryItem, onEvent }) {
   return (
     <div className={styles.layout}>
       <Link className={styles.linkContainer} to={`/galleries/${id}`}>
-        <img
+        <Img
           className={styles.galleryImage}
           src={image}
           alt={`${name} 대표 이미지`}

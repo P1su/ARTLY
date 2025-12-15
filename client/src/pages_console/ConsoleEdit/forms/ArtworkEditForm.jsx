@@ -2,6 +2,7 @@ import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
+import Img from '../../../components/Img/Img.jsx';
 
 export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -99,7 +100,7 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
         >
           {imagePreviewUrl ? (
             <>
-              <img
+              <Img
                 src={imagePreviewUrl}
                 alt='작품 이미지'
                 className={styles.previewImage}
@@ -212,7 +213,8 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
             </div>
 
             <p className={styles.helperText}>
-              ※ 작품의 전시회 등록 및 해제는 '전시회 관리' 탭에서 진행해주세요.
+              ※ 작품의 전시회 등록 및 해제는 &apos;전시회 관리&apos; 탭에서
+              진행해주세요.
             </p>
           </div>
         </div>

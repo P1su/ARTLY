@@ -9,8 +9,12 @@ export default function Cover({
 }) {
   return (
     <div className={styles.coverSectionBox}>
-      <div className={styles.coverLabelSpan}>표지</div>
-      <div className={styles.coverAreaBox}>
+      <div className={styles.sectionHeader}>
+        <span className={styles.coverLabelSpan}>표지 이미지</span>
+        <span className={styles.badge}>필수</span>
+      </div>
+
+      <div className={styles.coverWrapper}>
         {coverImage ? (
           <div className={styles.coverImageContainerBox}>
             <img
@@ -21,6 +25,7 @@ export default function Cover({
             <button
               className={styles.removeCoverButton}
               onClick={() => setCoverImage(null)}
+              aria-label='표지 삭제'
             >
               ×
             </button>
@@ -35,7 +40,10 @@ export default function Cover({
             }}
           >
             <input {...coverDropzone.getInputProps()} />
-            <span className={styles.plusIconSpan}>+</span>
+            <div className={styles.placeholderContent}>
+              <span className={styles.plusIconSpan}>+</span>
+              <span className={styles.placeholderText}>이미지 업로드</span>
+            </div>
           </div>
         )}
       </div>

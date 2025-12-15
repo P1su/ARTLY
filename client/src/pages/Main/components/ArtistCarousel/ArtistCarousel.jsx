@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 
 import styles from './ArtistCarousel.module.css';
 import { instance } from '../../../../apis/instance.js';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function ArtistCarousel({ title }) {
   const [artists, setArtists] = useState([]);
@@ -74,7 +75,7 @@ export default function ArtistCarousel({ title }) {
             <SwiperSlide key={`${item?.id}`} className={styles.slideItem}>
               <Link to={`/artists/${item?.id}`} className={styles.carouselLink}>
                 <div className={styles.imageContainer}>
-                  <img
+                  <Img
                     src={item?.artist_image || '/default.jpg'}
                     alt={item?.artist_name || '작가 이미지'}
                     className={styles.artistImage}

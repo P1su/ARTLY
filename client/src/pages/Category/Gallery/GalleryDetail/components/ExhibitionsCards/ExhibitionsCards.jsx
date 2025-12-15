@@ -1,3 +1,4 @@
+import Img from '../../../../../../components/Img/Img';
 import styles from './ExhibitionsCards.module.css';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -47,7 +48,7 @@ export default function ExhibitionsCards({ exhibitions }) {
               to={destinationPath}
             >
               <div className={styles.imageContainer}>
-                <img
+                <Img
                   className={styles.exhibitionImage}
                   src={imageUrl}
                   alt='전시 포스터 이미지'
