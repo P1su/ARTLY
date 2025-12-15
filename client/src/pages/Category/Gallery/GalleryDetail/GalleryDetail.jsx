@@ -121,7 +121,8 @@ export default function GalleryDetail({
   const SNS_ICONS = {
     instagram: FaInstagram,
     youtube: FaYoutube,
-    default: FaLink,
+    twitter: FaLink,
+    facebook: FaLink,
   };
 
   const {
