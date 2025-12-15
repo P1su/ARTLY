@@ -13,7 +13,6 @@ import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitio
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
-import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ExhibitionDetail({
@@ -281,17 +280,6 @@ export default function ExhibitionDetail({
           </>
         )}
       </DetailTabs>
-
-      {/* 초대장 문구 생성 - 콘솔에서만 표시 */}
-      {!showUserActions && (
-        <div className={`${styles.card} ${styles.tabCard}`}>
-          <InvitationGenerator
-            initialTheme={title}
-            initialOthers=''
-            showTitle
-          />
-        </div>
-      )}
 
       {showUserActions && (
         <button
