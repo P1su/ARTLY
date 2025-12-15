@@ -9,6 +9,7 @@ import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 import Img from '../../../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../../../store/AlertProvider.jsx';
+import MapModalSimple from '../../../../Gallery/GalleryDetail/components/MapModalSimple.jsx';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   const { showAlert } = useAlert();
@@ -23,9 +24,12 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     exhibition_end_date: endDate,
     exhibition_status: status,
     is_liked: isLike,
+    exhibition_organization: org,
   } = exhibitionItem;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const mapId = `exhibition-${id}-map`;
 
   //const exhibitionStatus = getExhibitionStatus(startDate, endDate);
 
@@ -75,7 +79,16 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
 
   return (
     <div className={styles.exhibitionCardLayout}>
-      {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
+      {isOpen && (
+        <MapModalSimple
+          lat={org.latitude}
+          lng={org.longitude}
+          title={title}
+          address={location}
+          mapId={mapId}
+          onClose={handleClose}
+        />
+      )}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
         <div
           className={`${styles.statusContainer} ${status === 'exhibited' && styles.ongoing}`}
