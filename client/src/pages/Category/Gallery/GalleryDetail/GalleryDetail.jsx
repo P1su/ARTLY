@@ -24,6 +24,8 @@ export default function GalleryDetail({
   id: propId,
   actionButtons,
 }) {
+  const { showAlert } = useAlert();
+
   const { galleryId } = useParams();
   const id = propId || galleryId;
   const navigate = useNavigate();
@@ -34,8 +36,6 @@ export default function GalleryDetail({
   const [showLikePopup, setShowLikePopup] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
   const [showMapModal, setShowMapModal] = useState(false);
-
-  const { showAlert } = useAlert();
 
   const fetchGalleryDetail = async () => {
     if (!id) return;
@@ -121,7 +121,8 @@ export default function GalleryDetail({
   const SNS_ICONS = {
     instagram: FaInstagram,
     youtube: FaYoutube,
-    default: FaLink,
+    twitter: FaLink,
+    facebook: FaLink,
   };
 
   const {

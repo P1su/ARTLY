@@ -60,7 +60,7 @@ export default function InterestedUserManagement({
           );
           return found?.userId ?? null;
         })
-        .filter((id) => id != null);
+        .filter((id) => id !== null);
 
       if (userIds.length === 0) {
         showAlert('선택된 사용자들의 ID를 찾을 수 없습니다.');

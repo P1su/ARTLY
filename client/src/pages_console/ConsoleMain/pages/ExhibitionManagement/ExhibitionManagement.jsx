@@ -60,6 +60,7 @@ export default function ExhibitionManagement({
       (exhibition) => exhibition.gallery_id === selectedGallery,
     );
   }, [exhibitionList, selectedGallery]);
+  console.log(filteredExhibitionList);
 
   // 갤러리 옵션 - 전시회가 있는 갤러리만 표시
   const galleryOptions = useMemo(() => {
@@ -148,7 +149,11 @@ export default function ExhibitionManagement({
                       <HiTrash size={18} />
                     </button>
                   </div>
-                  <p className={styles.galleryAddress}>{exhibition.period}</p>
+                  <p className={styles.galleryAddress}>
+                    {!exhibition.period.includes('null')
+                      ? exhibition.period.replace(' - ', ' ~ ')
+                      : '기간 정보 없음'}
+                  </p>
                   <p className={styles.galleryFloor}>
                     {exhibition.gallery_name}
                   </p>

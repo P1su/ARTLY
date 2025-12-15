@@ -104,11 +104,15 @@ export default function GalleryManagement({
                       <HiTrash size={18} />
                     </button>
                   </div>
-                  <p className={styles.galleryAddress}>{gallery.address}</p>
-                  <p className={styles.galleryClosedDay}>
-                    휴관일 | {gallery.closedDay}
+                  <p className={styles.galleryAddress}>
+                    {gallery.address || '주소 정보 없음'}
                   </p>
-                  <p className={styles.galleryTime}>{gallery.time}</p>
+                  <p className={styles.galleryClosedDay}>
+                    휴관일 | {gallery.closedDay || '없음'}
+                  </p>
+                  <p className={styles.galleryTime}>
+                    {gallery.time.replace('-', '~')}
+                  </p>
                 </div>
               </div>
               <div className={styles.cardFooter}>

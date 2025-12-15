@@ -1,9 +1,11 @@
 import styles from '../TiptapEditor.module.css';
 import { useRef } from 'react';
 import { uploadEditorImage } from '../utils/EditorUploader';
+import { useAlert } from '../../../../store/AlertProvider';
 
 export default function TiptapMenuBar({ editor }) {
   const fileInputRef = useRef(null);
+  const { showAlert } = useAlert();
 
   if (!editor) return null;
 
@@ -19,7 +21,7 @@ export default function TiptapMenuBar({ editor }) {
 
     for (const file of files) {
       // 🔥 1) 파일 서버 업로드 → URL 받아오기
-      const imageUrl = await uploadEditorImage(file);
+      const imageUrl = await uploadEditorImage(file, showAlert);
 
       if (imageUrl) {
         // 🔥 2) 이미지 삽입 (여러 이미지 연속 삽입 가능)

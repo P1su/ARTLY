@@ -8,8 +8,11 @@ import { FaStar } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
 import Img from '../../../../../../components/Img/Img.jsx';
+import { useAlert } from '../../../../../../store/AlertProvider.jsx';
+import MapModalSimple from '../../../../Gallery/GalleryDetail/components/MapModalSimple.jsx';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
+  const { showAlert } = useAlert();
   const { user } = useUser();
   const {
     id,
@@ -21,9 +24,12 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
     exhibition_end_date: endDate,
     exhibition_status: status,
     is_liked: isLike,
+    exhibition_organization: org,
   } = exhibitionItem;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const mapId = `exhibition-${id}-map`;
 
   //const exhibitionStatus = getExhibitionStatus(startDate, endDate);
 
@@ -35,6 +41,10 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
         : '전시 종료';
 
   const handleOpen = () => {
+    if (!location) {
+      showAlert('해당 전시회의 주소가 없습니다.');
+      return;
+    }
     setIsOpen((prev) => !prev);
     document.body.style.overflow = 'hidden';
   };
@@ -69,7 +79,16 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
 
   return (
     <div className={styles.exhibitionCardLayout}>
-      {isOpen && <MapModal item={exhibitionItem} onClose={handleClose} />}
+      {isOpen && (
+        <MapModalSimple
+          lat={org.latitude}
+          lng={org.longitude}
+          title={title}
+          address={location}
+          mapId={mapId}
+          onClose={handleClose}
+        />
+      )}
       <Link className={styles.layout} to={`/exhibitions/${id}`}>
         <div
           className={`${styles.statusContainer} ${status === 'exhibited' && styles.ongoing}`}

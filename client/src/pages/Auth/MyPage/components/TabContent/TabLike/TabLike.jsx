@@ -15,7 +15,7 @@ const TABS = [
 
 const removeDuplicates = (items) => {
   const uniqueIds = new Set();
-  return items.filter(item => {
+  return items.filter((item) => {
     if (uniqueIds.has(item.id)) {
       return false;
     }
@@ -35,7 +35,6 @@ export default function TabLike() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
         const likeRes = await userInstance.get('/api/users/me/likes');
@@ -89,34 +88,28 @@ export default function TabLike() {
         <div className={styles.cardList}>
           {filteredItems.length > 0 ? (
             activeTab === 'exhibition' ? (
-              filteredItems.map((item) => ( 
+              filteredItems.map((item) => (
                 <ExhibitionCard
-                  key={`exhibition-${item.id}`} 
+                  key={`exhibition-${item.id}`}
                   exhibitionItem={item}
                 />
               ))
             ) : activeTab === 'gallery' ? (
-              filteredItems.map((item) => ( 
-                <GalleryCard 
-                  key={`gallery-${item.id}`} 
-                  galleryItem={item} />
+              filteredItems.map((item) => (
+                <GalleryCard key={`gallery-${item.id}`} galleryItem={item} />
               ))
             ) : activeTab === 'artist' ? (
-              filteredItems.map((item) => ( 
-                <ArtistCard 
-                  key={`artist-${item.id}`} 
-                  artistItem={item} />
+              filteredItems.map((item) => (
+                <ArtistCard key={`artist-${item.id}`} artistItem={item} />
               ))
             ) : null
+          ) : !isLoading ? (
+            <p className={styles.emptyText}>
+              좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
+              없습니다.
+            </p>
           ) : (
-            !isLoading ? (
-              <p className={styles.emptyText}>
-                좋아요한 {TABS.find((tab) => tab.key === activeTab)?.label}가
-                없습니다.
-              </p>
-            ) : ( 
-              <LoadingSpinner /> 
-            )
+            <LoadingSpinner />
           )}
         </div>
       </section>
