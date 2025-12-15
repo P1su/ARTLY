@@ -17,18 +17,18 @@
 /* 태블릿 이상 (768px 이상) */
 @media (min-width: 768px) {
   .registerButton {
-    padding: 1.2rem 2.0rem; /* 태블릿 이상에서는 큰 패딩 */
+    padding: 1.2rem 2rem; /* 태블릿 이상에서는 큰 패딩 */
     border-radius: 0.8rem; /* 태블릿 이상에서는 큰 둥근 모서리 */
   }
 }
 
 /* 4. Background */
 .registerButton {
-  background-color: #2563eb;
+  background-color: var(--secondary);
 }
 
 .registerButton:hover {
-  background-color: #1d4ed8;
+  background-color: var(--secondary);
 }
 
 /* 5. Font - 모바일 최적화 */

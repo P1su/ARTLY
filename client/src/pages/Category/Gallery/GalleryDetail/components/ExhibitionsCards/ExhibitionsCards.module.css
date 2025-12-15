@@ -49,7 +49,7 @@
 }
 
 .statusOn {
-  background-color: var(--blue01);
+  background-color: var(--primary);
 }
 .statusScheduled {
   background-color: #6c757d;

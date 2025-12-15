@@ -14,8 +14,8 @@
   border-radius: 50%;
   border: none;
 
-  background: linear-gradient(135deg, #3b83f6ce 0%, #1d4fd8f4 100%);
-  box-shadow: 0 0.4rem 1.5rem rgba(29, 78, 216, 0.4);
+  background: linear-gradient(135deg, #58736b 0%, #3c504b 100%);
+  box-shadow: 0 0.4rem 1.5rem rgba(60, 80, 75, 0.4);
 
   color: white;
   font-size: 2.4rem;
@@ -25,7 +25,7 @@
 
 .chatbotButton:hover {
   transform: scale(1.1) rotate(-10deg);
-  box-shadow: 0 0.6rem 2rem rgba(29, 78, 216, 0.6);
+  box-shadow: 0 0.6rem 2rem rgba(60, 80, 75, 0.6);
 }
 
 .chatbotOverlay {
@@ -66,7 +66,7 @@
   justify-content: space-between;
   padding: 1.6rem 2rem;
 
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #58736b 0%, #3c504b 100%);
   color: white;
   box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
 }
@@ -135,8 +135,8 @@
   min-width: 3.6rem;
   height: 3.6rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #bfdbfe 0%, #60a5fa 100%);
-  color: #1e3a8a;
+  background: linear-gradient(135deg, #b7c7c2 0%, #8fa7a0 100%);
+  color: #2f403b;
   font-weight: 800;
   font-size: 1.4rem;
   box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -149,7 +149,7 @@
 
 .botName {
   font-size: 1.2rem;
-  color: #64748b;
+  color: #6b7f79;
   margin-bottom: 0.4rem;
   margin-left: 0.6rem;
 }
@@ -176,11 +176,11 @@
   padding: 1rem 1.4rem;
   border-radius: 1.8rem 1.8rem 0.2rem 1.8rem;
 
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #58736b 0%, #3c504b 100%);
   color: white;
   font-size: 1.5rem;
   line-height: 1.5;
-  box-shadow: 0 0.4rem 1rem rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0.4rem 1rem rgba(60, 80, 75, 0.3);
   word-break: break-word;
 }
 
@@ -206,9 +206,9 @@
 }
 
 .input:focus {
-  border-color: #3b82f6;
+  border-color: #58736b;
   background-color: white;
-  box-shadow: 0 0 0 0.3rem rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 0.3rem rgba(88, 115, 107, 0.15);
 }
 
 .sendButton {
@@ -221,14 +221,14 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #3b82f6;
+  color: #58736b;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .sendButton:hover {
-  background-color: #eff6ff;
-  color: #1d4ed8;
+  background-color: #eef3f1;
+  color: #3c504b;
   transform: scale(1.1);
 }
 

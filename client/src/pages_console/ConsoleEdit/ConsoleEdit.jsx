@@ -7,6 +7,7 @@ import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 import { useConfirm } from '../../store/ConfirmProvider.jsx';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 const EDIT_CONFIG = {
   galleries: {
@@ -86,7 +87,7 @@ export default function ConsoleEdit({ type }) {
     <div className={styles.layout}>
       <header className={styles.header}>
         <button className={styles.backButton} onClick={handleCancel}>
-          {'<'}
+          <FaChevronLeft />
         </button>
         <h1 className={styles.title}>{config.title}</h1>
       </header>

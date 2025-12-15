@@ -35,7 +35,7 @@
 }
 
 .ongoing {
-  background: var(--blue01);
+  background: var(--primary);
 }
 
 .imageBox {
@@ -80,7 +80,7 @@
 
 .likedIcon {
   font-size: 1.8rem;
-  color: #e57373;
+  color: var(--primary);
 }
 
 .icLoc {

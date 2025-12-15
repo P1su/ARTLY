@@ -60,7 +60,7 @@
   align-items: center;
 
   border-radius: 3rem;
-  background-color: var(--blue01, #3665f3);
+  background-color: var(--primary, #3665f3);
 
   color: #fff;
   font-size: 1.6rem;
