@@ -1,5 +1,6 @@
 import styles from './InputImage.module.css';
 import useImage from '../../../hooks/useImage';
+import Img from '../../Img/Img';
 
 export default function InputImage({ name, onChange, file }) {
   const { image: imageUrl, handleImage } = useImage();
@@ -8,7 +9,7 @@ export default function InputImage({ name, onChange, file }) {
     <>
       <label className={styles.imageLabel} htmlFor='profile'>
         {file ? (
-          <img
+          <Img
             className={styles.previewImage}
             src={imageUrl}
             alt='프로필 미리보기'

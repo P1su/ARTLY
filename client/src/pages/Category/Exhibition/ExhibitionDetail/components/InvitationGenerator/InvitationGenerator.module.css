@@ -1,7 +1,6 @@
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 80px 50px 100px;
   background: #fff;
 }
 
@@ -12,20 +11,15 @@
   margin-bottom: 60px;
 }
 
-/* ===== 폼 영역 ===== */
 .formArea {
   display: flex;
   flex-direction: column;
-  gap: 32px;
   width: 100%;
 }
 
-/* ✅ 라벨 강조 */
 .label {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #111827;
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .input,
@@ -72,22 +66,18 @@
   background: #dbeafe;
 }
 
-/* ===== 버튼 ===== */
 .submitButton {
-  background: #2563eb;
+  background-color: var(--secondary);
   color: white;
+  padding: 10px;
   border: none;
-  border-radius: 12px;
-  padding: 18px 0;
-  font-weight: 700;
-  font-size: 1.6rem;
+  border-radius: 6px;
   cursor: pointer;
-  margin-top: 16px;
-  transition: background 0.15s ease;
+  transition: background 0.2s;
 }
 
 .submitButton:hover {
-  background: #1e40af;
+  background: var(--primary);
 }
 
 .submitButton:disabled {
@@ -188,7 +178,6 @@
   background: #059669;
 }
 
-/* ✅ 점선 placeholder */
 .placeholder {
   border: 3px dashed #cbd5e1;
   border-radius: 14px;
@@ -202,94 +191,18 @@
   background-color: #ffffff;
 }
 
-/* ===== 태블릿 (1000px 이하) ===== */
-@media (max-width: 1000px) {
-  .page {
-    padding: 60px 32px 80px;
-  }
-
-  .title {
-    font-size: 2.4rem;
-    margin-bottom: 48px;
-  }
-
-  .formArea {
-    gap: 28px;
-  }
-
-  .label {
-    font-size: 1.5rem;
-  }
-
-  .input,
-  .textarea {
-    font-size: 1.5rem;
-    padding: 16px 18px;
-  }
-
-  .textarea {
-    min-height: 180px;
-  }
-
-  .tagButton {
-    font-size: 1.3rem;
-    padding: 8px 14px;
-  }
-
-  .submitButton {
-    font-size: 1.5rem;
-    padding: 16px 0;
-  }
-
-  .resultArea {
-    margin-top: 48px;
-    gap: 20px;
-  }
-
-  .resultCard {
-    padding: 20px 22px;
-  }
-
-  .textContent {
-    font-size: 1.5rem;
-    padding: 16px;
-  }
-
-  .cardHeader h3 {
-    font-size: 1.4rem;
-  }
-
-  .copyButton,
-  .captureButton,
-  .refineButton {
-    font-size: 1.2rem;
-    padding: 7px 12px;
-  }
-
-  .placeholder {
-    min-height: 240px;
-    font-size: 1.4rem;
-  }
-}
-
-/* ===== 모바일 (700px 이하) ===== */
 @media (max-width: 700px) {
-  .page {
-    padding: 40px 16px 60px;
-  }
-
   .title {
     font-size: 2rem;
     margin-bottom: 32px;
   }
 
   .formArea {
-    gap: 20px;
+    gap: 10px;
   }
 
   .label {
     font-size: 1.4rem;
-    margin-bottom: 8px;
   }
 
   .input,
@@ -315,8 +228,6 @@
   .submitButton {
     width: 100%;
     font-size: 1.4rem;
-    padding: 14px 0;
-    border-radius: 10px;
   }
 
   .resultArea {

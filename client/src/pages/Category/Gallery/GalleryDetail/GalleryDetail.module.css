@@ -25,7 +25,7 @@
   border-radius: 1.5rem;
   padding: 3rem;
   box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
   overflow: hidden;
 }
 
@@ -299,7 +299,7 @@
   }
 
   .card {
-    padding: 1.5rem;
+    padding: 2.5rem 1.5rem;
   }
   .breadcrumb {
     font-size: 1.4rem;
@@ -337,6 +337,8 @@
   }
 
   .infoList {
+    padding: 0 1.5rem;
+
     gap: 1.4rem;
   }
 

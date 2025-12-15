@@ -123,8 +123,7 @@ export default function InvitationGenerator() {
           placeholder='예: 장애인의 날 기념, 문구 포함 등'
           className={styles.textarea}
         />
-
-        <div className={styles.tagContainer}>
+        {/*        <div className={styles.tagContainer}>
           {['#계절감', '#기념', '#감성', '#감사', '#초대', '#특별함'].map(
             (tag) => (
               <button
@@ -141,7 +140,7 @@ export default function InvitationGenerator() {
               </button>
             ),
           )}
-        </div>
+        </div>*/}
 
         <button
           onClick={handleSubmit}

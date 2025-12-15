@@ -16,8 +16,8 @@ import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/Ar
 import MapModalSimple from './components/MapModalSimple.jsx';
 import LikePopup from './components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
-// import { useToastContext } from '../../../../store/ToastProvider.jsx';
 
 export default function GalleryDetail({
   showUserActions = true,
@@ -28,8 +28,6 @@ export default function GalleryDetail({
   const id = propId || galleryId;
   const navigate = useNavigate();
   const { user } = useUser();
-
-  // const { addToast } = useToastContext();
 
   const [galleryData, setGalleryData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -80,10 +78,6 @@ export default function GalleryDetail({
           liked_id: id,
           liked_type: 'gallery',
         });
-        // addToast({
-        //   title: '좋아하는 갤러리로 추가 완료!',
-        //   message: '나의 좋아요 목록은 마이페이지에서 확인할 수 있어요.',
-        // });
       }
 
       await userInstance.post('/api/likes', payload);
@@ -237,7 +231,7 @@ export default function GalleryDetail({
       </section>
 
       <div className={styles.card}>
-        <img
+        <Img
           className={styles.galleryImage}
           src={image}
           alt='갤러리 대표 이미지'

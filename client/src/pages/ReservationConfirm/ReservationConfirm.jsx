@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { userInstance } from '../../apis/instance.js';
 import { FaCheck } from 'react-icons/fa';
+import Img from '../../components/Img/Img.jsx';
 
 export default function ReservationConfirm() {
   const { reservationId } = useParams();
@@ -61,7 +62,7 @@ export default function ReservationConfirm() {
   return (
     <div className={styles.layout}>
       <h1 className={styles.title}>상세 예매 내역</h1>
-      <img
+      <Img
         className={styles.posterImage}
         src={poster}
         alt='예약 전시회 이미지'

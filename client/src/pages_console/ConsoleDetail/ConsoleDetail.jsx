@@ -7,19 +7,20 @@ import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDet
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import CreateModal from './components/CreateModal/CreateModal';
 
 const DETAIL_CONFIG = {
   galleries: {
     title: '갤러리',
     Component: GalleryDetail,
-    tabs: ['정보수정', 'QR코드', '리플렛/도록'],
+    tabs: ['정보수정', 'QR코드', '리플렛'],
     fetchUrl: (id) => `/api/galleries/${id}`,
   },
   exhibitions: {
     title: '전시회',
     Component: ExhibitionDetail,
     fetchUrl: (id) => `/api/exhibitions/${id}`,
-    tabs: ['정보수정', 'QR코드', '리플렛/도록'],
+    tabs: ['정보수정', 'QR코드', '리플렛', '초대장/포스터'],
   },
   artworks: {
     title: '작품',
@@ -34,6 +35,7 @@ export default function ConsoleDetail({ type }) {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const config = DETAIL_CONFIG[type];
   const { title, Component, fetchUrl, tabs } = config || {};
@@ -77,8 +79,13 @@ export default function ConsoleDetail({ type }) {
       case '도슨트':
         navigate(`/console/artworks/docent/${id}`); // 작품 페이지 한정, leaflet 대신 도슨트 관리로 이동 가능
         break;
-      default:
+      case '리플렛':
         navigate(`/console/${type}/leaflet/${id}`);
+        break;
+      case '초대장/포스터':
+        setShowCreateModal(true);
+        break;
+      default:
         break;
     }
   };
@@ -150,6 +157,14 @@ export default function ConsoleDetail({ type }) {
           data={data}
           onClose={() => setShowQrModal(false)}
           type={type}
+        />
+      )}
+
+      {showCreateModal && (
+        <CreateModal
+          onClose={() => {
+            setShowCreateModal(false);
+          }}
         />
       )}
     </div>

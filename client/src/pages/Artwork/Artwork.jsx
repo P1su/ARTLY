@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { instance } from '../../apis/instance.js';
 import DocentSection from './components/DocentSection/DocentSection';
+import Img from '../../components/Img/Img.jsx';
 import { useAlert } from '../../store/AlertProvider.jsx';
 
 const paginateScript = (script, maxLength = 300) => {
@@ -43,14 +44,14 @@ export default function Artwork() {
       <h2 className={styles.title}>{title}</h2>
 
       <section className={styles.mainContent}>
-        <img src={image} alt={`${title} 이미지`} className={styles.infoImage} />
+        <Img src={image} alt={`${title} 이미지`} className={styles.infoImage} />
         <div className={styles.textContainer}>
           <div className={styles.textBox}>
             <strong>작가</strong>
             <span className={styles.text}>{artist}</span>
           </div>
         </div>
-        <DocentSection script={script} />
+        <DocentSection artwork={artwork} />
       </section>
     </main>
   );

@@ -56,7 +56,7 @@ export default function QrScanner() {
           html5QrcodeScannerRef.current
             .stop()
             .then(() => {
-              navigate(`/art/${decodedText}`);
+              navigate(decodedText);
             })
             .catch((err) => {
               console.error('Failed to stop scanner:', err);

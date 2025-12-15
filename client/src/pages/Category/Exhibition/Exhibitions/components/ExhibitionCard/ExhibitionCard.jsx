@@ -7,6 +7,7 @@ import MapModal from '../MapModal/MapModal';
 import { FaStar } from 'react-icons/fa6';
 import IcLocation from './../../../../../../assets/svg/IcLocation';
 import { useUser } from '../../../../../../store/UserProvider.jsx';
+import Img from '../../../../../../components/Img/Img.jsx';
 
 export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   const { user } = useUser();
@@ -76,9 +77,9 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
           {statusLabel}
         </div>
         <div className={styles.imageBox}>
-          <img
+          <Img
             className={styles.exhibitionImage}
-            src={poster || '/placeholder.jpg'}
+            src={poster}
             alt='전시 대표 이미지'
           />
         </div>
