@@ -162,10 +162,8 @@ export default function InvitationGenerator({
 
   return (
     <div className={styles.page}>
-      {showTitle && <h1 className={styles.title}>초대장 문구 생성</h1>}
-
       <div className={styles.formArea}>
-        <label className={styles.label}>행사 주제</label>
+        <label className={styles.label}>전시회 주제</label>
         <input
           type='text'
           value={theme}
@@ -174,32 +172,14 @@ export default function InvitationGenerator({
           className={styles.input}
         />
 
-        <label className={styles.label}>요청사항</label>
+        <label className={styles.label}>요구사항</label>
         <textarea
           value={others}
           onChange={(e) => setOthers(e.target.value)}
-          placeholder='예: 장애인의 날 기념, 문구 포함 등'
+          placeholder='예: #감사함, #전시, #초대 등'
           className={styles.textarea}
         />
 
-        <div className={styles.tagContainer}>
-          {['#계절감', '#기념', '#감성', '#감사', '#초대', '#특별함'].map(
-            (tag) => (
-              <button
-                key={tag}
-                type='button'
-                className={styles.tagButton}
-                onClick={() =>
-                  setOthers((prev) =>
-                    prev.includes(tag) ? prev : prev ? `${prev}, ${tag}` : tag,
-                  )
-                }
-              >
-                {tag}
-              </button>
-            ),
-          )}
-        </div>
         <button
           onClick={handleSubmit}
           className={styles.submitButton}
@@ -234,7 +214,7 @@ export default function InvitationGenerator({
                     className={styles.refineButton}
                     onClick={() => handleRefine(text, i)}
                   >
-                    수정하기
+                    문구 다듬기
                   </button>
                 </div>
               </div>
