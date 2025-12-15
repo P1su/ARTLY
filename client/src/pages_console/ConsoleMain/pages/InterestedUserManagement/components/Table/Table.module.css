@@ -49,7 +49,10 @@
   color: white;
   font-weight: 600;
 }
-
+.tabButtonActive:hover {
+  background-color: var(--primary);
+  color: white;
+}
 /* 테이블 컨테이너 */
 .tableContainer {
   overflow-x: auto;

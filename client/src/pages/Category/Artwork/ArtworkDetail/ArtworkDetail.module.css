@@ -155,7 +155,7 @@
 }
 
 .docentBox {
-  background-color: #f8f9fa;
+  background-color: #f8f9fc;
   padding: 1.5rem;
   border-radius: 8px;
   border-left: 4px solid #4a5bba;
@@ -163,13 +163,13 @@
 }
 .docentLabel {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #4a5bba;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 .docentBox p {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #555;
   margin: 0;
 }
@@ -206,11 +206,11 @@
 
 .docentVideo {
   width: 100%;
-  max-width: 720px;
   height: auto;
   border-radius: 8px;
-  background: #000;
+  background: #00000087;
   outline: none;
+  margin: 1rem 0;
 }
 
 .recommendSection {
@@ -302,6 +302,8 @@
   font-size: 1.5rem;
   font-weight: 500;
   color: #333;
+  margin: 0 1rem;
+  line-height: 1.4;
 }
 
 .exhibitionDate {

@@ -280,16 +280,9 @@ export default function ArtworkDetail({
                     {status.label}
                   </span>
 
-                  <div>
-                    <span className={styles.exhibitionTitle}>
-                      {exh.exhibition_title}
-                    </span>
-                    {exh.start_date && exh.end_date && (
-                      <span className={styles.exhibitionDate}>
-                        {exh.start_date} ~ {exh.end_date}
-                      </span>
-                    )}
-                  </div>
+                  <span className={styles.exhibitionTitle}>
+                    {exh.exhibition_title}
+                  </span>
 
                   <FaChevronRight className={styles.arrowIcon} />
                 </div>
