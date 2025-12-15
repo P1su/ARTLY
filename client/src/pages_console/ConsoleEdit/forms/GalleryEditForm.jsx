@@ -1,6 +1,7 @@
 import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
+import Img from '../../../components/Img/Img.jsx';
 
 export default function GalleryEditForm({ data, setData, onFileChange }) {
   const [tagInput, setTagInput] = useState('');
@@ -190,7 +191,7 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
         >
           {imagePreviewUrl ? (
             <>
-              <img
+              <Img
                 src={imagePreviewUrl}
                 alt='갤러리 대표 이미지'
                 className={styles.previewImage}

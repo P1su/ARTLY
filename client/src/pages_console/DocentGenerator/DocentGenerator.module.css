@@ -98,7 +98,7 @@
     color: #374151;
   }
 
-  /* 확장되는 상세 안내 영역 (체크 시 표시) */
+  /* 체크박스로 확장되는 영역 */
   .expandedContent {
     width: 100%;
     max-width: 780px;
@@ -111,9 +111,16 @@
   }
 
   .expandedActive {
-    max-height: 240px; /* 충분히 크게 잡아 확장 */
+    /* 화면 높이에 따라 유연하게 확장되도록 함 (헤더/푸터 여유 고려) */
+    max-height: min(480px, calc(100vh - 220px));
     padding: 12px 14px 14px 14px;
     opacity: 1;
+    overflow-y: auto; /* 블록 내 스크롤 */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .expandedActive {
+    margin-bottom: 72px;
   }
 
   .expandedTitle {
@@ -166,6 +173,24 @@
     gap: 14px;
     justify-content: center;
     width: 100%;
+  }
+
+  /* 확장 중 푸터에 가려지지 않게 컨테이너에 추가 패딩 부여 */
+  .containerExpanded {
+    padding-bottom: 110px;
+    transition: padding-bottom 200ms ease;
+  }
+
+  @media (min-width: 768px) {
+    .containerExpanded {
+      padding-bottom: 90px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .containerExpanded {
+      padding-bottom: 80px;
+    }
   }
   
   .saveBtn,

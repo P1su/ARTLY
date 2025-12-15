@@ -106,7 +106,7 @@ export default function DocentGenerator({ autoGenerate = false }) {
       df.append('docent_script', docentText);
       df.append('art_name', productName);
       if (artistFile) 
-        df.append('docent_image', artistFile);
+        df.append('docent_img', artistFile);
 
       // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
       userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
@@ -136,7 +136,7 @@ export default function DocentGenerator({ autoGenerate = false }) {
     return <div className={styles.container}>유효한 작품 ID가 없습니다.</div>;
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${confirmChecked ? styles.containerExpanded : ''}`}>
       {loading ? (
         <div className={styles.guide}>작품 정보를 불러오는 중...</div>
       ) : (

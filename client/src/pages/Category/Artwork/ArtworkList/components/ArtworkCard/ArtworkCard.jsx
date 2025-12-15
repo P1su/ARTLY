@@ -1,3 +1,4 @@
+import Img from '../../../../../../components/Img/Img';
 import styles from './ArtworkCard.module.css';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ export default function ArtworkList({ artworkItems }) {
 
   return (
     <Link className={styles.layout} to={`/artworks/${id}`}>
-      <img className={styles.artworkImage} src={image} alt='대표 이미지' />
+      <Img className={styles.artworkImage} src={image} alt='대표 이미지' />
       <h3 className={styles.artworkTitle}>{title}</h3>
       <p className={styles.subParagraph}>{cleanDescription}</p>
     </Link>

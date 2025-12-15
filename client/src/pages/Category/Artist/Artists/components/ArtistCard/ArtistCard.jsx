@@ -2,6 +2,7 @@ import styles from './ArtistCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa6';
 import { userInstance } from '../../../../../../apis/instance';
+import Img from '../../../../../../components/Img/Img';
 
 export default function ArtistCard({ artistItem, onEvent }) {
   const {
@@ -40,7 +41,7 @@ export default function ArtistCard({ artistItem, onEvent }) {
 
   return (
     <Link className={styles.layout} to={`/artists/${id}`}>
-      <img
+      <Img
         className={styles.artistImage}
         src={imageUrl}
         alt='작가 대표 이미지'

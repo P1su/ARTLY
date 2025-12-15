@@ -1,6 +1,7 @@
 import styles from './ArtistActivity.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Img from '../../../../../../components/Img/Img';
 
 export default function ArtistActivity({ description, artworks, exhibitions }) {
   const [activity, setActivity] = useState('profile');
@@ -60,7 +61,7 @@ export default function ArtistActivity({ description, artworks, exhibitions }) {
           ) : (
             artworks?.map(({ id, imageUrl, title }) => (
               <div className={styles.activityItemContainer} key={id}>
-                <img className={styles.artworkImage} src={imageUrl} />
+                <Img className={styles.artworkImage} src={imageUrl} />
                 <h3 className={styles.activityItemTitle}>{title}</h3>
               </div>
             ))

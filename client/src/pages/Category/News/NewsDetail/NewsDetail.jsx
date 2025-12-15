@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { instance } from '../../../../apis/instance.js';
 import ContentsInfoSection from './components/ContentsInfoSection/ContentsInfoSection.jsx';
+import Img from '../../../../components/Img/Img.jsx';
 
 export default function NewsDetail() {
   const { noticeId } = useParams();
@@ -53,7 +54,7 @@ export default function NewsDetail() {
       <hr className={styles.divider} />
 
       <div className={styles.contentsContainer}>
-        <img
+        <Img
           className={styles.newsImage}
           src={image}
           alt={`${title} 대표 이미지`}
