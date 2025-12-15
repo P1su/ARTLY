@@ -4,6 +4,8 @@ import { useUser } from '../../../store/UserProvider';
 import { useAlert } from '../../../store/AlertProvider';
 
 export default function useDeleteItem() {
+  const { showAlert } = useAlert();
+
   const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
@@ -12,7 +14,6 @@ export default function useDeleteItem() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
-  const { showAlert } = useAlert();
   // 갤러리 목록 로드
   const loadGalleries = useCallback(
     async (search = '') => {

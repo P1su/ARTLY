@@ -48,10 +48,6 @@
   color: var(--white01);
 }
 
-.submitButton:hover {
-  background-color: var(--blue02);
-}
-
 .submitButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;

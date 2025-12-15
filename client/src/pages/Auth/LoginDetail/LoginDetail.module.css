@@ -60,7 +60,7 @@
   align-items: center;
 
   border-radius: 3rem;
-  background-color: var(--primary, #3665f3);
+  background-color: var(--primary);
 
   color: #fff;
   font-size: 1.6rem;
@@ -69,10 +69,6 @@
   cursor: pointer;
   border: none;
   transition: background-color 0.2s;
-}
-
-.submitButton:hover {
-  background-color: var(--blue02, #2b52c9);
 }
 
 .submitButton:disabled {

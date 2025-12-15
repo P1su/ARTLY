@@ -171,12 +171,12 @@
 }
 
 .submitBtn {
-  background-color: #1890ff;
+  background-color: var(--secondary);
   color: white;
   box-shadow: 0 0.4rem 1rem rgba(24, 144, 255, 0.3);
 }
 .submitBtn:hover {
-  background-color: #096dd9;
+  background-color: var(--primary);
   transform: translateY(-0.2rem);
 }
 

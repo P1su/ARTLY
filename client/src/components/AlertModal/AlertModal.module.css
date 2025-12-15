@@ -82,7 +82,7 @@
 
 .modalButton:hover,
 .modalButton:focus {
-  background-color: var(--secondary);
+  background-color: var(--primary);
   transform: translateY(-0.1rem);
 }
 
