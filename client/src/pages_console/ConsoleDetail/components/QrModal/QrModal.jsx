@@ -43,15 +43,11 @@ export default function QrModal({ data, onClose, type }) {
 
       try {
         if (isArtwork) {
-          const response = await userInstance.get(`/api/arts/${data.id}`);
-          const artData = response.data;
+          const artPageUrl = `/art/${data.id}`;
 
-          const directFileUrl =
-            artData.docent_audio_path || artData.docent_video_path;
-
-          if (directFileUrl) {
+          if (artPageUrl) {
             setHasContent(true);
-            setQrUrl(directFileUrl);
+            setQrUrl(artPageUrl);
           } else {
             setHasContent(false);
           }
