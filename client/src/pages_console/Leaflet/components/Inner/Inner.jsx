@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import styles from './Inner.module.css';
 
-export default function Inner({ imageList, setImageList, handleImageChange, handleRemoveImage, openFileDialogForInner, innerDropzone }) {
+export default function Inner({
+  imageList,
+  setImageList,
+
+  innerDropzone,
+  handleRemoveImage,
+  openFileDialogForInner,
+}) {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
 
   const handleDragStart = (e, index) => {
-    e.stopPropagation(); // 드롭존 이벤트와 충돌 방지
+    e.stopPropagation();
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', index.toString());
-    e.currentTarget.style.opacity = '0.5';
   };
 
   const handleDragEnd = (e) => {
     e.stopPropagation();
-    e.currentTarget.style.opacity = '1';
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
 
   const handleDragOver = (e, index) => {
     e.preventDefault();
-    e.stopPropagation(); // 드롭존 이벤트와 충돌 방지
+    e.stopPropagation();
     e.dataTransfer.dropEffect = 'move';
     if (draggedIndex !== null && draggedIndex !== index) {
       setDragOverIndex(index);
@@ -30,51 +35,52 @@ export default function Inner({ imageList, setImageList, handleImageChange, hand
   };
 
   const handleDragLeave = (e) => {
-    // 자식 요소로 이동하는 경우는 무시
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setDragOverIndex(null);
     }
   };
 
   const handleDrop = (e, dropIndex) => {
+    if (draggedIndex === null) return;
+
     e.preventDefault();
-    e.stopPropagation(); // 드롭존 이벤트와 충돌 방지
-    
-    if (draggedIndex === null || draggedIndex === dropIndex) {
+    e.stopPropagation();
+
+    if (draggedIndex === dropIndex) {
       setDraggedIndex(null);
       setDragOverIndex(null);
       return;
     }
 
-    const newImageList = [...imageList];
-    const draggedItem = newImageList[draggedIndex];
-    
-    // 드래그된 아이템 제거
-    newImageList.splice(draggedIndex, 1);
-    
-    // 드롭 위치에 삽입 (인덱스 조정)
-    const insertIndex = draggedIndex < dropIndex ? dropIndex - 1 : dropIndex;
-    newImageList.splice(insertIndex, 0, draggedItem);
-    
-    setImageList(newImageList);
+    const listWithoutItem = imageList.filter((_, i) => i !== draggedIndex);
+    listWithoutItem.splice(dropIndex, 0, imageList[draggedIndex]);
+
+    setImageList(listWithoutItem);
+
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
 
   return (
     <div className={styles.innerPagesSectionBox}>
-      <div className={styles.innerPagesLabelSpan}>
-        내지 전체 {imageList.length}장
+      <div className={styles.headerRow}>
+        <span className={styles.innerPagesLabelSpan}>내지 이미지</span>
+        <span className={styles.countBadge}>{imageList.length}장</span>
       </div>
-      <div 
+      <div
         {...innerDropzone.getRootProps()}
-        className={`${styles.innerPagesGridContainer} ${innerDropzone.isDragActive ? styles.dragActive : ''}`}
+        className={`${styles.innerPagesGridContainer} ${innerDropzone.isDragActive ? styles.dropzoneActive : ''}`}
       >
         <input {...innerDropzone.getInputProps()} />
+
         {imageList.map((image, index) => (
-          <div 
-            key={index} 
-            className={`${styles.innerPageItemBox} ${draggedIndex === index ? styles.dragging : ''} ${dragOverIndex === index ? styles.dragOver : ''}`}
+          <div
+            key={image.url}
+            className={`
+              ${styles.innerPageItemBox} 
+              ${draggedIndex === index ? styles.dragging : ''} 
+              ${dragOverIndex === index ? styles.dragOver : ''}
+            `}
             draggable
             onDragStart={(e) => handleDragStart(e, index)}
             onDragEnd={handleDragEnd}
@@ -82,19 +88,37 @@ export default function Inner({ imageList, setImageList, handleImageChange, hand
             onDragLeave={handleDragLeave}
             onDrop={(e) => handleDrop(e, index)}
           >
-            <img src={image.url} alt={image.name} className={styles.innerPageImage} />
-            <button 
+            <div className={styles.imageWrapper}>
+              <img
+                src={image.url}
+                alt={`내지 ${index + 1}`}
+                className={styles.innerPageImage}
+              />
+            </div>
+
+            <div className={styles.pageNumberBadge}>{index + 1}</div>
+
+            {/* =======
+            <img
+              src={image.url}
+              alt={image.name}
+              className={styles.innerPageImage}
+            />
+>>>>>>> develop */}
+            <button
               className={styles.removeInnerPageButton}
               onClick={(e) => {
                 e.stopPropagation();
                 handleRemoveImage(index);
               }}
+              title='삭제'
             >
               ×
             </button>
           </div>
         ))}
-        <div 
+
+        <div
           className={styles.addInnerPageButton}
           onClick={(e) => {
             e.stopPropagation();
@@ -102,9 +126,9 @@ export default function Inner({ imageList, setImageList, handleImageChange, hand
           }}
         >
           <span className={styles.plusIconSpan}>+</span>
+          <span className={styles.addText}>추가하기</span>
         </div>
       </div>
     </div>
   );
 }
-

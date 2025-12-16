@@ -43,13 +43,9 @@
   flex-shrink: 0;
 
   border-radius: 20px;
-  background-color: var(--blue01);
+  background-color: var(--primary);
 
   color: var(--white01);
-}
-
-.submitButton:hover {
-  background-color: var(--blue02);
 }
 
 .submitButton:disabled {

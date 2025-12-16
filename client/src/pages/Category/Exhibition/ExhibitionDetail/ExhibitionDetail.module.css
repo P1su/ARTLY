@@ -266,7 +266,7 @@
   }
   .infoList {
     gap: 1.3rem;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
   }
   .infoLabel {
     width: 8rem;
@@ -275,6 +275,10 @@
     font-size: 1.4rem;
   }
   .descriptionParagraph {
+    font-size: 1.4rem;
+  }
+
+  .backButton {
     font-size: 1.4rem;
   }
 }

@@ -19,17 +19,20 @@ export default function MapModal({ item, onClose }) {
     {
       key: 'location',
       label: '주소',
-      content: location,
+      content: location || '정보없음',
     },
     {
       key: 'date',
       label: '전시기간',
-      content: `${startDate} ~ ${endDate}`,
+      content: startDate && endDate ? `${startDate} ~ ${endDate}` : '정보없음',
     },
     {
       key: 'time',
       label: '관람시간',
-      content: `${startTime} ~ ${endTime}`,
+      content:
+        startTime && endTime
+          ? `${startTime.slice(0, 5)} ~ ${endTime.slice(0, 5)}`
+          : '정보없음',
     },
     {
       key: 'closedDay',
@@ -39,7 +42,7 @@ export default function MapModal({ item, onClose }) {
     {
       key: 'price',
       label: '관람료',
-      content: price,
+      content: price !== 0 ? `${price.toLocaleString()}원` : '무료',
     },
   ];
 

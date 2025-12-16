@@ -2,6 +2,7 @@ import styles from './EditForm.module.css';
 import { useEffect, useRef, useState } from 'react';
 import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
+import Img from '../../../components/Img/Img.jsx';
 
 export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
@@ -14,6 +15,23 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
     ended: '종료',
     default: '정보없음',
   };
+  const STATUS_PRIORITY = {
+    exhibited: 1, // 진행중 (가장 위)
+    scheduled: 2, // 예정
+    ended: 3, // 종료 (가장 아래)
+  };
+  const rawExhibitions = data.exhibitions || [];
+
+  // 우선순위에 따라 정렬된 새 배열 생성
+  const sortedExhibitions = [...rawExhibitions].sort((a, b) => {
+    const statusA = a.exhibition_status;
+    const statusB = b.exhibition_status;
+
+    const priorityA = STATUS_PRIORITY[statusA] || 99; // 정의 안 된 상태는 맨 뒤로
+    const priorityB = STATUS_PRIORITY[statusB] || 99;
+
+    return priorityA - priorityB;
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -82,7 +100,7 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
         >
           {imagePreviewUrl ? (
             <>
-              <img
+              <Img
                 src={imagePreviewUrl}
                 alt='작품 이미지'
                 className={styles.previewImage}
@@ -170,8 +188,8 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
           <div className={styles.inputGroup}>
             <label className={styles.label}>작품 등록된 전시회</label>
             <div className={styles.exhibitionListWrapper}>
-              {data.exhibitions && data.exhibitions.length > 0 ? (
-                data.exhibitions.map((exh) => {
+              {sortedExhibitions && sortedExhibitions.length > 0 ? (
+                sortedExhibitions.map((exh) => {
                   const statusKey = exh.exhibition_status || 'default';
 
                   return (
@@ -195,7 +213,8 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
             </div>
 
             <p className={styles.helperText}>
-              ※ 작품의 전시회 등록 및 해제는 '전시회 관리' 탭에서 진행해주세요.
+              ※ 작품의 전시회 등록 및 해제는 &apos;전시회 관리&apos; 탭에서
+              진행해주세요.
             </p>
           </div>
         </div>

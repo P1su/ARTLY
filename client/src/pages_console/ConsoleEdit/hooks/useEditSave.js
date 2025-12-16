@@ -1,14 +1,28 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom'; // 1. useSearchParams 추가
 import { userInstance } from '../../../apis/instance.js';
+import { useAlert } from '../../../store/AlertProvider.jsx';
 
 const getId = (item) => item.id || item.artist_id;
 
 export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
   const [isSaving, setIsSaving] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-
+  const { showAlert } = useAlert();
+  const [searchParams] = useSearchParams();
   const validate = () => {
-    if (type === 'artworks' && !data.art_title) return '작품명을 입력해주세요.';
+    if (type === 'artworks') {
+      if (!data.art_title) return '작품명을 입력해주세요.';
+
+      // [추가] 작가 선택 여부 확인 (Swagger: artist_id * required)
+      if (!data.artist_id) return '작가를 선택해주세요.';
+
+      // [추가] 생성 모드일 때 이미지 파일 필수 (Swagger: image * required)
+      // selectedImageFile이 없으면 파일을 안 올린 것
+      if (isCreateMode && !selectedImageFile) {
+        return '작품 이미지를 업로드해주세요.';
+      }
+    }
     if (type === 'galleries' && !data.gallery_name)
       return '갤러리명을 입력해주세요.';
     if (type === 'exhibitions') {
@@ -120,14 +134,31 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
       );
     } catch (err) {
       console.error('연결 데이터 업데이트 실패:', err);
-      alert('연결 데이터 저장 중 일부 오류가 발생했습니다.');
+      showAlert('연결 데이터 저장 중 일부 오류가 발생했습니다.');
     }
   };
 
   const handleArtworkConnections = async (savedArtId) => {
-    const selectedExhibitions = data.selected_exhibition_ids || [];
-    if (selectedExhibitions.length > 0 && savedArtId) {
-      const promises = selectedExhibitions.map((exId) =>
+    // 1. URL 파라미터나 data에 있는 단일 exhibition_id 가져오기 (우선순위: URL > data)
+    const urlExhibitionId =
+      searchParams.get('exhibition_id') || data.exhibition_id;
+
+    // 2. 다중 선택된 배열 가져오기
+    const selectedList = data.selected_exhibition_ids || [];
+
+    // 3. 합치기 (Set을 사용해 중복 제거)
+    const targets = new Set([...selectedList]);
+
+    // 단일 ID가 있으면 타겟 목록에 추가
+    if (urlExhibitionId) {
+      targets.add(Number(urlExhibitionId));
+    }
+
+    console.log('최종 연결할 전시회 IDs:', Array.from(targets)); // 디버깅용 로그
+
+    // 4. API 호출
+    if (targets.size > 0 && savedArtId) {
+      const promises = Array.from(targets).map((exId) =>
         userInstance.post(`/api/exhibitions/${exId}/arts`, {
           art_id: savedArtId,
           display_order: 0,
@@ -141,7 +172,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     if (isSaving || !data) return;
 
     const errorMsg = validate();
-    if (errorMsg) return alert(errorMsg);
+    if (errorMsg) return showAlert(errorMsg);
 
     setIsSaving(true);
 
@@ -163,7 +194,11 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
         await handleArtworkConnections(savedId);
       }
 
-      alert(isCreateMode ? '등록되었습니다.' : '수정되었습니다.');
+      showAlert(
+        isCreateMode
+          ? `${type === 'galleries' ? '갤러리가' : type === 'exhibitions' ? '전시회가' : '작품이'} 등록되었습니다.`
+          : '수정되었습니다.',
+      );
 
       // 저장 후 이동 로직
       const tabName =
@@ -179,7 +214,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
       }
     } catch (error) {
       console.error('저장 오류:', error);
-      alert('저장 중 오류가 발생했습니다.');
+      showAlert('저장 중 오류가 발생했습니다.');
     } finally {
       setIsSaving(false);
     }

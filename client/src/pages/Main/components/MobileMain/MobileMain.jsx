@@ -7,6 +7,7 @@ import { useUser } from '../../../../store/UserProvider';
 import IcDocent from '../../../../assets/svg/IcDocent';
 import IcBook from '../../../../assets/svg/IcBook';
 import IcFindGallery from '../../../../assets/svg/IcFindGallery';
+import Img from '../../../../components/Img/Img';
 
 const SLIDE_INTERVAL = 4000;
 const MAX_SLIDES = 3;
@@ -141,7 +142,7 @@ export default function MobileMain() {
               className={styles.slide}
               onClick={() => navigate(`/exhibitions/${item?.id}`)}
             >
-              <img
+              <Img
                 src={item?.image}
                 alt={item?.title}
                 className={styles.slideImage}
@@ -229,7 +230,7 @@ export default function MobileMain() {
                               >
                                 {formatStatus(ex.exhibition_status)}
                               </div>
-                              <img
+                              <Img
                                 className={styles.exhibitionImage}
                                 src={getImageUrl(ex.exhibition_poster)}
                                 alt=''
@@ -281,7 +282,7 @@ export default function MobileMain() {
                         >
                           {formatStatus(ex.exhibition_status)}
                         </div>
-                        <img
+                        <Img
                           className={styles.exhibitionImage}
                           src={getImageUrl(ex.exhibition_poster)}
                           alt={ex.exhibition_title}
@@ -328,12 +329,9 @@ export default function MobileMain() {
                         onClick={() => navigate(`/galleries/${gallery.id}`)}
                       >
                         <div className={styles.imageBox}>
-                          <img
+                          <Img
                             className={styles.exhibitionImage}
-                            src={
-                              getImageUrl(displayImage) ||
-                              '/images/no-image.png'
-                            }
+                            src={getImageUrl(displayImage)}
                             alt={gallery.gallery_name}
                           />
                         </div>

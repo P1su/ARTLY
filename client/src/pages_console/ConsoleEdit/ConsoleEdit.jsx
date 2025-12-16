@@ -6,6 +6,8 @@ import { useEditSave } from './hooks/useEditSave';
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
+import { useConfirm } from '../../store/ConfirmProvider.jsx';
+import { FaChevronLeft } from 'react-icons/fa6';
 
 const EDIT_CONFIG = {
   galleries: {
@@ -34,6 +36,7 @@ const FORM_COMPONENTS = {
 
 export default function ConsoleEdit({ type }) {
   const { id } = useParams();
+  const { showConfirm } = useConfirm();
   const navigate = useNavigate();
   const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
@@ -57,14 +60,17 @@ export default function ConsoleEdit({ type }) {
     navigate,
   );
 
-  const handleCancel = () => {
-    if (window.confirm('수정을 취소하시겠습니까?')) {
+  const handleCancel = async () => {
+    const isConfirmed = await showConfirm('수정을 취소하시겠습니까?');
+
+    if (isConfirmed) {
       const tabName =
         type === 'galleries'
           ? '갤러리관리'
           : type === 'exhibitions'
             ? '전시회관리'
             : '작품관리';
+
       if (isCreateMode) {
         navigate('/console/main', { state: { activeTab: tabName } });
       } else {
@@ -81,7 +87,7 @@ export default function ConsoleEdit({ type }) {
     <div className={styles.layout}>
       <header className={styles.header}>
         <button className={styles.backButton} onClick={handleCancel}>
-          {'<'}
+          <FaChevronLeft />
         </button>
         <h1 className={styles.title}>{config.title}</h1>
       </header>

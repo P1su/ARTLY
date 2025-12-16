@@ -1,6 +1,7 @@
 import styles from './Find.module.css';
 import InputText from '../../../components/Input/InputText/InputText';
 import useInput from '../../../hooks/useInput';
+import { useAlert } from '../../../store/AlertProvider';
 
 export default function Find() {
   const { data: idDatas, handleChange: handleLoginChange } = useInput({
@@ -11,6 +12,8 @@ export default function Find() {
     userId: '',
     userEmail: '',
   });
+
+  const { showAlert } = useAlert();
 
   const handleFindId = (e) => {
     e.preventDefault();

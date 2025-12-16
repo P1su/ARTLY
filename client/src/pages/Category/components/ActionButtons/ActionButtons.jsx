@@ -7,12 +7,15 @@ import {
   FaQrcode,
   FaCheck,
 } from 'react-icons/fa';
+import { useAlert } from '../../../../store/AlertProvider';
 
 export default function ActionButtons({ type, data, handlers }) {
   const { handleLike, handleShowMap, handleShare } = handlers;
 
   const isGallery = type === 'galleries';
   const isExhibition = type === 'exhibitions';
+
+  const { showAlert } = useAlert();
 
   const buttons = isGallery
     ? [

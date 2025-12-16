@@ -2,6 +2,7 @@ import styles from './ArtistActivity.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockArtistDetail } from '../../mock/mockArtistDetail.js';
+import Img from '../../../../../../components/Img/Img.jsx';
 
 export default function ArtistActivity({ description }) {
   const [activity, setActivity] = useState('artworks');
@@ -75,7 +76,7 @@ export default function ArtistActivity({ description }) {
             artworks.map(
               ({ artworkId, artworkImage, artworkTitle, date, field }) => (
                 <div className={styles.activityItemContainer} key={artworkId}>
-                  <img className={styles.artworkImage} src={artworkImage} />
+                  <Img className={styles.artworkImage} src={artworkImage} />
                   <h3 className={styles.activityItemTitle}>{artworkTitle}</h3>
                   <span className={styles.activityItemSpan}>
                     {date} | {field}
@@ -99,7 +100,7 @@ export default function ArtistActivity({ description }) {
                 key={exhibitionId}
                 to={`/exhibitions/${exhibitionId}`}
               >
-                <img
+                <Img
                   className={styles.activityImage}
                   src={exhibitionImage}
                   alt='대표 이미지'

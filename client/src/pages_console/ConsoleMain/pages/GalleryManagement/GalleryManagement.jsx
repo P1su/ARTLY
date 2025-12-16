@@ -8,6 +8,8 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
+import Img from '../../../../components/Img/Img.jsx';
+import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function GalleryManagement({
   galleryList,
@@ -17,6 +19,7 @@ export default function GalleryManagement({
   isSearching,
   error,
 }) {
+  const { showConfirm } = useConfirm();
   const navigate = useNavigate();
 
   // 디바운스 검색 hook 사용
@@ -30,9 +33,18 @@ export default function GalleryManagement({
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
 
-  const handleDelete = (id) => {
-    if (window.confirm('정말로 이 갤러리를 삭제하시겠습니까?')) {
-      onDelete(id, 'gallery');
+  const handleDelete = async (id) => {
+    const isConfirmed = await showConfirm(
+      '정말로 이 갤러리를 삭제하시겠습니까?',
+      true,
+    );
+
+    if (isConfirmed) {
+      await onDelete(id, 'gallery');
+      navigate('/console/main', {
+        state: { activeTab: '갤러리관리' },
+        replace: true,
+      });
     }
   };
 
@@ -61,7 +73,9 @@ export default function GalleryManagement({
         </div>
       ) : error ? (
         <div className={styles.contentContainer}>
-          <div className={styles.errorMessage}>오류가 발생했습니다: {error}</div>
+          <div className={styles.errorMessage}>
+            오류가 발생했습니다: {error}
+          </div>
         </div>
       ) : filteredGalleryList.length > 0 ? (
         <section className={styles.contentContainer}>
@@ -72,7 +86,7 @@ export default function GalleryManagement({
               onClick={() => navigate(`/console/galleries/${gallery.id}`)}
             >
               <div className={styles.cardContent}>
-                <img
+                <Img
                   src={gallery.image}
                   alt={gallery.name}
                   className={styles.galleryImage}
@@ -90,11 +104,15 @@ export default function GalleryManagement({
                       <HiTrash size={18} />
                     </button>
                   </div>
-                  <p className={styles.galleryAddress}>{gallery.address}</p>
-                  <p className={styles.galleryClosedDay}>
-                    휴관일 | {gallery.closedDay}
+                  <p className={styles.galleryAddress}>
+                    {gallery.address || '주소 정보 없음'}
                   </p>
-                  <p className={styles.galleryTime}>{gallery.time}</p>
+                  <p className={styles.galleryClosedDay}>
+                    휴관일 | {gallery.closedDay || '없음'}
+                  </p>
+                  <p className={styles.galleryTime}>
+                    {gallery.time.replace('-', '~')}
+                  </p>
                 </div>
               </div>
               <div className={styles.cardFooter}>

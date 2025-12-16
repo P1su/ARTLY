@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './SectionCard.module.css';
+import Img from '../../../../../components/Img/Img';
 
 export default function SectionCard({
   item,
@@ -39,7 +40,7 @@ export default function SectionCard({
     return (
       <div onClick={onGoDetail} className={styles.cardContainer}>
         <div className={styles.imgContainer}>
-          <img
+          <Img
             src={image}
             alt={title}
             className={`${styles.image} ${imageRound}`}
@@ -78,7 +79,7 @@ export default function SectionCard({
     return (
       <div className={styles.cardContainer} onClick={onReservation}>
         <div className={styles.imgContainer}>
-          <img
+          <Img
             src={exhibitionImg}
             alt={exhibitionTitle}
             className={styles.image}
@@ -167,7 +168,7 @@ export default function SectionCard({
     return (
       <div onClick={onGoDetail} className={styles.cardContainer}>
         <div className={styles.imgContainer}>
-          <img src={bookImg} alt={bookTitle} className={styles.image} />
+          <Img src={bookImg} alt={bookTitle} className={styles.image} />
         </div>
         <div className={styles.contents}>
           <h3 className={styles.title}>{bookTitle}</h3>

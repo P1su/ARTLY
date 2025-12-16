@@ -62,8 +62,7 @@
   height: 4.8rem;
 
   background: var(
-    --blue01,
-    #3665f3
+    --secondary
   ); /* 브랜드 컬러 변수 없으면 #3665f3 등 직접 입력 */
   border: none;
   border-radius: 1.2rem;
@@ -79,7 +78,7 @@
 }
 
 .closeButton:hover {
-  background: #2b52c9; /* 호버 시 조금 더 진하게 */
+  background: var(--primary); /* 호버 시 조금 더 진하게 */
 }
 
 .closeButton:active {

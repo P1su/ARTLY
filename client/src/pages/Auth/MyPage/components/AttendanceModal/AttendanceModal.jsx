@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './AttendanceModal.module.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import Img from '../../../../../components/Img/Img';
 
 const AttendanceModal = ({
   isOpen,
@@ -23,7 +24,7 @@ const AttendanceModal = ({
         </div>
 
         <div className={styles.imageContainer}>
-          <img src={imageUrl} alt={exhibitionTitle} />
+          <Img src={imageUrl} alt={exhibitionTitle} />
         </div>
 
         <div className={styles.checkIconContainer}>

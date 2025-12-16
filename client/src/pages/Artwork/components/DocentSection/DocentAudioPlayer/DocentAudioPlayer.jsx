@@ -1,44 +1,44 @@
 import { useRef, useState, useEffect } from 'react';
 import styles from './DocentAudioPlayer.module.css';
 import { FaPlay, FaStop, FaPause } from 'react-icons/fa';
+import LoadingSpinner from '../../../../../components/LoadingSpinner/LoadingSpinner';
+import { instance } from '../../../../../apis/instance';
 
-export default function DocentAudioPlayer({ script, playbackRate }) {
+export default function DocentAudioPlayer({ artwork, playbackRate }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioReady, setIsAudioReady] = useState(false);
   const [changedPlaybackRate, setChangedPlaybackRate] = useState(playbackRate);
   const audioRef = useRef(null);
+  const BASE_URL = import.meta.env.VITE_SERVER_URL;
+  const hasAudio = Boolean(artwork?.docent_audio_path);
+  const hasVideo = Boolean(artwork?.docent_video_path);
+  const isAudioDocent = hasAudio && !hasVideo;
+  const hasAnyDocent = hasAudio || hasVideo;
 
-  // get audio content when script changes
+  // get audio content when artwork changes
   useEffect(() => {
-    let isMounted = true;
     setIsAudioReady(false);
 
-    const fetchAudio = async () => {
-      console.log('Fetching audio for script:', `${script.substr(0, 50)}...`);
-      const audioContent = await callTTS();
-
-      if (audioContent && isMounted) {
-        console.log('Audio content fetched successfully');
-        const audio = new Audio(`data:audio/mp3;base64,${audioContent}`);
+    const createAudio = async () => {
+        const audio = new Audio(`${BASE_URL}/media/${artwork.docent_audio_path}`);
         audio.playbackRate = playbackRate;
         audio.onended = () => setIsPlaying(false);
         audio.playbackRate = changedPlaybackRate;
         audioRef.current = audio;
         setIsAudioReady(true);
-      }
     };
 
-    fetchAudio();
+    if (isAudioDocent) createAudio();
 
     // cleanup
     return () => {
-      isMounted = false;
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
+        audioRef.current = null;
       }
     };
-  }, [script]);
+  }, [artwork]);
 
   // update playback rate immediately when it changes
   useEffect(() => {
@@ -47,27 +47,6 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
       audioRef.current.playbackRate = playbackRate;
     }
   }, [playbackRate]);
-
-  // call Google TTS API to get audio content
-  const callTTS = async () => {
-    const response = await fetch(
-      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${import.meta.env.VITE_GCloud_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input: { text: script },
-          voice: { languageCode: 'ko-KR', name: 'ko-KR-Chirp3-HD-Kore' }, //Aoede, Kore, Leda, Orus, Puck...
-          audioConfig: { audioEncoding: 'MP3' },
-        }),
-      },
-    );
-
-    const data = await response.json();
-    const { audioContent } = data;
-
-    if (audioContent) return audioContent;
-  };
 
   // handle play/pause button click
   const handlePlayPauseClick = () => {
@@ -92,21 +71,35 @@ export default function DocentAudioPlayer({ script, playbackRate }) {
 
   return (
     <div className={styles.audioPlayerWrapper}>
-      <button
-        className={styles.audioButton}
-        onClick={handlePlayPauseClick}
-        disabled={!isAudioReady}
-      >
-        {!isAudioReady ? '로딩 중...' : isPlaying ? <FaPause /> : <FaPlay />}
-      </button>
-      <button
-        className={styles.audioButton}
-        onClick={handleStopClick}
-        disabled={!isAudioReady}
-        aria-label='정지'
-      >
-        {!isAudioReady ? '' : <FaStop />}
-      </button>
+      {!hasAnyDocent ? (
+        <div className={styles.placeholder} role="status">
+          아직 도슨트가 생성되지 않았습니다.
+        </div>
+      ) : isAudioDocent ? (
+        <>
+          <button
+            className={styles.audioButton}
+            onClick={handlePlayPauseClick}
+            disabled={!isAudioReady}
+          >
+            {!isAudioReady ? <LoadingSpinner /> : isPlaying ? <FaPause /> : <FaPlay />}
+          </button>
+          <button
+            className={styles.audioButton}
+            onClick={handleStopClick}
+            disabled={!isAudioReady}
+            aria-label='정지'
+          >
+            {!isAudioReady ? '' : <FaStop />}
+          </button>
+        </>
+      ) : (
+        <video
+          className={styles.videoPlayer}
+          controls
+          src={`${BASE_URL}/media/${artwork.docent_video_path}`}
+        />
+      )}
     </div>
   );
 }

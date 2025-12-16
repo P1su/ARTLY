@@ -1,8 +1,9 @@
 import styles from './Login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
+import { RiKakaoTalkFill } from 'react-icons/ri';
+import IcLogo from '../../../assets/svg/IcLogo';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Login() {
     <div className={styles.container}>
       <div className={styles.loginContent}>
         <div className={styles.header}>
-          <h1 className={styles.logo}>ARTLY</h1>
+          <IcLogo color='#3c504b' />
           <p className={styles.subtitle}>아뜰리 계정으로 로그인하세요.</p>
         </div>
 

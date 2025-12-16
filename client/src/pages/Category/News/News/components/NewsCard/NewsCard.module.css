@@ -39,8 +39,8 @@
 }
 
 .진행중 {
-  border-color: var(--blue01);
-  color: var(--blue01);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .종료 {

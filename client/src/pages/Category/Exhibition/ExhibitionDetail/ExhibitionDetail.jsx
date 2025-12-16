@@ -13,7 +13,8 @@ import RelatedExhibitions from './components/RelatedExhibitions/RelatedExhibitio
 import ArtworksCards from '../../../../pages_console/ConsoleDetail/components/ArtworksCards/ArtworksCards.jsx';
 import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
-import InvitationGenerator from './components/InvitationGenerator/InvitationGenerator.jsx';
+import Img from '../../../../components/Img/Img.jsx';
+import { useAlert } from '../../../../store/AlertProvider.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -24,6 +25,7 @@ export default function ExhibitionDetail({
   const id = propId || exhibitionId;
   const { user } = useUser();
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const [exhibitionData, setExhibitionData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -91,10 +93,10 @@ export default function ExhibitionDetail({
 
       try {
         document.execCommand('copy');
-        alert('링크가 클립보드에 복사되었습니다.');
+        showAlert('링크가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('클립보드 복사 실패:', err);
-        alert('링크 복사에 실패했습니다.');
+        showAlert('링크 복사에 실패했습니다.', 'error');
       } finally {
         document.body.removeChild(textarea);
       }
@@ -132,7 +134,10 @@ export default function ExhibitionDetail({
   const isReservable = status === 'exhibited';
 
   const infoList = [
-    { label: '전시기간', content: `${startDate} ~ ${endDate}` },
+    {
+      label: '전시기간',
+      content: startDate && endDate ? `${startDate} ~ ${endDate}` : '정보 없음',
+    },
     { label: '전시장소', content: organization },
     {
       label: '관람시간',
@@ -157,7 +162,7 @@ export default function ExhibitionDetail({
   const detailTabs = [
     { key: 'info', label: '정보' },
     { key: 'artworks', label: `작품(${artworks.length})` },
-    { key: 'exhibitions', label: `전시(${relatedExhibitions.length})` },
+    // { key: 'exhibitions', label: `연관 전시(${relatedExhibitions.length})` },
   ];
 
   return (
@@ -175,7 +180,7 @@ export default function ExhibitionDetail({
       )}
 
       <div className={styles.card}>
-        <img className={styles.posterImage} src={poster} alt='전시회 포스터' />
+        <Img className={styles.posterImage} src={poster} alt='전시회 포스터' />
 
         <section className={styles.titleSection}>
           <h1 className={styles.exhibitionTitle}>{title}</h1>
@@ -277,13 +282,6 @@ export default function ExhibitionDetail({
           </>
         )}
       </DetailTabs>
-
-      {/* 초대장 문구 생성 - 콘솔에서만 표시 */}
-      {!showUserActions && (
-        <div className={`${styles.card} ${styles.tabCard}`}>
-          <InvitationGenerator initialTheme={title} initialOthers='' showTitle />
-        </div>
-      )}
 
       {showUserActions && (
         <button

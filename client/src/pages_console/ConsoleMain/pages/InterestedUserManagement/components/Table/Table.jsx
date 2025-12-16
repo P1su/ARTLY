@@ -52,15 +52,17 @@ export default function Table({
           <table className={styles.table}>
             <thead className={styles.tableHeader}>
               <tr>
-                <th className={`${styles.tableHeaderCell} ${styles.checkboxCell}`}>
+                <th
+                  className={`${styles.tableHeaderCell} ${styles.checkboxCell}`}
+                >
                   <label className={styles.checkboxWrapper}>
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       className={styles.checkbox}
                       checked={isAllSelected(interestedUserList)}
                       onChange={handleSelectAll}
                     />
-                    <span className={styles.checkboxCustom}></span>
+                    <span className={styles.checkboxCustom} />
                   </label>
                 </th>
                 <th className={styles.tableHeaderCell}>대상</th>
@@ -69,7 +71,7 @@ export default function Table({
               </tr>
             </thead>
             <tbody>
-              {interestedUserList.map(user => (
+              {interestedUserList.map((user) => (
                 <tr
                   key={`${user.type}-${user.id}`}
                   className={`${styles.tableRow} ${selectedUserList.includes(user.id) ? styles.tableRowSelected : ''}`}
@@ -77,19 +79,23 @@ export default function Table({
                   <td className={`${styles.tableCell} ${styles.checkboxCell}`}>
                     <label className={styles.checkboxWrapper}>
                       <input
-                        type="checkbox"
+                        type='checkbox'
                         className={styles.checkbox}
                         checked={selectedUserList.includes(user.id)}
                         onChange={() => onUserSelect(user.id)}
                       />
-                      <span className={styles.checkboxCustom}></span>
+                      <span className={styles.checkboxCustom} />
                     </label>
                   </td>
                   <td className={styles.tableCell}>
                     <span className={styles.categoryName}>{user.category}</span>
                   </td>
                   <td className={styles.tableCell}>
-                    <span className={styles.userName}>{user.name}</span>
+                    <span className={styles.userName}>
+                      {user.name === 'string' || !user.name
+                        ? '이름 없음'
+                        : user.name}
+                    </span>
                   </td>
                   <td className={`${styles.tableCell} ${styles.dateCell}`}>
                     {user.date}
@@ -104,7 +110,13 @@ export default function Table({
           <div className={styles.emptyIcon}>📭</div>
           <p className={styles.emptyText}>관심유저가 없어요</p>
           <p className={styles.emptySubtext}>
-            {activeTab === 'all' ? '전체' : activeTab === 'gallery' ? '갤러리' : activeTab === 'exhibition' ? '전시회' : '작품'}
+            {activeTab === 'all'
+              ? '전체'
+              : activeTab === 'gallery'
+                ? '갤러리'
+                : activeTab === 'exhibition'
+                  ? '전시회'
+                  : '작품'}
             에 좋아요한 사용자가 없습니다
           </p>
         </div>

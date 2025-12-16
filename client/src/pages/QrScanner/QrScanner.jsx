@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import styles from './QrScanner.module.css';
 import { userInstance } from '../../apis/instance';
+import { useAlert } from '../../store/AlertProvider';
 
 export default function QrScanner() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function QrScanner() {
   const html5QrcodeScannerRef = useRef(null);
   const [error, setError] = useState(null);
   const [showTestMessage, setShowTestMessage] = useState(false);
+  const { showAlert } = useAlert();
 
   const receivedExhibitionInfo = location.state?.exhibitionInfo || null;
 
@@ -32,7 +34,7 @@ export default function QrScanner() {
       });
     } catch (err) {
       console.error('관람 인증 실패:', err);
-      alert('관람 인증 처리 중 문제가 발생했습니다.');
+      showAlert('관람 인증 처리 중 문제가 발생했습니다.');
     }
   };
 
@@ -54,7 +56,7 @@ export default function QrScanner() {
           html5QrcodeScannerRef.current
             .stop()
             .then(() => {
-              navigate(`/art/${decodedText}`);
+              navigate(decodedText);
             })
             .catch((err) => {
               console.error('Failed to stop scanner:', err);

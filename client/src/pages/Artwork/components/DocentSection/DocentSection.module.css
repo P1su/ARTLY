@@ -46,7 +46,7 @@
 
 .clickedSpeedButton {
   color: var(--white01);
-  background: var(--blue01);
+  background: var(--primary);
 }
 
 .buttonField {

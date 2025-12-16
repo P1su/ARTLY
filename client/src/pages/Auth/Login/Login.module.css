@@ -19,22 +19,14 @@
 
 .header {
   text-align: center;
-  /* margin-bottom: 4rem; (소셜 로그인 없애기 전의 코드) */ 
-  margin-bottom: 2rem;
-}
-
-.logo {
-  color: var(--blue01, #3665f3);
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 4rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 }
 
 .subtitle {
   color: #666;
   font-size: 1.5rem;
   font-weight: 400;
+  padding-top: 0.5rem;
 }
 
 .buttonGroup {
@@ -42,6 +34,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .socialButton,
@@ -109,12 +102,14 @@
 }
 
 .emailButton {
-  background-color: var(--blue01, #3665f3);
+  background-color: var(--primary, #3665f3);
   color: #ffffff;
 }
 
 .footer {
   margin-top: 3rem;
+  color: #999;
+  font-size: 1.3rem;
 }
 
 .registerLink {

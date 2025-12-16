@@ -1,161 +1,182 @@
-/* 내지 섹션 - 모바일 우선 */
 .innerPagesSectionBox {
-  margin-bottom: 2rem; /* 모바일용 작은 마진 */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
 }
 
 .innerPagesLabelSpan {
-  font-size: 1.2rem; /* 모바일용 작은 폰트 */
-  font-weight: 600;
-  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+
   color: #333;
 }
 
+.countBadge {
+  font-size: 1.4rem;
+  color: #888;
+  background-color: #f1f3f5;
+  padding: 0.4rem 1rem;
+  border-radius: 1.2rem;
+  font-weight: 500;
+}
+
+/* 그리드 컨테이너 & 드롭존 */
 .innerPagesGridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); /* 모바일용 크기 */
-  gap: 1rem;
-  min-height: 20rem;
+  /* 카드 너비 최소 140px, 화면 꽉 차게 자동 배열 */
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.6rem;
+
+  width: 100%;
+  min-height: 30rem;
+  padding: 2rem;
+  background-color: #fafafa;
+  border: 0.2rem dashed #e1e4e8;
+  border-radius: 1.2rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
 }
 
+.dropzoneActive {
+  background-color: #f0f7ff;
+  border-color: #1890ff;
+}
+
+/* 개별 카드 아이템 (세로 비율) */
 .innerPageItemBox {
   position: relative;
-  width: 12rem; /* 모바일용 크기 */
-  height: 20rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.6rem;
+  width: 100%;
+  aspect-ratio: 1 / 1.5; /* 세로형 비율 */
+  background: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.08);
+  border: 0.1rem solid #eee;
   overflow: hidden;
-  box-sizing: border-box;
-  cursor: move;
-  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: grab;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    opacity 0.2s;
 }
 
-.innerPageItemBox:hover {
-  transform: translateY(-0.2rem);
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.15);
-}
-
-.innerPageItemBox.dragging {
-  opacity: 0.5;
+.innerPageItemBox:active {
   cursor: grabbing;
 }
 
-.innerPageItemBox.dragOver {
-  border: 0.2rem solid #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+/* 드래그 상태 스타일 */
+.dragging {
+  opacity: 0.4;
+  border: 0.2rem dashed #999;
 }
 
+.dragOver {
+  border: 0.2rem solid #1890ff;
+  transform: scale(1.02);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+}
 .innerPageImage {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* cover에서 contain으로 변경 */
+  object-fit: contain;
+  background-color: #e9ecef;
+  pointer-events: none;
 }
 
+/* 삭제 버튼 */
 .removeInnerPageButton {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
   border: none;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
   cursor: pointer;
-}
-
-.addInnerPageButton {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 12rem; /* 모바일용 크기 */
-  height: 20rem;
-  border: 0.2rem solid #ddd;
-  border-radius: 0.6rem;
+  opacity: 0; /* 평소엔 숨김 */
+  transition:
+    opacity 0.2s,
+    background 0.2s;
+  padding-bottom: 0.2rem;
+}
+
+.innerPageItemBox:hover .removeInnerPageButton {
+  opacity: 1;
+}
+
+.removeInnerPageButton:hover {
+  background: rgba(255, 77, 79, 0.9);
+}
+
+/* 페이지 번호 뱃지 */
+.pageNumberBadge {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+/* 추가 버튼 (카드 형태) */
+.addInnerPageButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1.5;
+  background-color: white;
+  border: 0.2rem dashed #ddd;
+  border-radius: 0.8rem;
   cursor: pointer;
-  transition: border-color 0.2s;
-  box-sizing: border-box;
+  transition: all 0.2s;
+  gap: 0.8rem;
 }
 
 .addInnerPageButton:hover {
-  border-color: #007bff;
+  border-color: #1890ff;
+  background-color: #f0f7ff;
 }
 
 .addInnerPageButton .plusIconSpan {
-  font-size: 4.8rem;
+  font-size: 3.2rem;
+  color: #adb5bd;
   font-weight: 300;
-  color: #999;
 }
 
-/* 업로드 옵션 */
-.optionsMenuBox {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  margin-top: 0.4rem;
-  padding: 0;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.6rem;
-  background: white;
-  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15);
+.addText {
+  font-size: 1.3rem;
+  color: #868e96;
+  font-weight: 500;
 }
 
-.optionItem {
-  display: block;
-  width: 100%;
-  padding: 1.2rem 1.6rem;
-  border: none;
-  border-bottom: 0.1rem solid #f0f0f0;
-  background: white;
-  text-align: left;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.optionItem:last-child {
-  border-bottom: none;
-}
-
-.optionItem:hover {
-  background-color: #f8f9fa;
-}
-
-/* 태블릿 이상 (768px 이상) */
-@media (min-width: 768px) {
-  .innerPagesSectionBox {
-    margin-bottom: 3.2rem; /* 태블릿용 큰 마진 */
-  }
-  
-  .innerPagesLabelSpan {
-    font-size: 1.6rem; /* 태블릿용 큰 폰트 */
-    margin-bottom: 1.2rem;
-  }
-  
+@media (max-width: 700px) {
   .innerPagesGridContainer {
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); /* 태블릿용 크기 */
-    gap: 1.2rem;
-    min-height: 25rem;
+    grid-template-columns: repeat(2, 1fr); /* 모바일에서는 2개씩 보기 */
+    gap: 1rem;
+    padding: 1.5rem;
   }
-  
-  .innerPageItemBox {
-    width: 15rem; /* 태블릿용 크기 */
-    height: 25rem;
-  }
-  
-  .addInnerPageButton {
-    width: 15rem; /* 태블릿용 크기 */
-    height: 25rem;
-  }
-}
-.dragActive {
-  border: 0.2rem dashed #007bff !important;
-  background-color: rgba(0, 123, 255, 0.05) !important;
 }

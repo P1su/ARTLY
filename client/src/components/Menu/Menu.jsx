@@ -1,13 +1,14 @@
 import styles from './Menu.module.css';
-import { useContext, useState } from 'react'; 
+import { useContext, useState } from 'react';
 import { UserContext } from '../../store/UserProvider.jsx';
 import { useNavigate } from 'react-router-dom';
 import { menuList } from '../../utils/menu.js';
-import LogoutModal from './LogoutModal/LogoutModal.jsx'; 
+import LogoutModal from './LogoutModal/LogoutModal.jsx';
 import Cookies from 'js-cookie';
 
 export default function Menu({ onOpen, isOpen }) {
   const navigate = useNavigate();
+  // const { isOpen: isModalOpen, handleOpenModal } = useModal();
   // const { isOpen: isModalOpen, handleOpenModal } = useModal();
   const { user, logout } = useContext(UserContext);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -30,6 +31,12 @@ export default function Menu({ onOpen, isOpen }) {
   //   navigate('/');
   // };
 
+  // const handleCloseModal = () => {
+  //   handleOpenModal();
+  //   onOpen();
+  //   navigate('/');
+  // };
+
   const handleNavigate = (path, isBook = false) => {
     onOpen();
     !isBook
@@ -39,11 +46,7 @@ export default function Menu({ onOpen, isOpen }) {
 
   return (
     <div className={styles.overlay} onClick={onOpen}>
-      
-      <LogoutModal 
-        isOpen={isLogoutModalOpen} 
-        onClose={handleLogoutConfirm} 
-      />
+      <LogoutModal isOpen={isLogoutModalOpen} onClose={handleLogoutConfirm} />
 
       <div
         className={`${styles.menuLayout} ${isOpen ? styles.menuVisible : styles.menuHidden}`}

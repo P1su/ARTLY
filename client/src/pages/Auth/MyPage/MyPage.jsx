@@ -5,6 +5,7 @@ import TabLike from './components/TabContent/TabLike/TabLike';
 import TabPurchased from './components/TabContent/TabPurchased/TabPurchased';
 import TabMyView from './components/TabContent/TabMyView/TabMyView';
 import { useLocation } from 'react-router-dom';
+import DetailTabs from '../../../components/DetailTabs/DetailTabs';
 
 export default function MyPage() {
   const location = useLocation();

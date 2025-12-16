@@ -61,7 +61,7 @@
 }
 
 .searchBar input:focus {
-  border: 1px solid var(--blue01);
+  border: 1px solid var(--primary);
 }
 
 .searchBar button {
@@ -202,7 +202,7 @@
 }
 
 .addInput:focus {
-  border: 1px solid var(--blue01);
+  border: 1px solid var(--primary);
 }
 
 .formActions {
