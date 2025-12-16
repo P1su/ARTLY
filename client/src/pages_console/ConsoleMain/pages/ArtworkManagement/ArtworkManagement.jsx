@@ -164,11 +164,11 @@ export default function ArtworkManagement({
                     {/* 현재 선택된 전시회 제목 표시 */}
                     {selectedExhibition
                       ? exhibitionList.find(
-                          (ex) => ex.id === selectedExhibition,
-                        )?.title
+                        (ex) => ex.id === selectedExhibition,
+                      )?.title
                       : artwork.exhibition_title ||
-                        artwork.exhibition_name ||
-                        '-'}
+                      artwork.exhibition_name ||
+                      '-'}
                   </p>
                 </div>
               </div>
@@ -187,3 +187,4 @@ export default function ArtworkManagement({
     </section>
   );
 }
+

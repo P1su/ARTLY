@@ -11,11 +11,7 @@ import styles from './InterestedUserManagement.module.css';
 import { userInstance } from '../../../../apis/instance';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 
-export default function InterestedUserManagement({
-  galleryList = [],
-  exhibitionList = [],
-  artworkList = [],
-}) {
+export default function InterestedUserManagement() {
   const { showAlert } = useAlert();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -38,7 +34,7 @@ export default function InterestedUserManagement({
     activeTab,
     handleSearchChange,
     handleTabChange,
-  } = useInterestedUser({ galleryList, exhibitionList, artworkList });
+  } = useInterestedUser();
 
   /**
    * 알림 보내기
