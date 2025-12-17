@@ -49,10 +49,12 @@
   color: white;
   font-weight: 600;
 }
+
 .tabButtonActive:hover {
   background-color: var(--primary);
   color: white;
 }
+
 /* 테이블 컨테이너 */
 .tableContainer {
   overflow-x: auto;
@@ -115,7 +117,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  position: relative; /* 위치 기준점 명시 */
+  position: relative;
+  /* 위치 기준점 명시 */
 }
 
 .checkbox {
@@ -153,12 +156,12 @@
   border-width: 0 2px 2px 0;
 }
 
-.checkbox:checked + .checkboxCustom {
+.checkbox:checked+.checkboxCustom {
   background-color: #3b82f6;
   border-color: #3b82f6;
 }
 
-.checkbox:checked + .checkboxCustom::after {
+.checkbox:checked+.checkboxCustom::after {
   display: block;
 }
 
@@ -166,7 +169,7 @@
   border-color: #94a3b8;
 }
 
-.checkbox:checked + .checkboxCustom:hover {
+.checkbox:checked+.checkboxCustom:hover {
   background-color: #2563eb;
   border-color: #2563eb;
 }
@@ -278,10 +281,12 @@
     width: 1.4rem;
     height: 1.4rem;
   }
+
   .checkboxCustom::after {
     width: 0.4rem;
     height: 0.75rem;
-    border-width: 0 2.5px 2.5px 0; /* 선 굵기도 살짝 굵게 */
+    border-width: 0 2.5px 2.5px 0;
+    /* 선 굵기도 살짝 굵게 */
   }
 
   .typeTag {
@@ -348,8 +353,10 @@
   .checkboxCustom::after {
     width: 0.5rem;
     height: 0.85rem;
-    border-width: 0 3px 3px 0; /* 선 더 굵게 */
+    border-width: 0 3px 3px 0;
+    /* 선 더 굵게 */
   }
+
   .typeTag {
     padding: 0.35rem 0.875rem;
     font-size: 1.3rem;

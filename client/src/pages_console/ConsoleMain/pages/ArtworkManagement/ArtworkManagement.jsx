@@ -108,8 +108,9 @@ export default function ArtworkManagement({
   ========================= */
   const parentRef = useRef(null);
   const isMobile = window.innerWidth < 700;
+  const isPc = window.innerWidth > 1000;
 
-  const CARD_HEIGHT = isMobile ? 130 : 150; // CSS 기준
+  const CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150; // CSS 기준
 
   const rowVirtualizer = useVirtualizer({
     count: filteredArtworkList.length,

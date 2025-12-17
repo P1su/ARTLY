@@ -111,11 +111,7 @@ export default function ConsoleMain({
               />
             )}
             {activeTab === '관심유저관리' && (
-              <InterestedUserManagement
-                galleryList={galleryList}
-                exhibitionList={exhibitionList}
-                artworkList={artworkList}
-              />
+              <InterestedUserManagement />
             )}
           </>
         )}

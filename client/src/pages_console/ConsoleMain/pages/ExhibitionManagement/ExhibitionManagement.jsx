@@ -14,8 +14,9 @@ import styles from './ExhibitionManagement.module.css';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 const isMobile = window.innerWidth < 700;
+const isPc = window.innerWidth > 1000;
 
-const ESTIMATED_CARD_HEIGHT = isMobile ? 130 : 150;
+const ESTIMATED_CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150;
 const LIST_HEIGHT = 600;
 
 export default function ExhibitionManagement({
@@ -48,7 +49,7 @@ export default function ExhibitionManagement({
     count: filteredExhibitionList.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => ESTIMATED_CARD_HEIGHT,
-    overscan: isMobile ? 3 : 5,
+    overscan: isMobile ? 3 : 6,
   });
 
   const galleryOptions = useMemo(() => {
