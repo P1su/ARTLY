@@ -4,6 +4,8 @@ import { useUser } from '../../../store/UserProvider';
 import { useAlert } from '../../../store/AlertProvider';
 
 export default function useDeleteItem() {
+  const { showAlert } = useAlert();
+
   const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
@@ -12,7 +14,6 @@ export default function useDeleteItem() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
-  const { showAlert } = useAlert();
   // 갤러리 목록 로드
   const loadGalleries = useCallback(
     async (search = '') => {
@@ -36,15 +37,15 @@ export default function useDeleteItem() {
         // API 응답 데이터를 mock 데이터 형식에 맞게 변환
         const galleries = Array.isArray(response.data)
           ? response.data.map((item) => ({
-              id: item.id,
-              name: item.gallery_name,
-              address: item.gallery_address,
-              closedDay: item.gallery_closed_day,
-              time: `${item.gallery_start_time} - ${item.gallery_end_time}`,
-              registered: item.exhibitions ? item.exhibitions.length : 0,
-              liked: item.like_count,
-              image: item.gallery_image,
-            }))
+            id: item.id,
+            name: item.gallery_name,
+            address: item.gallery_address,
+            closedDay: item.gallery_closed_day,
+            time: `${item.gallery_start_time} - ${item.gallery_end_time}`,
+            registered: item.exhibitions ? item.exhibitions.length : 0,
+            liked: item.like_count,
+            image: item.gallery_image,
+          }))
           : [];
 
         setGalleryList(galleries);
@@ -82,20 +83,20 @@ export default function useDeleteItem() {
         const userGalleryIds = galleryList.map((g) => g.id);
         const exhibitions = Array.isArray(response.data)
           ? response.data
-              .filter((item) => {
-                // gallery_id가 사용자의 갤러리 목록에 있는지 확인
-                return userGalleryIds.includes(item.gallery_id);
-              })
-              .map((item) => ({
-                id: item.id,
-                title: item.exhibition_title,
-                period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
-                image: item.exhibition_poster || null,
-                gallery_name:
-                  item.exhibition_organization?.name || '갤러리 정보 없음',
-                gallery_id: item.gallery_id || null,
-                value: item.exhibition_organization?.name || '갤러리 정보 없음',
-              }))
+            .filter((item) => {
+              // gallery_id가 사용자의 갤러리 목록에 있는지 확인
+              return userGalleryIds.includes(item.gallery_id);
+            })
+            .map((item) => ({
+              id: item.id,
+              title: item.exhibition_title,
+              period: `${item.exhibition_start_date} - ${item.exhibition_end_date}`,
+              image: item.exhibition_poster || null,
+              gallery_name:
+                item.exhibition_organization?.name || '갤러리 정보 없음',
+              gallery_id: item.gallery_id || null,
+              value: item.exhibition_organization?.name || '갤러리 정보 없음',
+            }))
           : [];
 
         setExhibitionList(exhibitions);
@@ -131,26 +132,26 @@ export default function useDeleteItem() {
         // 2. 데이터 변환 (필터링 로직 제거!)
         const artworks = Array.isArray(response.data)
           ? response.data.map((item) => {
-              // 전시회 정보가 없을 수도 있으므로 안전하게 처리
-              const firstExhibition =
-                item.exhibitions && item.exhibitions.length > 0
-                  ? item.exhibitions[0]
-                  : null;
+            // 전시회 정보가 없을 수도 있으므로 안전하게 처리
+            const firstExhibition =
+              item.exhibitions && item.exhibitions.length > 0
+                ? item.exhibitions[0]
+                : null;
 
-              return {
-                id: item.id,
-                title: item.art_title || item.title, // 필드명 안전하게
-                artist:
-                  item.artist?.artist_name ||
-                  item.artist_name ||
-                  '작가 정보 없음',
-                image: item.art_image || item.image_url || item.image, // 백엔드 필드명에 맞춰 확인 필요
+            return {
+              id: item.id,
+              title: item.art_title || item.title, // 필드명 안전하게
+              artist:
+                item.artist?.artist_name ||
+                item.artist_name ||
+                '작가 정보 없음',
+              image: item.art_image || item.image_url || item.image, // 백엔드 필드명에 맞춰 확인 필요
 
-                // 아래 정보는 전체 조회 시 없을 수도 있음
-                gallery_name: firstExhibition?.gallery?.gallery_name || '',
-                exhibition_title: firstExhibition?.exhibition_title || '',
-              };
-            })
+              // 아래 정보는 전체 조회 시 없을 수도 있음
+              gallery_name: firstExhibition?.gallery?.gallery_name || '',
+              exhibition_title: firstExhibition?.exhibition_title || '',
+            };
+          })
           : [];
 
         // 3. 상태 업데이트
@@ -197,8 +198,10 @@ export default function useDeleteItem() {
       // 1. 낙관적 업데이트 (일단 화면에서 지움)
       if (type === 'gallery') {
         setGalleryList((prev) => prev.filter((item) => item.id !== id));
+        await userInstance.delete(`/api/galleries/${id}`);
       } else if (type === 'exhibition') {
         setExhibitionList((prev) => prev.filter((item) => item.id !== id));
+        await userInstance.delete(`/api/exhibitions/${id}`);
       } else if (type === 'artwork') {
         setArtworkList((prev) => prev.filter((item) => item.id !== id));
       }

@@ -55,47 +55,58 @@ export default function AlarmModal({
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
+        {/* Header Section */}
         <header className={styles.header}>
-          <button onClick={handleClose} className={styles.closeButton}>
+          <h2 className={styles.title}>알림 보내기</h2>
+          <button
+            onClick={handleClose}
+            className={styles.closeButton}
+            aria-label='닫기'
+          >
             <HiX size={24} />
           </button>
-          <h2 className={styles.title}>알림 보내기</h2>
-          <div className={styles.headerSpacer} />
         </header>
 
-        <div className={styles.countBadge}>
-          <span>발송 예정 : 총 {selectedUsersCount}명</span>
+        {/* Body Section */}
+        <div className={styles.body}>
+          <div className={styles.countBadge}>
+            발송 대상 : 총 {selectedUsersCount}명
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>제목</label>
+            <input
+              type='text'
+              className={styles.input}
+              placeholder='알림 제목을 입력하세요'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              autoFocus
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>
+              내용 <span>({content.length}/80자)</span>
+            </label>
+            <textarea
+              className={styles.textarea}
+              placeholder='전달하실 내용을 입력하세요'
+              maxLength={80}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className={styles.formGroup}>
-          <label className={styles.label}>제목</label>
-          <input
-            type='text'
-            className={styles.input}
-            placeholder='제목을 입력하세요'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>알림내용 (최대 80자)</label>
-          <textarea
-            className={styles.textarea}
-            placeholder='알림 내용을 입력하세요'
-            maxLength={80}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-
+        {/* Footer/Button Section */}
         <div className={styles.buttonContainer}>
           <button
             onClick={handleSend}
             className={styles.sendButton}
             disabled={isSending || selectedUsersCount === 0}
           >
-            {isSending ? '발송 중...' : '발송'}
+            {isSending ? '발송 중...' : '알림 발송하기'}
           </button>
         </div>
       </div>

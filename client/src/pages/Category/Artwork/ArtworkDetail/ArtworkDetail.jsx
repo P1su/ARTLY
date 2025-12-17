@@ -172,6 +172,7 @@ export default function ArtworkDetail({
 
       <div className={styles.card}>
         <Img src={art_image} alt={art_title} className={styles.mainImage} />
+        <Img src={art_image} alt={art_title} className={styles.mainImage} />
 
         <section className={styles.titleSection}>
           <h1 className={styles.artworkTitle}>{art_title}</h1>
@@ -280,16 +281,9 @@ export default function ArtworkDetail({
                     {status.label}
                   </span>
 
-                  <div>
-                    <span className={styles.exhibitionTitle}>
-                      {exh.exhibition_title}
-                    </span>
-                    {exh.start_date && exh.end_date && (
-                      <span className={styles.exhibitionDate}>
-                        {exh.start_date} ~ {exh.end_date}
-                      </span>
-                    )}
-                  </div>
+                  <span className={styles.exhibitionTitle}>
+                    {exh.exhibition_title}
+                  </span>
 
                   <FaChevronRight className={styles.arrowIcon} />
                 </div>

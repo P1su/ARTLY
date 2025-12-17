@@ -50,6 +50,11 @@
   font-weight: 600;
 }
 
+.tabButtonActive:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
 /* 테이블 컨테이너 */
 .tableContainer {
   overflow-x: auto;
@@ -112,6 +117,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
+  /* 위치 기준점 명시 */
 }
 
 .checkbox {
@@ -119,6 +126,7 @@
   opacity: 0;
   width: 0;
   height: 0;
+  margin: 0;
 }
 
 .checkboxCustom {
@@ -129,27 +137,31 @@
   background-color: white;
   transition: all 0.2s ease;
   position: relative;
+  box-sizing: border-box;
 }
 
 .checkboxCustom::after {
   content: '';
   position: absolute;
   display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 9px;
+
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%) rotate(45deg);
+
+  width: 0.35rem;
+  height: 0.65rem;
+
   border: solid white;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
 }
 
-.checkbox:checked + .checkboxCustom {
+.checkbox:checked+.checkboxCustom {
   background-color: #3b82f6;
   border-color: #3b82f6;
 }
 
-.checkbox:checked + .checkboxCustom::after {
+.checkbox:checked+.checkboxCustom::after {
   display: block;
 }
 
@@ -157,7 +169,7 @@
   border-color: #94a3b8;
 }
 
-.checkbox:checked + .checkboxCustom:hover {
+.checkbox:checked+.checkboxCustom:hover {
   background-color: #2563eb;
   border-color: #2563eb;
 }
@@ -271,10 +283,10 @@
   }
 
   .checkboxCustom::after {
-    left: 7px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
+    width: 0.4rem;
+    height: 0.75rem;
+    border-width: 0 2.5px 2.5px 0;
+    /* 선 굵기도 살짝 굵게 */
   }
 
   .typeTag {
@@ -334,15 +346,15 @@
   }
 
   .checkboxCustom {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
   }
 
   .checkboxCustom::after {
-    left: 7px;
-    top: 3px;
-    width: 6px;
-    height: 11px;
+    width: 0.5rem;
+    height: 0.85rem;
+    border-width: 0 3px 3px 0;
+    /* 선 더 굵게 */
   }
 
   .typeTag {

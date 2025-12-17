@@ -60,26 +60,19 @@ export default function ExhibitionManagement({
       (exhibition) => exhibition.gallery_id === selectedGallery,
     );
   }, [exhibitionList, selectedGallery]);
+  console.log(filteredExhibitionList);
 
   // 갤러리 옵션 - 전시회가 있는 갤러리만 표시
   const galleryOptions = useMemo(() => {
-    const options = [];
-
-    // 전시회가 있는 갤러리 ID 목록
-    const galleriesWithExhibitions = new Set(
-      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
-    );
+    const options = [{ name: '전체', id: null }];
 
     if (galleryList) {
       galleryList.forEach((gallery) => {
-        // 해당 갤러리에 전시회가 있는 경우에만 추가
-        if (galleriesWithExhibitions.has(gallery.id)) {
-          options.push({
-            id: gallery.id,
-            name: gallery.name,
-            value: gallery.id,
-          });
-        }
+        options.push({
+          id: gallery.id,
+          name: gallery.name,
+          value: gallery.id,
+        });
       });
     }
 
@@ -148,7 +141,11 @@ export default function ExhibitionManagement({
                       <HiTrash size={18} />
                     </button>
                   </div>
-                  <p className={styles.galleryAddress}>{exhibition.period}</p>
+                  <p className={styles.galleryAddress}>
+                    {!exhibition.period.includes('null')
+                      ? exhibition.period.replace(' - ', ' ~ ')
+                      : '기간 정보 없음'}
+                  </p>
                   <p className={styles.galleryFloor}>
                     {exhibition.gallery_name}
                   </p>

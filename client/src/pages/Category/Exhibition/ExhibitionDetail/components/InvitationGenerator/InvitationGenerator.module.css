@@ -275,4 +275,23 @@
     font-size: 1.3rem;
     padding: 20px;
   }
+
+  .buttonGroup {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .copyButton,
+  .captureButton,
+  .refineButton {
+    font-size: 1.1rem;
+    padding: 6px 10px;
+  }
+
+  .placeholder {
+    min-height: 200px;
+    font-size: 1.3rem;
+    padding: 20px;
+  }
 }

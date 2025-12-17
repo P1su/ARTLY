@@ -17,7 +17,6 @@ export default function MapModalSimple({
     title,
     location: address,
   });
-  console.log('MapModalSimple 렌더됨!', mapId);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
