@@ -1,13 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
+import { useVirtualizer } from '@tanstack/react-virtual';
+
 import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
-import styles from './ArtworkManagement.module.css';
 import Img from '../../../../components/Img/Img.jsx';
+
+import styles from './ArtworkManagement.module.css';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
@@ -16,7 +19,7 @@ export default function ArtworkManagement({
   selectedExhibition,
   onExhibitionChange,
   onDelete,
-  loadArtworks, // 이 함수가 인자로 '전시회 제목'을 받을 수 있어야 함
+  loadArtworks,
   loadExhibitions,
   isLoading,
   error,
@@ -27,6 +30,9 @@ export default function ArtworkManagement({
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
 
+  /* =========================
+     삭제
+  ========================= */
   const handleDelete = async (id) => {
     const isConfirmed = await showConfirm(
       '정말로 이 작품을 삭제하시겠습니까?',
@@ -35,7 +41,6 @@ export default function ArtworkManagement({
 
     if (isConfirmed) {
       await onDelete(id, 'artwork');
-
       navigate('/console/main', {
         state: { activeTab: '작품관리' },
         replace: true,
@@ -43,35 +48,37 @@ export default function ArtworkManagement({
     }
   };
 
-  // 1. 처음 마운트 시 전시회 목록 로드
+  /* =========================
+     초기 전시회 로드
+  ========================= */
   useEffect(() => {
     if (loadExhibitions) {
       loadExhibitions('갤러리 전체');
     }
   }, []);
 
-  // 2. ★ 핵심 수정: 전시회 선택이 바뀔 때마다, 해당 전시회의 '제목'을 찾아 API 재요청
+  /* =========================
+     전시회 변경 시 작품 재요청
+  ========================= */
   useEffect(() => {
-    // Case A: 특정 전시회가 선택되었을 때
     if (selectedExhibition) {
-      // 전시회 목록이 아직 로드 안 됐으면, 찾을 수 없으니 기다림
       if (!exhibitionList || exhibitionList.length === 0) return;
 
-      // ID 타입(숫자 vs 문자) 안전하게 비교
-      const targetExhibition = exhibitionList.find(
+      const target = exhibitionList.find(
         (ex) => String(ex.id) === String(selectedExhibition),
       );
 
-      if (targetExhibition) {
-        loadArtworks(targetExhibition.title);
+      if (target) {
+        loadArtworks(target.title);
       }
-    }
-    // Case B: 선택된 전시회가 없을 때 (기본값)
-    else {
-      // ★ 전시회 목록이 있든 없든 상관없이 전체 작품 로드 실행
+    } else {
       loadArtworks('');
     }
   }, [selectedExhibition, exhibitionList, loadArtworks]);
+
+  /* =========================
+     등록
+  ========================= */
   const handleRegister = () => {
     if (!selectedExhibition) {
       showAlert('작품을 등록할 전시회를 상단 필터에서 먼저 선택해주세요.');
@@ -80,27 +87,40 @@ export default function ArtworkManagement({
     navigate(`/console/artworks/edit/new?exhibition_id=${selectedExhibition}`);
   };
 
-  // 3. 필터링 로직 제거 (서버에서 이미 필터링된 데이터를 줌)
-  // 프론트에서 또 거르면 안 됨 (데이터에 exhibition info가 없으므로)
+  /* =========================
+     데이터
+  ========================= */
   const filteredArtworkList = useMemo(() => {
     return artworkList || [];
   }, [artworkList]);
 
-  // 전시회 옵션 생성
   const exhibitionOptions = useMemo(() => {
-    const options = [];
-    if (exhibitionList) {
-      exhibitionList.forEach((exhibition) => {
-        options.push({
-          id: exhibition.id,
-          name: exhibition.title,
-          value: exhibition.id,
-        });
-      });
-    }
-    return options;
+    if (!exhibitionList) return [];
+    return exhibitionList.map((ex) => ({
+      id: ex.id,
+      name: ex.title,
+      value: ex.id,
+    }));
   }, [exhibitionList]);
 
+  /* =========================
+     🔥 윈도잉 설정
+  ========================= */
+  const parentRef = useRef(null);
+  const isMobile = window.innerWidth < 700;
+
+  const CARD_HEIGHT = isMobile ? 130 : 150; // CSS 기준
+
+  const rowVirtualizer = useVirtualizer({
+    count: filteredArtworkList.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => CARD_HEIGHT,
+    overscan: isMobile ? 3 : 6,
+  });
+
+  /* =========================
+     로딩
+  ========================= */
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
@@ -109,9 +129,12 @@ export default function ArtworkManagement({
     );
   }
 
+  /* =========================
+     렌더
+  ========================= */
   return (
     <section className={styles.contentContainer}>
-      {/* 전시회 필터 드롭다운 */}
+      {/* 전시회 필터 */}
       <div className={styles.searchContainer}>
         <LookUp
           value={selectedExhibition}
@@ -131,49 +154,90 @@ export default function ArtworkManagement({
 
       {filteredArtworkList.length > 0 ? (
         <section className={styles.cardContainer}>
-          {filteredArtworkList.map((artwork) => (
+          {/* 스크롤 컨테이너 */}
+          <div
+            ref={parentRef}
+            style={{
+              height: 'calc(100vh - 30px)',
+              overflowY: 'auto',
+            }}
+          >
+            {/* 전체 높이 계산 */}
             <div
-              key={artwork.id}
-              className={styles.artworkCard}
-              onClick={() => navigate(`/console/artworks/${artwork.id}`)}
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                position: 'relative',
+              }}
             >
-              <div className={styles.cardContent}>
-                <Img
-                  src={artwork.image}
-                  alt={artwork.title}
-                  className={styles.artworkImage}
-                />
-                <div className={styles.cardInfo}>
-                  <div className={styles.cardHeader}>
-                    <h3 className={styles.artworkTitle}>{artwork.title}</h3>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(artwork.id);
-                      }}
-                      className={styles.deleteButton}
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const artwork = filteredArtworkList[virtualRow.index];
+
+                return (
+                  <div
+                    key={artwork.id}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    {/* 🔽 기존 카드 구조 그대로 */}
+                    <div
+                      className={styles.artworkCard}
+                      onClick={() =>
+                        navigate(`/console/artworks/${artwork.id}`)
+                      }
                     >
-                      <HiTrash size={18} />
-                    </button>
+                      <div className={styles.cardContent}>
+                        <Img
+                          src={artwork.image}
+                          alt={artwork.title}
+                          className={styles.artworkImage}
+                        />
+
+                        <div className={styles.cardInfo}>
+                          <div className={styles.cardHeader}>
+                            <h3 className={styles.artworkTitle}>
+                              {artwork.title}
+                            </h3>
+
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(artwork.id);
+                              }}
+                              className={styles.deleteButton}
+                            >
+                              <HiTrash size={18} />
+                            </button>
+                          </div>
+
+                          <p className={styles.artworkArtist}>
+                            {artwork.artist || '작가 미상'}
+                          </p>
+
+                          <p className={styles.artworkExhibition}>
+                            {selectedExhibition
+                              ? exhibitionList.find(
+                                  (ex) =>
+                                    String(ex.id) ===
+                                    String(selectedExhibition),
+                                )?.title
+                              : artwork.exhibition_title ||
+                                artwork.exhibition_name ||
+                                '-'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* 🔼 */}
                   </div>
-                  <p className={styles.artworkArtist}>
-                    {artwork.artist || '작가 미상'}
-                  </p>
-                  {/* 데이터에 전시회 이름이 없으므로, 현재 선택된 전시회 이름을 보여주거나 비워야 함 */}
-                  <p className={styles.artworkExhibition}>
-                    {/* 현재 선택된 전시회 제목 표시 */}
-                    {selectedExhibition
-                      ? exhibitionList.find(
-                          (ex) => ex.id === selectedExhibition,
-                        )?.title
-                      : artwork.exhibition_title ||
-                        artwork.exhibition_name ||
-                        '-'}
-                  </p>
-                </div>
-              </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </section>
       ) : (
         <section className={styles.emptyStateContainer}>

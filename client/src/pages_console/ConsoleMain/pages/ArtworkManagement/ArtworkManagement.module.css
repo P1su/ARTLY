@@ -11,6 +11,11 @@
   gap: 1.5rem;
 }
 
+.cardContent span {
+  width: 8rem !important;
+  height: 100% !important;
+}
+
 .emptyStateContainer {
   display: block;
 }
@@ -181,6 +186,10 @@
   .contentContainer {
     gap: 1.5rem;
   }
+  .cardContent span {
+    width: 10.5rem !important;
+    height: 100% !important;
+  }
 
   .emptyStateContainer {
     padding: 2.5rem;
@@ -221,6 +230,10 @@
 
   .searchContainer {
     margin-bottom: 2rem;
+  }
+  .cardContent span {
+    width: 12.5rem !important;
+    height: 100% !important;
   }
 
   .artworkCard {
