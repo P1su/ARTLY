@@ -6,19 +6,20 @@ import styles from './LookUp.module.css';
 export default function LookUp({
   value,
   onChange,
-  placeholder = "갤러리를 선택하세요",
+  placeholder = '갤러리를 선택하세요',
   isInput = false,
   options = [],
-  title = "갤러리 선택"
+  title = '갤러리 선택',
 }) {
   const {
     isOpen,
     selectedValue,
     dropdownRef,
     handleOptionClick,
-    toggleDropdown
+    toggleDropdown,
   } = useDropdown(value, placeholder);
 
+  console.log(options);
   // 로컬 상태 도입: 입력 중 커서 튐 방지
   const [localValue, setLocalValue] = useState(value || '');
 
@@ -33,7 +34,8 @@ export default function LookUp({
   }, [value]);
 
   // 현재 선택된 값을 표시할 텍스트 찾기
-  const displayValue = options.find(option => option.id === value)?.name || placeholder;
+  const displayValue =
+    options.find((option) => option.id === value)?.name || placeholder;
 
   // 입력 변경 핸들러
   const handleInputChange = (e) => {
@@ -47,7 +49,7 @@ export default function LookUp({
       <div className={styles.inputContainer}>
         <input
           ref={inputRef}
-          type="text"
+          type='text'
           value={localValue}
           onChange={handleInputChange}
           placeholder={placeholder}
@@ -72,8 +74,9 @@ export default function LookUp({
             {options.map((option) => (
               <div
                 key={option.id}
-                className={`${styles.dropdownItem} ${value === option.id ? styles.dropdownItemActive : ''
-                  }`}
+                className={`${styles.dropdownItem} ${
+                  value === option.id ? styles.dropdownItemActive : ''
+                }`}
                 onClick={() => handleOptionClick(option, onChange)}
               >
                 {option.name}
