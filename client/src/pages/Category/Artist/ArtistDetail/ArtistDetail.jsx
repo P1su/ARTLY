@@ -8,6 +8,7 @@ import { FaHome, FaStar, FaShare } from 'react-icons/fa';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function ArtistDetail() {
   const { user } = useUser();
@@ -32,7 +33,7 @@ export default function ArtistDetail() {
   }, [artistId]);
 
   if (!artistData) {
-    return <div className={styles.loading}>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   const {

@@ -1,7 +1,5 @@
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+
 export default function FallbackUI() {
-  return (
-    <div>
-      <div>로딩중</div>
-    </div>
-  );
+  return <LoadingSpinner />;
 }

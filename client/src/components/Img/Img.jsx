@@ -17,12 +17,15 @@ export default function Img({ src, alt, className, style, ...props }) {
     if (
       src.startsWith('http') ||
       src.startsWith('data:') ||
-      src.startsWith('blob:')
+      src.startsWith('blob:') ||
+      src.startsWith('art:')
     ) {
       setImgSrc(src);
     } else {
       const cleanSrc = src.startsWith('/') ? src : `/${src}`;
-      setImgSrc(`${BASE_URL}${cleanSrc}`);
+      const finalUrl = `${BASE_URL}/media${cleanSrc}`;
+
+      setImgSrc(finalUrl);
     }
   }, [src]);
 
@@ -38,7 +41,20 @@ export default function Img({ src, alt, className, style, ...props }) {
       alt={alt}
       className={className}
       onError={handleError}
-      style={{ objectFit: 'cover' }}
+      effect='blur'
+      style={{
+        objectFit: 'cover',
+        ...style,
+      }}
+      // 2. 🌟 핵심: 이미지 겉을 감싸는 span 태그도 100%로 설정
+      wrapperProps={{
+        style: {
+          transitionDelay: '0.04s',
+          display: 'block', // 혹은 "inline-block"
+          width: '100%',
+          height: '100%',
+        },
+      }}
       {...props}
     />
   );

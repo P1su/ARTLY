@@ -1,15 +1,23 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
+import { useVirtualizer } from '@tanstack/react-virtual';
+
 import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
-import styles from './ExhibitionManagement.module.css';
 import Img from '../../../../components/Img/Img.jsx';
+
+import styles from './ExhibitionManagement.module.css';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
+const isMobile = window.innerWidth < 700;
+const isPc = window.innerWidth > 1000;
+
+const ESTIMATED_CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150;
+const LIST_HEIGHT = 600;
 
 export default function ExhibitionManagement({
   exhibitionList,
@@ -25,6 +33,55 @@ export default function ExhibitionManagement({
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
 
+  /* =========================
+     🔥 모든 hook은 여기서 먼저
+  ========================== */
+  const parentRef = useRef(null);
+
+  const filteredExhibitionList = useMemo(() => {
+    if (!selectedGallery) return exhibitionList;
+    return exhibitionList.filter(
+      (exhibition) => exhibition.gallery_id === selectedGallery,
+    );
+  }, [exhibitionList, selectedGallery]);
+
+  const rowVirtualizer = useVirtualizer({
+    count: filteredExhibitionList.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => ESTIMATED_CARD_HEIGHT,
+    overscan: isMobile ? 3 : 6,
+  });
+
+  const galleryOptions = useMemo(() => {
+    const galleriesWithExhibitions = new Set(
+      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
+    );
+
+    return galleryList
+      ?.filter((gallery) => galleriesWithExhibitions.has(gallery.id))
+      .map((gallery) => ({
+        id: gallery.id,
+        name: gallery.name,
+        value: gallery.id,
+      }));
+  }, [galleryList, exhibitionList]);
+
+  // console.log(
+  //   '전체:',
+  //   filteredExhibitionList.length,
+  //   '렌더:',
+  //   rowVirtualizer.getVirtualItems().length,
+  // );
+
+  useEffect(() => {
+    if (galleryList.length > 0) {
+      loadExhibitions('갤러리 전체');
+    }
+  }, [galleryList.length]);
+
+  /* =========================
+     핸들러
+  ========================== */
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     const isConfirmed = await showConfirm(
@@ -32,11 +89,8 @@ export default function ExhibitionManagement({
       true,
     );
 
-    // 2. 확인을 눌렀을 때만 삭제 및 이동 수행
     if (isConfirmed) {
       await onDelete(id, 'exhibition');
-
-      // 삭제 완료 후 탭 유지를 위해 이동
       navigate('/console/main', {
         state: { activeTab: '전시회관리' },
         replace: true,
@@ -44,52 +98,17 @@ export default function ExhibitionManagement({
     }
   };
 
-  // 컴포넌트 마운트 시 전체 전시회 로드 (1회만)
-  useEffect(() => {
-    if (galleryList.length > 0) {
-      loadExhibitions('갤러리 전체');
-    }
-  }, [galleryList.length]);
-
-  // 갤러리 필터링 (id 기반)
-  const filteredExhibitionList = useMemo(() => {
-    if (!selectedGallery) {
-      return exhibitionList;
-    }
-    return exhibitionList.filter(
-      (exhibition) => exhibition.gallery_id === selectedGallery,
-    );
-  }, [exhibitionList, selectedGallery]);
-  console.log(filteredExhibitionList);
-
-  // 갤러리 옵션 - 전시회가 있는 갤러리만 표시
-  const galleryOptions = useMemo(() => {
-    const options = [{ name: '전체', id: null }];
-
-    if (galleryList) {
-      galleryList.forEach((gallery) => {
-        options.push({
-          id: gallery.id,
-          name: gallery.name,
-          value: gallery.id,
-        });
-      });
-    }
-
-    return options;
-  }, [galleryList, exhibitionList]);
-
-  // 선택된 갤러리 ID (이제 selectedGallery가 이미 id)
-  const selectedGalleryId = selectedGallery;
-
   const handleRegister = () => {
-    if (!selectedGalleryId) {
+    if (!selectedGallery) {
       showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
       return;
     }
-    navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGalleryId}`);
+    navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGallery}`);
   };
 
+  /* =========================
+     ✅ JSX에서만 분기
+  ========================== */
   if (isLoading) {
     return (
       <div className={styles.contentContainer}>
@@ -100,7 +119,6 @@ export default function ExhibitionManagement({
 
   return (
     <section className={styles.contentContainer}>
-      {/* 갤러리 필터 드롭다운 */}
       <div className={styles.searchContainer}>
         <LookUp
           value={selectedGallery}
@@ -119,40 +137,81 @@ export default function ExhibitionManagement({
 
       {filteredExhibitionList.length > 0 ? (
         <section className={styles.cardContainer}>
-          {filteredExhibitionList.map((exhibition) => (
+          {/* 스크롤 컨테이너 */}
+          <div
+            ref={parentRef}
+            style={{
+              height: 'calc(100vh - 30px)', // 필요 시 조절
+              overflowY: 'auto',
+            }}
+          >
+            {/* 전체 높이 계산용 */}
             <div
-              key={exhibition.id}
-              className={styles.galleryCard}
-              onClick={() => navigate(`/console/exhibitions/${exhibition.id}`)}
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                position: 'relative',
+              }}
             >
-              <div className={styles.cardContent}>
-                <Img
-                  src={exhibition.image}
-                  alt={exhibition.title}
-                  className={styles.galleryImage}
-                />
-                <div className={styles.cardInfo}>
-                  <div className={styles.cardHeader}>
-                    <h3 className={styles.galleryTitle}>{exhibition.title}</h3>
-                    <button
-                      onClick={(e) => handleDelete(e, exhibition.id)}
-                      className={styles.deleteButton}
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const exhibition = filteredExhibitionList[virtualRow.index];
+
+                return (
+                  <div
+                    key={exhibition.id}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    {/* 🔽 여기부터는 기존 카드 구조 그대로 */}
+                    <div
+                      className={styles.galleryCard}
+                      onClick={() =>
+                        navigate(`/console/exhibitions/${exhibition.id}`)
+                      }
                     >
-                      <HiTrash size={18} />
-                    </button>
+                      <div className={styles.cardContent}>
+                        <Img
+                          src={exhibition.image}
+                          alt={exhibition.title}
+                          className={styles.galleryImage}
+                        />
+
+                        <div className={styles.cardInfo}>
+                          <div className={styles.cardHeader}>
+                            <h3 className={styles.galleryTitle}>
+                              {exhibition.title}
+                            </h3>
+
+                            <button
+                              onClick={(e) => handleDelete(e, exhibition.id)}
+                              className={styles.deleteButton}
+                            >
+                              <HiTrash size={18} />
+                            </button>
+                          </div>
+
+                          <p className={styles.galleryAddress}>
+                            {!exhibition.period.includes('null')
+                              ? exhibition.period.replace(' - ', ' ~ ')
+                              : '기간 정보 없음'}
+                          </p>
+
+                          <p className={styles.galleryFloor}>
+                            {exhibition.gallery_name}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* 🔼 여기까지 기존 디자인 그대로 */}
                   </div>
-                  <p className={styles.galleryAddress}>
-                    {!exhibition.period.includes('null')
-                      ? exhibition.period.replace(' - ', ' ~ ')
-                      : '기간 정보 없음'}
-                  </p>
-                  <p className={styles.galleryFloor}>
-                    {exhibition.gallery_name}
-                  </p>
-                </div>
-              </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </section>
       ) : (
         <section className={styles.emptyStateContainer}>

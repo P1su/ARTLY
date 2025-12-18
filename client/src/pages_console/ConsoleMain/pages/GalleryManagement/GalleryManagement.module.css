@@ -52,6 +52,10 @@
   object-fit: cover;
   background-color: #f3f4f6;
 }
+.cardContent span {
+  width: 9rem !important;
+  height: 100% !important;
+}
 
 .cardInfo {
   display: flex;
@@ -158,7 +162,10 @@
   .contentContainer {
     gap: 1.5rem;
   }
-
+  .cardContent span {
+    width: 10.5rem !important;
+    height: 100% !important;
+  }
   .emptyStateContainer {
     padding: 2.5rem;
   }
@@ -211,7 +218,10 @@
   .searchContainer {
     margin-bottom: 2rem;
   }
-
+  .cardContent span {
+    width: 12.5rem !important;
+    height: 100% !important;
+  }
   .galleryCard {
     padding: 2rem;
   }

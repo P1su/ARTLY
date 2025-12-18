@@ -3,12 +3,13 @@ import { useUser } from '../store/UserProvider'; // 경로는 실제 위치에 �
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 export default function LayoutConsole() {
   const { user, isLoading } = useUser();
 
   if (isLoading) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!user) {
