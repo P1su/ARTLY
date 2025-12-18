@@ -2,63 +2,93 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.6rem;
+
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
 }
 
 .controlsContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
-  gap: 1.5rem;
+  gap: 1.8rem;
 
   width: 100%;
-  margin-top: 1rem;
 }
 
 .speedContainer {
+  position: absolute;
+  bottom: 3.2rem;
+  left: 0;
+
   width: 100%;
   display: flex;
   justify-content: space-between;
-  position: absolute;
-  bottom: 1rem;
 
-  padding: 24px 18px 24px 18px;
+  padding: 1.6rem 2rem;
 
-  background: var(--white01);
-  border-radius: 16px;
-  border: 1px solid var(--color-grey-74, #bdbdbd);
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #ddd;
 
-  /* shadow */
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .speedButton {
-  display: flex;
-  width: 60px;
-  height: 24px;
-  padding: 2px 30px;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
+  min-width: 56px;
+  height: 28px;
 
-  border-radius: 20px;
-  background: var(--color-grey-91, #e9e9e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  background: #f0f0f0;
+  color: #444;
+  font-size: 1.2rem;
+
+  transition: all 0.2s ease;
+}
+
+.speedButton:hover {
+  background: #e2e2e2;
 }
 
 .clickedSpeedButton {
-  color: var(--white01);
   background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .buttonField {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+  padding: 1.2rem 1.6rem;
+  border-radius: 12px;
+  background: #f9f9f9;
 }
 
 .optionSpan {
   font-size: 1.4rem;
   font-weight: 500;
+  color: #333;
 }
 
 .optionButton {
-  color: #777;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+
+  font-size: 1.3rem;
+  color: #666;
+  background: #eeeeee;
+
+  transition: background 0.2s ease;
+}
+
+.optionButton:hover {
+  background: #ddd;
 }
