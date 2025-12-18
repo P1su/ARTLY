@@ -24,7 +24,7 @@ export default function CatalogContents({
       )}
       <div className={styles.page}>
         {data.image && (
-          <Img src={data.image} alt={data.title} className={styles.image} />
+          <img src={data.image} alt={data.title} className={styles.image} />
         )}
         <h2 className={styles.title}>{data.title}</h2>
         <p className={styles.meta}>
