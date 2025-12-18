@@ -17,12 +17,15 @@ export default function Img({ src, alt, className, style, ...props }) {
     if (
       src.startsWith('http') ||
       src.startsWith('data:') ||
-      src.startsWith('blob:')
+      src.startsWith('blob:') ||
+      src.startsWith('art:')
     ) {
       setImgSrc(src);
     } else {
       const cleanSrc = src.startsWith('/') ? src : `/${src}`;
-      setImgSrc(`${BASE_URL}${cleanSrc}`);
+      const finalUrl = `${BASE_URL}/media${cleanSrc}`;
+
+      setImgSrc(finalUrl);
     }
   }, [src]);
 

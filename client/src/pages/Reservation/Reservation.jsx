@@ -5,6 +5,7 @@ import styles from './Reservation.module.css';
 import { userInstance } from '../../apis/instance';
 import Img from '../../components/Img/Img';
 import { useAlert } from '../../store/AlertProvider';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 export default function Reservation() {
   const { exhibitionId } = useParams();
@@ -239,7 +240,7 @@ export default function Reservation() {
     });
   };
 
-  if (loading) return <div className={styles.loading}>로딩 중...</div>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <div className={styles.error}>{error}</div>;
   if (!exhibition)
     return <div className={styles.empty}>전시 정보를 찾을 수 없습니다.</div>;

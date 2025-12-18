@@ -2,6 +2,7 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../store/UserProvider.jsx';
 import Footer from './../components/Footer/Footer';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function AuthRoute() {
   const { user, isLoading } = useContext(UserContext);
@@ -9,7 +10,7 @@ export default function AuthRoute() {
 
   // 로딩 중일 때는 리다이렉트하지 않음
   if (isLoading) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   // 로딩이 완료되었는데 user가 없으면 로그인 페이지로 리다이렉트
