@@ -129,7 +129,6 @@ export default function ArtworkDetail({
     const bP = STATUS_PRIORITY[b.exhibition_status] ?? 99;
     return aP - bP;
   });
-
   const finalArtistName =
     artist?.artist_name || artist_name || 'Unknown Artist';
 

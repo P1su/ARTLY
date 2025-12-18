@@ -8,6 +8,7 @@ import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
 import { useConfirm } from '../../store/ConfirmProvider.jsx';
 import { FaChevronLeft } from 'react-icons/fa6';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 const EDIT_CONFIG = {
   galleries: {
@@ -81,7 +82,7 @@ export default function ConsoleEdit({ type }) {
 
   const handleFileChange = (file) => setSelectedImageFile(file);
 
-  if (isLoading || !data) return <div>데이터 로딩 중...</div>;
+  if (isLoading || !data) return <LoadingSpinner />;
 
   return (
     <div className={styles.layout}>

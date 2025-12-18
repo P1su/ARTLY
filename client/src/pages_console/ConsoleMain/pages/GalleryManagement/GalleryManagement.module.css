@@ -21,6 +21,7 @@
 .galleryCard {
   display: block;
   padding: 1.5rem;
+  margin-bottom: 1rem;
   border: none;
   border-radius: 1rem;
   background-color: white;
@@ -55,6 +56,7 @@
   width: 9rem !important;
   height: 100% !important;
 }
+
 .cardInfo {
   display: flex;
   flex-direction: column;

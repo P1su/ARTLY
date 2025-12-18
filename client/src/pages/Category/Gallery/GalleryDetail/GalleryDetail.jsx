@@ -18,6 +18,7 @@ import LikePopup from './components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function GalleryDetail({
   showUserActions = true,
@@ -60,7 +61,7 @@ export default function GalleryDetail({
     }
   }, [galleryData]);
 
-  if (!galleryData) return <div>로딩 중...</div>;
+  if (!galleryData) return <LoadingSpinner />;
 
   const handleLike = async () => {
     if (!user) {

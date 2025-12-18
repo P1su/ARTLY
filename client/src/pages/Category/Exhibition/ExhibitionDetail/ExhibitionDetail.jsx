@@ -15,6 +15,7 @@ import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup.jsx';
 import { useUser } from '../../../../store/UserProvider.jsx';
 import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
 export default function ExhibitionDetail({
   showUserActions = true,
@@ -109,7 +110,7 @@ export default function ExhibitionDetail({
 
   console.log('전시회', exhibitionData);
 
-  if (!exhibitionData) return <div>로딩 중...</div>;
+  if (!exhibitionData) return <LoadingSpinner />;
 
   const {
     exhibition_title: title,
@@ -193,8 +194,9 @@ export default function ExhibitionDetail({
               관심있어요
             </button>
             <button
-              className={`${styles.likeButton} ${!isReservable ? styles.disabledButton : ''
-                }`}
+              className={`${styles.likeButton} ${
+                !isReservable ? styles.disabledButton : ''
+              }`}
               disabled={!isReservable}
               onClick={() => navigate(`/reservation/${id}`)}
               title={!isReservable ? '현재 전시 기간이 아닙니다' : ''}
@@ -223,8 +225,9 @@ export default function ExhibitionDetail({
               <div className={styles.infoRow} key={label}>
                 <span className={styles.infoLabel}>{label}</span>
                 <div
-                  className={`${styles.infoContent} ${isEmpty ? styles.emptyInfo : ''
-                    }`}
+                  className={`${styles.infoContent} ${
+                    isEmpty ? styles.emptyInfo : ''
+                  }`}
                 >
                   {content}
                 </div>

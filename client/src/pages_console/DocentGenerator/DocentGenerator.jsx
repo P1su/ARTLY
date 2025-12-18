@@ -109,7 +109,11 @@ export default function DocentGenerator({ autoGenerate = false }) {
         df.append('docent_img', artistFile);
 
       // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
-      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df);
+      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df, {
+        headers: {
+          'Content-Type': undefined,
+        },
+      });
 
       showAlert('도슨트가 저장되었습니다.');
       await fetchArtDetail(id);
