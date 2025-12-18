@@ -171,7 +171,6 @@ export default function ArtworkDetail({
 
       <div className={styles.card}>
         <Img src={art_image} alt={art_title} className={styles.mainImage} />
-        <Img src={art_image} alt={art_title} className={styles.mainImage} />
 
         <section className={styles.titleSection}>
           <h1 className={styles.artworkTitle}>{art_title}</h1>
