@@ -99,7 +99,7 @@ export default function ArtworkSelectModal({
                       readOnly
                       className={styles.checkbox}
                     />
-                    <Img
+                    <img
                       src={art.art_image || art.image}
                       alt={art.art_title}
                       className={styles.artistImg}

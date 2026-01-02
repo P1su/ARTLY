@@ -11,6 +11,8 @@ import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
+import Cookies from 'js-cookie';
+
 export default function ArtworkDetail({
   showUserActions = true,
   id: propId,
@@ -49,7 +51,7 @@ export default function ArtworkDetail({
   }, [id]);
 
   const handleLike = async () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) {
+    if (!Cookies.get('ACCESS_TOKEN')) {
       navigate('/login');
       return;
     }

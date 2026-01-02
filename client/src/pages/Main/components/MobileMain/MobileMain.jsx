@@ -153,7 +153,7 @@ export default function MobileMain() {
       </div>
 
       <div className={styles.tagline}>
-        그림 너머의 세계로 초대하는 <br />
+        그림그림 너머의 세계로 초대하는 <br />
         감성 가이드, ARTLY
       </div>
 
