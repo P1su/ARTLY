@@ -6,6 +6,8 @@ import { useEditSave } from './hooks/useEditSave';
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
 import ArtworkEditForm from './forms/ArtworkEditForm.jsx';
+import ArtistEditForm from './forms/ArtistEditForm.jsx';
+import AnnouncementEditForm from './forms/AnnouncementEditForm.jsx';
 import { useConfirm } from '../../store/ConfirmProvider.jsx';
 import { FaChevronLeft } from 'react-icons/fa6';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.jsx';
@@ -27,12 +29,24 @@ const EDIT_CONFIG = {
     apiUrl: (id) => (id === 'new' ? '/api/arts' : `/api/arts/${id}`),
     formImageField: 'image',
   },
+  artists: {
+    title: '작가 등록/수정',
+    apiUrl: (id) => (id === 'new' ? '/api/artists' : `/api/artists/${id}`),
+    formImageField: 'artist_image',
+  },
+  announcements: {
+    title: '공고 등록/수정',
+    apiUrl: (id) => (id === 'new' ? '/api/announcements' : `/api/announcements/${id}`),
+    formImageField: 'announcement_poster_file',
+  },
 };
 
 const FORM_COMPONENTS = {
   galleries: GalleryEditForm,
   exhibitions: ExhibitionEditForm,
   artworks: ArtworkEditForm,
+  artists: ArtistEditForm,
+  announcements: AnnouncementEditForm,
 };
 
 export default function ConsoleEdit({ type }) {
@@ -70,7 +84,11 @@ export default function ConsoleEdit({ type }) {
           ? '갤러리관리'
           : type === 'exhibitions'
             ? '전시회관리'
-            : '작품관리';
+            : type === 'artists'
+              ? '작가관리'
+              : type === 'announcements'
+                ? '공고관리'
+                : '작품관리';
 
       if (isCreateMode) {
         navigate('/console/main', { state: { activeTab: tabName } });

@@ -33,30 +33,39 @@ export default function TabLike() {
   });
   const [activeTab, setActiveTab] = useState('exhibition');
   const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    try {
+      const likeRes = await userInstance.get('/api/users/me/likes');
+      const { data } = likeRes;
 
+      const uniqueExhibitions = removeDuplicates(data.like_exhibitions || []);
+      const uniqueGalleries = removeDuplicates(data.like_galleries || []);
+      const uniqueArtists = removeDuplicates(data.like_artists || []);
+
+      setLikedData({
+        exhibition: removeDuplicates(data.like_exhibitions || []).map((item) => ({
+          ...item,
+          is_liked: true,
+        })),
+        gallery: removeDuplicates(data.like_galleries || []).map((item) => ({
+          ...item,
+          is_liked: true,
+        })),
+        artist: removeDuplicates(data.like_artists || []).map((item) => ({
+          ...item,
+          is_liked: true,
+        })),
+        artwork: [],
+      });
+    } catch (err) {
+      console.log('like fetch err : ', err);
+      setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const likeRes = await userInstance.get('/api/users/me/likes');
-        const { data } = likeRes;
-
-        const uniqueExhibitions = removeDuplicates(data.like_exhibitions || []);
-        const uniqueGalleries = removeDuplicates(data.like_galleries || []);
-        const uniqueArtists = removeDuplicates(data.like_artists || []);
-
-        setLikedData({
-          exhibition: uniqueExhibitions,
-          gallery: uniqueGalleries,
-          artist: uniqueArtists,
-          artwork: [],
-        });
-      } catch (err) {
-        console.log('like fetch err : ', err);
-        setLikedData({ exhibition: [], gallery: [], artwork: [], artist: [] });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    
 
     fetchData();
   }, []);
@@ -92,6 +101,7 @@ export default function TabLike() {
                 <ExhibitionCard
                   key={`exhibition-${item.id}`}
                   exhibitionItem={item}
+                  onEvent={fetchData}
                 />
               ))
             ) : activeTab === 'gallery' ? (

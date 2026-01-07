@@ -10,18 +10,23 @@ import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 
-export default function ArtistDetail() {
+export default function ArtistDetail({ 
+  id: propsId, 
+  showUserActions = true 
+}) {
   const { user } = useUser();
-  const { artistId } = useParams();
+  const params = useParams();
   const navigate = useNavigate();
   const [artistData, setArtistData] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
-
   const { showAlert } = useAlert();
+
+  const id = propsId || params.artistId;
+
   const getArtistDetail = async () => {
-    if (!artistId) return;
+    if (!id) return;
     try {
-      const response = await userInstance.get(`/api/artists/${artistId}`);
+      const response = await userInstance.get(`/api/artists/${id}`);
       setArtistData(response.data);
     } catch (error) {
       console.error(error);
@@ -30,7 +35,7 @@ export default function ArtistDetail() {
 
   useEffect(() => {
     getArtistDetail();
-  }, [artistId]);
+  }, [id]);
 
   if (!artistData) {
     return <LoadingSpinner />;
@@ -66,13 +71,13 @@ export default function ArtistDetail() {
       if (isLiked) {
         await userInstance.delete('/api/likes', {
           data: {
-            liked_id: artistId,
+            liked_id: id,
             liked_type: 'artist',
           },
         });
       } else {
         await userInstance.post('/api/likes', {
-          liked_id: artistId,
+          liked_id: id,
           liked_type: 'artist',
         });
       }
@@ -125,7 +130,7 @@ export default function ArtistDetail() {
     },
     {
       label: '관심 작가',
-      content: `${likeCount.toLocaleString()}명`,
+      content: `${likeCount?.toLocaleString() || 0}명`,
     },
   ];
 
@@ -158,7 +163,7 @@ export default function ArtistDetail() {
       );
 
       return {
-        exhibition_id: item.id,
+        id: item.id,
         exhibition_poster: item.exhibition_poster,
         exhibition_title: item.exhibition_title,
         exhibition_status: status,
@@ -179,11 +184,11 @@ export default function ArtistDetail() {
 
     return (
       <div className={styles.artworkGrid}>
-        {artworks.map(({ id, art_title, art_image, title, imageUrl }) => {
+        {artworks.map(({ id: artId, art_title, art_image, title, imageUrl }) => {
           const artworkTitle = art_title || title || '작품';
           const artworkImage = art_image || imageUrl || '';
           return (
-            <div className={styles.artworkCard} key={`${id}-${artworkTitle}`}>
+            <div className={styles.artworkCard} key={`${artId}-${artworkTitle}`}>
               <Img
                 className={styles.artworkImage}
                 src={artworkImage}
@@ -199,15 +204,17 @@ export default function ArtistDetail() {
 
   return (
     <div className={styles.layout}>
-      <div className={styles.breadcrumb}>
-        <span
-          className={styles.breadcrumbBack}
-          onClick={() => navigate('/artists')}
-        >
-          작가
-        </span>{' '}
-        &gt; {name}
-      </div>
+      {showUserActions && (
+        <div className={styles.breadcrumb}>
+          <span
+            className={styles.breadcrumbBack}
+            onClick={() => navigate('/artists')}
+          >
+            작가
+          </span>{' '}
+          &gt; {name}
+        </div>
+      )}
 
       <div className={styles.card}>
         <Img
@@ -226,26 +233,28 @@ export default function ArtistDetail() {
           )}
         </section>
 
-        <div className={styles.btnLayout}>
-          <button className={styles.actionButton} onClick={handleLike}>
-            <FaStar
-              className={`${styles.icon} ${isLiked ? styles.likedIcon : ''}`}
-            />
-            관심 작가
-          </button>
-          <button
-            className={styles.actionButton}
-            disabled={!sanitizedHomepage}
-            onClick={handleHomepage}
-          >
-            <FaHome className={styles.icon} />
-            홈페이지
-          </button>
-          <button className={styles.actionButton} onClick={handleShare}>
-            <FaShare className={styles.icon} />
-            공유하기
-          </button>
-        </div>
+        {showUserActions && (
+          <div className={styles.btnLayout}>
+            <button className={styles.actionButton} onClick={handleLike}>
+              <FaStar
+                className={`${styles.icon} ${isLiked ? styles.likedIcon : ''}`}
+              />
+              관심 작가
+            </button>
+            <button
+              className={styles.actionButton}
+              disabled={!sanitizedHomepage}
+              onClick={handleHomepage}
+            >
+              <FaHome className={styles.icon} />
+              홈페이지
+            </button>
+            <button className={styles.actionButton} onClick={handleShare}>
+              <FaShare className={styles.icon} />
+              공유하기
+            </button>
+          </div>
+        )}
 
         <section className={styles.infoList}>
           {infoList.map(({ label, content }) => {
@@ -288,12 +297,14 @@ export default function ArtistDetail() {
         {activeTab === 'artworks' && renderArtworks()}
       </DetailTabs>
 
-      <button
-        className={styles.backButton}
-        onClick={() => navigate('/artists')}
-      >
-        목록으로 돌아가기
-      </button>
+      {showUserActions && (
+        <button
+          className={styles.backButton}
+          onClick={() => navigate('/artists')}
+        >
+          목록으로 돌아가기
+        </button>
+      )}
     </div>
   );
 }

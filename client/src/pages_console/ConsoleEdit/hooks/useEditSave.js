@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom'; // 1. useSearchParams 추가
 import { userInstance } from '../../../apis/instance.js';
 import { useAlert } from '../../../store/AlertProvider.jsx';
+import { useUser } from '../../../store/UserProvider.jsx';
 
 const getId = (item) => item.id || item.artist_id;
 
@@ -9,7 +10,9 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
   const [isSaving, setIsSaving] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
   const { showAlert } = useAlert();
+  const { user } = useUser();
   const [searchParams] = useSearchParams();
+
   const validate = () => {
     if (type === 'artworks') {
       if (!data.art_title) return '작품명을 입력해주세요.';
@@ -28,6 +31,13 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     if (type === 'exhibitions') {
       if (isCreateMode && !data.gallery_id) return '갤러리 정보가 없습니다.';
       if (!data.exhibition_title) return '전시회명을 입력해주세요.';
+    }
+    if (type === 'artists' && !data.artist_name) return '작가명을 입력해주세요.';
+    if (type === 'announcements') {
+      if (!data.announcement_title) return '공고 제목을 입력해주세요.';
+      if (!data.announcement_category) return '카테고리를 선택해주세요.';
+      if (!data.announcement_start_datetime) return '시작일을 입력해주세요.';
+      if (!data.announcement_end_datetime) return '종료일을 입력해주세요.';
     }
     return null;
   };
@@ -73,6 +83,34 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     return formData;
   };
 
+  const createAnnouncementFormData = () => {
+    const formData = new FormData();
+
+    if (!isCreateMode) {
+      formData.append('_method', 'PUT');
+    }
+    
+    formData.append('announcement_title', data.announcement_title || '');
+    formData.append('user_id', user?.id || '');
+    formData.append('announcement_start_datetime', data.announcement_start_datetime || '');
+    formData.append('announcement_end_datetime', data.announcement_end_datetime || '');
+    formData.append('announcement_organizer', data.announcement_organizer || '');
+    formData.append('announcement_contact', data.announcement_contact || '');
+    formData.append('announcement_support_detail', data.announcement_support_detail || '');
+    formData.append('announcement_site_url', data.announcement_site_url || '');
+    formData.append('announcement_attachment_url', data.announcement_attachment_url || '');
+    formData.append('announcement_content', data.announcement_content || '');
+    formData.append('announcement_category', data.announcement_category || '');
+    
+    // 이미지 파일이 있으면 추가
+    if (selectedImageFile) {
+      formData.append('announcement_poster_file', selectedImageFile);
+    }
+    
+    return formData;
+    
+  };
+  
   const handleExhibitionConnections = async (savedId) => {
     // A. 작품 (Artworks) 업데이트
     const currentArtworks = data.artworks || [];
@@ -178,10 +216,51 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
 
     try {
       // 1. 메인 데이터 저장
-      const formData = createFormData();
-      const response = await userInstance.post(config.apiUrl(id), formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      let response;
+
+      if (type === 'announcements') {
+        // 공고: JSON으로 전송
+        const announcementData = createAnnouncementFormData();
+        
+        if (isCreateMode) {
+          response = await userInstance.post('/api/announcements', announcementData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+        } else {
+          response = await userInstance.post(`/api/announcements/${id}`, announcementData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+        }
+      } else if (isCreateMode) {
+        // 생성: POST
+        const formData = createFormData();
+        response = await userInstance.post(config.apiUrl(id), formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else if (type === 'artists') {
+        // 작가 수정: PUT + FormData
+        const formData = new FormData();
+
+        formData.append('_method', 'PUT');
+
+        if (data.artist_name) formData.append('artist_name', data.artist_name);
+        if (data.artist_category) formData.append('artist_category', data.artist_category);
+        if (data.artist_nation) formData.append('artist_nation', data.artist_nation);
+        if (data.artist_description) formData.append('artist_description', data.artist_description);
+        if (data.artist_homepage) formData.append('artist_homepage', data.artist_homepage);
+        if (selectedImageFile) formData.append('artist_image', selectedImageFile);
+      
+        response = await userInstance.post(config.apiUrl(id), formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else {
+        // 일반 수정 (galleries, exhibitions, artworks, announcements)
+        const formData = createFormData();
+        response = await userInstance.post(config.apiUrl(id), formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+
 
       const savedId = isCreateMode
         ? response.data.data?.id || response.data.id
@@ -196,7 +275,8 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
 
       showAlert(
         isCreateMode
-          ? `${type === 'galleries' ? '갤러리가' : type === 'exhibitions' ? '전시회가' : '작품이'} 등록되었습니다.`
+          ? `${type === 'galleries' ? '갤러리가' : type === 'exhibitions' ? '전시회가' : type === 'artists' ? '작가가' : type === 'announcements'
+          ? '공고가' : '작품이'} 등록되었습니다.`
           : '수정되었습니다.',
       );
 
@@ -206,7 +286,11 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
           ? '갤러리관리'
           : type === 'exhibitions'
             ? '전시회관리'
-            : '작품관리';
+            : type === 'artists'
+              ? '작가관리'
+              : type === 'announcements'
+                ? '공고관리'  
+                : '작품관리';
       if (isCreateMode) {
         navigate('/console/main', { state: { activeTab: tabName } });
       } else {

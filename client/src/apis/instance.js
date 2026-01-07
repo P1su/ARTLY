@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 const JWT_Token = 'ACCESS_TOKEN';
 
+//기본 API 요청용 (인증 없음)
 export const instance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
@@ -11,6 +12,7 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
+//네이버 지도 API
 export const mapInstance = axios.create({
   baseURL: '',
   headers: {
@@ -21,6 +23,9 @@ export const mapInstance = axios.create({
   withCredentials: true,
 });
 
+/*인증 필요한 API용 (JWT 토큰 자동 첨부)
+인터셉터로 매 요청마다 쿠키에서 토큰을 꺼내 'Authorization' 헤더에 자동 추가.
+*/
 export const userInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {

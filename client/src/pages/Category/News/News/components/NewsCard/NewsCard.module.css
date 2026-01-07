@@ -7,6 +7,7 @@
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s;
   background: white;
+  position: relative;
 }
 
 .card:hover {
@@ -66,4 +67,44 @@
 .period,
 .organizer {
   margin: 2px 0;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.cardImageWrapper {
+  position: absolute;
+  top: 50%;
+  right: 3rem;
+  transform: translateY(-50%);
+  width: 10rem;
+  height: 10rem;
+}
+
+@media (max-width: 768px) {
+  .cardImageWrapper {
+    width: 6rem;
+    height: 6rem;
+    right: 1.5rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+  
+  .title {
+    max-width: calc(100% - 8rem);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cardImageWrapper {
+    width: 8rem;
+    height: 8rem;
+    right: 2rem;
+  }
 }

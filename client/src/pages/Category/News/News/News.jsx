@@ -16,7 +16,7 @@ export default function News() {
   const { currentPage, setCurrentPage, pageItems } = usePagination(10, news);
   const [newsFilters, setNewsFilters] = useState({
     category: '',
-    status: 'ongoing',
+    status: '',
     sort: 'latest',
     liked_only: 0,
   });

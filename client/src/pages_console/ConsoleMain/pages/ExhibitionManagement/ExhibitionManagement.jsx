@@ -39,7 +39,7 @@ export default function ExhibitionManagement({
   const parentRef = useRef(null);
 
   const filteredExhibitionList = useMemo(() => {
-    if (!selectedGallery) return exhibitionList;
+    if (!selectedGallery || selectedGallery === 'all') return exhibitionList;
     return exhibitionList.filter(
       (exhibition) => exhibition.gallery_id === selectedGallery,
     );
@@ -53,18 +53,21 @@ export default function ExhibitionManagement({
   });
 
   const galleryOptions = useMemo(() => {
-    const galleriesWithExhibitions = new Set(
-      exhibitionList.map((ex) => ex.gallery_id).filter(Boolean),
-    );
+    const allOption = {
+      id: 'all',
+      name: '전체',
+      value: 'all',
+    };
 
-    return galleryList
-      ?.filter((gallery) => galleriesWithExhibitions.has(gallery.id))
-      .map((gallery) => ({
+    const mapped = 
+      galleryList?.map((gallery) => ({
         id: gallery.id,
         name: gallery.name,
         value: gallery.id,
-      }));
-  }, [galleryList, exhibitionList]);
+      })) || [];
+
+    return [allOption, ...mapped];
+  }, [galleryList]);
 
   // console.log(
   //   '전체:',
@@ -99,7 +102,7 @@ export default function ExhibitionManagement({
   };
 
   const handleRegister = () => {
-    if (!selectedGallery) {
+    if (!selectedGallery || selectedGallery === 'all') {
       showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
       return;
     }

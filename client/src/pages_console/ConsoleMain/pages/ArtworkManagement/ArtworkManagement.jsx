@@ -61,26 +61,27 @@ export default function ArtworkManagement({
      전시회 변경 시 작품 재요청
   ========================= */
   useEffect(() => {
-    if (selectedExhibition) {
-      if (!exhibitionList || exhibitionList.length === 0) return;
-
-      const target = exhibitionList.find(
-        (ex) => String(ex.id) === String(selectedExhibition),
-      );
-
-      if (target) {
-        loadArtworks(target.title);
-      }
-    } else {
+    if (!selectedExhibition || selectedExhibition === 'all') {
       loadArtworks('');
+      return;
+    }   
+    if (!exhibitionList || exhibitionList.length === 0) return;
+
+    const target = exhibitionList.find(
+      (ex) => String(ex.id) === String(selectedExhibition),
+    );
+
+    if (target) {
+      loadArtworks(target.title);
     }
+    
   }, [selectedExhibition, exhibitionList, loadArtworks]);
 
   /* =========================
      등록
   ========================= */
   const handleRegister = () => {
-    if (!selectedExhibition) {
+    if (!selectedExhibition || selectedExhibition === 'all') {
       showAlert('작품을 등록할 전시회를 상단 필터에서 먼저 선택해주세요.');
       return;
     }
@@ -90,17 +91,24 @@ export default function ArtworkManagement({
   /* =========================
      데이터
   ========================= */
-  const filteredArtworkList = useMemo(() => {
-    return artworkList || [];
-  }, [artworkList]);
+  const filteredArtworkList = artworkList;
 
   const exhibitionOptions = useMemo(() => {
     if (!exhibitionList) return [];
-    return exhibitionList.map((ex) => ({
+
+    const allOption = {
+      id: 'all',
+      name: '전체',
+      value: 'all',
+    };
+
+    const mapped = exhibitionList.map((ex) => ({
       id: ex.id,
       name: ex.title,
       value: ex.id,
     }));
+
+    return [allOption, ...mapped];
   }, [exhibitionList]);
 
   /* =========================

@@ -6,6 +6,8 @@ import QrModal from './components/QrModal/QrModal';
 import GalleryDetail from '../../pages/Category/Gallery/GalleryDetail/GalleryDetail';
 import ExhibitionDetail from '../../pages/Category/Exhibition/ExhibitionDetail/ExhibitionDetail';
 import ArtworkDetail from '../../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
+import ArtistDetail from '../../pages/Category/Artist/ArtistDetail/ArtistDetail';
+import NewsDetail from '../../pages/Category/News/NewsDetail/NewsDetail';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import CreateModal from './components/CreateModal/CreateModal';
 
@@ -28,6 +30,18 @@ const DETAIL_CONFIG = {
     fetchUrl: (id) => `/api/arts/${id}`,
     tabs: ['정보수정', 'QR코드', '도슨트'],
   },
+  artists: {
+    title: '작가',
+    Component: ArtistDetail,
+    fetchUrl: (id) => `/api/artists/${id}`,
+    tabs: ['정보수정'],
+  },
+  announcements: {
+    title: '공고',
+    Component: NewsDetail,
+    fetchUrl: (id) => `/api/announcements/${id}`,
+    tabs: ['정보수정'],
+  },
 };
 
 export default function ConsoleDetail({ type }) {
@@ -48,6 +62,8 @@ export default function ConsoleDetail({ type }) {
         return '전시회관리';
       case 'artworks':
         return '작품관리';
+      case 'announcements':
+        return '공고관리';
       default:
         return '갤러리관리';
     }

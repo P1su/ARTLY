@@ -6,7 +6,10 @@ import { instance } from './instance';
 const VAPID_KEY = import.meta.env.VITE_FCM_VAPID_KEY; 
 const FCM_TOKEN_KEY = 'fcm_token'; 
 
-// iOS 환경에서
+/*핵심 흐름
+로그인 -> FCM 토큰 발급 ->  서버 등록 -> 서버가 푸시 발송 가능 */
+
+// iOS 환경에서 - 'window.webkit.messageHandlers'로 네이티브에 토큰 요청
 const isIOSWebView = () => {
   return (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.getFcmToken);
 };
@@ -28,7 +31,7 @@ export const requestFCMToken = async (userId) => {
     return; 
   }
 
-  // 2. Android WebView 환경
+  // 2. Android WebView 환경 - 'window.Android.getFcmToken()'으로 네이티브에서 토큰 획득
   if (typeof window.Android !== 'undefined') {
     console.log(`WebView에서 가져온 User_Id : ${userId}`);
 
@@ -48,7 +51,7 @@ export const requestFCMToken = async (userId) => {
     }
   }
 
-  // 웹 환경에서
+  // 웹 환경에서 - Firebase SDK로 직접 토큰 발급
   try {
     console.log('알림 권한 요청');
     const permission = await Notification.requestPermission();
@@ -78,6 +81,7 @@ export const requestFCMToken = async (userId) => {
   }
 };
 
+//서버에 'POST /api/notification/registerToken'으로 등록
 export const sendTokenToServer = async (userId, fcmToken) => {
   try {
     const response = await instance.post('/api/notification/registerToken', {

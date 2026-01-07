@@ -25,7 +25,12 @@ export default function ArtworkSelectModal({
       const res = await userInstance.get('/api/arts', {
         params: { search: keyword },
       });
-      const list = Array.isArray(res.data) ? res.data : res.data.data || [];
+      let list = Array.isArray(res.data) ? res.data : res.data.data || [];
+      if (keyword) {
+        list = list.filter(art => 
+          art.art_title?.includes(keyword)
+        );
+      }
       setArtList(list);
     } catch (error) {
       console.error('작품 검색 실패:', error);
@@ -103,6 +108,11 @@ export default function ArtworkSelectModal({
                       src={art.art_image || art.image}
                       alt={art.art_title}
                       className={styles.artistImg}
+                      wrapperProps={{
+                        style: {
+                          width: '10%',
+                        },
+                      }}
                     />
                     <div className={styles.artistInfo}>
                       <span className={styles.name}>{art.art_title}</span>
