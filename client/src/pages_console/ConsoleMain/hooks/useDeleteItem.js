@@ -154,14 +154,38 @@ export default function useDeleteItem() {
         params.append('exhibition_title', myExhibitionTitles.join(','));
         const url = `/api/arts?${params.toString()}`;
         const response = await userInstance.get(url);
-  
+        // 내 전시회 ID 목록
+        const myExhibitionIds = exhibitionList.map(e => e.id);
         const artworks = Array.isArray(response.data)
-          ? response.data.map((item) => ({
-              id: item.id,
-              title: item.art_title || item.title,
-              artist: item.artist?.artist_name || item.artist_name || '작가 정보 없음',
-              image: item.art_image || item.art_image_url || item.image,
-            }))
+        ? response.data
+        .filter((item) => {
+          // 작품이 내 전시회에 포함되어 있는지 확인
+          if (!item.exhibitions || item.exhibitions.length === 0) return false;
+
+          const artExhibitionIds = item.exhibitions.map(ex => ex.id);
+
+          return item.exhibitions.some(ex => 
+            myExhibitionIds.includes(Number(ex.id))
+          );
+        })
+        .map((item) => {
+          const firstExhibition =
+            item.exhibitions && item.exhibitions.length > 0
+              ? item.exhibitions[0]
+              : null;
+
+          return {
+            id: item.id,
+            title: item.art_title || item.title,
+            artist:
+              item.artist?.artist_name ||
+              item.artist_name ||
+              '작가 정보 없음',
+            image: item.art_image || item.image_url || item.image,
+            gallery_name: firstExhibition?.gallery?.gallery_name || '',
+            exhibition_title: firstExhibition?.exhibition_title || '',
+          };
+        })
           : [];
   
         setArtworkList(artworks);
