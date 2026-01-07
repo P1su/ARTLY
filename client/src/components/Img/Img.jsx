@@ -51,7 +51,7 @@ export default function Img({ src, alt, className, style, ...props }) {
         style: {
           transitionDelay: '0.04s',
           display: 'block', // 혹은 "inline-block"
-          width: '50%',
+          width: '100%',
           height: '100%',
         },
       }}

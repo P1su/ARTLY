@@ -31,6 +31,12 @@ export default function Nearby() {
           query: query,
         },
       });
+      
+      if (!response.data.addresses || response.data.addresses.length === 0) {
+        showAlert('올바른 주소값을 입력해주세요');
+        return;
+      }
+
       const newLng = response.data.addresses[0].x;
       const newLat = response.data.addresses[0].y;
 

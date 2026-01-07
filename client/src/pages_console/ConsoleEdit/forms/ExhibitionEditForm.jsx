@@ -343,9 +343,15 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                     return (
                       <div key={id || index} className={styles.artworkCard}>
                         <Img
-                          src={getArtistImage(artist)}
-                          alt='thumb'
+                          src={artist.artist_image}
+                          alt={artist.artist_name}
                           className={styles.artistThumb}
+                          wrapperProps={{
+                            style: {
+                              width: '50px',
+                              height: '40px',
+                            },
+                          }}
                         />
                         <span className={styles.artistName}>{name}</span>
 

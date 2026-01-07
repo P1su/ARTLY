@@ -44,7 +44,14 @@ export default function TabMyView() {
         const res = await userInstance.get('/api/users/me/exhibitions');
         const { data } = res;
 
-        setReservations(data);
+        const dataWithFullUrls = data.map(item => ({
+          ...item,
+          exhibition_poster: item.exhibition_poster 
+            ? `https://artly.soundgram.co.kr/${item.exhibition_poster}`
+            : null
+        }));
+
+        setReservations(dataWithFullUrls);
       } catch (err) {
         console.error('데이터 가져오기 실패:', err);
       } finally {
