@@ -5,6 +5,8 @@ import GalleryManagement from './pages/GalleryManagement/GalleryManagement';
 import ExhibitionManagement from './pages/ExhibitionManagement/ExhibitionManagement';
 import ArtworkManagement from './pages/ArtworkManagement/ArtworkManagement';
 import InterestedUserManagement from './pages/InterestedUserManagement/InterestedUserManagement';
+import ArtistManagement from './pages/ArtistManagement/ArtistManagement';
+import AnnouncementManagement from './pages/AnnouncementManagement/AnnouncementManagement';
 
 import useDeleteItem from './hooks/useDeleteItem';
 import styles from './ConsoleMain.module.css';
@@ -20,7 +22,7 @@ export default function ConsoleMain({
 
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [selectedGallery, setSelectedGallery] = useState(null);
-  const [selectedExhibition, setSelectedExhibition] = useState(null);
+  const [selectedExhibition, setSelectedExhibition] = useState('all');
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -37,16 +39,18 @@ export default function ConsoleMain({
     }
   };
 
-  const tabList = ['갤러리관리', '전시회관리', '작품관리', '관심유저관리'];
+  const tabList = ['갤러리관리', '전시회관리', '작품관리', '작가관리', '공고관리','관심유저관리'];
 
   const {
     galleryList,
     exhibitionList,
     artworkList,
+    announcementList,
     handleDelete,
     loadGalleries,
     loadExhibitions,
     loadArtworks,
+    loadAnnouncements,
     isLoading,
     isSearching,
     error,
@@ -108,6 +112,21 @@ export default function ConsoleMain({
                 error={error}
                 galleryList={galleryList}
                 exhibitionList={exhibitionList}
+              />
+            )}
+            {activeTab === '작가관리' && (
+              <ArtistManagement 
+                galleryList={galleryList} 
+              />
+            )}
+            {activeTab === '공고관리' && (
+              <AnnouncementManagement
+                announcementList={announcementList}
+                onDelete={handleDelete}
+                loadAnnouncements={loadAnnouncements}
+                isLoading={isLoading}
+                isSearching={isSearching}
+                error={error}
               />
             )}
             {activeTab === '관심유저관리' && (

@@ -9,11 +9,12 @@ export default function useDeleteItem() {
   const { user } = useUser();
   const [galleryList, setGalleryList] = useState([]);
   const [exhibitionList, setExhibitionList] = useState([]);
-
   const [artworkList, setArtworkList] = useState([]);
+  const [announcementList, setAnnouncementList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
+
   // 갤러리 목록 로드
   const loadGalleries = useCallback(
     async (search = '') => {
@@ -118,61 +119,115 @@ export default function useDeleteItem() {
     async (exhibitionTitle = '') => {
       try {
         setIsLoading(true);
-
-        // 1. API 호출
-        const params = new URLSearchParams();
-        // 전체 조회가 아닐 때만 파라미터 추가
-        if (exhibitionTitle && exhibitionTitle !== '전시회 전체') {
+  
+        // 특정 전시회 선택 시
+        if (exhibitionTitle && exhibitionTitle !== '전시회 전체' && exhibitionTitle !== '') {
+          const params = new URLSearchParams();
           params.append('exhibition_title', exhibitionTitle);
+          const url = `/api/arts?${params.toString()}`;
+          const response = await userInstance.get(url);
+  
+          const artworks = Array.isArray(response.data)
+            ? response.data.map((item) => ({
+                id: item.id,
+                title: item.art_title || item.title,
+                artist: item.artist?.artist_name || item.artist_name || '작가 정보 없음',
+                image: item.art_image || item.art_image_url || item.image,
+                exhibition_title: exhibitionTitle,
+              }))
+            : [];
+  
+          setArtworkList(artworks);
+          return;
         }
-        const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
-
+  
+        // 전체 조회 시: 내 전시회들의 작품을 모두 가져옴
+        const myExhibitionTitles = exhibitionList.map((ex) => ex.title);
+        
+        if (myExhibitionTitles.length === 0) {
+          setArtworkList([]);
+          return;
+        }
+  
+        // 내 전시회 제목들로 검색 (쉼표로 구분)
+        const params = new URLSearchParams();
+        params.append('exhibition_title', myExhibitionTitles.join(','));
+        const url = `/api/arts?${params.toString()}`;
         const response = await userInstance.get(url);
-
-        // 2. 데이터 변환 (필터링 로직 제거!)
+  
         const artworks = Array.isArray(response.data)
-          ? response.data.map((item) => {
-            // 전시회 정보가 없을 수도 있으므로 안전하게 처리
-            const firstExhibition =
-              item.exhibitions && item.exhibitions.length > 0
-                ? item.exhibitions[0]
-                : null;
-
-            return {
+          ? response.data.map((item) => ({
               id: item.id,
-              title: item.art_title || item.title, // 필드명 안전하게
-              artist:
-                item.artist?.artist_name ||
-                item.artist_name ||
-                '작가 정보 없음',
-              image: item.art_image || item.image_url || item.image, // 백엔드 필드명에 맞춰 확인 필요
-
-              // 아래 정보는 전체 조회 시 없을 수도 있음
-              gallery_name: firstExhibition?.gallery?.gallery_name || '',
-              exhibition_title: firstExhibition?.exhibition_title || '',
-            };
-          })
+              title: item.art_title || item.title,
+              artist: item.artist?.artist_name || item.artist_name || '작가 정보 없음',
+              image: item.art_image || item.art_image_url || item.image,
+            }))
           : [];
-
-        // 3. 상태 업데이트
+  
         setArtworkList(artworks);
       } catch (err) {
         setError(err.message);
-
         console.error('작품 목록 로드 실패:', err);
-
         setArtworkList([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [], // 의존성 배열도 비워두는 게 안전함 (exhibitionList 의존 X)
+    [exhibitionList],  // exhibitionList 의존성 추가
+  );
+
+  // 공고 목록 로드
+  const loadAnnouncements = useCallback(
+    async (search = '') => {
+      try {
+        setIsLoading(true);
+        if (search.trim()) {
+          setIsSearching(true);
+        }
+
+        const params = new URLSearchParams();
+        if (search) {
+          params.append('search', search);
+        }
+        // user_id 추가
+        if (user?.id) {
+          params.append('user_id', user.id);
+        }
+
+        const url = `/api/announcements${params.toString() ? `?${params.toString()}` : ''}`;
+        const response = await userInstance.get(url);
+
+        const announcements = Array.isArray(response.data)
+          ? response.data.map((item) => ({
+              id: item.id,
+              title: item.announcement_title,
+              category: item.announcement_category,
+              status: item.announcement_status,
+              startDate: item.announcement_start_datetime,
+              endDate: item.announcement_end_datetime,
+              organizer: item.announcement_organizer,
+              image: item.announcement_poster,
+            }))
+          : [];
+
+        setAnnouncementList(announcements);
+      } catch (err) {
+        setError(err.message);
+        console.error('공고 목록 로드 실패:', err);
+        setAnnouncementList([]);
+      } finally {
+        setIsLoading(false);
+        setIsSearching(false);
+      }
+    },
+    [user?.id],
   );
 
   // 사용자 정보가 있을 때 갤러리 목록 로드 (최초 1회만)
   useEffect(() => {
     if (user?.id) {
       loadGalleries();
+      loadAnnouncements();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]); // loadGalleries 의존성 제거
@@ -198,13 +253,14 @@ export default function useDeleteItem() {
       // 1. 낙관적 업데이트 (일단 화면에서 지움)
       if (type === 'gallery') {
         setGalleryList((prev) => prev.filter((item) => item.id !== id));
-        await userInstance.delete(`/api/galleries/${id}`);
       } else if (type === 'exhibition') {
         setExhibitionList((prev) => prev.filter((item) => item.id !== id));
-        await userInstance.delete(`/api/exhibitions/${id}`);
       } else if (type === 'artwork') {
         setArtworkList((prev) => prev.filter((item) => item.id !== id));
+      } else if (type === 'announcement') {
+        setAnnouncementList((prev) => prev.filter((item) => item.id !== id));
       }
+
 
       // 2. API 호출
       let response;
@@ -214,6 +270,8 @@ export default function useDeleteItem() {
         response = await userInstance.delete(`/api/exhibitions/${id}`);
       } else if (type === 'artwork') {
         response = await userInstance.delete(`/api/arts/${id}`);
+      } else if (type === 'announcement') {
+        response = await userInstance.delete(`/api/announcements/${id}`);
       }
 
       if (
@@ -225,7 +283,7 @@ export default function useDeleteItem() {
       }
 
       showAlert(
-        `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : '작품'} 삭제를 완료하였습니다.`,
+        `${type === 'gallery' ? '갤러리' : type === 'exhibition' ? '전시회' : type === 'artwork' ? '작품' : '공고'} 삭제를 완료하였습니다.`,
       );
     } catch (err) {
       console.error('삭제 실패:', err);
@@ -233,7 +291,7 @@ export default function useDeleteItem() {
       // 5. 에러 종류에 따른 빨간 모달 띄우기
       if (err.message === 'FOREIGN_KEY_ERROR') {
         showAlert(
-          `${type === 'gallery' ? '갤러리를' : type === 'exhibition' ? '전시회를' : '작품을 '} 삭제할 수 없습니다.\n해당 ${type === 'gallery' ? '갤러리' : '전시회'}에 등록된 하위 데이터(${type === 'gallery' ? '전시' : '작가, 작품'} 등)를 먼저 삭제해주세요.`,
+          `${type === 'gallery' ? '갤러리를' : type === 'exhibition' ? '전시회를' : type === 'artwork' ? '작품을' : '공고를'} 삭제할 수 없습니다.\n해당 ${type === 'gallery' ? '갤러리' : '전시회'}에 등록된 하위 데이터(${type === 'gallery' ? '전시' : '작가, 작품'} 등)를 먼저 삭제해주세요.`,
           'error', // 빨간색 타입 전달
         );
       } else {
@@ -248,6 +306,8 @@ export default function useDeleteItem() {
         loadExhibitions('갤러리 전체'); // 혹은 현재 선택된 갤러리값 전달
       } else if (type === 'artwork') {
         loadArtworks(''); // 전체 로드
+      } else if (type === 'announcement') {
+        loadAnnouncements('');
       }
     }
   };
@@ -256,10 +316,12 @@ export default function useDeleteItem() {
     galleryList,
     exhibitionList,
     artworkList,
+    announcementList,
     handleDelete,
     loadGalleries,
     loadExhibitions,
     loadArtworks,
+    loadAnnouncements,
     isLoading,
     isSearching,
     error,

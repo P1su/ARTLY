@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './NewsCard.module.css';
+import Img from '../../../../../../components/Img/Img.jsx';
 
 export default function NewsCard({ newsItem }) {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function NewsCard({ newsItem }) {
     announcement_organizer,
     announcement_category,
     announcement_status: status,
+    announcement_poster: image,
   } = newsItem;
 
   // ✅ 카드 내부에 formatDate 정의
@@ -65,6 +67,16 @@ export default function NewsCard({ newsItem }) {
         </p>
         <p className={styles.organizer}>{announcement_organizer}</p>
       </div>
+      {image && (
+        <Img
+          src={image}
+          alt={announcement_title}
+          className={styles.cardImage}
+          wrapperProps={{
+            className: styles.cardImageWrapper,
+          }}
+        />
+      )}
     </div>
   );
 }

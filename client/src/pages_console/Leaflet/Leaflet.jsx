@@ -123,6 +123,13 @@ export default function Leaflet({ type }) {
       setIsLoading(true);
       await userInstance.delete(`/api/leaflet/${leafletId}`);
 
+      // 상태 초기화 추가
+      setLeafletId(null);
+      setExistingLeaflet(null);
+      setTitle('');
+      setCoverImage(null);
+      setImageList([]);
+
       showAlert('리플렛이 삭제되었습니다.');
 
       // 삭제 후 이동
@@ -267,6 +274,30 @@ export default function Leaflet({ type }) {
           }
         }
 
+        // image_urls가 문자열이면 파싱
+        let imageUrls = res.data.image_urls;
+        if (typeof imageUrls === 'string') {
+          imageUrls = JSON.parse(imageUrls);
+        }
+
+        setLeafletId(newLeafletId);
+        setExistingLeaflet(res.data);
+
+        if (imageUrls?.length > 0) {
+          setCoverImage({ url: imageUrls[0], file: null, isNew: false });
+
+          if (imageUrls.length > 1) {
+            setImageList(
+              imageUrls.slice(1).map((url) => ({
+                url,
+                file: null,
+                isNew: false,
+              }))
+            );
+          } else {
+            setImageList([]);
+          }
+        }
         showAlert('리플렛이 성공적으로 저장되었습니다.');
       }
     } catch (error) {

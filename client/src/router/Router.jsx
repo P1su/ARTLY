@@ -104,6 +104,14 @@ const router = createBrowserRouter([
         path: '/console/artworks',
         element: <ConsoleMain defaultTab='작품관리' />,
       },
+      {
+        path: '/console/artists',
+        element: <ConsoleMain defaultTab='작가관리' />,
+      },
+      {
+        path: '/console/announcements',
+        element: <ConsoleMain defaultTab='공고관리' />,
+      },
       { path: '/console/detail', element: <ConsoleDetail /> },
       {
         path: '/console/exhibitions/:id',
@@ -118,6 +126,14 @@ const router = createBrowserRouter([
         element: <ConsoleDetail type='artworks' />,
       },
       {
+        path: '/console/artists/:id',
+        element: <ConsoleDetail type='artists' />,
+      },
+      {
+        path: '/console/announcements/:id',
+        element: <ConsoleDetail type='announcements' />,
+      },
+      {
         path: '/console/galleries/edit/:id',
         element: <ConsoleEdit type='galleries' />,
       },
@@ -128,6 +144,14 @@ const router = createBrowserRouter([
       {
         path: '/console/artworks/edit/:id',
         element: <ConsoleEdit type='artworks' />,
+      },
+      {
+        path: '/console/artists/edit/:id',
+        element: <ConsoleEdit type='artists' />,
+      },
+      {
+        path: '/console/announcements/edit/:id',
+        element: <ConsoleEdit type='announcements' />,
       },
       {
         path: '/console/artworks/docent/:id',

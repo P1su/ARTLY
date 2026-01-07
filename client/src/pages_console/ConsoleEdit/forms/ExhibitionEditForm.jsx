@@ -325,6 +325,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                           src={getArtistImage(artist)}
                           alt='thumb'
                           className={styles.artistThumb}
+                          wrapperProps={{
+                            style: {
+                              width: '10%',
+                            },
+                          }}
                         />
                         <span className={styles.artistName}>{name}</span>
 
@@ -366,6 +371,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                         src={getArtImage(art)}
                         alt='thumb'
                         className={styles.artworkThumb}
+                        wrapperProps={{
+                          style: {
+                            width: '10%',
+                          },
+                        }}
                       />
                       <div className={styles.artworkMeta}>
                         <div className={styles.artworkTitle}>

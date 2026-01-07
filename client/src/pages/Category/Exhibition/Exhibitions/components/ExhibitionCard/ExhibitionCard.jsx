@@ -36,7 +36,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
   const statusLabel =
     status === 'exhibited'
       ? '전시 중'
-      : status === 'upcoming'
+      : status === 'scheduled'
         ? '전시 예정'
         : '전시 종료';
 

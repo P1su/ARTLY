@@ -1,0 +1,168 @@
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+  
+  .searchContainer {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  
+  .countAndButtonContainer {
+    display: flex;
+    padding: 0 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .artistCard {
+    display: block;
+    padding: 1.5rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .artistCard:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cardContent {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .cardContent span {
+    width: 8rem !important;
+    height: 8rem !important;
+    border-radius: 50% !important;
+  }
+  
+  .artistImage {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    background-color: #f3f4f6;
+  }
+  
+  .cardInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: 0.3rem;
+  }
+  
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .artistName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .deleteButton {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: all 0.2s ease;
+  }
+  
+  .deleteButton:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+  }
+  
+  .artistCategory {
+    font-size: 1.3rem;
+    color: #4b5563;
+    margin: 0;
+  }
+  
+  .artistNation {
+    font-size: 1.3rem;
+    color: #9ca3af;
+    margin: 0;
+  }
+  
+  .exhibitionInfo {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin: 0;
+    margin-top: 0.3rem;
+  }
+  
+  .emptyStateContainer {
+    width: 100%;
+    padding: 2rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  @media (min-width: 700px) {
+    .cardContent span {
+      width: 9rem !important;
+      height: 9rem !important;
+    }
+    .artistImage {
+      width: 9rem;
+      height: 9rem;
+    }
+    .artistName {
+      font-size: 1.6rem;
+    }
+    .artistCategory,
+    .artistNation {
+      font-size: 1.4rem;
+    }
+  }
+  
+  @media (min-width: 1000px) {
+    .cardContent span {
+      width: 10rem !important;
+      height: 10rem !important;
+    }
+    .artistImage {
+      width: 10rem;
+      height: 10rem;
+    }
+    .artistName {
+      font-size: 1.7rem;
+    }
+    .artistCategory,
+    .artistNation {
+      font-size: 1.45rem;
+    }
+  }

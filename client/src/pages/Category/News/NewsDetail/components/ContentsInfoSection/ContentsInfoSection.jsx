@@ -4,7 +4,6 @@ export default function ContentsInfoSection({
   startDate,
   host,
   contact,
-  apply,
   attachment,
   site,
 }) {
@@ -18,9 +17,6 @@ export default function ContentsInfoSection({
       </p>
       <p>
         <strong className={styles.label}>문의 </strong> {contact}
-      </p>
-      <p>
-        <strong className={styles.label}>지원 </strong> {apply}
       </p>
       {site && (
         <p>

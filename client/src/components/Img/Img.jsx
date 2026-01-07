@@ -23,7 +23,10 @@ export default function Img({ src, alt, className, style, ...props }) {
       setImgSrc(src);
     } else {
       const cleanSrc = src.startsWith('/') ? src : `/${src}`;
-      const finalUrl = `${BASE_URL}/media${cleanSrc}`;
+      
+      const finalUrl = cleanSrc.startsWith('/media')
+        ? `${BASE_URL}${cleanSrc}`
+        : `${BASE_URL}/media${cleanSrc}`;
 
       setImgSrc(finalUrl);
     }
@@ -46,11 +49,10 @@ export default function Img({ src, alt, className, style, ...props }) {
         objectFit: 'cover',
         ...style,
       }}
-      // 2. 🌟 핵심: 이미지 겉을 감싸는 span 태그도 100%로 설정
       wrapperProps={{
         style: {
           transitionDelay: '0.04s',
-          display: 'block', // 혹은 "inline-block"
+          display: 'block',
           width: '100%',
           height: '100%',
         },

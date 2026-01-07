@@ -114,6 +114,11 @@ export default function ArtistSelectModal({ onClose, onSelect }) {
                       src={artist.artist_image}
                       alt={artist.artist_name}
                       className={styles.artistImg}
+                      wrapperProps={{
+                        style: {
+                          width: '12%',
+                        },
+                      }}
                     />
                     <div className={styles.artistInfo}>
                       <span className={styles.name}>{artist.artist_name}</span>
