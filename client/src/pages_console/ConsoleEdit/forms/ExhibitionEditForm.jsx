@@ -308,7 +308,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               value={data.exhibition_phone || ''}
               onChange={handleInputChange}
             />
-          </div> 
+          </div>
 
           <div className={styles.inputGroup}>
             <label className={styles.label}>홈페이지</label>
