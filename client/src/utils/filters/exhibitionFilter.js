@@ -14,6 +14,7 @@ export const exhibitionFilter = [
     options: [
       { label: '전체', value: '' },
       { label: '서울', value: '서울' },
+      { label: '경기', value: '경기' },
       { label: '부산', value: '부산' },
       { label: '대구', value: '대구' },
       { label: '광주', value: '광주' },

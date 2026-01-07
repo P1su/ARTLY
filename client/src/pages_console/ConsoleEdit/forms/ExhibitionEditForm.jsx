@@ -260,6 +260,27 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           </div>
 
           <div className={styles.inputGroup}>
+            <label className={styles.label}>분야</label>
+            <select
+              className={styles.input}
+              name='exhibition_category'
+              value={data.exhibition_category || ''}
+              onChange={handleInputChange}
+            >
+              <option value=''>선택하세요</option>
+              <option value='사진'>사진</option>
+              <option value='자연미술'>자연미술</option>
+              <option value='건축'>건축</option>
+              <option value='미디어아트'>미디어아트</option>
+              <option value='추상화'>추상화</option>
+              <option value='조각'>조각</option>
+              <option value='설치미술'>설치미술</option>
+              <option value='초상화'>초상화</option>
+              <option value='복합매체'>복합매체</option>
+            </select>
+          </div>
+
+          <div className={styles.inputGroup}>
             <label className={styles.label}>주소</label>
             <input
               className={styles.input}
@@ -322,9 +343,15 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                     return (
                       <div key={id || index} className={styles.artworkCard}>
                         <Img
-                          src={getArtistImage(artist)}
-                          alt='thumb'
+                          src={artist.artist_image}
+                          alt={artist.artist_name}
                           className={styles.artistThumb}
+                          wrapperProps={{
+                            style: {
+                              width: '50px',
+                              height: '40px',
+                            },
+                          }}
                         />
                         <span className={styles.artistName}>{name}</span>
 
@@ -362,7 +389,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 ) : (
                   data.artworks.map((art) => (
                     <div key={art.id} className={styles.artworkCard}>
-                      <Img
+                      <img
                         src={getArtImage(art)}
                         alt='thumb'
                         className={styles.artworkThumb}

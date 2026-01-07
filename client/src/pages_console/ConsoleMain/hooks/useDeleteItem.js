@@ -32,7 +32,7 @@ export default function useDeleteItem() {
         // is_console을 true로 설정하여 현재 사용자의 갤러리만 가져옴
         params.append('is_console', true);
         const url = `/api/galleries${params.toString() ? `?${params.toString()}` : ''}`;
-        const response = await userInstance.get(url);
+        const response = await userInstance.get(url); 
 
         // API 응답 데이터를 mock 데이터 형식에 맞게 변환
         const galleries = Array.isArray(response.data)
@@ -118,55 +118,59 @@ export default function useDeleteItem() {
     async (exhibitionTitle = '') => {
       try {
         setIsLoading(true);
-
-        // 1. API 호출
         const params = new URLSearchParams();
-        // 전체 조회가 아닐 때만 파라미터 추가
         if (exhibitionTitle && exhibitionTitle !== '전시회 전체') {
           params.append('exhibition_title', exhibitionTitle);
         }
+        
         const url = `/api/arts${params.toString() ? `?${params.toString()}` : ''}`;
-
         const response = await userInstance.get(url);
-
-        // 2. 데이터 변환 (필터링 로직 제거!)
+  
+        // 내 전시회 ID 목록
+        const myExhibitionIds = exhibitionList.map(e => e.id);
+  
         const artworks = Array.isArray(response.data)
-          ? response.data.map((item) => {
-            // 전시회 정보가 없을 수도 있으므로 안전하게 처리
-            const firstExhibition =
-              item.exhibitions && item.exhibitions.length > 0
-                ? item.exhibitions[0]
-                : null;
+          ? response.data
+            .filter((item) => {
+              // 작품이 내 전시회에 포함되어 있는지 확인
+              if (!item.exhibitions || item.exhibitions.length === 0) return false;
 
-            return {
-              id: item.id,
-              title: item.art_title || item.title, // 필드명 안전하게
-              artist:
-                item.artist?.artist_name ||
-                item.artist_name ||
-                '작가 정보 없음',
-              image: item.art_image || item.image_url || item.image, // 백엔드 필드명에 맞춰 확인 필요
+              const artExhibitionIds = item.exhibitions.map(ex => ex.id);
 
-              // 아래 정보는 전체 조회 시 없을 수도 있음
-              gallery_name: firstExhibition?.gallery?.gallery_name || '',
-              exhibition_title: firstExhibition?.exhibition_title || '',
-            };
-          })
+              return item.exhibitions.some(ex => 
+                myExhibitionIds.includes(Number(ex.id))
+              );
+            })
+            .map((item) => {
+              const firstExhibition =
+                item.exhibitions && item.exhibitions.length > 0
+                  ? item.exhibitions[0]
+                  : null;
+  
+              return {
+                id: item.id,
+                title: item.art_title || item.title,
+                artist:
+                  item.artist?.artist_name ||
+                  item.artist_name ||
+                  '작가 정보 없음',
+                image: item.art_image || item.image_url || item.image,
+                gallery_name: firstExhibition?.gallery?.gallery_name || '',
+                exhibition_title: firstExhibition?.exhibition_title || '',
+              };
+            })
           : [];
-
-        // 3. 상태 업데이트
+  
         setArtworkList(artworks);
       } catch (err) {
         setError(err.message);
-
         console.error('작품 목록 로드 실패:', err);
-
         setArtworkList([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [], // 의존성 배열도 비워두는 게 안전함 (exhibitionList 의존 X)
+    [exhibitionList],  // galleryList → exhibitionList로 변경
   );
 
   // 사용자 정보가 있을 때 갤러리 목록 로드 (최초 1회만)
@@ -187,11 +191,10 @@ export default function useDeleteItem() {
 
   // 전시회 목록이 로드되면 작품 목록도 로드 (관심유저관리 등에서 필요)
   useEffect(() => {
-    if (exhibitionList.length > 0) {
+    if (exhibitionList.length > 0 && galleryList.length > 0) {  // galleryList 조건 추가
       loadArtworks('전시회 전체');
     }
-    // eslint-disable-next-line react-hooks-deps
-  }, [exhibitionList.length]);
+  }, [exhibitionList.length, galleryList.length])
 
   const handleDelete = async (id, type) => {
     try {

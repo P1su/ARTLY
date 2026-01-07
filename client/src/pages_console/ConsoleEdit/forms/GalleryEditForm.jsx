@@ -281,6 +281,23 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
           </div>
 
           <div className={styles.inputGroup}>
+            <label className={styles.label}>분류</label>
+            <select
+              className={styles.input}
+              name='gallery_type'
+              value={data.gallery_type || ''}
+              onChange={handleInputChange}
+            >
+              <option value=''>선택하세요</option>
+              <option value='미술관'>미술관</option>
+              <option value='박물관'>박물관</option>
+              <option value='갤러리'>갤러리</option>
+              <option value='복합문화공간'>복합문화공간</option>
+              <option value='대안공간'>대안공간</option>
+            </select>
+          </div>
+
+          <div className={styles.inputGroup}>
             <label className={styles.label}>전화번호</label>
             <input
               className={styles.input}

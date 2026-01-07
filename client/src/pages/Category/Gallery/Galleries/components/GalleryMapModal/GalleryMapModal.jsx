@@ -6,6 +6,7 @@ import { userInstance } from '../../../../../../apis/instance';
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner';
+import Cookies from 'js-cookie';
 
 export default function GalleryMapModal({ onOpen }) {
   const { coords } = useGeoLocation();
@@ -69,7 +70,7 @@ export default function GalleryMapModal({ onOpen }) {
   }, [mapInstance, likedOnly]);
 
   const handleFav = () => {
-    if (!localStorage.getItem('ACCESS_TOKEN')) {
+    if (!Cookies.get('ACCESS_TOKEN')) {
       navigate('/login');
       return;
     }
