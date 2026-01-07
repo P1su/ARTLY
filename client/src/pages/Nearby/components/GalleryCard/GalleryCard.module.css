@@ -15,13 +15,13 @@
 
 .linkContainer {
   width: 100%;
-  height: 15rem;
+  height: auto;
   position: relative;
 }
 
 .linkContainer span {
   width: 100% !important;
-  height: 22rem !important;
+  height: auto !important;
 }
 .galleryImage {
   width: 100%;
@@ -34,6 +34,7 @@
   border-radius: 12px;
 
   object-fit: cover;
+  display: block;
 }
 
 .infoContainer {
