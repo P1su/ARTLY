@@ -388,7 +388,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 ) : (
                   data.artworks.map((art) => (
                     <div key={art.id} className={styles.artworkCard}>
-                      <img
+                      <Img
                         src={getArtImage(art)}
                         alt='thumb'
                         className={styles.artworkThumb}
