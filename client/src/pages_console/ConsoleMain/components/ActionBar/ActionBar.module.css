@@ -1,19 +1,18 @@
 .actionContainer {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
   align-items: center;
   justify-content: center;
-  padding: 0.8rem 1.5rem;
+  padding: 0.5rem 0.5rem;
 }
 
 .actionButton {
   flex: 0 0 auto;
   white-space: nowrap;
   min-width: fit-content;
-  padding: 0.8rem 1.5rem;
-  border: none;
+  padding: 0.5rem 0.8rem;
   border-radius: 9999px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #6b7280;
   background-color: transparent;

@@ -261,7 +261,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
         });
       }
 
-
+      console.log('📦 서버 응답:', response.data);
       const savedId = isCreateMode
         ? response.data.data?.id || response.data.id
         : id;

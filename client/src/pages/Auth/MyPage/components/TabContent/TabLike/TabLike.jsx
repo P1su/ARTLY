@@ -5,6 +5,7 @@ import ExhibitionCard from '../../../../../Category/Exhibition/Exhibitions/compo
 import GalleryCard from '../../../../../Nearby/components/GalleryCard/GalleryCard';
 import ArtistCard from '../../../../../Category/Artist/Artists/components/ArtistCard/ArtistCard';
 import LoadingSpinner from '../../../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import ArtworkCard from '../../../../../Category/Artwork/ArtworkList/components/ArtworkCard/ArtworkCard';
 
 const TABS = [
   { label: '전시회', key: 'exhibition' },
@@ -55,7 +56,10 @@ export default function TabLike() {
           ...item,
           is_liked: true,
         })),
-        artwork: [],
+        artwork: removeDuplicates(data.like_arts || []).map((item) => ({  // ← 수정
+          ...item,
+          is_liked: true,
+        })),
       });
     } catch (err) {
       console.log('like fetch err : ', err);
@@ -107,6 +111,12 @@ export default function TabLike() {
             ) : activeTab === 'gallery' ? (
               filteredItems.map((item) => (
                 <GalleryCard key={`gallery-${item.id}`} galleryItem={item} />
+              ))
+            ) : activeTab === 'artwork' ? (
+              filteredItems.map((item) => (
+                <div key={`artwork-${item.id}`} className={styles.artworkCardWrapper}>
+                  <ArtworkCard artworkItems={item} />
+                </div>
               ))
             ) : activeTab === 'artist' ? (
               filteredItems.map((item) => (

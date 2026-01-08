@@ -139,7 +139,7 @@ export default function ExhibitionDetail({
       label: '전시기간',
       content: startDate && endDate ? `${startDate} ~ ${endDate}` : '정보 없음',
     },
-    { label: '전시장소', content: organization },
+    { label: '전시장소', content: organization?.name},
     {
       label: '관람시간',
       content:

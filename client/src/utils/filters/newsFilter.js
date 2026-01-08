@@ -25,6 +25,7 @@ export const newsFilter = [
       { label: '진행중', value: 'ongoing' },
       { label: '예정', value: 'scheduled' },
       { label: '종료', value: 'ended' },
+      { label: '전체', value: '' },
     ],
   },
 ];

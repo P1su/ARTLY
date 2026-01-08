@@ -19,7 +19,7 @@ export default function MapModal({ item, onClose }) {
     {
       key: 'location',
       label: '주소',
-      content: location || '정보없음',
+      content: location?.name || '정보없음',
     },
     {
       key: 'date',
@@ -51,7 +51,7 @@ export default function MapModal({ item, onClose }) {
     lng: organization.longitude,
     id: `exhibition-${id}-map`,
     title,
-    location,
+    location: location?.name || '',
   });
 
   return (

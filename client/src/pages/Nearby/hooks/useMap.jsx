@@ -10,22 +10,33 @@ const useMap = ({ lat, lng, id, results, zoomLevel = 15, title, location }) => {
   // 1. 지도 생성 (변경 없음)
   useEffect(() => {
     const mapElement = document.getElementById(id);
-    if (mapRef.current || !mapElement || !window.naver?.maps) return;
-    if (lat === null || lng === null) return;
-
-    const map = new naver.maps.Map(mapElement, {
-      center: new naver.maps.LatLng(lat, lng),
-      zoom: zoomLevel,
-    });
-    mapRef.current = map;
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.destroy();
-        mapRef.current = null;
-      }
+    if (!mapElement || !window.naver?.maps || mapRef.current) return;
+  
+    const initMap = (lat, lng) => {
+      const location = new window.naver.maps.LatLng(lat, lng);
+      mapRef.current = new window.naver.maps.Map(id, {
+        center: location,
+        zoom: 16,
+      });
+      new window.naver.maps.Marker({ position: location, map: mapRef.current });
     };
-  }, [id]);
+  
+    // 좌표가 있으면 바로 사용
+    if (lat && lng) {
+      initMap(lat, lng);
+      return;
+    }
+  
+    // 좌표 없으면 주소로 Geocoding
+    if (location && window.naver.maps.Service) {
+      window.naver.maps.Service.geocode({ query: location }, (status, res) => {
+        if (status === window.naver.maps.Service.Status.OK && res.v2.addresses.length > 0) {
+          const { x, y } = res.v2.addresses[0];
+          initMap(parseFloat(y), parseFloat(x));
+        }
+      });
+    }
+  }, [id, lat, lng, location]);
 
   // 2. 마커 업데이트
   useEffect(() => {
