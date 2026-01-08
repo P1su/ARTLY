@@ -54,7 +54,7 @@ export default function Reservation() {
     if (exhibition) {
       setReservationInfo((prev) => ({
         ...prev,
-        gallery: exhibition.exhibition_location,
+        gallery: exhibition.exhibition_location?.name || '',
         price: exhibition.exhibition_price,
       }));
     }
@@ -256,7 +256,7 @@ export default function Reservation() {
     { label: '인원', value: `${personCount}명` },
     {
       label: '장소',
-      value: exhibition ? exhibition.exhibition_location : '',
+      value: exhibition ? exhibition.exhibition_location?.name || '' : '',
     },
     { label: '예약자', value: reservationInfo.name },
     { label: '전화번호', value: reservationInfo.phone },
@@ -283,7 +283,7 @@ export default function Reservation() {
         <>
           <div className={styles.exhibitionInfo}>
             <strong>{exhibition.exhibition_title}</strong>
-            <p>{exhibition.exhibition_organization}</p>
+            <p>{exhibition.exhibition_organization?.name || ''}</p>
           </div>
 
           <div className={styles.calendarContainer}>
@@ -395,7 +395,7 @@ export default function Reservation() {
             <div className={styles.infoRow}>
               <span className={styles.infoLabel}>장소</span>
               <span className={styles.infoValue}>
-                {exhibition.exhibition_location}
+                {exhibition.exhibition_location?.name || '장소 미정'}
               </span>
             </div>
           </div>
@@ -449,7 +449,7 @@ export default function Reservation() {
               {
                 label: '장소',
                 value: exhibition
-                  ? exhibition.exhibition_location
+                  ? exhibition.exhibition_location?.name || '전시 장소'
                   : '전시 장소',
               },
               {

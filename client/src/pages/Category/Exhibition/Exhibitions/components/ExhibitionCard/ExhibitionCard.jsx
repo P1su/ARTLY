@@ -86,7 +86,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
           lat={org.latitude}
           lng={org.longitude}
           title={title}
-          address={location}
+          address={location?.name}
           mapId={mapId}
           onClose={handleClose}
         />
@@ -129,7 +129,7 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
         <div className={styles.infoContainer}>
           <h3 className={styles.exhibitionTitle}>{title}</h3>
           <p className={styles.subParagraph}>
-            {category} | {location || '장소 미정'}
+            {category} | {location?.name || '장소 미정'}
           </p>
           <p className={styles.subParagraph}>
             {startDate} ~ {endDate}
