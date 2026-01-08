@@ -41,6 +41,8 @@ export default function ExhibitionCard({ exhibitionItem, onEvent }) {
         : '전시 종료';
 
   const handleOpen = () => {
+    console.log('org:', org);
+    console.log('lat:', org?.latitude, 'lng:', org?.longitude);
     if (!location) {
       showAlert('해당 전시회의 주소가 없습니다.');
       return;

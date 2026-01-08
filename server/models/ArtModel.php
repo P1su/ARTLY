@@ -13,9 +13,21 @@ class ArtModel {
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function getAll($filters = []) {
-        $stmt = $this->pdo->prepare("SELECT * FROM APIServer_art");
-        $stmt->execute();
+    public function getAll($search = null) {
+        $sql = "SELECT a.*, ar.artist_name 
+                FROM APIServer_art a
+                LEFT JOIN APIServer_artist ar ON a.artist_id = ar.id
+                WHERE 1=1";
+        $params = [];
+    
+        if ($search) {
+            $sql .= " AND (a.art_title LIKE :search1 OR ar.artist_name LIKE :search2)";
+            $params[':search1'] = "%$search%";
+            $params[':search2'] = "%$search%";
+        }
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

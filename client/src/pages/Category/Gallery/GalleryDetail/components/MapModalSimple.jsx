@@ -10,6 +10,9 @@ export default function MapModalSimple({
   mapId,
   onClose,
 }) {
+  console.log('MapModalSimple:', { lat, lng, mapId, title, address });
+  console.log('naver.maps 존재:', !!window.naver?.maps);
+
   useMap({
     lat,
     lng,
