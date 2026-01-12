@@ -22,7 +22,7 @@ const DETAIL_CONFIG = {
     title: '전시회',
     Component: ExhibitionDetail,
     fetchUrl: (id) => `/api/exhibitions/${id}`,
-    tabs: ['정보수정', 'QR코드', '리플렛', '초대장/포스터'],
+    tabs: ['정보수정', 'QR코드', '리플렛'],
   },
   artworks: {
     title: '작품',
@@ -49,7 +49,6 @@ export default function ConsoleDetail({ type }) {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const config = DETAIL_CONFIG[type];
   const { title, Component, fetchUrl, tabs } = config || {};
@@ -97,9 +96,6 @@ export default function ConsoleDetail({ type }) {
         break;
       case '리플렛':
         navigate(`/console/${type}/leaflet/${id}`);
-        break;
-      case '초대장/포스터':
-        setShowCreateModal(true);
         break;
       default:
         break;
@@ -173,14 +169,6 @@ export default function ConsoleDetail({ type }) {
           data={data}
           onClose={() => setShowQrModal(false)}
           type={type}
-        />
-      )}
-
-      {showCreateModal && (
-        <CreateModal
-          onClose={() => {
-            setShowCreateModal(false);
-          }}
         />
       )}
     </div>
