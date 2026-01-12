@@ -5,6 +5,7 @@ import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal
 import ArtworkSelectModal from '../components/ArtworkSelectModal/ArtworkSelectModal.jsx';
 import Img from '../../../components/Img/Img.jsx';
 import { useAlert } from '../../../store/AlertProvider.jsx';
+import CreateModal from '../../ConsoleDetail/components/CreateModal/CreateModal';
 
 const getArtistId = (artist) => artist.id || artist.artist_id;
 const getArtistImage = (artist) => artist.artist_image || artist.profile_img;
@@ -31,6 +32,8 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
   const fileInputRef = useRef(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
+  const [showPosterModal, setShowPosterModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
   const { showAlert } = useAlert();
 
   useEffect(() => {
@@ -142,6 +145,28 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     }));
   };
 
+  // 포스터용 - 이미지 업로드 영역에 적용
+  const handleApplyPoster = (imageUrl) => {
+    setImagePreviewUrl(imageUrl);
+    fetch(imageUrl)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], 'generated-image.png', { type: 'image/png' });
+        onFileChange(file);
+      });
+    setShowPosterModal(false);
+  };
+
+  // 이미지용 - 전시 소개(TiptapEditor)에 삽입
+  const handleApplyImage = (imageUrl) => {
+    const imgTag = `<img src="${imageUrl}" alt="생성된 이미지" style="max-width: 100%;" />`;
+    setData((prev) => ({
+      ...prev,
+      exhibition_description: (prev.exhibition_description || '') + imgTag,
+    }));
+    setShowImageModal(false);
+  };
+
   return (
     <>
       <div className={styles.card}>
@@ -186,6 +211,16 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
               + 전시 포스터를 업로드 해주세요
             </p>
           )}
+        </div>
+
+        <div className={styles.imageUploadFooter}>
+          <button
+            type='button'
+            className={styles.createBtn}
+            onClick={() => setShowPosterModal(true)}
+          >
+            AI 포스터/초대장 생성
+          </button>
         </div>
 
         <div className={styles.formGrid}>
@@ -254,7 +289,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
             <input
               className={styles.input}
               name='exhibition_organization'
-              value={data.exhibition_organization || ''}
+              value={
+                typeof data.exhibition_organization === 'object'
+                  ? data.exhibition_organization?.name || data.exhibition_organization?.organization_name || ''
+                  : data.exhibition_organization || ''
+              }
               onChange={handleInputChange}
             />
           </div>
@@ -424,7 +463,16 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
       </div>
 
       <div className={`${styles.card} ${styles.tiptap}`}>
-        <label className={styles.label}>전시 소개</label>
+        <div className={styles.addHeaderContainer}>
+          <label className={styles.label}>전시 소개</label>
+          <button
+            type='button'
+            className={styles.addBtn}
+            onClick={() => setShowImageModal(true)}
+          >
+            AI 이미지 생성
+          </button>
+        </div>
         <TiptapEditor
           content={data.exhibition_description || ''}
           onChange={handleDescriptionChange}
@@ -443,6 +491,22 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
           onClose={() => setShowArtworkModal(false)}
           onSelect={handleSelectArtworks}
           existingArtworks={data.artworks || []}
+        />
+      )}
+
+      {showPosterModal && (
+        <CreateModal 
+          type="poster" 
+          onClose={() => setShowPosterModal(false)} 
+          onApply={handleApplyPoster}
+        />
+      )}
+
+      {showImageModal && (
+        <CreateModal 
+          type="image" 
+          onClose={() => setShowImageModal(false)} 
+          onApply={handleApplyImage}
         />
       )}
     </>

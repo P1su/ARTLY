@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import Toast from '../components/Toast/Toast';
 import styles from '../components/Toast/Toast.module.css';
 
@@ -7,20 +7,22 @@ export const useToastContext = () => useContext(ToastContext);
 
 export function ToastProvider({ children }) {
   const [toast, setToast] = useState(null);
-  const addToast = useCallback((toastData, duration = 1000) => {
-    let title, message;
+
+  const addToast = useCallback((toastData, duration = 3000) => {
+    let title, message, actions;
 
     if (typeof toastData === 'string') {
       title = toastData;
       message = null;
+      actions = null;
     } else {
       title = toastData.title;
       message = toastData.message;
+      actions = toastData.actions;
     }
 
     const id = Date.now();
-    
-    setToast({ id, title, message, duration });
+    setToast({ id, title, message, duration, actions });
   }, []);
 
   const removeToast = useCallback((id) => {
@@ -32,10 +34,14 @@ export function ToastProvider({ children }) {
     });
   }, []);
 
+  useEffect(() => {
+    window.addToast = addToast;
+  }, [addToast]);
+
   return (
     <ToastContext.Provider value={{ addToast }}>
       {children}
-      
+
       <div className={styles.toastContainer}>
         {toast && (
           <Toast
@@ -45,6 +51,7 @@ export function ToastProvider({ children }) {
             message={toast.message}
             duration={toast.duration}
             removeToast={removeToast}
+            actions={toast.actions}
           />
         )}
       </div>
