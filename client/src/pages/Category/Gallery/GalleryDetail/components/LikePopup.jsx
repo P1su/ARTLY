@@ -6,6 +6,7 @@ export default function LikePopup({ onClose, type }) {
     galleries: '갤러리',
     exhibitions: '전시회',
     artworks: '작품으',
+    artists: '작가'
   };
 
   const targetName = config[type] || '항목으';
