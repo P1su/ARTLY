@@ -51,6 +51,13 @@ export default function DocentGenerator({ autoGenerate = false }) {
     }
   };
 
+  // 알림 권한 요청
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
+
   useEffect(() => {
     if (!id) return;
     fetchArtDetail(id);
@@ -108,14 +115,39 @@ export default function DocentGenerator({ autoGenerate = false }) {
       if (artistFile) 
         df.append('docent_img', artistFile);
 
-      // 비동기 처리, post 요청만 보내두고 영상은 나중에 생성됨
-      userInstance.post(`/api/docents/${id}?type=${confirmChecked ? 'video' : 'audio'}`, df, {
+      // 클로저 문제 해결을 위해 변수 복사
+      const artId = id;
+      const artName = productName;
+      const isVideo = confirmChecked;
+
+      
+      window.docentRequest = userInstance.post(`/api/docents/${artId}?type=${isVideo ? 'video' : 'audio'}`, df, {
         headers: {
           'Content-Type': undefined,
         },
+      }).then(() => {
+        console.log('✅ 성공');
+        window.addToast({
+          title: '도슨트 생성 완료',
+          message: `${artName} 도슨트 ${isVideo ? '동영상' : '음성'} 생성이 완료되었습니다.`,
+          actions: [
+            { label: '바로가기', onClick: () => { window.location.href = `/console/artworks/${artId}`; } },
+            { label: '닫기', onClick: () => {} },
+          ],
+        }, 10000);
+      }).catch((error) => {
+        console.log('❌ 실패:', error);
+        window.addToast({
+          title: '도슨트 생성 실패',
+          message: '도슨트 생성 중 오류가 발생했습니다.',
+          actions: [{ label: '닫기', onClick: () => {} }],
+        }, 5000);
       });
+      
+      console.log('🚀 API 호출 시작');
 
-      showAlert('도슨트가 저장되었습니다.');
+
+      showAlert('도슨트가 저장되었습니다.\n생성 완료 시 알림이 표시됩니다.');
       await fetchArtDetail(id);
       navigate(`/console/artworks/${id}`);
     } catch (e) {

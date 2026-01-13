@@ -28,7 +28,10 @@ export default function Artists() {
   const [query, setQuery] = useState('');
 
   const handleFav = () => {
-    !user && navigate('/login');
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     setArtistFilters((prev) => ({
       ...prev,
       liked_only: !prev.liked_only,
@@ -46,6 +49,7 @@ export default function Artists() {
     };
     try {
       setIsLoading(true);
+
 
       const response = await userInstance.get('/api/artist', {
         params: params,

@@ -4,9 +4,9 @@ import { FaX } from 'react-icons/fa6';
 import InvitationGenerator from '../../../../pages/Category/Exhibition/ExhibitionDetail/components/InvitationGenerator/InvitationGenerator';
 import ImageGenerator from '../../../../components/ImageGenerator/ImageGenerator';
 
-export default function CreateModal({ onClose }) {
-  const [selectedTab, setSelectedTab] = useState('포스터 생성');
-  const tabs = ['포스터 생성', '초대장 생성'];
+export default function CreateModal({ type, onClose, onApply }) {
+  const [selectedTab, setSelectedTab] = useState(type === 'poster' ? '포스터 생성' : '이미지 생성');
+  const tabs = type === 'poster' ? ['포스터 생성', '초대장 생성'] : ['이미지 생성'];
 
   return (
     <div className={styles.overlay}>
@@ -28,11 +28,9 @@ export default function CreateModal({ onClose }) {
           ))}
         </div>
         <div className={styles.generateContainer}>
-          {selectedTab === '포스터 생성' ? (
-            <ImageGenerator />
-          ) : (
-            <InvitationGenerator />
-          )}
+          {selectedTab === '포스터 생성' && <ImageGenerator onApply={onApply} type="poster" />}
+          {selectedTab === '초대장 생성' && <InvitationGenerator />}
+          {selectedTab === '이미지 생성' && <ImageGenerator onApply={onApply} type="image"/>}
         </div>
       </div>
     </div>

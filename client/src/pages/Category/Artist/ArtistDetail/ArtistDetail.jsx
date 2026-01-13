@@ -9,6 +9,7 @@ import { useUser } from '../../../../store/UserProvider.jsx';
 import Img from '../../../../components/Img/Img.jsx';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
+import LikePopup from '../../Gallery/GalleryDetail/components/LikePopup';
 
 export default function ArtistDetail({ 
   id: propsId, 
@@ -19,6 +20,7 @@ export default function ArtistDetail({
   const navigate = useNavigate();
   const [artistData, setArtistData] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
+  const [showPopup, setShowPopup] = useState(false);
   const { showAlert } = useAlert();
 
   const id = propsId || params.artistId;
@@ -80,6 +82,7 @@ export default function ArtistDetail({
           liked_id: id,
           liked_type: 'artist',
         });
+        setShowPopup(true);
       }
 
       await getArtistDetail();
@@ -304,6 +307,10 @@ export default function ArtistDetail({
         >
           목록으로 돌아가기
         </button>
+      )}
+
+      {showPopup && (
+        <LikePopup type="artists" onClose={() => setShowPopup(false)} />
       )}
     </div>
   );
