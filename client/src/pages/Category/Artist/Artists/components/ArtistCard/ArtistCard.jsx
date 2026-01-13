@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa6';
 import { userInstance } from '../../../../../../apis/instance';
 import Img from '../../../../../../components/Img/Img';
+import Cookies from 'js-cookie';
 
 export default function ArtistCard({ artistItem, onEvent }) {
   const {
@@ -16,10 +17,17 @@ export default function ArtistCard({ artistItem, onEvent }) {
   } = artistItem;
   const navigate = useNavigate();
 
+  const isLiked = isLike === '1' || isLike === true;
+
   const handleLike = async () => {
-    !localStorage.getItem('ACCESS_TOKEN') && navigate('/login');
+    console.log('isLike:', isLike, typeof isLike);
+    if (!Cookies.get('ACCESS_TOKEN')) {
+      navigate('/login');
+      return;  
+    }
+    
     try {
-      if (isLike === true) {
+      if (isLiked) {
         await userInstance.delete('/api/likes', {
           data: {
             liked_id: id,
@@ -32,7 +40,7 @@ export default function ArtistCard({ artistItem, onEvent }) {
           liked_type: 'artist',
         });
       }
-
+  
       await onEvent();
     } catch (error) {
       console.error(error);
@@ -59,7 +67,7 @@ export default function ArtistCard({ artistItem, onEvent }) {
             handleLike();
           }}
         >
-          <FaStar className={isLike === '1' ? styles.likedIcon : styles.icon} />
+          <FaStar className={isLiked ? styles.likedIcon : styles.icon} />
         </button>
       </div>
       <p className={styles.subParagraph}>{field}</p>

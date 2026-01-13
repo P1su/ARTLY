@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom'; // 1. useSearchParams 추가
+import { useSearchParams } from 'react-router-dom';
 import { userInstance } from '../../../apis/instance.js';
 import { useAlert } from '../../../store/AlertProvider.jsx';
 import { useUser } from '../../../store/UserProvider.jsx';
@@ -16,12 +16,7 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
   const validate = () => {
     if (type === 'artworks') {
       if (!data.art_title) return '작품명을 입력해주세요.';
-
-      // [추가] 작가 선택 여부 확인 (Swagger: artist_id * required)
       if (!data.artist_id) return '작가를 선택해주세요.';
-
-      // [추가] 생성 모드일 때 이미지 파일 필수 (Swagger: image * required)
-      // selectedImageFile이 없으면 파일을 안 올린 것
       if (isCreateMode && !selectedImageFile) {
         return '작품 이미지를 업로드해주세요.';
       }
@@ -102,17 +97,14 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     formData.append('announcement_content', data.announcement_content || '');
     formData.append('announcement_category', data.announcement_category || '');
     
-    // 이미지 파일이 있으면 추가
     if (selectedImageFile) {
       formData.append('announcement_poster_file', selectedImageFile);
     }
     
     return formData;
-    
   };
   
   const handleExhibitionConnections = async (savedId) => {
-    // A. 작품 (Artworks) 업데이트
     const currentArtworks = data.artworks || [];
     const originalArtworks = data._originalArtworks || [];
 
@@ -135,7 +127,6 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
       ),
     ];
 
-    // B. 작가 (Artists) 업데이트
     const currentArtists = data.artists || [];
     const originalArtists = data._originalArtists || [];
 
@@ -148,7 +139,6 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
 
     const newArtistIds = artistsToAdd.map((a) => getId(a)).filter(Boolean);
 
-    // 작가 추가 (일괄)
     const artistAddPromise =
       newArtistIds.length > 0
         ? userInstance.post(`/api/exhibitions/${savedId}/artists`, {
@@ -156,7 +146,6 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
           })
         : Promise.resolve();
 
-    // 작가 삭제 (개별)
     const artistDeletePromises = artistsToDelete.map((a) =>
       userInstance.delete(`/api/exhibitions/${savedId}/artists/${getId(a)}`),
     );
@@ -177,24 +166,19 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
   };
 
   const handleArtworkConnections = async (savedArtId) => {
-    // 1. URL 파라미터나 data에 있는 단일 exhibition_id 가져오기 (우선순위: URL > data)
     const urlExhibitionId =
       searchParams.get('exhibition_id') || data.exhibition_id;
 
-    // 2. 다중 선택된 배열 가져오기
     const selectedList = data.selected_exhibition_ids || [];
 
-    // 3. 합치기 (Set을 사용해 중복 제거)
     const targets = new Set([...selectedList]);
 
-    // 단일 ID가 있으면 타겟 목록에 추가
     if (urlExhibitionId) {
       targets.add(Number(urlExhibitionId));
     }
 
-    console.log('최종 연결할 전시회 IDs:', Array.from(targets)); // 디버깅용 로그
+    console.log('최종 연결할 전시회 IDs:', Array.from(targets));
 
-    // 4. API 호출
     if (targets.size > 0 && savedArtId) {
       const promises = Array.from(targets).map((exId) =>
         userInstance.post(`/api/exhibitions/${exId}/arts`, {
@@ -215,11 +199,12 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     setIsSaving(true);
 
     try {
-      // 1. 메인 데이터 저장
+      // ✅ 디버깅 로그
+      console.log('📤 보내는 data:', data);
+
       let response;
 
       if (type === 'announcements') {
-        // 공고: JSON으로 전송
         const announcementData = createAnnouncementFormData();
         
         if (isCreateMode) {
@@ -232,13 +217,15 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
           });
         }
       } else if (isCreateMode) {
-        // 생성: POST
         const formData = createFormData();
-        response = await userInstance.post(config.apiUrl(id), formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        
+        // ✅ FormData 내용 확인
+        for (let [key, value] of formData.entries()) {
+          console.log(`📦 FormData: ${key} =`, value);
+        }
+        
+        response = await userInstance.post(config.apiUrl(id), formData);
       } else if (type === 'artists') {
-        // 작가 수정: PUT + FormData
         const formData = new FormData();
 
         formData.append('_method', 'PUT');
@@ -254,8 +241,13 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
-        // 일반 수정 (galleries, exhibitions, artworks, announcements)
         const formData = createFormData();
+
+        console.log('📦 수정 FormData:');
+        for (let [key, value] of formData.entries()) {
+          console.log(`  ${key} =`, value);
+        }
+
         response = await userInstance.post(config.apiUrl(id), formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -266,7 +258,6 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
         ? response.data.data?.id || response.data.id
         : id;
 
-      // 2. 관계 데이터 저장
       if (type === 'exhibitions' && savedId) {
         await handleExhibitionConnections(savedId);
       } else if (type === 'artworks') {
@@ -280,7 +271,6 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
           : '수정되었습니다.',
       );
 
-      // 저장 후 이동 로직
       const tabName =
         type === 'galleries'
           ? '갤러리관리'

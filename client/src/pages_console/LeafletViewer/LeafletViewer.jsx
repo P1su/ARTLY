@@ -4,16 +4,20 @@ import HTMLFlipBook from 'react-pageflip';
 import { userInstance } from '../../apis/instance';
 import styles from './LeafletViewer.module.css';
 import Img from '../../components/Img/Img';
+import { useUser } from '../../store/UserProvider';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 export default function LeafletViewer() {
   const { category, id } = useParams();
   const navigate = useNavigate();
   const flipBookRef = useRef(null);
+  const { user } = useUser();
 
   const [leafletData, setLeafletData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isSaved, setIsSaved] = useState(false);
 
   // 이미지 원본 비율 (세로 / 가로)
   const [aspectRatio, setAspectRatio] = useState(null);
@@ -67,6 +71,16 @@ export default function LeafletViewer() {
           } else {
             setAspectRatio(1.414);
           }
+
+          // 저장 여부 확인
+          if (user && data.id) {
+            try {
+              const checkRes = await userInstance.get(`/api/user/leaflets/${data.id}/check`);
+              setIsSaved(checkRes.data.is_saved);
+            } catch (err) {
+              console.error('저장 여부 확인 실패:', err);
+            }
+          }
         } else {
           setError('리플렛 데이터를 찾을 수 없습니다.');
         }
@@ -78,7 +92,7 @@ export default function LeafletViewer() {
       }
     };
     fetchLeaflet();
-  }, [category, id]);
+  }, [category, id, user]);
 
   const totalPages = leafletData ? leafletData.image_urls.length : 0;
 
@@ -95,6 +109,28 @@ export default function LeafletViewer() {
       flipBookRef.current.pageFlip().flipPrev();
     }
   }, []);
+
+  // 저장 토글
+  const handleSaveToggle = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      if (isSaved) {
+        await userInstance.delete(`/api/user/leaflets/${leafletData.id}`);
+        setIsSaved(false);
+      } else {
+        await userInstance.post('/api/user/leaflets', {
+          leaflet_id: leafletData.id,
+        });
+        setIsSaved(true);
+      }
+    } catch (err) {
+      console.error('저장 처리 실패:', err);
+    }
+  };
 
   // 키보드 네비게이션
   useEffect(() => {
@@ -155,23 +191,32 @@ export default function LeafletViewer() {
       {/* 헤더 */}
       <header className={styles.header}>
         <h1 className={styles.title}>{title}</h1>
-        <button
-          className={styles.closeBtn}
-          onClick={() => navigate(-1)}
-          aria-label='닫기'
-        >
-          <svg
-            width='24'
-            height='24'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
+        <div className={styles.headerButtons}>
+          <button
+            className={styles.saveBtn}
+            onClick={handleSaveToggle}
+            aria-label={isSaved ? '저장 취소' : '저장'}
           >
-            <line x1='18' y1='6' x2='6' y2='18' />
-            <line x1='6' y1='6' x2='18' y2='18' />
-          </svg>
-        </button>
+            {isSaved ? <FaBookmark /> : <FaRegBookmark />}
+          </button>
+          <button
+            className={styles.closeBtn}
+            onClick={() => navigate(-1)}
+            aria-label='닫기'
+          >
+            <svg
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+            >
+              <line x1='18' y1='6' x2='6' y2='18' />
+              <line x1='6' y1='6' x2='18' y2='18' />
+            </svg>
+          </button>
+        </div>
       </header>
 
       {/* 뷰어 영역 */}

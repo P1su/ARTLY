@@ -327,3 +327,25 @@
     animation: float 6s ease-in-out infinite;
   }
 }
+
+.headerButtons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.saveBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.saveBtn:hover {
+  transform: scale(1.1);
+}

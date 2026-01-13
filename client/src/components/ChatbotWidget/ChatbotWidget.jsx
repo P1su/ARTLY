@@ -71,13 +71,26 @@ export default function ChatbotWidget() {
   };
 
   const parseBold = (text) => {
-    const parts = text.split(/(\*\*[^\*]+\*\*)/g);
-    return parts.map((part) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        const content = part.slice(2, -2);
-        return <b key={content}>{content}</b>;
-      }
-      return part;
+    // 줄바꿈으로 먼저 분리
+    const lines = text.split('\n');
+    
+    return lines.map((line, lineIndex) => {
+      // 각 줄에서 볼드 처리
+      const parts = line.split(/(\*\*[^\*]+\*\*)/g);
+      const parsedLine = parts.map((part, partIndex) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          const content = part.slice(2, -2);
+          return <strong key={`${lineIndex}-${partIndex}`}>{content}</strong>;
+        }
+        return part;
+      });
+  
+      return (
+        <span key={lineIndex}>
+          {parsedLine}
+          {lineIndex < lines.length - 1 && <br />}
+        </span>
+      );
     });
   };
 
