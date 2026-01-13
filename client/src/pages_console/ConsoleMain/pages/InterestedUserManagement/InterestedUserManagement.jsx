@@ -106,7 +106,7 @@ export default function InterestedUserManagement() {
         <LookUp
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder='사용자명, 갤러리명, 전시회명, 작품명 검색'
+          placeholder='사용자명, 전시회명, 작품명 검색'
           isInput
         />
 

@@ -115,39 +115,41 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
     // A. 작품 (Artworks) 업데이트
     const currentArtworks = data.artworks || [];
     const originalArtworks = data._originalArtworks || [];
-
+  
     const artsToAdd = currentArtworks.filter(
       (c) => !originalArtworks.some((o) => getId(o) === getId(c)),
     );
     const artsToDelete = originalArtworks.filter(
       (o) => !currentArtworks.some((c) => getId(c) === getId(o)),
     );
-
-    const artPromises = [
-      ...artsToAdd.map((art) =>
-        userInstance.post(`/api/exhibitions/${savedId}/arts`, {
-          art_id: getId(art),
-          display_order: 0,
-        }),
-      ),
-      ...artsToDelete.map((art) =>
-        userInstance.delete(`/api/exhibitions/${savedId}/arts/${getId(art)}`),
-      ),
-    ];
-
+  
+    // 작품 추가 (일괄) - art_ids 배열로 변경
+    const newArtIds = artsToAdd.map((a) => getId(a)).filter(Boolean);
+    const artAddPromise =
+      newArtIds.length > 0
+        ? userInstance.post(`/api/exhibitions/${savedId}/arts`, {
+            art_ids: newArtIds,  // art_id → art_ids 배열
+          })
+        : Promise.resolve();
+  
+    // 작품 삭제 (개별)
+    const artDeletePromises = artsToDelete.map((art) =>
+      userInstance.delete(`/api/exhibitions/${savedId}/arts/${getId(art)}`),
+    );
+  
     // B. 작가 (Artists) 업데이트
     const currentArtists = data.artists || [];
     const originalArtists = data._originalArtists || [];
-
+  
     const artistsToAdd = currentArtists.filter(
       (c) => !originalArtists.some((o) => getId(o) === getId(c)),
     );
     const artistsToDelete = originalArtists.filter(
       (o) => !currentArtists.some((c) => getId(c) === getId(o)),
     );
-
+  
     const newArtistIds = artistsToAdd.map((a) => getId(a)).filter(Boolean);
-
+  
     // 작가 추가 (일괄)
     const artistAddPromise =
       newArtistIds.length > 0
@@ -155,15 +157,16 @@ export const useEditSave = (type, id, isCreateMode, config, data, navigate) => {
             artist_ids: newArtistIds,
           })
         : Promise.resolve();
-
+  
     // 작가 삭제 (개별)
     const artistDeletePromises = artistsToDelete.map((a) =>
       userInstance.delete(`/api/exhibitions/${savedId}/artists/${getId(a)}`),
     );
-
+  
     try {
       await Promise.all([
-        ...artPromises,
+        artAddPromise,
+        ...artDeletePromises,
         artistAddPromise,
         ...artistDeletePromises,
       ]);

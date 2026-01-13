@@ -20,12 +20,6 @@ export default function Table({
       <div className={styles.tabHeader}>
         <div className={styles.tabList}>
           <button
-            className={`${styles.tabButton} ${activeTab === 'all' ? styles.tabButtonActive : ''}`}
-            onClick={() => onTabChange('all')}
-          >
-            전체
-          </button>
-          <button
             className={`${styles.tabButton} ${activeTab === 'gallery' ? styles.tabButtonActive : ''}`}
             onClick={() => onTabChange('gallery')}
           >
