@@ -12,14 +12,16 @@ import { useConfirm } from '../../store/ConfirmProvider';
 import { useAlert } from '../../store/AlertProvider';
 import { FaChevronLeft } from 'react-icons/fa6';
 
+// 업로드 용량 제한 (MB)
+const MAX_TOTAL_SIZE_MB = 50;
+
 export default function Leaflet({ type }) {
-  const { id } = useParams(); // *주의: 이것은 categoryId (전시/갤러리 ID)*
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
 
-  // id는 항상 Owner(Gallery/Exhibition) ID입니다.
   const [leafletId, setLeafletId] = useState(null);
   const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +68,6 @@ export default function Leaflet({ type }) {
           setTitle(leafletData.title || '');
 
           if (leafletData.image_urls && leafletData.image_urls.length > 0) {
-            // 표지
             if (leafletData.image_urls[0]) {
               setCoverImage({
                 url: leafletData.image_urls[0],
@@ -74,7 +75,6 @@ export default function Leaflet({ type }) {
                 isNew: false,
               });
             }
-            // 내지
             if (leafletData.image_urls.length > 1) {
               const innerImages = leafletData.image_urls
                 .slice(1)
@@ -89,8 +89,6 @@ export default function Leaflet({ type }) {
         }
       } catch (error) {
         console.error('리플렛 조회 실패:', error);
-
-        // 404는 리플렛이 없는 경우이므로 에러 처리하지 않음 (생성 모드)
         if (error.response?.status !== 404) {
           showAlert('리플렛 데이터를 불러오는데 실패했습니다.', 'error');
         }
@@ -123,7 +121,6 @@ export default function Leaflet({ type }) {
       setIsLoading(true);
       await userInstance.delete(`/api/leaflet/${leafletId}`);
 
-      // 상태 초기화 추가
       setLeafletId(null);
       setExistingLeaflet(null);
       setTitle('');
@@ -131,8 +128,6 @@ export default function Leaflet({ type }) {
       setImageList([]);
 
       showAlert('리플렛이 삭제되었습니다.');
-
-      // 삭제 후 이동
       navigate(`/console/${type}/${id}`);
     } catch (error) {
       console.error('리플렛 삭제 실패:', error);
@@ -142,43 +137,8 @@ export default function Leaflet({ type }) {
   };
 
   /**
-   * [이미지 변환 함수]
-   * URL을 File 객체로 변환합니다. 캐시 문제 방지 및 에러 핸들링 강화.
-   */
-  const convertUrlToFile = async (url, index) => {
-    try {
-      // 캐시 방지를 위해 타임스탬프 추가
-      const fetchUrl = url.includes('?')
-        ? `${url}&t=${Date.now()}`
-        : `${url}?t=${Date.now()}`;
-
-      const response = await fetch(fetchUrl, { mode: 'cors' });
-
-      if (!response.ok) {
-        throw new Error(`이미지 로드 실패: ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const ext = blob.type.split('/')[1] || 'jpg';
-      // 파일명 충돌 방지를 위해 고유 이름 생성
-      const fileName = `reupload_${Date.now()}_${index}.${ext}`;
-
-      return new File([blob], fileName, { type: blob.type });
-    } catch (error) {
-      console.error(`이미지(${url}) 변환 중 오류:`, error);
-      return null; // 실패 시 null 반환
-    }
-  };
-
-  /**
-   * [통합 업로드 핸들러]
-   * 전략:
-   * 1. 단순 텍스트/순서 변경만 있고 새 파일이 없다면 -> PATCH (가볍게 처리)
-   * 2. 파일 추가/삭제 등 복잡한 수정이라면 ->
-   * (1) 모든 이미지(URL 포함)를 File 객체로 완벽 변환
-   * (2) 변환 실패 검사 (누락 방지)
-   * (3) 새 리플렛 생성 (POST)
-   * (4) 성공 시 기존 리플렛 삭제 (DELETE)
+   * [통합 업로드 핸들러] - CORS 우회 버전
+   * 새 파일은 FormData로, 기존 URL은 JSON 문자열로 전송
    */
   const handleUpload = async () => {
     if (!title.trim()) {
@@ -190,6 +150,23 @@ export default function Leaflet({ type }) {
       return;
     }
 
+    // ===== 용량 체크 =====
+    const allItemsForSizeCheck = [coverImage, ...imageList];
+    const totalSize = allItemsForSizeCheck.reduce((sum, item) => {
+      if (item.file) return sum + item.file.size;
+      return sum;
+    }, 0);
+    const totalMB = totalSize / (1024 * 1024);
+
+    if (totalMB > MAX_TOTAL_SIZE_MB) {
+      showAlert(
+        `업로드 용량 제한(${MAX_TOTAL_SIZE_MB}MB)을 초과했습니다.\n현재: ${totalMB.toFixed(1)}MB`,
+        'error'
+      );
+      return;
+    }
+    // ===== 용량 체크 끝 =====
+
     try {
       setIsLoading(true);
 
@@ -199,7 +176,7 @@ export default function Leaflet({ type }) {
       // 전체 이미지 목록 (표지 + 내지 순서대로)
       const allItems = [coverImage, ...imageList];
 
-      // 새 파일(업로드한 파일)이 하나라도 있는지 확인
+      // 새 파일 여부 확인
       const hasNewFile = allItems.some((item) => item.file);
 
       // --- CASE 1: 순서만 바꾸거나 텍스트만 수정 (새 파일 없음) ---
@@ -218,63 +195,44 @@ export default function Leaflet({ type }) {
         return;
       }
 
-      // --- CASE 2: 파일 추가/삭제/변경 (POST 후 DELETE 전략) ---
-      console.log('이미지 변경 감지 -> 전체 재생성 프로세스 시작');
+      // --- CASE 2: 파일 추가/삭제/변경 ---
+      console.log('이미지 변경 감지 -> 혼합 업로드 시작');
 
-      // 1. 모든 이미지를 File 객체로 준비
-      const filePromises = allItems.map(async (item, index) => {
-        if (item.file) return item.file; // 이미 파일이면 OK
-        return await convertUrlToFile(item.url, index); // URL이면 변환
-      });
-
-      const files = await Promise.all(filePromises);
-
-      // 2. 변환 실패(null) 확인 - 여기서 이미지가 누락되는지 체크
-      const validFiles = files.filter((f) => f !== null);
-
-      if (validFiles.length !== allItems.length) {
-        // 원래 개수와 변환된 개수가 다르면, 일부 이미지를 불러오지 못한 것임
-        // 여기서 저장을 멈춰야 이미지가 사라지는 것을 막을 수 있음
-        console.error('변환 실패한 이미지가 있습니다.');
-        showAlert(
-          '기존 이미지를 불러오는 데 실패했습니다. 네트워크 상태를 확인하거나 이미지를 다시 올려주세요.',
-        );
-        setIsLoading(false);
-        return;
-      }
-
-      // 3. FormData 생성
       const formData = new FormData();
-      validFiles.forEach((file) => {
-        formData.append('image[]', file);
+      
+      // 이미지 순서 정보 (인덱스별로 새 파일인지 기존 URL인지)
+      const imageOrder = [];
+      let newFileIndex = 0;
+
+      allItems.forEach((item, index) => {
+        if (item.file) {
+          // 새 파일: FormData에 추가
+          formData.append('image[]', item.file);
+          imageOrder.push({ type: 'new', index: newFileIndex });
+          newFileIndex++;
+        } else if (item.url) {
+          // 기존 URL: 순서 정보에 URL 포함
+          imageOrder.push({ type: 'existing', url: item.url });
+        }
       });
+
       formData.append('title', title.trim());
       formData.append('category', categoryName);
       formData.append('categoryId', id);
+      formData.append('image_order', JSON.stringify(imageOrder));
 
-      // 4. [중요] 새 리플렛 생성 (POST)
+      // 기존 리플렛 ID가 있으면 전달 (백엔드에서 삭제 처리)
+      if (leafletId) {
+        formData.append('old_leaflet_id', leafletId);
+      }
+
       const res = await userInstance.post('/api/leaflet', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // 5. 생성 성공 시, 기존 리플렛 삭제 (DELETE)
-      // *생성이 실패하면 여기까지 안 오므로 데이터는 안전함*
       if (res.data && res.data.id) {
         const newLeafletId = res.data.id;
 
-        if (leafletId) {
-          try {
-            console.log(
-              `새 리플렛(${newLeafletId}) 생성 완료. 구 리플렛(${leafletId}) 삭제 시도.`,
-            );
-            await userInstance.delete(`/api/leaflet/${leafletId}`);
-          } catch (delError) {
-            console.warn('기존 리플렛 삭제 실패 (무시):', delError);
-            // 삭제 실패해도 새건 만들어졌으니 큰 문제는 아님
-          }
-        }
-
-        // image_urls가 문자열이면 파싱
         let imageUrls = res.data.image_urls;
         if (typeof imageUrls === 'string') {
           imageUrls = JSON.parse(imageUrls);
@@ -301,6 +259,7 @@ export default function Leaflet({ type }) {
         showAlert('리플렛이 성공적으로 저장되었습니다.');
       }
     } catch (error) {
+      console.error('리플렛 저장 오류:', error);
       showAlert('리플렛 저장 중 오류가 발생했습니다.', 'error');
     } finally {
       setIsLoading(false);

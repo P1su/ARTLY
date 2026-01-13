@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { compressImage } from '../../../utils/imageCompression';
 
 export default function useLeaflet() {
   const [imageList, setImageList] = useState([]);
@@ -7,24 +8,27 @@ export default function useLeaflet() {
 
   // 이미지 파일 선택 (내지용 - 여러 개)
   // 이미지 파일 선택 (내지용 - 여러 개)
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     // e.target이 존재하는지 확인
     if (!e.target || !e.target.files) return;
 
     const fileList = Array.from(e.target.files);
-    const imagePromiseList = fileList.map((file) => {
+    
+    const imagePromiseList = fileList.map(async (file) => {
+      const compressedFile = await compressImage(file, 1); // 1MB로 압축
+      console.log(`📷 압축: ${file.name} | 원본: ${(file.size/1024).toFixed(1)}KB → 압축 후: ${(compressedFile.size/1024).toFixed(1)}KB`);
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (event) => {
           // 변수명 충돌 방지를 위해 e -> event로 변경
           resolve({
-            file,
+            file: compressedFile,
             url: event.target.result,
 
             name: file.name,
           });
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(compressedFile);
       });
     });
 
@@ -43,16 +47,18 @@ export default function useLeaflet() {
   };
 
   // 표지 이미지 설정
-  const setCoverImageFromFile = (file) => {
+  const setCoverImageFromFile = async (file) => {
+    const compressedFile = await compressImage(file, 1); // 1MB로 압축
+    console.log(`🖼️ 표지 압축: ${file.name} | 원본: ${(file.size/1024).toFixed(1)}KB → 압축 후: ${(compressedFile.size/1024).toFixed(1)}KB`);
     const reader = new FileReader();
     reader.onload = (e) => {
       setCoverImage({
-        file,
+        file: compressedFile,
         url: e.target.result,
         name: file.name,
       });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(compressedFile);
   };
 
   // 파일 선택 다이얼로그 열기 (표지용)
@@ -80,15 +86,24 @@ export default function useLeaflet() {
   };
 
   // 드래그 앤 드롭으로 이미지 처리
-  const handleDrop = (acceptedFileList, type = 'inner') => {
-    const imagePromiseList = acceptedFileList.map((file) => {
+  const handleDrop = async (acceptedFileList, type = 'inner') => {
+    // 모든 파일 압축
+    const compressedFiles = await Promise.all(
+      acceptedFileList.map(async (file) => {
+        const compressedFile = await compressImage(file, 1);
+        console.log(`🎯 드롭 압축: ${file.name} | 원본: ${(file.size/1024).toFixed(1)}KB → 압축 후: ${(compressedFile.size/1024).toFixed(1)}KB`);
+        return compressedFile;
+      })
+    );
+
+    const imagePromiseList = compressedFiles.map((file, index) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           resolve({
             file,
             url: e.target.result,
-            name: file.name,
+            name: acceptedFileList[index].name,
           });
         };
         reader.readAsDataURL(file);
