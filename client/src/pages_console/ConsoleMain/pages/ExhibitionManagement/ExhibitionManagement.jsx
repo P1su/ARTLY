@@ -39,7 +39,7 @@ export default function ExhibitionManagement({
   const parentRef = useRef(null);
 
   const filteredExhibitionList = useMemo(() => {
-    if (!selectedGallery || selectedGallery === 'all') return exhibitionList;
+    if (!selectedGallery) return exhibitionList;
     return exhibitionList.filter(
       (exhibition) => exhibition.gallery_id === selectedGallery,
     );
@@ -53,12 +53,6 @@ export default function ExhibitionManagement({
   });
 
   const galleryOptions = useMemo(() => {
-    const allOption = {
-      id: 'all',
-      name: '전체',
-      value: 'all',
-    };
-
     const mapped = 
       galleryList?.map((gallery) => ({
         id: gallery.id,
@@ -66,7 +60,7 @@ export default function ExhibitionManagement({
         value: gallery.id,
       })) || [];
 
-    return [allOption, ...mapped];
+    return mapped;
   }, [galleryList]);
 
   // console.log(
@@ -77,10 +71,13 @@ export default function ExhibitionManagement({
   // );
 
   useEffect(() => {
-    if (galleryList.length > 0) {
-      loadExhibitions('갤러리 전체');
+    if (
+      galleryList?.length > 0 &&
+      !selectedGallery
+    ) {
+      onGalleryChange(galleryList[0].id);
     }
-  }, [galleryList.length]);
+  }, [galleryList, selectedGallery, onGalleryChange]);
 
   /* =========================
      핸들러
@@ -102,7 +99,7 @@ export default function ExhibitionManagement({
   };
 
   const handleRegister = () => {
-    if (!selectedGallery || selectedGallery === 'all') {
+    if (!selectedGallery) {
       showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
       return;
     }

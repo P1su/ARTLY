@@ -4,7 +4,7 @@ import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 import Img from '../../../components/Img/Img.jsx';
 
-export default function ArtworkEditForm({ data, setData, onFileChange }) {
+export default function ArtworkEditForm({ data, setData, onFileChange, galleryList }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
   const fileInputRef = useRef(null);
@@ -16,18 +16,17 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
     default: '정보없음',
   };
   const STATUS_PRIORITY = {
-    exhibited: 1, // 진행중 (가장 위)
-    scheduled: 2, // 예정
-    ended: 3, // 종료 (가장 아래)
+    exhibited: 1,
+    scheduled: 2,
+    ended: 3,
   };
   const rawExhibitions = data.exhibitions || [];
 
-  // 우선순위에 따라 정렬된 새 배열 생성
   const sortedExhibitions = [...rawExhibitions].sort((a, b) => {
     const statusA = a.exhibition_status;
     const statusB = b.exhibition_status;
 
-    const priorityA = STATUS_PRIORITY[statusA] || 99; // 정의 안 된 상태는 맨 뒤로
+    const priorityA = STATUS_PRIORITY[statusA] || 99;
     const priorityB = STATUS_PRIORITY[statusB] || 99;
 
     return priorityA - priorityB;
@@ -64,8 +63,8 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
   const handleSelectArtist = (artist) => {
     setData((prev) => ({
       ...prev,
-      artist_name: artist.artist_name, // 화면 표시용 이름
-      artist_id: artist.id, // 실제 전송될 ID
+      artist_name: artist.artist_name,
+      artist_id: artist.id,
     }));
     setShowArtistModal(false);
   };
@@ -245,6 +244,9 @@ export default function ArtworkEditForm({ data, setData, onFileChange }) {
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
           onSelect={handleSelectArtist}
+          galleryList={galleryList}
+          mode="local"
+          multiSelect={false}
         />
       )}
     </>

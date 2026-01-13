@@ -27,7 +27,7 @@ const getArtistNameForArt = (art) => {
   return art.artist_name || art.artist?.artist_name || '작가 미상';
 };
 
-export default function ExhibitionEditForm({ data, setData, onFileChange }) {
+export default function ExhibitionEditForm({ data, setData, onFileChange, galleryList }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
@@ -70,23 +70,18 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
     }
   };
 
-  const handleSelectArtist = (artist) => {
-    const currentArtists = data.artists || [];
-
-    if (currentArtists.some((a) => getArtistId(a) === getArtistId(artist))) {
-      showAlert('이미 추가된 작가입니다.');
-      return;
-    }
-
-    const newArtist = {
+  // 다중 선택된 작가 배열을 받아서 처리
+  const handleSelectArtist = (selectedArtists) => {
+    const normalizedArtists = selectedArtists.map((artist) => ({
       id: getArtistId(artist),
       name: getArtistName(artist),
+      artist_name: getArtistName(artist),
       artist_image: getArtistImage(artist),
-    };
+    }));
 
     setData((prev) => ({
       ...prev,
-      artists: [...currentArtists, newArtist],
+      artists: normalizedArtists,
     }));
     setShowArtistModal(false);
   };
@@ -368,7 +363,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 className={styles.addBtn}
                 onClick={() => setShowArtistModal(true)}
               >
-                + 작가 검색/추가
+                + 작가 추가하기
               </button>
             </div>
             <div className={styles.artistListContainer}>
@@ -385,11 +380,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                           src={artist.artist_image}
                           alt={artist.artist_name}
                           className={styles.artistThumb}
-                          wrapperProps={{
-                            style: {
-                              width: '10%',
-                            },
-                          }}
+                          wrapperProps={{}}
                         />
                         <span className={styles.artistName}>{name}</span>
 
@@ -407,6 +398,10 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 )}
               </div>
             </div>
+            <p className={styles.helperText}>
+              ※ 작가를 추가하려면 &apos;작가 관리&apos; 탭에서
+              먼저 등록해주세요.
+            </p>
           </div>
 
           <div className={`${styles.inputGroup} ${styles.artworkSection}`}>
@@ -431,11 +426,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                         src={getArtImage(art)}
                         alt='thumb'
                         className={styles.artworkThumb}
-                        wrapperProps={{
-                          style: {
-                            width: '10%',
-                          },
-                        }}
+                        wrapperProps={{}}
                       />
                       <div className={styles.artworkMeta}>
                         <div className={styles.artworkTitle}>
@@ -458,6 +449,10 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
                 )}
               </div>
             </div>
+            <p className={styles.helperText}>
+              ※ 작품을 추가하려면 &apos;작품 관리&apos; 탭에서
+              먼저 등록해주세요.
+            </p>
           </div>
         </div>
       </div>
@@ -483,6 +478,10 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
           onSelect={handleSelectArtist}
+          galleryList={galleryList}
+          mode="local"
+          multiSelect={true}
+          existingArtists={data.artists || []}
         />
       )}
 
@@ -490,7 +489,11 @@ export default function ExhibitionEditForm({ data, setData, onFileChange }) {
         <ArtworkSelectModal
           onClose={() => setShowArtworkModal(false)}
           onSelect={handleSelectArtworks}
+          galleryId={galleryList?.[0]?.id}
+          mode="local"
+          multiSelect={true}
           existingArtworks={data.artworks || []}
+          selectedArtists={data.artists || []} 
         />
       )}
 

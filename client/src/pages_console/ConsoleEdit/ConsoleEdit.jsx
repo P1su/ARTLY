@@ -1,7 +1,9 @@
 import styles from './ConsoleEdit.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useEditData } from './hooks/useEditData';
 import { useEditSave } from './hooks/useEditSave';
+import { userInstance } from '../../apis/instance.js';
 
 import GalleryEditForm from './forms/GalleryEditForm.jsx';
 import ExhibitionEditForm from './forms/ExhibitionEditForm.jsx';
@@ -56,6 +58,24 @@ export default function ConsoleEdit({ type }) {
   const isCreateMode = id === 'new';
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
+  const [galleryList, setGalleryList] = useState([]);
+
+  //갤러리 목록 로드
+  useEffect(() => {
+    const loadGalleries = async () => {
+      try {
+        // is_console=true로 내 갤러리만 가져오기
+        const res = await userInstance.get('/api/galleries?is_console=true');
+        setGalleryList(res.data || []);
+      } catch (err) {
+        console.error('갤러리 목록 로드 실패:', err);
+      }
+    };
+    
+    if (type === 'exhibitions' || type === 'artworks') {
+      loadGalleries();
+    }
+  }, [type]);
 
   // 1. 데이터 로딩 Hook
   const { data, setData, isLoading } = useEditData(
@@ -117,6 +137,7 @@ export default function ConsoleEdit({ type }) {
             data={data}
             setData={setData}
             onFileChange={handleFileChange}
+            galleryList={galleryList}
           />
         )}
       </main>

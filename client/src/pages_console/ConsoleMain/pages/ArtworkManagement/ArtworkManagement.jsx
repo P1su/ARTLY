@@ -9,6 +9,7 @@ import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
 import Img from '../../../../components/Img/Img.jsx';
+import ArtworkSelectModal from '../../../ConsoleEdit/components/ArtworkSelectModal/ArtworkSelectModal.jsx';
 
 import styles from './ArtworkManagement.module.css';
 import { useAlert } from '../../../../store/AlertProvider.jsx';
@@ -16,171 +17,103 @@ import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 
 export default function ArtworkManagement({
   artworkList,
-  selectedExhibition,
-  onExhibitionChange,
-  onDelete,
   loadArtworks,
-  loadExhibitions,
+  onDelete,
   isLoading,
-  error,
   galleryList,
-  exhibitionList,
+  selectedGallery,
+  onGalleryChange,
 }) {
   const navigate = useNavigate();
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  /* =========================
-     삭제
-  ========================= */
+  const galleryOptions = useMemo(() => {
+    const mapped = galleryList?.map((g) => ({
+      id: g.id,
+      name: g.name,
+      value: g.id,
+    })) || [];
+    return mapped;
+  }, [galleryList]);
+
+  useEffect(() => {
+    if (
+      galleryList?.length > 0 &&
+      !selectedGallery
+    ) {
+      onGalleryChange(galleryList[0].id);
+    }
+  }, [galleryList, selectedGallery, onGalleryChange]);
+
+
   const handleDelete = async (id) => {
-    const isConfirmed = await showConfirm(
-      '정말로 이 작품을 삭제하시겠습니까?',
-      true,
-    );
-
-    if (isConfirmed) {
-      await onDelete(id, 'artwork');
-      navigate('/console/main', {
-        state: { activeTab: '작품관리' },
-        replace: true,
-      });
-    }
-  };
-
-  /* =========================
-     초기 전시회 로드
-  ========================= */
-  useEffect(() => {
-    if (loadExhibitions) {
-      loadExhibitions('갤러리 전체');
-    }
-  }, []);
-
-  /* =========================
-     전시회 변경 시 작품 재요청
-  ========================= */
-  useEffect(() => {
-    if (!selectedExhibition || selectedExhibition === 'all') {
-      loadArtworks('');
+    // 전체 필터에서는 삭제 불가
+    if (!selectedGallery) {
+      showAlert('해제할 갤러리를 먼저 선택해주세요.');
       return;
-    }   
-    if (!exhibitionList || exhibitionList.length === 0) return;
-
-    const target = exhibitionList.find(
-      (ex) => String(ex.id) === String(selectedExhibition),
-    );
-
-    if (target) {
-      loadArtworks(target.title);
     }
     
-  }, [selectedExhibition, exhibitionList, loadArtworks]);
-
-  /* =========================
-     등록
-  ========================= */
-  const handleRegister = () => {
-    if (!selectedExhibition || selectedExhibition === 'all') {
-      showAlert('작품을 등록할 전시회를 상단 필터에서 먼저 선택해주세요.');
-      return;
+    const isConfirmed = await showConfirm('이 작품을 갤러리에서 등록 해제하시겠습니까?', true);
+    if (isConfirmed) {
+      await onDelete(id, 'gallery_art', selectedGallery);
+      loadArtworks('', selectedGallery);
     }
-    navigate(`/console/artworks/edit/new?exhibition_id=${selectedExhibition}`);
   };
 
-  /* =========================
-     데이터
-  ========================= */
-  const filteredArtworkList = artworkList;
+  const handleRegister = () => {
+    if (!selectedGallery) {
+      showAlert('작품을 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
-  const exhibitionOptions = useMemo(() => {
-    if (!exhibitionList) return [];
+  const handleArtworkSelect = (artwork) => {
+    setIsModalOpen(false);
+    showAlert(`"${artwork.art_title}" 작품이 등록되었습니다.`);
+    loadArtworks('', selectedGallery );
+  };
 
-    const allOption = {
-      id: 'all',
-      name: '전체',
-      value: 'all',
-    };
-
-    const mapped = exhibitionList.map((ex) => ({
-      id: ex.id,
-      name: ex.title,
-      value: ex.id,
-    }));
-
-    return [allOption, ...mapped];
-  }, [exhibitionList]);
-
-  /* =========================
-     🔥 윈도잉 설정
-  ========================= */
   const parentRef = useRef(null);
   const isMobile = window.innerWidth < 700;
   const isPc = window.innerWidth > 1000;
-
-  const CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150; // CSS 기준
+  const CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150;
 
   const rowVirtualizer = useVirtualizer({
-    count: filteredArtworkList.length,
+    count: artworkList.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => CARD_HEIGHT,
     overscan: isMobile ? 3 : 6,
   });
 
-  /* =========================
-     로딩
-  ========================= */
   if (isLoading) {
-    return (
-      <div className={styles.contentContainer}>
-        <LoadingSpinner />
-      </div>
-    );
+    return <div className={styles.contentContainer}><LoadingSpinner /></div>;
   }
 
-  /* =========================
-     렌더
-  ========================= */
   return (
     <section className={styles.contentContainer}>
-      {/* 전시회 필터 */}
       <div className={styles.searchContainer}>
         <LookUp
-          value={selectedExhibition}
-          onChange={onExhibitionChange}
-          options={exhibitionOptions}
-          placeholder='전시회를 선택하세요'
+          value={selectedGallery}
+          onChange={onGalleryChange}
+          options={galleryOptions}
+          placeholder='갤러리를 선택하세요'
         />
       </div>
 
       <div className={styles.countAndButtonContainer}>
-        <CountList count={filteredArtworkList.length} />
-        <RegisterButton
-          buttonText='+작품 등록'
-          onButtonClick={handleRegister}
-        />
+        <CountList count={artworkList.length} />
+        <RegisterButton buttonText='+작품 등록' onButtonClick={handleRegister} />
       </div>
 
-      {filteredArtworkList.length > 0 ? (
+      {artworkList.length > 0 ? (
         <section className={styles.cardContainer}>
-          {/* 스크롤 컨테이너 */}
-          <div
-            ref={parentRef}
-            style={{
-              height: 'calc(100vh - 30px)',
-              overflowY: 'auto',
-            }}
-          >
-            {/* 전체 높이 계산 */}
-            <div
-              style={{
-                height: `${rowVirtualizer.getTotalSize()}px`,
-                position: 'relative',
-              }}
-            >
+          <div ref={parentRef} style={{ height: 'calc(100vh - 30px)', overflowY: 'auto' }}>
+            <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }}>
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const artwork = filteredArtworkList[virtualRow.index];
-
+                const artwork = artworkList[virtualRow.index];
                 return (
                   <div
                     key={artwork.id}
@@ -192,56 +125,24 @@ export default function ArtworkManagement({
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
                   >
-                    {/* 🔽 기존 카드 구조 그대로 */}
-                    <div
-                      className={styles.artworkCard}
-                      onClick={() =>
-                        navigate(`/console/artworks/${artwork.id}`)
-                      }
-                    >
+                    <div className={styles.artworkCard} onClick={() => navigate(`/console/artworks/${artwork.id}`)}>
                       <div className={styles.cardContent}>
-                        <Img
-                          src={artwork.image}
-                          alt={artwork.title}
-                          className={styles.artworkImage}
-                        />
-
+                        <Img src={artwork.image} alt={artwork.title} className={styles.artworkImage} />
                         <div className={styles.cardInfo}>
                           <div className={styles.cardHeader}>
-                            <h3 className={styles.artworkTitle}>
-                              {artwork.title}
-                            </h3>
-
+                            <h3 className={styles.artworkTitle}>{artwork.title}</h3>
                             <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDelete(artwork.id);
-                              }}
+                              onClick={(e) => { e.stopPropagation(); handleDelete(artwork.id); }}
                               className={styles.deleteButton}
                             >
                               <HiTrash size={18} />
                             </button>
                           </div>
-
-                          <p className={styles.artworkArtist}>
-                            {artwork.artist || '작가 미상'}
-                          </p>
-
-                          <p className={styles.artworkExhibition}>
-                            {selectedExhibition
-                              ? exhibitionList.find(
-                                  (ex) =>
-                                    String(ex.id) ===
-                                    String(selectedExhibition),
-                                )?.title
-                              : artwork.exhibition_title ||
-                                artwork.exhibition_name ||
-                                '-'}
-                          </p>
+                          <p className={styles.artworkArtist}>{artwork.artist || '작가 미상'}</p>
+                          <p className={styles.artworkExhibition}>{artwork.exhibition_title || '-'}</p>
                         </div>
                       </div>
                     </div>
-                    {/* 🔼 */}
                   </div>
                 );
               })}
@@ -250,12 +151,19 @@ export default function ArtworkManagement({
         </section>
       ) : (
         <section className={styles.emptyStateContainer}>
-          <EmptyState
-            message='등록된 작품이 없어요.'
-            buttonText='+작품 등록'
-            onButtonClick={handleRegister}
-          />
+          <EmptyState message='등록된 작품이 없어요.' buttonText='+작품 등록' onButtonClick={handleRegister} />
         </section>
+      )}
+
+      {isModalOpen && (
+        <ArtworkSelectModal
+          onClose={() => setIsModalOpen(false)}
+          onSelect={handleArtworkSelect}
+          galleryId={selectedGallery}
+          galleryList={galleryList}
+          mode="global"
+          multiSelect={false}
+        />
       )}
     </section>
   );

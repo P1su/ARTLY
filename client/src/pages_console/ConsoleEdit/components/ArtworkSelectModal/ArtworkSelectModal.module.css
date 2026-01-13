@@ -2,90 +2,128 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modalBox {
-  width: 60rem; /* 600px */
-  max-width: 90%;
+  background: white;
+  width: 45rem;
   max-height: 80vh;
-  background-color: white;
-  border-radius: 1.2rem;
-  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
 .header {
-  padding: 2rem;
-  border-bottom: 0.1rem solid #eee;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #eee;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
 .header h3 {
-  font-size: 2rem;
+  flex: 1;
+  font-size: 1.8rem;
   font-weight: 600;
   margin: 0;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  color: #333;
 }
 
 .closeBtn {
   background: none;
   border: none;
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   cursor: pointer;
-  color: #999;
 }
 
 .body {
   padding: 2rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   overflow-y: auto;
 }
 
+/* 검색바 */
 .searchBar {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .searchBar input {
   flex: 1;
-  padding: 1rem 1.2rem;
-  border: 0.1rem solid #ddd;
-  border-radius: 0.6rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   font-size: 1.4rem;
+  outline: none;
+}
+
+.searchBar input:focus {
+  border: 1px solid var(--primary);
 }
 
 .searchBar button {
   padding: 0 1.5rem;
-  background-color: #333;
-  color: white;
+  background: #f0f2f5;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 6px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
+/* 작가 필터 */
+.artistFilter {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.artistFilter label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+.artistFilter select {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  outline: none;
+}
+
+.artistFilter select:focus {
+  border-color: var(--primary);
+}
+
+/* 리스트 */
 .listContainer {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 40rem; /* 리스트 영역 높이 제한 */
+  max-height: 40rem;
 }
 
 .artistRow {
@@ -93,7 +131,7 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.2rem;
-  border: 0.1rem solid #eee;
+  border: 1px solid #eee;
   border-radius: 0.8rem;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -109,9 +147,10 @@
 }
 
 .checkbox {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2rem;
+  height: 2rem;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .artistImg {
@@ -140,32 +179,175 @@
   color: #777;
 }
 
-.emptyState {
-  text-align: center;
-  padding: 3rem;
-  color: #999;
-  font-size: 1.4rem;
+.selectBtn {
+  padding: 0.8rem 1.5rem;
+  background: #4a5bba;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.3rem;
+  cursor: pointer;
 }
 
+.selectBtn:hover {
+  background: #3a499a;
+}
+
+/* 빈 상태 & 신규 등록 버튼 */
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+  color: #888;
+  font-size: 1.5rem;
+}
+
+.addNewBtn {
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  background: #fff;
+  border: 1px solid #4a5bba;
+  color: #4a5bba;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.addNewBtn:hover {
+  background: #f0f4ff;
+}
+
+/* 하단 선택완료 버튼 영역 */
 .footer {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 0.1rem solid #eee;
+  border-top: 1px solid #eee;
   text-align: right;
 }
 
 .confirmBtn {
-  padding: 1rem 2rem;
-  background-color: #000;
-  color: #fff;
+  padding: 1.2rem 2rem;
+  background: #4a5bba;
+  color: white;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 6px;
   font-size: 1.4rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.confirmBtn:hover {
-  background-color: #333;
+/* 신규 등록 폼 */
+.addFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.imageUploadBox {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 8px;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.imageUploadBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaa;
+  gap: 0.5rem;
+}
+
+.placeholder span {
+  font-size: 1.2rem;
+}
+
+.addInput {
+  width: 100%;
+  padding: 1.2rem;
+  border: 1px solid #ddd;
+  outline: none;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.addInput:focus {
+  border: 1px solid var(--primary);
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.cancelBtn {
+  flex: 1;
+  padding: 1.2rem;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  border: none;
+  background: #eee;
+  color: #555;
+}
+
+/* 작가 선택 박스 */
+.artistSelectRow {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.artistSelectBox {
+  flex: 1;
+  padding: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: white;
+}
+
+.artistPlaceholder {
+  color: #999;
+}
+
+.selectedArtist {
+  color: #333;
+}
+
+.artistSelectBtn {
+  padding: 1.2rem 2rem;
+  background: #4a5bba;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.artistSelectBtn:hover {
+  background: #3a499a;
 }

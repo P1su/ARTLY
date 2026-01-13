@@ -61,6 +61,8 @@ export default function ConsoleDetail({ type }) {
         return '전시회관리';
       case 'artworks':
         return '작품관리';
+      case 'artists':          
+        return '작가관리'; 
       case 'announcements':
         return '공고관리';
       default:

@@ -39,17 +39,19 @@ export default function ConsoleMain({
     }
   };
 
-  const tabList = ['갤러리관리', '전시회관리', '작품관리', '작가관리', '공고관리','관심유저관리'];
+  const tabList = ['갤러리관리', '전시회관리','작가관리', '작품관리', '공고관리','관심유저관리'];
 
   const {
     galleryList,
     exhibitionList,
     artworkList,
     announcementList,
+    artistList,
     handleDelete,
     loadGalleries,
     loadExhibitions,
     loadArtworks,
+    loadArtists,
     loadAnnouncements,
     isLoading,
     isSearching,
@@ -99,24 +101,26 @@ export default function ConsoleMain({
                 galleryList={galleryList}
               />
             )}
+            {activeTab === '작가관리' && (
+             <ArtistManagement
+              artistList={artistList}
+              loadArtists={loadArtists}
+              isLoading={isLoading}
+              onDelete={handleDelete}
+              galleryList={galleryList}
+              selectedGallery={selectedGallery}
+              onGalleryChange={setSelectedGallery}
+            />
+            )}
             {activeTab === '작품관리' && (
               <ArtworkManagement
-                key={activeTab}
                 artworkList={artworkList}
-                selectedExhibition={selectedExhibition}
-                onExhibitionChange={setSelectedExhibition}
-                onDelete={handleDelete}
                 loadArtworks={loadArtworks}
-                loadExhibitions={loadExhibitions}
+                onDelete={handleDelete}
                 isLoading={isLoading}
-                error={error}
                 galleryList={galleryList}
-                exhibitionList={exhibitionList}
-              />
-            )}
-            {activeTab === '작가관리' && (
-              <ArtistManagement 
-                galleryList={galleryList} 
+                selectedGallery={selectedGallery}
+                onGalleryChange={setSelectedGallery}
               />
             )}
             {activeTab === '공고관리' && (

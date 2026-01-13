@@ -1,12 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
-import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
 import RegisterButton from '../../components/RegisterButton/RegisterButton';
 import EmptyState from '../../components/EmptyState/EmptyState';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner.jsx';
-import useDebounceSearch from '../../hooks/useDebounceSearch';
 import styles from './GalleryManagement.module.css';
 import Img from '../../../../components/Img/Img.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
@@ -21,14 +19,6 @@ export default function GalleryManagement({
 }) {
   const { showConfirm } = useConfirm();
   const navigate = useNavigate();
-
-  // 디바운스 검색 hook 사용
-  const { searchValue, handleSearchChange } = useDebounceSearch({
-    onSearch: loadGalleries,
-    onEmptySearch: () => loadGalleries(''),
-    minLength: 2,
-    delay: 500,
-  });
 
   // 검색 필터링된 갤러리 목록 (서버에서 필터링됨)
   const filteredGalleryList = Array.isArray(galleryList) ? galleryList : [];
@@ -50,15 +40,6 @@ export default function GalleryManagement({
 
   return (
     <div className={styles.contentContainer}>
-      <div className={styles.searchContainer}>
-        <LookUp
-          value={searchValue}
-          onChange={handleSearchChange}
-          placeholder='갤러리 검색'
-          isInput
-        />
-      </div>
-
       <div className={styles.countAndButtonContainer}>
         <CountList count={filteredGalleryList.length} />
         <RegisterButton
