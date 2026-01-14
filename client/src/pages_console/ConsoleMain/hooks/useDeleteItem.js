@@ -316,18 +316,21 @@ export default function useDeleteItem() {
       showAlert(`${typeLabel[type]} ${isUnlink ? '해제' : '삭제'}를 완료하였습니다.`);
     } catch (err) {
       console.error('삭제 실패:', err);
-
-      if (err.message === 'FOREIGN_KEY_ERROR') {
+    
+      // 409 에러 (하위 데이터 존재)
+      if (err.response?.status === 409) {
+        showAlert(err.response.data?.message || '하위 데이터를 먼저 삭제해주세요.', 'error');
+      } else if (err.message === 'FOREIGN_KEY_ERROR') {
         showAlert('삭제할 수 없습니다.\n하위 데이터를 먼저 삭제해주세요.', 'error');
       } else {
         showAlert('삭제 중 오류가 발생했습니다.', 'error');
       }
-
+    
       // 복구
       if (type === 'gallery') loadGalleries();
       else if (type === 'exhibition') loadExhibitions('갤러리 전체');
-      else if (type === 'artwork') loadArtworks();
-      else if (type === 'artist') loadArtists();
+      else if (type === 'artwork' || type === 'gallery_art') loadArtworks();
+      else if (type === 'artist' || type === 'gallery_artist') loadArtists();
       else if (type === 'announcement') loadAnnouncements();
     }
   };

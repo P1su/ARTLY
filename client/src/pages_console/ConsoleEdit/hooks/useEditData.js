@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { userInstance } from '../../../apis/instance.js';
 import { useAlert } from '../../../store/AlertProvider.jsx';
 
-export const useEditData = (type, id, isCreateMode, config) => {
+export const useEditData = (type, id, isCreateMode, config, galleryId = null) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams] = useSearchParams();
@@ -24,7 +24,11 @@ export const useEditData = (type, id, isCreateMode, config) => {
           if (galleryId) initialData.gallery_id = galleryId;
           targetGalleryId = galleryId;
         } else {
-          const response = await userInstance.get(config.apiUrl(id));
+          let url = config.apiUrl(id);
+          if (type === 'artists' && galleryId) {
+            url += `?gallery_id=${galleryId}`;
+          }
+          const response = await userInstance.get(url);
           initialData =
             typeof response.data === 'string'
               ? JSON.parse(response.data)
@@ -66,7 +70,7 @@ export const useEditData = (type, id, isCreateMode, config) => {
     };
 
     if (config) initData();
-  }, [type, id, isCreateMode, config, searchParams, navigate]);
+  }, [type, id, isCreateMode, config, searchParams, navigate, galleryId]);
 
   return { data, setData, isLoading };
 };

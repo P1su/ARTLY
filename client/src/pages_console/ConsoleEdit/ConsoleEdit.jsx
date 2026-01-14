@@ -1,5 +1,5 @@
 import styles from './ConsoleEdit.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useEditData } from './hooks/useEditData';
 import { useEditSave } from './hooks/useEditSave';
@@ -59,7 +59,9 @@ export default function ConsoleEdit({ type }) {
   const config = EDIT_CONFIG[type];
   const FormComponent = FORM_COMPONENTS[type];
   const [galleryList, setGalleryList] = useState([]);
-
+  const location = useLocation();
+  const galleryId = location.state?.galleryId || null;
+  
   //갤러리 목록 로드
   useEffect(() => {
     const loadGalleries = async () => {
@@ -83,6 +85,7 @@ export default function ConsoleEdit({ type }) {
     id,
     isCreateMode,
     config,
+    galleryId
   );
 
   // 2. 저장 로직 Hook
@@ -138,6 +141,7 @@ export default function ConsoleEdit({ type }) {
             setData={setData}
             onFileChange={handleFileChange}
             galleryList={galleryList}
+            galleryId={galleryId}
           />
         )}
       </main>

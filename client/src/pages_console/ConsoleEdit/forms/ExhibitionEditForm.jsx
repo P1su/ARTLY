@@ -27,7 +27,7 @@ const getArtistNameForArt = (art) => {
   return art.artist_name || art.artist?.artist_name || '작가 미상';
 };
 
-export default function ExhibitionEditForm({ data, setData, onFileChange, galleryList }) {
+export default function ExhibitionEditForm({ data, setData, onFileChange, galleryList, galleryId }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
@@ -42,6 +42,15 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
     }
   }, [data.exhibition_poster]);
 
+  useEffect(() => {
+    if (!data.exhibition_start_time) {
+      setData(prev => ({ ...prev, exhibition_start_time: '10:00' }));
+    }
+    if (!data.exhibition_end_time) {
+      setData(prev => ({ ...prev, exhibition_end_time: '18:00' }));
+    }
+  }, []);
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -474,11 +483,14 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
         />
       </div>
 
+
+      {showArtistModal && console.log('data.gallery_id:', data.gallery_id, 'galleryId prop:', galleryId)}
       {showArtistModal && (
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
           onSelect={handleSelectArtist}
           galleryList={galleryList}
+          selectedGalleryId={data.gallery_id || galleryId}
           mode="local"
           multiSelect={true}
           existingArtists={data.artists || []}
@@ -489,7 +501,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
         <ArtworkSelectModal
           onClose={() => setShowArtworkModal(false)}
           onSelect={handleSelectArtworks}
-          galleryId={galleryList?.[0]?.id}
+          galleryId={data.gallery_id || galleryId} 
           mode="local"
           multiSelect={true}
           existingArtworks={data.artworks || []}

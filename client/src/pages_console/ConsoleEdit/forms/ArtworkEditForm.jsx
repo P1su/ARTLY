@@ -4,7 +4,7 @@ import TiptapEditor from '../components/TiptapEditor.jsx';
 import ArtistSelectModal from '../components/ArtistSelectModal/ArtistSelectModal.jsx';
 import Img from '../../../components/Img/Img.jsx';
 
-export default function ArtworkEditForm({ data, setData, onFileChange, galleryList }) {
+export default function ArtworkEditForm({ data, setData, onFileChange, galleryList, galleryId }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const [showArtistModal, setShowArtistModal] = useState(false);
   const fileInputRef = useRef(null);
@@ -245,6 +245,7 @@ export default function ArtworkEditForm({ data, setData, onFileChange, galleryLi
           onClose={() => setShowArtistModal(false)}
           onSelect={handleSelectArtist}
           galleryList={galleryList}
+          selectedGalleryId={galleryId || galleryList?.[0]?.id}
           mode="local"
           multiSelect={false}
         />

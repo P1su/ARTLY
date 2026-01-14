@@ -104,9 +104,7 @@ export default function Table({
           <div className={styles.emptyIcon}>📭</div>
           <p className={styles.emptyText}>관심유저가 없어요</p>
           <p className={styles.emptySubtext}>
-            {activeTab === 'all'
-              ? '전체'
-              : activeTab === 'gallery'
+            {activeTab === 'gallery'
                 ? '갤러리'
                 : activeTab === 'exhibition'
                   ? '전시회'
