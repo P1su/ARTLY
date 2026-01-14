@@ -185,7 +185,7 @@ export default function InvitationGenerator({
           className={styles.submitButton}
           disabled={isLoading}
         >
-          {isLoading ? '생성 중...' : '초대장 생성'}
+          {isLoading ? '생성 중...' : '소개글 생성'}
         </button>
       </div>
 
@@ -228,7 +228,7 @@ export default function InvitationGenerator({
           ))
         ) : (
           <div className={styles.placeholder}>
-            생성된 초대장 문구가 여기에 표시됩니다.
+            생성된 소개글 문구가 여기에 표시됩니다.
           </div>
         )}
       </div>

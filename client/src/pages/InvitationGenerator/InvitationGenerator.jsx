@@ -3,28 +3,23 @@ import { userInstance } from '../../apis/instance';
 import styles from './InvitationGenerator.module.css';
 import { useAlert } from '../../store/AlertProvider';
 
-export default function InvitationGenerator() {
+export default function InvitationGenerator({ onApply, isGenerating, onGenerateStart, onGenerateComplete }) {
   const [theme, setTheme] = useState('');
   const [others, setOthers] = useState('');
-  const [invitation, setInvitation] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState([]);
   const { showAlert } = useAlert();
 
-  const date = new Date().toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   const handleSubmit = async () => {
-    setInvitation([]);
-    setIsLoading(true);
-
     if (!theme.trim()) {
-      setInvitation(['행사 주제를 입력해주세요.']);
-      setIsLoading(false);
+      showAlert('전시 주제를 입력해주세요.');
       return;
     }
+
+    if (onGenerateStart) {
+      onGenerateStart();
+    }
+
+    setResult([]);
 
     try {
       const response = await userInstance.post(
@@ -37,42 +32,39 @@ export default function InvitationGenerator() {
 
       const { data } = response;
 
-      // API 응답 구조에 따라 수정 필요할 수 있음
       if (data && typeof data === 'string') {
-        // 단일 문자열 응답인 경우
-        setInvitation([data]);
+        setResult([data]);
       } else if (Array.isArray(data)) {
-        // 배열 응답인 경우
-        setInvitation(data);
+        setResult(data);
       } else if (data.invitations && Array.isArray(data.invitations)) {
-        // invitations 속성이 있는 경우
-        setInvitation(data.invitations);
+        setResult(data.invitations);
       } else {
-        setInvitation(['초대장이 생성되었습니다.']);
+        setResult(['소개글이 생성되었습니다.']);
       }
     } catch (e) {
       console.error('API 호출 실패:', e);
       if (e.response?.status === 401) {
-        setInvitation(['로그인이 필요합니다. 다시 로그인해주세요.']);
+        showAlert('로그인이 필요합니다.');
       } else if (e.response?.status === 403) {
-        setInvitation(['권한이 없습니다.']);
+        showAlert('권한이 없습니다.');
       } else {
-        setInvitation([`API 호출 오류: ${e.message}`]);
+        showAlert('소개글 생성에 실패했습니다.');
       }
     } finally {
-      setIsLoading(false);
+      if (onGenerateComplete) {
+        onGenerateComplete();
+      }
     }
   };
 
-  // 초대장 수정 함수 (refine API 사용)
-  const handleRefine = async (invitationText, index) => {
-    if (!invitationText.trim()) return;
+  const handleRefine = async (text, index) => {
+    if (!text.trim()) return;
 
     try {
       const response = await userInstance.post(
         '/api/console/invitation/refine',
         {
-          selectedInvitation: invitationText,
+          selectedInvitation: text,
           eventTopic: theme,
           userRequirements: '더 세련되게 다시 작성해주세요',
         },
@@ -80,8 +72,7 @@ export default function InvitationGenerator() {
 
       const refinedData = response.data;
 
-      // 해당 인덱스의 초대장 문구 업데이트
-      setInvitation((prev) =>
+      setResult((prev) =>
         prev.map((item, i) =>
           i === index
             ? typeof refinedData === 'string'
@@ -92,84 +83,86 @@ export default function InvitationGenerator() {
       );
     } catch (e) {
       console.error('수정 API 호출 실패:', e);
-      if (e.response?.status === 401) {
-        showAlert('로그인이 필요합니다. 다시 로그인해주세요.');
-      } else if (e.response?.status === 403) {
-        showAlert('권한이 없습니다.');
-      } else {
-        showAlert('초대장 수정에 실패했습니다.', 'error');
-      }
+      showAlert('소개글 수정에 실패했습니다.');
+    }
+  };
+
+  const handleApply = (text) => {
+    if (onApply) {
+      onApply(text);
     }
   };
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>초대장 문구 생성</h1>
+      <h1 className={styles.title}>전시 소개글 생성</h1>
 
       <div className={styles.formArea}>
-        <label className={styles.label}>행사 주제</label>
+        <label className={styles.label}>전시 주제</label>
         <input
           type='text'
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          placeholder='예: 시간의 결, 색으로 그리다'
+          placeholder='예: 자연 곁에서, 빛과 그림자'
           className={styles.input}
+          disabled={isGenerating}
         />
 
         <label className={styles.label}>요청사항</label>
         <textarea
           value={others}
           onChange={(e) => setOthers(e.target.value)}
-          placeholder='예: 장애인의 날 기념, 문구 포함 등'
+          placeholder='예: 자연을 주제로 한 전시, 감성적인 톤'
           className={styles.textarea}
+          disabled={isGenerating}
         />
-        {/*        <div className={styles.tagContainer}>
-          {['#계절감', '#기념', '#감성', '#감사', '#초대', '#특별함'].map(
-            (tag) => (
-              <button
-                key={tag}
-                type='button'
-                className={styles.tagButton}
-                onClick={() =>
-                  setOthers((prev) =>
-                    prev.includes(tag) ? prev : prev ? `${prev}, ${tag}` : tag,
-                  )
-                }
-              >
-                {tag}
-              </button>
-            ),
-          )}
-        </div>*/}
 
         <button
           onClick={handleSubmit}
           className={styles.submitButton}
-          disabled={isLoading}
+          disabled={isGenerating}
         >
-          {isLoading ? '생성 중...' : '초대장 생성'}
+          {isGenerating ? '생성 중...' : '소개글 생성'}
         </button>
       </div>
 
       <div className={styles.resultArea}>
-        {invitation.length > 0 ? (
-          invitation.map((text, i) => (
+        {isGenerating ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>
+              소개글 생성 중...<br />
+              잠시만 기다려주세요
+            </p>
+          </div>
+        ) : result.length > 0 ? (
+          result.map((text, i) => (
             <div key={i} className={styles.resultCard}>
               <div className={styles.cardHeader}>
                 <h3>초안 {i + 1}</h3>
-                <button
-                  className={styles.refineButton}
-                  onClick={() => handleRefine(text, i)}
-                >
-                  수정하기
-                </button>
+                <div className={styles.buttonGroup}>
+                  <button
+                    className={styles.refineButton}
+                    onClick={() => handleRefine(text, i)}
+                  >
+                    수정하기
+                  </button>
+                  {onApply && (
+                    <button
+                      className={styles.applyButton}
+                      onClick={() => handleApply(text)}
+                    >
+                      적용하기
+                    </button>
+                  )}
+                </div>
               </div>
               <p>{text}</p>
             </div>
           ))
         ) : (
           <div className={styles.placeholder}>
-            생성된 초대장 문구가 여기에 표시됩니다.
+            생성된 소개글이 여기에 표시됩니다.
           </div>
         )}
       </div>

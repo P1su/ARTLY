@@ -4,9 +4,17 @@ import { FaX } from 'react-icons/fa6';
 import InvitationGenerator from '../../../../pages/Category/Exhibition/ExhibitionDetail/components/InvitationGenerator/InvitationGenerator';
 import ImageGenerator from '../../../../components/ImageGenerator/ImageGenerator';
 
-export default function CreateModal({ type, onClose, onApply }) {
+export default function CreateModal({ type, onClose, onApply, isGenerating, onGenerateStart, onGenerateComplete }) {
   const [selectedTab, setSelectedTab] = useState(type === 'poster' ? '포스터 생성' : '이미지 생성');
-  const tabs = type === 'poster' ? ['포스터 생성', '초대장 생성'] : ['이미지 생성'];
+  const tabs = type === 'poster' 
+    ? ['포스터 생성'] 
+    : ['이미지 생성', '소개글 생성'];
+
+  const handleDescriptionApply = (text) => {
+    if (onApply) {
+      onApply(text);
+    }
+  };
 
   return (
     <div className={styles.overlay}>
@@ -14,23 +22,49 @@ export default function CreateModal({ type, onClose, onApply }) {
         <button className={styles.closeButton} onClick={onClose}>
           <FaX />
         </button>
+
         <div className={styles.tabArea}>
           {tabs.map((tab) => (
             <button
               className={`${styles.tabButton} ${selectedTab === tab ? styles.active : ''}`}
               key={tab}
-              onClick={() => {
-                setSelectedTab(tab);
-              }}
+              onClick={() => setSelectedTab(tab)}
             >
               {tab}
+              {/* 탭별 로딩 표시 */}
+              {tab === '포스터 생성' && isGenerating.poster && <span className={styles.tabSpinner}></span>}
+              {tab === '이미지 생성' && isGenerating.image && <span className={styles.tabSpinner}></span>}
+              {tab === '소개글 생성' && isGenerating.description && <span className={styles.tabSpinner}></span>}
             </button>
           ))}
         </div>
         <div className={styles.generateContainer}>
-          {selectedTab === '포스터 생성' && <ImageGenerator onApply={onApply} type="poster" />}
-          {selectedTab === '초대장 생성' && <InvitationGenerator />}
-          {selectedTab === '이미지 생성' && <ImageGenerator onApply={onApply} type="image"/>}
+          {selectedTab === '포스터 생성' && (
+            <ImageGenerator 
+              onApply={onApply} 
+              type="poster" 
+              isGenerating={isGenerating.poster}
+              onGenerateStart={() => onGenerateStart('poster')}
+              onGenerateComplete={() => onGenerateComplete('poster')}
+            />
+          )}
+          {selectedTab === '이미지 생성' && (
+            <ImageGenerator 
+              onApply={onApply} 
+              type="image" 
+              isGenerating={isGenerating.image}
+              onGenerateStart={() => onGenerateStart('image')}
+              onGenerateComplete={() => onGenerateComplete('image')}
+            />
+          )}
+          {selectedTab === '소개글 생성' && (
+            <InvitationGenerator 
+              onApply={handleDescriptionApply}
+              isGenerating={isGenerating.description}
+              onGenerateStart={() => onGenerateStart('description')}
+              onGenerateComplete={() => onGenerateComplete('description')}
+            />
+          )}
         </div>
       </div>
     </div>
