@@ -519,8 +519,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
         />
       </div>
 
-
-      {showArtistModal && console.log('data.gallery_id:', data.gallery_id, 'galleryId prop:', galleryId)}
       {showArtistModal && (
         <ArtistSelectModal
           onClose={() => setShowArtistModal(false)}
@@ -538,6 +536,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           onClose={() => setShowArtworkModal(false)}
           onSelect={handleSelectArtworks}
           galleryId={data.gallery_id || galleryId} 
+          galleryList={galleryList}
           mode="local"
           multiSelect={true}
           existingArtworks={data.artworks || []}

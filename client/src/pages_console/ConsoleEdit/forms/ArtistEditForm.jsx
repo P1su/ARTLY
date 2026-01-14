@@ -229,7 +229,10 @@ export default function ArtistEditForm({ data, setData, onFileChange, galleryId 
               padding: '1rem', 
               backgroundColor: '#f9f9f9', 
               borderRadius: '8px',
-              minHeight: '100px'
+              minHeight: '100px',
+              maxWidth: '600px',
+              fontSize: '1.3rem',
+              lineHeight: '1.6' 
             }}
           />
         )}

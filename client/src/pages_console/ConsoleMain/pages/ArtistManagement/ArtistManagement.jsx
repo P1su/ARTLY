@@ -42,10 +42,18 @@ export default function ArtistManagement({
       galleryList?.length > 0 &&
       !selectedGallery
     ) {
+      const firstGalleryId = galleryList[0].id;
       onGalleryChange(galleryList[0].id);
+      loadArtists(firstGalleryId);
     }
-  }, [galleryList, selectedGallery, onGalleryChange]);
+  }, [galleryList, selectedGallery, onGalleryChange, loadArtists]);
 
+  useEffect(() => {
+    if (selectedGallery) {
+      loadArtists(selectedGallery);
+    }
+  }, [selectedGallery]);
+  
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     
@@ -59,6 +67,11 @@ export default function ArtistManagement({
   const handleRegister = () => {
     setIsModalOpen(true);
   };
+  
+  const filteredArtistList = useMemo(() => {
+    if (!selectedGallery) return [];
+    return artistList;
+  }, [artistList, selectedGallery]);
 
   const handleArtistSelect = (artist) => {
     setIsModalOpen(false);
@@ -84,13 +97,13 @@ export default function ArtistManagement({
       </div>
 
       <div className={styles.countAndButtonContainer}>
-        <CountList count={artistList.length} />
+        <CountList count={filteredArtistList.length} />
         <RegisterButton buttonText='+작가 등록' onButtonClick={handleRegister} />
       </div>
 
-      {artistList.length > 0 ? (
+      {filteredArtistList.length > 0 ? (
         <section className={styles.cardList}>
-          {artistList.map((artist) => (
+          {filteredArtistList.map((artist) => (
             <div
               key={artist.id}
               className={styles.artistCard}

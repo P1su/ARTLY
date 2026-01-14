@@ -116,7 +116,7 @@ export default function ArtworkSelectModal({
       
       console.log('API 응답 작품 수:', list.length);  // 추가
       console.log('stableArtists:', stableArtists);   // 추가
-      
+
       setArtList(list);
       
       // 선택된 작가가 없으면 빈 배열
@@ -594,7 +594,7 @@ export default function ArtworkSelectModal({
           onClose={() => setShowArtistModal(false)}
           onSelect={handleArtistSelect}
           galleryList={galleryList}
-          selectedGalleryId={galleryId}
+          selectedGalleryId={galleryId || galleryList?.[0]?.id}
           mode="local"
           multiSelect={false}
         />

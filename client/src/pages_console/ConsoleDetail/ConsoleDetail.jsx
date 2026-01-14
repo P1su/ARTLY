@@ -92,7 +92,7 @@ export default function ConsoleDetail({ type }) {
       setEffectiveGalleryId(data.gallery_id);
     }
   }, [data]);
-  
+
   const handleTabClick = (label) => {
     switch (label) {
       case '정보수정':
@@ -119,7 +119,9 @@ export default function ConsoleDetail({ type }) {
         className={styles.addButton}
         // 전시회 디테일에서 눌렀다면 exhibition_id를 넘겨서 자동 선택되게 함
         onClick={() =>
-          navigate(`/console/artworks/edit/new?exhibition_id=${id}`)
+          navigate(`/console/artworks/edit/new?exhibition_id=${id}`, {
+            state: { galleryId: data?.gallery_id }
+          })
         }
       >
         + 작품 등록
