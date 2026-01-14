@@ -7,6 +7,13 @@ import Img from '../../components/Img/Img';
 import { useAlert } from '../../store/AlertProvider';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
+// 헬퍼 함수
+const getLocationName = (location) => {
+  if (!location) return '장소 미정';
+  if (typeof location === 'string') return location;
+  return location.name || '장소 미정';
+};
+
 export default function Reservation() {
   const { exhibitionId } = useParams();
   const navigate = useNavigate();
@@ -54,7 +61,7 @@ export default function Reservation() {
     if (exhibition) {
       setReservationInfo((prev) => ({
         ...prev,
-        gallery: exhibition.exhibition_location?.name || '',
+        gallery: getLocationName(exhibition.exhibition_location),
         price: exhibition.exhibition_price,
       }));
     }
@@ -256,14 +263,14 @@ export default function Reservation() {
     { label: '인원', value: `${personCount}명` },
     {
       label: '장소',
-      value: exhibition ? exhibition.exhibition_location?.name || '' : '',
+      value: exhibition ? getLocationName(exhibition.exhibition_location) : '',
     },
     { label: '예약자', value: reservationInfo.name },
     { label: '전화번호', value: reservationInfo.phone },
     { label: '이메일', value: reservationInfo.email },
     {
       label: '예상 가격',
-      value: `${(exhibition.exhibition_price || 0).toLocaleString()}원 (방문 후 결제)`,
+      value: `${((exhibition.exhibition_price || 0) * personCount).toLocaleString()}원 (방문 후 결제)`,
     },
   ];
 
@@ -395,7 +402,7 @@ export default function Reservation() {
             <div className={styles.infoRow}>
               <span className={styles.infoLabel}>장소</span>
               <span className={styles.infoValue}>
-                {exhibition.exhibition_location?.name || '장소 미정'}
+                {getLocationName(exhibition.exhibition_location)}
               </span>
             </div>
           </div>
@@ -449,12 +456,12 @@ export default function Reservation() {
               {
                 label: '장소',
                 value: exhibition
-                  ? exhibition.exhibition_location?.name || '전시 장소'
+                  ? getLocationName(exhibition.exhibition_location)
                   : '전시 장소',
               },
               {
                 label: '예상 가격',
-                value: `${(exhibition.exhibition_price || 0).toLocaleString()}원`,
+                value: `${((exhibition.exhibition_price || 0) * personCount).toLocaleString()}원 (${personCount}명)`,
               },
             ].map((item) => (
               <div className={styles.summaryRow} key={item.label}>
