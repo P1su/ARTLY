@@ -35,6 +35,34 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
   const [showPosterModal, setShowPosterModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const { showAlert } = useAlert();
+  
+  const [isGenerating, setIsGenerating] = useState({
+    poster: false,
+    image: false,
+    description: false
+  });
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [completedType, setCompletedType] = useState(null);
+
+  const handleGenerateStart = (type) => {
+    setIsGenerating(prev => ({ ...prev, [type]: true }));
+  };
+
+  const handleGenerateComplete = (type) => {
+    setIsGenerating(prev => ({ ...prev, [type]: false }));
+    setCompletedType(type);
+    setShowCompleteModal(true);
+  };
+
+  const handleCompleteClose = () => {
+    setShowCompleteModal(false);
+    setCompletedType(null);
+  };
+
+  const handleCompleteGoTo = () => {
+    setShowCompleteModal(false);
+    setCompletedType(null);
+  };
 
   useEffect(() => {
     if (data.exhibition_poster && typeof data.exhibition_poster === 'string') {
@@ -161,13 +189,21 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
     setShowPosterModal(false);
   };
 
-  // 이미지용 - 전시 소개(TiptapEditor)에 삽입
-  const handleApplyImage = (imageUrl) => {
-    const imgTag = `<img src="${imageUrl}" alt="생성된 이미지" style="max-width: 100%;" />`;
-    setData((prev) => ({
-      ...prev,
-      exhibition_description: (prev.exhibition_description || '') + imgTag,
-    }));
+  // 이미지/소개글용 - 전시 소개(TiptapEditor)에 삽입
+  const handleApplyImage = (content) => {
+    if (content.startsWith('http') || content.startsWith('data:')) {
+      const imgTag = `<img src="${content}" alt="생성된 이미지" style="max-width: 100%;" />`;
+      setData((prev) => ({
+        ...prev,
+        exhibition_description: (prev.exhibition_description || '') + imgTag,
+      }));
+    } else {
+      const textHtml = `<p>${content}</p>`;
+      setData((prev) => ({
+        ...prev,
+        exhibition_description: (prev.exhibition_description || '') + textHtml,
+      }));
+    }
     setShowImageModal(false);
   };
 
@@ -189,6 +225,16 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           accept='image/*'
           style={{ display: 'none' }}
         />
+
+        <div className={styles.imageUploadHeader}>
+          <button
+            type='button'
+            className={styles.createBtn}
+            onClick={() => setShowPosterModal(true)}
+          >
+            AI 포스터 생성
+          </button>
+        </div>
 
         <div
           className={styles.imageUploadBox}
@@ -215,16 +261,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
               + 전시 포스터를 업로드 해주세요
             </p>
           )}
-        </div>
-
-        <div className={styles.imageUploadFooter}>
-          <button
-            type='button'
-            className={styles.createBtn}
-            onClick={() => setShowPosterModal(true)}
-          >
-            AI 포스터/초대장 생성
-          </button>
         </div>
 
         <div className={styles.formGrid}>
@@ -474,7 +510,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
             className={styles.addBtn}
             onClick={() => setShowImageModal(true)}
           >
-            AI 이미지 생성
+            AI 이미지/소개글 생성
           </button>
         </div>
         <TiptapEditor
@@ -514,6 +550,9 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           type="poster" 
           onClose={() => setShowPosterModal(false)} 
           onApply={handleApplyPoster}
+          isGenerating={isGenerating}
+          onGenerateStart={handleGenerateStart}
+          onGenerateComplete={handleGenerateComplete}
         />
       )}
 
@@ -522,7 +561,36 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           type="image" 
           onClose={() => setShowImageModal(false)} 
           onApply={handleApplyImage}
+          isGenerating={isGenerating}
+          onGenerateStart={handleGenerateStart}
+          onGenerateComplete={handleGenerateComplete}
         />
+      )}
+
+      {showCompleteModal && (
+        <div className={styles.completeOverlay}>
+          <div className={styles.completeModal}>
+            <p className={styles.completeText}>
+              {completedType === 'poster' && '포스터가 생성되었습니다!'}
+              {completedType === 'image' && '이미지가 생성되었습니다!'}
+              {completedType === 'description' && '소개글이 생성되었습니다!'}
+            </p>
+            <div className={styles.completeButtons}>
+              <button 
+                className={styles.completeCloseBtn}
+                onClick={handleCompleteClose}
+              >
+                닫기
+              </button>
+              <button 
+                className={styles.completeGoBtn}
+                onClick={handleCompleteGoTo}
+              >
+                바로가기
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

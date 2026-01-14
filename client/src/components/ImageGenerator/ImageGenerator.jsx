@@ -1,18 +1,17 @@
 import styles from './ImageGenerator.module.css';
 import React, { useState } from 'react';
 import { instance } from './../../apis/instance';
-import { FaSpinner } from 'react-icons/fa';
 
-export default function ImageGenerator({ onApply, type = 'poster' }) {
+export default function ImageGenerator({ onApply, type = 'poster', isGenerating, onGenerateStart, onGenerateComplete }) {
   const [userPrompt, setUserPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const postImageGenerate = async () => {
-    setLoading(true);
+    if (onGenerateStart) {
+      onGenerateStart();
+    }
 
     try {
-      // type에 따라 다른 프롬프트 구성
       const finalPrompt = type === 'poster'
         ? `전시회 포스터 배경용 이미지: ${userPrompt}. 텍스트가 들어갈 공간을 고려한 심플한 배경, 세로 비율`
         : `전시 소개용 삽입 이미지: ${userPrompt}. 작품이나 전시 분위기를 보여주는 상세한 이미지`;
@@ -25,7 +24,9 @@ export default function ImageGenerator({ onApply, type = 'poster' }) {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      if (onGenerateComplete) {
+        onGenerateComplete();
+      }
     }
   };
 
@@ -58,18 +59,36 @@ export default function ImageGenerator({ onApply, type = 'poster' }) {
               ? '예: 몽환적인 밤하늘과 별이 빛나는 풍경' 
               : '예: 시간과 예술을 주제로 한 몽환적인 전시회 포스터 배경'}
             className={styles.textarea}
+            disabled={isGenerating}
           />
           <button
             onClick={postImageGenerate}
             className={styles.generateButton}
-            disabled={loading}
+            disabled={isGenerating}
           >
-            {loading ? '이미지 생성 중...' : type === 'image' ? '이미지 생성' : '포스터 이미지 생성'}
+            {isGenerating ? '생성 중...' : type === 'image' ? '이미지 생성' : '포스터 이미지 생성'}
           </button>
         </div>
 
         <div className={styles.resultSection}>
-          {imageUrl ? (
+          {isGenerating ? (
+            <div className={styles.loadingContainer}>
+              <div className={styles.spinner}></div>
+              <p className={styles.loadingText}>
+                {type === 'poster' ? (
+                  <>
+                    포스터 생성 중...<br />
+                    약 1~2분 소요됩니다
+                  </>
+                ) : (
+                  <>
+                    이미지 생성 중...<br />
+                    약 1~2분 소요됩니다
+                  </>
+                )}
+              </p>
+            </div>
+          ) : imageUrl ? (
             <>
               <img
                 src={imageUrl}
@@ -95,16 +114,9 @@ export default function ImageGenerator({ onApply, type = 'poster' }) {
             </>
           ) : (
             <div className={styles.imagePlaceholder}>
-              {loading ? (
-                <div className={styles.loadingContainer}>
-                  <FaSpinner className={styles.spinner} />
-                  <p>이미지를 생성 중입니다...</p>
-                </div>
-              ) : (
-                type === 'image' 
-                  ? '생성된 이미지가 여기에 표시됩니다.' 
-                  : '생성된 포스터 이미지가 여기에 표시됩니다.'
-              )}
+              {type === 'image' 
+                ? '생성된 이미지가 여기에 표시됩니다.' 
+                : '생성된 포스터 이미지가 여기에 표시됩니다.'}
             </div>
           )}
         </div>
