@@ -45,7 +45,6 @@ export default function Notification() {
       setError(null);
 
       const response = await userInstance.get(`/api/notification/user`);
-
       const rawData = response.data.data;
 
       if (!Array.isArray(rawData)) {
@@ -82,7 +81,7 @@ export default function Notification() {
     }
   }, [isUserLoading, user?.id, fetchNotifications]);
 
-  // 백그라운드 + 포그라운드 메시지 리스너 설정
+  // ✅ 백그라운드 + 포그라운드 메시지 리스너 설정 (iOS 카톡 인앱 대응)
   useEffect(() => {
     if (!user?.id) return;
 
@@ -100,32 +99,38 @@ export default function Notification() {
       }
     };
 
-    // Service Worker 메시지 리스너 등록
-    if ('serviceWorker' in navigator) {
-      // 현재 활성화된 Service Worker가 있으면 바로 리스너 등록
-      if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.addEventListener(
-          'message',
-          handleServiceWorkerMessage,
-        );
+    // ✅ iOS 카톡 인앱에서는 navigator.serviceWorker가 undefined일 수 있음
+    const sw = navigator?.serviceWorker;
+
+    if (sw && typeof sw.addEventListener === 'function') {
+      // 중복 등록 방지
+      let attached = false;
+
+      const attach = () => {
+        if (attached) return;
+        sw.addEventListener('message', handleServiceWorkerMessage);
+        attached = true;
+      };
+
+      // 현재 활성화된 SW가 있으면 바로 등록
+      if (sw.controller) {
+        attach();
       }
 
-      // Service Worker가 나중에 활성화될 수도 있으므로 ready 상태도 확인
-      navigator.serviceWorker.ready.then(() => {
-        navigator.serviceWorker.addEventListener(
-          'message',
-          handleServiceWorkerMessage,
-        );
-      });
+      // SW가 나중에 활성화될 수도 있으므로 ready 상태도 확인
+      if (sw.ready && typeof sw.ready.then === 'function') {
+        sw.ready.then(attach).catch(() => {
+          // iOS 인앱에서 ready가 실패할 수도 있으니 무시
+        });
+      }
     }
 
     return () => {
-      unsubscribeForeground();
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.removeEventListener(
-          'message',
-          handleServiceWorkerMessage,
-        );
+      unsubscribeForeground?.();
+
+      // removeEventListener도 sw 존재할 때만
+      if (sw && typeof sw.removeEventListener === 'function') {
+        sw.removeEventListener('message', handleServiceWorkerMessage);
       }
     };
   }, [user?.id, fetchNotifications]);
