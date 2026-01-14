@@ -16,6 +16,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const messaging = getMessaging(app);
+
+// Service Worker 지원하는 환경에서만 messaging 초기화
+let messaging = null;
+if ('serviceWorker' in navigator) {
+  messaging = getMessaging(app);
+}
 
 export { messaging };
