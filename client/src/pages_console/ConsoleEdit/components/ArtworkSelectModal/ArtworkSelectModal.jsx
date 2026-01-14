@@ -35,6 +35,7 @@ export default function ArtworkSelectModal({
 
   // 작가 필터
   const [artistFilter, setArtistFilter] = useState('all');
+  const [galleryArtistIds, setGalleryArtistIds] = useState([]);
 
   // 다중 선택용
   const [selectedArts, setSelectedArts] = useState(existingArtworks);
@@ -91,9 +92,15 @@ export default function ArtworkSelectModal({
     }
   }, [mode, artistFilter, artList, stableArtists]);
 
-  // ArtworkManagement.jsx
+  // global 모드: 갤러리 작가 목록 조회
+  useEffect(() => {
+    if (mode === 'global' && galleryId) {
+      loadGalleryArtists();
+    }
+  }, [mode, galleryId]);
 
-const loadMyArtworks = async () => {
+  const loadMyArtworks = async () => {
+    console.log('loadMyArtworks 호출, galleryId:', galleryId);
     if (!galleryId) {
       console.error('galleryId가 없습니다');
       setArtList([]);
@@ -106,6 +113,10 @@ const loadMyArtworks = async () => {
       // 내 갤러리의 작품만 조회
       const res = await userInstance.get(`/api/arts/by-gallery/${galleryId}`);
       let list = Array.isArray(res.data) ? res.data : res.data.data || [];
+      
+      console.log('API 응답 작품 수:', list.length);  // 추가
+      console.log('stableArtists:', stableArtists);   // 추가
+      
       setArtList(list);
       
       // 선택된 작가가 없으면 빈 배열
@@ -124,6 +135,17 @@ const loadMyArtworks = async () => {
       setFilteredArtList([]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadGalleryArtists = async () => {
+    try {
+      const res = await userInstance.get(`/api/artists/by-gallery/${galleryId}`);
+      const ids = (res.data || []).map((a) => a.id);
+      setGalleryArtistIds(ids);
+    } catch (error) {
+      console.error('갤러리 작가 로드 실패:', error);
+      setGalleryArtistIds([]);
     }
   };
 
@@ -157,11 +179,19 @@ const loadMyArtworks = async () => {
         }
         setArtList(list);
         
-        // ... 나머지 필터 로직 동일
       } else {
+        if (galleryArtistIds.length === 0) {
+          showAlert('갤러리에 등록된 작가가 없습니다.\n먼저 작가를 등록해주세요.');
+          setIsLoading(false);
+          return;
+        }
+
         // 글로벌 모드: 백엔드에서 이미 작품명+작가명 검색 지원
         const res = await userInstance.get('/api/arts', { 
-          params: { search: keyword } 
+          params: { 
+            search: keyword,
+            artist_ids: galleryArtistIds.join(',')
+          } 
         });
         let list = Array.isArray(res.data) ? res.data : res.data.data || [];
         setArtList(list);

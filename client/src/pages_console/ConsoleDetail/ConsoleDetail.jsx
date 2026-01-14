@@ -1,5 +1,5 @@
 import styles from './ConsoleDetail.module.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { userInstance } from '../../apis/instance';
 import QrModal from './components/QrModal/QrModal';
@@ -49,6 +49,8 @@ export default function ConsoleDetail({ type }) {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
+  const location = useLocation();
+  const [effectiveGalleryId, setEffectiveGalleryId] = useState(location.state?.galleryId || null);
 
   const config = DETAIL_CONFIG[type];
   const { title, Component, fetchUrl, tabs } = config || {};
@@ -85,10 +87,18 @@ export default function ConsoleDetail({ type }) {
     fetchData();
   }, [id, type, fetchUrl]);
 
+  useEffect(() => {
+    if (data?.gallery_id && !effectiveGalleryId) {
+      setEffectiveGalleryId(data.gallery_id);
+    }
+  }, [data]);
+  
   const handleTabClick = (label) => {
     switch (label) {
       case '정보수정':
-        navigate(`/console/${type}/edit/${id}`);
+        navigate(`/console/${type}/edit/${id}`, { 
+          state: { galleryId: effectiveGalleryId || data?.gallery_id } 
+        });
         break;
       case 'QR코드':
         setShowQrModal(true);

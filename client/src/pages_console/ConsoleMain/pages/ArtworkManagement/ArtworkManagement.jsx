@@ -49,27 +49,17 @@ export default function ArtworkManagement({
 
 
   const handleDelete = async (id) => {
-    // 전체 필터에서는 삭제 불가
-    if (!selectedGallery) {
-      showAlert('해제할 갤러리를 먼저 선택해주세요.');
-      return;
-    }
-    
     const isConfirmed = await showConfirm('이 작품을 갤러리에서 등록 해제하시겠습니까?', true);
     if (isConfirmed) {
       await onDelete(id, 'gallery_art', selectedGallery);
       loadArtworks('', selectedGallery);
     }
   };
-
+  
   const handleRegister = () => {
-    if (!selectedGallery) {
-      showAlert('작품을 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
-      return;
-    }
     setIsModalOpen(true);
   };
-
+  
   const handleArtworkSelect = (artwork) => {
     setIsModalOpen(false);
     showAlert(`"${artwork.art_title}" 작품이 등록되었습니다.`);
@@ -97,7 +87,10 @@ export default function ArtworkManagement({
       <div className={styles.searchContainer}>
         <LookUp
           value={selectedGallery}
-          onChange={onGalleryChange}
+          onChange={(id) => {
+            onGalleryChange(id);
+            loadArtworks('', id);
+          }}
           options={galleryOptions}
           placeholder='갤러리를 선택하세요'
         />

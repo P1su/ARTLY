@@ -27,6 +27,15 @@ export default function GalleryEditForm({ data, setData, onFileChange }) {
     }
   }, [data.gallery_sns, setData]);
 
+  useEffect(() => {
+    if (!data.gallery_start_time) {
+      setData(prev => ({ ...prev, gallery_start_time: '10:00' }));
+    }
+    if (!data.gallery_end_time) {
+      setData(prev => ({ ...prev, gallery_end_time: '18:00' }));
+    }
+  }, []);
+  
   const handleSnsBlur = (type, currentUrl) => {
     if (!currentUrl) return;
 

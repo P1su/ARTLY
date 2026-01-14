@@ -11,7 +11,6 @@ import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner
 import Img from '../../../../components/Img/Img.jsx';
 
 import styles from './ExhibitionManagement.module.css';
-import { useAlert } from '../../../../store/AlertProvider.jsx';
 import { useConfirm } from '../../../../store/ConfirmProvider.jsx';
 const isMobile = window.innerWidth < 700;
 const isPc = window.innerWidth > 1000;
@@ -31,7 +30,6 @@ export default function ExhibitionManagement({
 }) {
   const navigate = useNavigate();
   const { showConfirm } = useConfirm();
-  const { showAlert } = useAlert();
 
   /* =========================
      🔥 모든 hook은 여기서 먼저
@@ -99,10 +97,6 @@ export default function ExhibitionManagement({
   };
 
   const handleRegister = () => {
-    if (!selectedGallery) {
-      showAlert('전시회를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
-      return;
-    }
     navigate(`/console/exhibitions/edit/new?gallery_id=${selectedGallery}`);
   };
 

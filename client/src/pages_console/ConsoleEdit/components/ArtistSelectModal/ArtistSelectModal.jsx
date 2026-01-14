@@ -62,6 +62,12 @@ export default function ArtistSelectModal({
     }
   }, [mode, selectedGalleryId]);
 
+  useEffect(() => {
+    if (propGalleryId) {
+      setSelectedGalleryId(propGalleryId);
+    }
+  }, [propGalleryId]);
+  
   const loadMyArtists = async () => {
     try {
       setIsLoading(true);

@@ -49,24 +49,14 @@ export default function ArtistManagement({
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     
-    // 전체 필터에서는 삭제 불가
-    if (!selectedGallery) {
-      showAlert('해제할 갤러리를 먼저 선택해주세요.');
-      return;
-    }
-    
     const isConfirmed = await showConfirm('이 작가를 갤러리에서 등록 해제하시겠습니까?', true);
     if (isConfirmed) {
       await onDelete(id, 'gallery_artist', selectedGallery);
       loadArtists(selectedGallery);
     }
   };
-
+  
   const handleRegister = () => {
-    if (!selectedGallery) {
-      showAlert('작가를 등록할 갤러리를 상단 필터에서 먼저 선택해주세요.');
-      return;
-    }
     setIsModalOpen(true);
   };
 
@@ -85,7 +75,10 @@ export default function ArtistManagement({
       <div className={styles.searchContainer}>
         <LookUp
           value={selectedGallery}
-          onChange={onGalleryChange}
+          onChange={(id) => {
+            onGalleryChange(id);
+            loadArtists(id);  
+          }}
           options={galleryOptions}
         />
       </div>
@@ -101,7 +94,9 @@ export default function ArtistManagement({
             <div
               key={artist.id}
               className={styles.artistCard}
-              onClick={() => navigate(`/console/artists/${artist.id}`)}
+              onClick={() => navigate(`/console/artists/${artist.id}`, { 
+                state: { galleryId: selectedGallery } 
+              })}
             >
               <div className={styles.cardContent}>
                 <Img src={artist.artist_image} alt={artist.artist_name} className={styles.artistImage} />
