@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HiTrash } from 'react-icons/hi';
-import { useVirtualizer } from '@tanstack/react-virtual';
 
 import LookUp from '../../components/LookUp/LookUp';
 import CountList from '../../components/CountList/CountList';
@@ -43,10 +42,17 @@ export default function ArtworkManagement({
       galleryList?.length > 0 &&
       !selectedGallery
     ) {
+      const firstGalleryId = galleryList[0].id;
       onGalleryChange(galleryList[0].id);
+      loadArtworks('', firstGalleryId);
     }
-  }, [galleryList, selectedGallery, onGalleryChange]);
+  }, [galleryList, selectedGallery, onGalleryChange, loadArtworks]);
 
+  useEffect(() => {
+    if (selectedGallery) {
+      loadArtworks('', selectedGallery);
+    }
+  }, [selectedGallery]);
 
   const handleDelete = async (id) => {
     const isConfirmed = await showConfirm('이 작품을 갤러리에서 등록 해제하시겠습니까?', true);
@@ -66,17 +72,10 @@ export default function ArtworkManagement({
     loadArtworks('', selectedGallery );
   };
 
-  const parentRef = useRef(null);
-  const isMobile = window.innerWidth < 700;
-  const isPc = window.innerWidth > 1000;
-  const CARD_HEIGHT = isPc ? 180 : isMobile ? 130 : 150;
-
-  const rowVirtualizer = useVirtualizer({
-    count: artworkList.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => CARD_HEIGHT,
-    overscan: isMobile ? 3 : 6,
-  });
+  const filteredArtworkList = useMemo(() => {
+    if (!selectedGallery) return [];
+    return artworkList;
+  }, [artworkList, selectedGallery]);
 
   if (isLoading) {
     return <div className={styles.contentContainer}><LoadingSpinner /></div>;
@@ -92,55 +91,36 @@ export default function ArtworkManagement({
             loadArtworks('', id);
           }}
           options={galleryOptions}
-          placeholder='갤러리를 선택하세요'
         />
       </div>
 
       <div className={styles.countAndButtonContainer}>
-        <CountList count={artworkList.length} />
+        <CountList count={filteredArtworkList.length} />
         <RegisterButton buttonText='+작품 등록' onButtonClick={handleRegister} />
       </div>
 
-      {artworkList.length > 0 ? (
+      {filteredArtworkList.length > 0 ? (
         <section className={styles.cardContainer}>
-          <div ref={parentRef} style={{ height: 'calc(100vh - 30px)', overflowY: 'auto' }}>
-            <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }}>
-              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const artwork = artworkList[virtualRow.index];
-                return (
-                  <div
-                    key={artwork.id}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                  >
-                    <div className={styles.artworkCard} onClick={() => navigate(`/console/artworks/${artwork.id}`)}>
-                      <div className={styles.cardContent}>
-                        <Img src={artwork.image} alt={artwork.title} className={styles.artworkImage} />
-                        <div className={styles.cardInfo}>
-                          <div className={styles.cardHeader}>
-                            <h3 className={styles.artworkTitle}>{artwork.title}</h3>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); handleDelete(artwork.id); }}
-                              className={styles.deleteButton}
-                            >
-                              <HiTrash size={18} />
-                            </button>
-                          </div>
-                          <p className={styles.artworkArtist}>{artwork.artist || '작가 미상'}</p>
-                          <p className={styles.artworkExhibition}>{artwork.exhibition_title || '-'}</p>
-                        </div>
-                      </div>
-                    </div>
+          {filteredArtworkList.map((artwork) => (
+            <div key={artwork.id} className={styles.artworkCard} onClick={() => navigate(`/console/artworks/${artwork.id}`)}>
+              <div className={styles.cardContent}>
+                <Img src={artwork.image} alt={artwork.title} className={styles.artworkImage} />
+                <div className={styles.cardInfo}>
+                  <div className={styles.cardHeader}>
+                    <h3 className={styles.artworkTitle}>{artwork.title}</h3>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleDelete(artwork.id); }}
+                      className={styles.deleteButton}
+                    >
+                      <HiTrash size={18} />
+                    </button>
                   </div>
-                );
-              })}
+                  <p className={styles.artworkArtist}>{artwork.artist || '작가 미상'}</p>
+                  <p className={styles.artworkExhibition}>{artwork.exhibition_title || '-'}</p>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </section>
       ) : (
         <section className={styles.emptyStateContainer}>

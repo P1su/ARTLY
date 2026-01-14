@@ -141,7 +141,7 @@ export default function ConsoleEdit({ type }) {
             setData={setData}
             onFileChange={handleFileChange}
             galleryList={galleryList}
-            galleryId={galleryId}
+            galleryId={galleryId || data?.gallery_id || galleryList?.[0]?.id}
           />
         )}
       </main>

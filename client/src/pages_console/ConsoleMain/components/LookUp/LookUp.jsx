@@ -35,7 +35,7 @@ export default function LookUp({
 
   // 현재 선택된 값을 표시할 텍스트 찾기
   const displayValue =
-    options.find((option) => option.id === value)?.name || placeholder;
+    options.find((option) => option.id === value)?.name || options[0]?.name || placeholder;
 
   // 입력 변경 핸들러
   const handleInputChange = (e) => {
