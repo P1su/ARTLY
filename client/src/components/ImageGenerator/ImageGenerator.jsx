@@ -1,10 +1,17 @@
 import styles from './ImageGenerator.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { instance } from './../../apis/instance';
 
-export default function ImageGenerator({ onApply, type = 'poster', isGenerating, onGenerateStart, onGenerateComplete }) {
+export default function ImageGenerator({ onApply, type = 'poster', isGenerating, onGenerateStart, onGenerateComplete, initialImage }) {
   const [userPrompt, setUserPrompt] = useState('');
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(initialImage || null);
+
+  // 추가: initialImage 변경 시 반영
+  useEffect(() => {
+    if (initialImage) {
+      setImageUrl(initialImage);
+    }
+  }, [initialImage]);
 
   const postImageGenerate = async () => {
     if (onGenerateStart) {
@@ -20,12 +27,17 @@ export default function ImageGenerator({ onApply, type = 'poster', isGenerating,
         text: finalPrompt,
       });
       console.log(response);
-      setImageUrl(response.data.image);
+      const generatedUrl = response.data.image;
+      setImageUrl(generatedUrl);
+      
+      // 수정: URL도 함께 전달
+      if (onGenerateComplete) {
+        onGenerateComplete(generatedUrl);
+      }
     } catch (error) {
       console.error(error);
-    } finally {
       if (onGenerateComplete) {
-        onGenerateComplete();
+        onGenerateComplete(null);
       }
     }
   };

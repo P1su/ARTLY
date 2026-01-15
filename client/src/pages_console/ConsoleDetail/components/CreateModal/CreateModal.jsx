@@ -4,7 +4,7 @@ import { FaX } from 'react-icons/fa6';
 import InvitationGenerator from '../../../../pages/Category/Exhibition/ExhibitionDetail/components/InvitationGenerator/InvitationGenerator';
 import ImageGenerator from '../../../../components/ImageGenerator/ImageGenerator';
 
-export default function CreateModal({ type, onClose, onApply, isGenerating, onGenerateStart, onGenerateComplete }) {
+export default function CreateModal({ type, onClose, onApply, isGenerating, onGenerateStart, onGenerateComplete, generatedImage }) {
   const [selectedTab, setSelectedTab] = useState(type === 'poster' ? '포스터 생성' : '이미지 생성');
   const tabs = type === 'poster' 
     ? ['포스터 생성'] 
@@ -31,7 +31,6 @@ export default function CreateModal({ type, onClose, onApply, isGenerating, onGe
               onClick={() => setSelectedTab(tab)}
             >
               {tab}
-              {/* 탭별 로딩 표시 */}
               {tab === '포스터 생성' && isGenerating.poster && <span className={styles.tabSpinner}></span>}
               {tab === '이미지 생성' && isGenerating.image && <span className={styles.tabSpinner}></span>}
               {tab === '소개글 생성' && isGenerating.description && <span className={styles.tabSpinner}></span>}
@@ -45,7 +44,8 @@ export default function CreateModal({ type, onClose, onApply, isGenerating, onGe
               type="poster" 
               isGenerating={isGenerating.poster}
               onGenerateStart={() => onGenerateStart('poster')}
-              onGenerateComplete={() => onGenerateComplete('poster')}
+              onGenerateComplete={(url) => onGenerateComplete('poster', url)}
+              initialImage={generatedImage}
             />
           )}
           {selectedTab === '이미지 생성' && (
@@ -54,7 +54,8 @@ export default function CreateModal({ type, onClose, onApply, isGenerating, onGe
               type="image" 
               isGenerating={isGenerating.image}
               onGenerateStart={() => onGenerateStart('image')}
-              onGenerateComplete={() => onGenerateComplete('image')}
+              onGenerateComplete={(url) => onGenerateComplete('image', url)}
+              initialImage={generatedImage}
             />
           )}
           {selectedTab === '소개글 생성' && (
