@@ -14,7 +14,7 @@ const tabMyViewFilter = [
     options: [
       { label: '전체', value: 'all' },
       { label: '관람신청', value: 'reserved' },
-      { label: '관람완료', value: 'used' },
+      { label: '관람완료', value: 'completed' },  // used + verified 둘 다
       { label: '취소', value: 'canceled' },
     ],
   },

@@ -1,0 +1,223 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: #fff;
+    border-radius: 0.8rem;
+    width: 90%;
+    max-width: 40rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0.4rem 1.5rem rgba(0, 0, 0, 0.2);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 0.1rem solid #eee;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #888;
+    cursor: pointer;
+  }
+  
+  .body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* QR 다운로드 영역 */
+  .qrDownloadArea {
+    background-color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1rem;
+  }
+  
+  .infoArea {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mainName {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  .subName {
+    font-size: 1.2rem;
+    color: #888;
+    text-align: center;
+  }
+  
+  .qrCodeWrapper {
+    padding: 1rem;
+    border: 0.1rem solid #eee;
+    display: inline-block;
+    background: white;
+  }
+  
+  /* 통계 섹션 */
+  .statsSection {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 1.5rem 0;
+    border-top: 0.1rem solid #eee;
+    border-bottom: 0.1rem solid #eee;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .statLabel {
+    font-size: 1.2rem;
+    color: #888;
+  }
+  
+  .statValue {
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .statValue.like {
+    color: #ef4444;
+  }
+  
+  .statValue.reservation {
+    color: #1d4ed8;
+  }
+  
+  .statValue.verified {
+    color: #047857;
+  }
+  
+  /* URL 섹션 */
+  .urlSection {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .urlLabel {
+    font-size: 1.2rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+  
+  .urlBox {
+    background-color: #f8f8f8;
+    border: 0.1rem solid #eee;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  
+  .urlText {
+    font-size: 1.2rem;
+    color: #3b82f6;
+    word-break: break-all;
+  }
+  
+  /* 버튼 그룹 */
+  .buttonGroup {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .downloadButton,
+  .copyButton {
+    flex: 1;
+    padding: 1.2rem 2rem;
+    border-radius: 0.6rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .downloadButton {
+    background-color: var(--secondary, #4a9c6d);
+    color: white;
+    border: none;
+  }
+  
+  .downloadButton:hover {
+    background-color: var(--primary, #3d8b5f);
+  }
+  
+  .copyButton {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 0.1rem solid #ddd;
+  }
+  
+  .copyButton:hover {
+    background-color: #eee;
+  }
+  
+  @media (max-width: 700px) {
+    .modalContent {
+      max-height: 85vh;
+    }
+  
+    .body {
+      padding: 1.5rem;
+    }
+  
+    .qrDownloadArea {
+      padding: 1.5rem 1rem;
+    }
+  
+    .mainName {
+      font-size: 1.6rem;
+    }
+  
+    .buttonGroup {
+      flex-direction: column;
+    }
+  
+    .downloadButton,
+    .copyButton {
+      width: 100%;
+    }
+  }

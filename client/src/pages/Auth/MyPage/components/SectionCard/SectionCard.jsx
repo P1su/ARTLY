@@ -67,14 +67,23 @@ export default function SectionCard({
       reservation_datetime: reservationDate,
     } = item;
 
+    // 상태 맵
+    // reserved: 관람신청
+    // used: 관람완료 (예약 후 인증)
+    // verified: 현장방문 (예약 없이 인증)
+    // canceled: 취소
     const statusMap = {
       reserved: { label: '관람신청', className: styles.statusReserved },
       used: { label: '관람완료', className: styles.statusCompleted },
+      verified: { label: '현장방문', className: styles.statusCompleted },
       canceled: { label: '취소', className: styles.statusCanceled },
     };
 
     const statusLabel = statusMap[reservationStatus]?.label || '알 수 없음';
     const statusClass = statusMap[reservationStatus]?.className || '';
+
+    // 현장방문인 경우 예약번호 숨김
+    const isWalkIn = reservationStatus === 'verified';
 
     return (
       <div className={styles.cardContainer} onClick={onReservation}>
@@ -91,9 +100,13 @@ export default function SectionCard({
           <p className={styles.info}>
             {exhibitionLocation}
             <br />
-            {reservationDate.split(' ')[0]}
-            <br />
-            예약번호: {reservationId}
+            {reservationDate?.split(' ')[0] || '-'}
+            {!isWalkIn && (
+              <>
+                <br />
+                예약번호: {reservationId}
+              </>
+            )}
           </p>
 
           <div className={styles.statusContainer}>

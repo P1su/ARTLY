@@ -12,7 +12,7 @@ import { useAlert } from '../../../../../../store/AlertProvider.jsx';
 
 export default function TabMyView() {
   const { showConfirm } = useConfirm();
-  const { showAlert } = useAlert(); // 에러 처리용
+  const { showAlert } = useAlert();
   const location = useLocation();
   const [reservations, setReservations] = useState([]);
   const [filter, setFilter] = useState({
@@ -64,15 +64,23 @@ export default function TabMyView() {
 
   const filteredReservations = useMemo(() => {
     let result = reservations;
+    
     if (filter.statusFilter !== 'all') {
-      result = result.filter(
-        (reservation) => reservation.reservation_status === filter.statusFilter,
-      );
+      result = result.filter((reservation) => {
+        const status = reservation.reservation_status;
+        
+        // "관람완료" 필터: used와 verified 둘 다 포함
+        if (filter.statusFilter === 'completed') {
+          return status === 'used' || status === 'verified';
+        }
+        
+        return status === filter.statusFilter;
+      });
     }
 
     result.sort((a, b) => {
-      const dateA = new Date(a.reservation_datetime);
-      const dateB = new Date(b.reservation_datetime);
+      const dateA = new Date(a.reservation_datetime || a.create_dtm);
+      const dateB = new Date(b.reservation_datetime || b.create_dtm);
       return filter.dateSort === 'latest' ? dateB - dateA : dateA - dateB;
     });
 
@@ -99,11 +107,9 @@ export default function TabMyView() {
         ),
       );
 
-      // (선택사항) 성공 알림이 필요하다면
       showAlert('예약이 취소되었습니다.');
     } catch (err) {
       console.error('예약 취소 실패:', err);
-      // 에러 알림도 커스텀으로 통일
       showAlert('예약 취소 중 오류가 발생했습니다.', 'error');
     }
   };

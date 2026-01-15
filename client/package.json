@@ -24,6 +24,7 @@
     "js-cookie": "^3.0.5",
     "lottie-react": "^2.4.1",
     "npm": "^11.4.1",
+    "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
     "react-dom": "^19.0.0",

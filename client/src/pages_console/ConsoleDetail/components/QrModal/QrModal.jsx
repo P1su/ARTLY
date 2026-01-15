@@ -67,7 +67,8 @@ export default function QrModal({ data, onClose, type }) {
 
           if (leafletList.length > 0) {
             setHasContent(true);
-            const viewerUrl = `${window.location.origin}/view/leaflet/${type}/${data.id}`;
+            const BASE_URL = 'https://artly.soundgram.co.kr';
+            const viewerUrl = `${BASE_URL}/view/leaflet/${type}/${data.id}`;
             setQrUrl(viewerUrl);
             console.log(viewerUrl);
           } else {

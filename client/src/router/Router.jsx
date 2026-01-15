@@ -17,6 +17,7 @@ import Artwork from '../pages/Artwork/Artwork';
 import ArtworkList from '../pages/Category/Artwork/ArtworkList/ArtworkList';
 import Catalog from '../pages/Catalog/Catalog';
 import QrScanner from '../pages/QrScanner/QrScanner';
+import Verify from '../pages/Verify/Verify';
 import Nearby from '../pages/Nearby/Nearby';
 import ArtworkDetail from '../pages/Category/Artwork/ArtworkDetail/ArtworkDetail';
 import Find from '../pages/Auth/Find/Find';
@@ -175,6 +176,10 @@ const router = createBrowserRouter([
   {
     path: '/scan/:id?',
     element: <QrScanner />,
+  },
+  {
+    path: '/verify/:exhibitionId',
+    element: <Verify />,
   },
   {
     path: '/view/leaflet/:category/:id',
