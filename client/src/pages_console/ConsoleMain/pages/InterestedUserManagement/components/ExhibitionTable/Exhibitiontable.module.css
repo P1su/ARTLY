@@ -1,0 +1,230 @@
+/* 통합 카드 컨테이너 */
+.tableCard {
+    background-color: white;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+  
+  /* 테이블 컨테이너 */
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tableHeader {
+    background-color: #fafbfc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .tableRow {
+    border-bottom: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+  }
+  
+  .tableRow:last-child {
+    border-bottom: none;
+  }
+  
+  .tableRow:hover {
+    background-color: #f8fafc;
+  }
+  
+  .tableRowSelected {
+    background-color: #eff6ff !important;
+  }
+  
+  .tableCell {
+    padding: 1rem 0.75rem;
+    font-size: 1.4rem;
+    color: #334155;
+    vertical-align: middle;
+  }
+  
+  /* 헤더 셀 스타일 */
+  .tableHeaderCell {
+    padding: 1rem 0.75rem;
+    text-align: left;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+  
+  /* 숫자 셀 */
+  .countCell {
+    text-align: center;
+    width: 5rem;
+  }
+  
+  /* 액션 셀 */
+  .actionCell {
+    text-align: center;
+    width: 5rem;
+  }
+  
+  /* 전시회 제목 */
+  .exhibitionTitle {
+    font-weight: 500;
+    color: #1e293b;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .exhibitionTitle:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+  
+  /* 좋아요 수 */
+  .likeCount {
+    color: #ef4444;
+    font-weight: 500;
+  }
+  
+  /* 예약 수 */
+  .reservationCount {
+    color: #1d4ed8;
+    font-weight: 500;
+  }
+  
+  /* 관람완료 수 */
+  .verifiedCount {
+    color: #047857;
+    font-weight: 500;
+  }
+  
+  /* QR 버튼 */
+  .qrButton {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    background-color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .qrButton:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+  
+  /* 빈 상태 */
+  .emptyState {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .emptyIcon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #94a3b8;
+  }
+  
+  .emptyText {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.5rem;
+  }
+  
+  .emptySubtext {
+    font-size: 1.3rem;
+    color: #94a3b8;
+  }
+  
+  /* 태블릿 (700px 이상 1000px 이하) */
+  @media (min-width: 700px) {
+    .tableHeaderCell {
+      padding: 1.125rem 1.5rem;
+      font-size: 1.4rem;
+    }
+  
+    .tableCell {
+      padding: 1.125rem 1.5rem;
+      font-size: 1.5rem;
+    }
+  
+    .countCell {
+      width: 6rem;
+    }
+  
+    .actionCell {
+      width: 6rem;
+    }
+  
+    .qrButton {
+      padding: 0.5rem 1rem;
+      font-size: 1.3rem;
+    }
+  
+    .emptyState {
+      padding: 5rem 2.5rem;
+    }
+  
+    .emptyIcon {
+      font-size: 4rem;
+    }
+  
+    .emptyText {
+      font-size: 1.6rem;
+    }
+  
+    .emptySubtext {
+      font-size: 1.4rem;
+    }
+  }
+  
+  /* PC (1000px 이상) */
+  @media (min-width: 1000px) {
+    .tableHeaderCell {
+      padding: 1.25rem 1.75rem;
+      font-size: 1.5rem;
+    }
+  
+    .tableCell {
+      padding: 1.25rem 1.75rem;
+      font-size: 1.6rem;
+    }
+  
+    .countCell {
+      width: 8.7rem;
+    }
+  
+    .actionCell {
+      width: 8.6rem;
+    }
+  
+    .qrButton {
+      padding: 0.5rem 1.25rem;
+      font-size: 1.4rem;
+    }
+  
+    .emptyState {
+      padding: 6rem 3rem;
+    }
+  
+    .emptyIcon {
+      font-size: 4.5rem;
+      margin-bottom: 1.25rem;
+    }
+  
+    .emptyText {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+  
+    .emptySubtext {
+      font-size: 1.5rem;
+    }
+  }

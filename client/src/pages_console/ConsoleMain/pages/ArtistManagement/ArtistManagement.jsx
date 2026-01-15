@@ -27,7 +27,7 @@ export default function ArtistManagement({
   const { showConfirm } = useConfirm();
   const { showAlert } = useAlert();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-
+  
   const galleryOptions = useMemo(() => {
     const mapped = galleryList?.map((g) => ({
       id: g.id,

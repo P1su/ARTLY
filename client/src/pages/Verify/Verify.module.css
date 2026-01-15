@@ -1,0 +1,277 @@
+/* 컨테이너 */
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  /* 카드 */
+  .card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  
+  /* 헤더 */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    min-height: 40px;
+  }
+  
+  .closeButton {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    width: 36px;
+    height: 36px;
+    font-size: 2rem;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  
+  .closeButton:hover {
+    color: #334155;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #166534;
+    margin: 0;
+  }
+  
+  .exhibitionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* 상태 컨테이너 */
+  .statusContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* 포스터 */
+  .posterWrapper {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .poster {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* 아이콘 */
+  .iconCircle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .iconCircle.success {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  }
+  
+  .iconCircle.error {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+  }
+  
+  .iconCircle.info {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  }
+  
+  .icon {
+    font-size: 1.8rem;
+    color: white;
+  }
+  
+  /* 스피너 */
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #22c55e;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* 텍스트 */
+  .statusTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .statusText {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.5;
+  }
+  
+  .exhibitionName {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #166534;
+    margin: 0 0 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background-color: #f0fdf4;
+    border-radius: 0.5rem;
+  }
+  
+  .verifiedTime {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+  }
+  
+  /* 버튼 */
+  .primaryButton {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3);
+  }
+  
+  .primaryButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px -1px rgba(34, 197, 94, 0.4);
+  }
+  
+  .primaryButton:active {
+    transform: translateY(0);
+  }
+  
+  .secondaryButton {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    background-color: white;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+  }
+  
+  /* 태블릿 */
+  @media (min-width: 700px) {
+    .card {
+      padding: 2rem;
+    }
+  
+    .posterWrapper {
+      max-width: 220px;
+    }
+  
+    .iconCircle {
+      width: 70px;
+      height: 70px;
+    }
+  
+    .icon {
+      font-size: 2rem;
+    }
+  
+    .statusTitle {
+      font-size: 1.6rem;
+    }
+  
+    .statusText {
+      font-size: 1.2rem;
+    }
+  
+    .primaryButton,
+    .secondaryButton {
+      font-size: 1.2rem;
+      padding: 1rem 1.5rem;
+    }
+  }
+  
+  /* PC */
+  @media (min-width: 1000px) {
+    .card {
+      max-width: 450px;
+      padding: 2.5rem;
+    }
+  
+    .posterWrapper {
+      max-width: 240px;
+    }
+  
+    .iconCircle {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .icon {
+      font-size: 2.2rem;
+    }
+  
+    .statusTitle {
+      font-size: 1.8rem;
+    }
+  
+    .statusText {
+      font-size: 1.3rem;
+    }
+  }
