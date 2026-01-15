@@ -43,13 +43,25 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
   });
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [completedType, setCompletedType] = useState(null);
+  
+  // 추가: 생성된 이미지 URL 저장
+  const [generatedImages, setGeneratedImages] = useState({
+    poster: null,
+    image: null
+  });
 
   const handleGenerateStart = (type) => {
     setIsGenerating(prev => ({ ...prev, [type]: true }));
   };
 
-  const handleGenerateComplete = (type) => {
+  // 수정: URL도 함께 받도록
+  const handleGenerateComplete = (type, resultUrl) => {
     setIsGenerating(prev => ({ ...prev, [type]: false }));
+    
+    if (resultUrl) {
+      setGeneratedImages(prev => ({ ...prev, [type]: resultUrl }));
+    }
+    
     setCompletedType(type);
     setShowCompleteModal(true);
   };
@@ -61,6 +73,13 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
 
   const handleCompleteGoTo = () => {
     setShowCompleteModal(false);
+    
+    if (completedType === 'poster') {
+      setShowPosterModal(true);
+    } else if (completedType === 'image' || completedType === 'description') {
+      setShowImageModal(true);
+    }
+    
     setCompletedType(null);
   };
 
@@ -107,7 +126,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
     }
   };
 
-  // 다중 선택된 작가 배열을 받아서 처리
   const handleSelectArtist = (selectedArtists) => {
     const normalizedArtists = selectedArtists.map((artist) => ({
       id: getArtistId(artist),
@@ -177,7 +195,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
     }));
   };
 
-  // 포스터용 - 이미지 업로드 영역에 적용
   const handleApplyPoster = (imageUrl) => {
     setImagePreviewUrl(imageUrl);
     fetch(imageUrl)
@@ -189,7 +206,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
     setShowPosterModal(false);
   };
 
-  // 이미지/소개글용 - 전시 소개(TiptapEditor)에 삽입
   const handleApplyImage = (content) => {
     if (content.startsWith('http') || content.startsWith('data:')) {
       const imgTag = `<img src="${content}" alt="생성된 이미지" style="max-width: 100%;" />`;
@@ -210,6 +226,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
   return (
     <>
       <div className={styles.card}>
+        {/* ... 기존 JSX 동일 ... */}
         <input
           className={`${styles.input} ${styles.galleryNameInput}`}
           name='exhibition_title'
@@ -264,6 +281,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
         </div>
 
         <div className={styles.formGrid}>
+          {/* ... 기존 formGrid 내용 전부 동일 ... */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>전시기간</label>
             <div className={styles.timeInputContainer}>
@@ -428,7 +446,6 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
                           wrapperProps={{}}
                         />
                         <span className={styles.artistName}>{name}</span>
-
                         <button
                           type='button'
                           className={styles.removeBtn}
@@ -544,6 +561,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
         />
       )}
 
+      {/* 수정: generatedImage prop 추가 */}
       {showPosterModal && (
         <CreateModal 
           type="poster" 
@@ -552,6 +570,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           isGenerating={isGenerating}
           onGenerateStart={handleGenerateStart}
           onGenerateComplete={handleGenerateComplete}
+          generatedImage={generatedImages.poster}
         />
       )}
 
@@ -563,6 +582,7 @@ export default function ExhibitionEditForm({ data, setData, onFileChange, galler
           isGenerating={isGenerating}
           onGenerateStart={handleGenerateStart}
           onGenerateComplete={handleGenerateComplete}
+          generatedImage={generatedImages.image}
         />
       )}
 

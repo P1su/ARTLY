@@ -8,6 +8,10 @@ export default function InvitationGenerator({
   initialTheme = '',
   initialOthers = '',
   showTitle = true,
+  onApply,  // 추가
+  isGenerating,  // 추가
+  onGenerateStart,  // 추가
+  onGenerateComplete,  // 추가
 }) {
   const [theme, setTheme] = useState(initialTheme);
   const [others, setOthers] = useState(initialOthers);
@@ -16,25 +20,21 @@ export default function InvitationGenerator({
   const textRefs = useRef([]);
   const { showAlert } = useAlert();
 
-  // initialTheme이나 initialOthers가 변경되면 state 업데이트
   useEffect(() => {
     if (initialTheme) setTheme(initialTheme);
     if (initialOthers !== undefined) setOthers(initialOthers);
   }, [initialTheme, initialOthers]);
 
-  const date = new Date().toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   const handleSubmit = async () => {
     setInvitation([]);
     setIsLoading(true);
+    
+    if (onGenerateStart) onGenerateStart();  // 추가
 
     if (!theme.trim()) {
       setInvitation(['행사 주제를 입력해주세요.']);
       setIsLoading(false);
+      if (onGenerateComplete) onGenerateComplete();  // 추가
       return;
     }
 
@@ -49,15 +49,11 @@ export default function InvitationGenerator({
 
       const { data } = response;
 
-      // API 응답 구조에 따라 수정 필요할 수 있음
       if (data && typeof data === 'string') {
-        // 단일 문자열 응답인 경우
         setInvitation([data]);
       } else if (Array.isArray(data)) {
-        // 배열 응답인 경우
         setInvitation(data);
       } else if (data.invitations && Array.isArray(data.invitations)) {
-        // invitations 속성이 있는 경우
         setInvitation(data.invitations);
       } else {
         setInvitation(['초대장이 생성되었습니다.']);
@@ -73,10 +69,10 @@ export default function InvitationGenerator({
       }
     } finally {
       setIsLoading(false);
+      if (onGenerateComplete) onGenerateComplete();  // 추가
     }
   };
 
-  // 초대장 수정 함수 (refine API 사용)
   const handleRefine = async (invitationText, index) => {
     if (!invitationText.trim()) return;
 
@@ -91,13 +87,10 @@ export default function InvitationGenerator({
       );
 
       const refinedData = response.data;
-
-      // 🔧 수정: 배열이면 첫 번째 요소, 문자열이면 그대로
       const refinedText = Array.isArray(refinedData)
         ? refinedData[0]
         : refinedData;
 
-      // 해당 인덱스의 초대장 문구 업데이트
       setInvitation((prev) =>
         prev.map((item, i) => (i === index ? refinedText : item)),
       );
@@ -113,14 +106,12 @@ export default function InvitationGenerator({
     }
   };
 
-  // 복사 기능
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
       showAlert('클립보드에 복사되었습니다!');
     } catch (e) {
       console.error('복사 실패:', e);
-      // fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = text;
       document.body.appendChild(textarea);
@@ -135,7 +126,6 @@ export default function InvitationGenerator({
     }
   };
 
-  // 캡처 기능 - 텍스트만 캡처
   const handleCapture = async (index) => {
     const textElement = textRefs.current[index];
     if (!textElement) return;
@@ -147,7 +137,6 @@ export default function InvitationGenerator({
         useCORS: true,
       });
 
-      // 다운로드 링크 생성
       const link = document.createElement('a');
       link.download = `초대장_${index + 1}.png`;
       link.href = canvas.toDataURL('image/png');
@@ -160,6 +149,16 @@ export default function InvitationGenerator({
     }
   };
 
+  // 추가: 적용하기 핸들러
+  const handleApply = (text) => {
+    if (onApply) {
+      onApply(text);
+    }
+  };
+
+  // isGenerating prop이 있으면 그거 쓰고, 없으면 내부 isLoading 사용
+  const loading = isGenerating !== undefined ? isGenerating : isLoading;
+
   return (
     <div className={styles.page}>
       <div className={styles.formArea}>
@@ -170,6 +169,7 @@ export default function InvitationGenerator({
           onChange={(e) => setTheme(e.target.value)}
           placeholder='예: 시간의 결, 색으로 그리다'
           className={styles.input}
+          disabled={loading}
         />
 
         <label className={styles.label}>요구사항</label>
@@ -178,14 +178,15 @@ export default function InvitationGenerator({
           onChange={(e) => setOthers(e.target.value)}
           placeholder='예: #감사함, #전시, #초대 등'
           className={styles.textarea}
+          disabled={loading}
         />
 
         <button
           onClick={handleSubmit}
           className={styles.submitButton}
-          disabled={isLoading}
+          disabled={loading}
         >
-          {isLoading ? '생성 중...' : '소개글 생성'}
+          {loading ? '생성 중...' : '소개글 생성'}
         </button>
       </div>
 
@@ -216,6 +217,15 @@ export default function InvitationGenerator({
                   >
                     문구 다듬기
                   </button>
+                  {/* 추가: 적용하기 버튼 */}
+                  {onApply && (
+                    <button
+                      className={styles.applyButton}
+                      onClick={() => handleApply(text)}
+                    >
+                      적용하기
+                    </button>
+                  )}
                 </div>
               </div>
               <div
