@@ -114,6 +114,75 @@
     color: #94a3b8;
   }
   
+  /* 드롭다운 영역 */
+  .selectContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .selectWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .selectLabel {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  .select {
+    flex: 1;
+    max-width: 300px;
+    padding: 0.75rem 1rem;
+    font-size: 1.4rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  /* 서브탭 */
+  .subTabContainer {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #fafbfc;
+  }
+
+  .subTab {
+    padding: 0.5rem 1rem;
+    font-size: 1.3rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .subTabActive {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* 체크박스 셀 */
+  .checkboxCell {
+    width: 4rem;
+    text-align: center;
+  }
+
   /* 태블릿 (700px 이상 1000px 이하) */
   @media (min-width: 700px) {
     .tableHeaderCell {

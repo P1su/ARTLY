@@ -4,10 +4,12 @@ import { toPng } from 'html-to-image';
 import styles from './QRManageModal.module.css';
 import { useAlert } from '../../../../../../store/AlertProvider';
 
-export default function QRManageModal({ exhibition, onClose }) {
+export default function QRManageModal({ isOpen, exhibition, onClose }) {
   const { showAlert } = useAlert();
   const qrContainerRef = useRef(null);
   const [isCopied, setIsCopied] = useState(false);
+
+  if (!isOpen || !exhibition) return null;
 
   if (!exhibition) return null;
 
@@ -81,30 +83,6 @@ export default function QRManageModal({ exhibition, onClose }) {
                 level="H"
                 style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
               />
-            </div>
-          </div>
-
-          {/* 통계 */}
-          <div className={styles.statsSection}>
-            <div className={styles.statsGrid}>
-              <div className={styles.statItem}>
-                <span className={styles.statLabel}>좋아요</span>
-                <span className={`${styles.statValue} ${styles.like}`}>
-                  {exhibition.likeCount || 0}
-                </span>
-              </div>
-              <div className={styles.statItem}>
-                <span className={styles.statLabel}>예약</span>
-                <span className={`${styles.statValue} ${styles.reservation}`}>
-                  {exhibition.reservationCount || 0}
-                </span>
-              </div>
-              <div className={styles.statItem}>
-                <span className={styles.statLabel}>관람완료</span>
-                <span className={`${styles.statValue} ${styles.verified}`}>
-                  {exhibition.verifiedCount || 0}
-                </span>
-              </div>
             </div>
           </div>
 

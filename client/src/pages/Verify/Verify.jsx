@@ -61,7 +61,11 @@ export default function Verify() {
   };
 
   const handleClose = () => {
-    navigate(-1);
+    navigate('/mypage', { 
+      state: { activeTab: 'MY관람' },
+      replace: true 
+    });
+  
   };
 
   const handleGoToExhibition = () => {
@@ -107,39 +111,39 @@ export default function Verify() {
           </div>
         );
 
-      case 'success':
-      case 'already':
-        return (
-          <div className={styles.statusContainer}>
-            {exhibition?.poster && (
-              <div className={styles.posterWrapper}>
-                <Img 
-                  src={exhibition.poster} 
-                  alt={exhibition.name} 
-                  className={styles.poster}
-                />
+        case 'success':
+        case 'already':
+          return (
+            <div className={styles.statusContainer}>
+              {exhibition?.poster && (
+                <div className={styles.posterWrapper}>
+                  <Img 
+                    src={exhibition.poster} 
+                    alt={exhibition.name} 
+                    className={styles.poster}
+                  />
+                </div>
+              )}
+              
+              <div className={`${styles.iconCircle} ${styles.success}`}>
+                <span className={styles.icon}>✓</span>
               </div>
-            )}
-            
-            <div className={`${styles.iconCircle} ${styles.success}`}>
-              <span className={styles.icon}>✓</span>
+              
+              <h2 className={styles.statusTitle}>
+                {status === 'already' ? '이미 인증 완료했습니다' : '관람 확인 완료'}
+              </h2>
+      
+              {verifiedAt && (
+                <p className={styles.verifiedTime}>
+                  방문일시 : {new Date(verifiedAt).toLocaleString('ko-KR')}
+                </p>
+              )}
+              
+              <button className={styles.secondaryButton} onClick={handleGoToExhibition}>
+                전시 정보 보기
+              </button>
             </div>
-            
-            <h2 className={styles.statusTitle}>
-              {status === 'already' ? '이미 인증됨' : '관람 확인 완료'}
-            </h2>
-            
-            {verifiedAt && (
-              <p className={styles.verifiedTime}>
-                방문일시 : {new Date(verifiedAt).toLocaleString('ko-KR')}
-              </p>
-            )}
-            
-            <button className={styles.secondaryButton} onClick={handleGoToExhibition}>
-              전시 정보 보기
-            </button>
-          </div>
-        );
+          );
 
       case 'error':
         return (

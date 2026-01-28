@@ -44,7 +44,7 @@ export default function useUserList() {
         date: item.date
           ? new Date(item.date).toLocaleDateString('ko-KR')
           : '-',
-        status: type,
+        status: item.status || type,
       }));
 
       formattedUsers.sort((a, b) => new Date(b.date) - new Date(a.date));

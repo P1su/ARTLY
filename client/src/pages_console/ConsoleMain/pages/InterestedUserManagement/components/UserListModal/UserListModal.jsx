@@ -58,6 +58,8 @@ export default function UserListModal({
       case 'reservation':
         return '예약신청';
       case 'verified':
+        return '현장방문';
+      case 'used':
         return '관람완료';
       default:
         return status;
@@ -71,6 +73,7 @@ export default function UserListModal({
       case 'reservation':
         return styles.statusReservation;
       case 'verified':
+      case 'used':
         return styles.statusVerified;
       default:
         return '';
@@ -138,6 +141,9 @@ export default function UserListModal({
                   </th>
                   <th>사용자</th>
                   {type === 'exhibition' && <th>상태</th>}
+                  {type === 'exhibition' && (subTab === 'reservation' || subTab === 'verified') && (
+                    <th>예약번호</th>
+                  )}
                   <th>일자</th>
                 </tr>
               </thead>
@@ -168,8 +174,13 @@ export default function UserListModal({
                         <span
                           className={`${styles.statusBadge} ${getStatusClass(user.status)}`}
                         >
-                          {getStatusLabel(user.status)}
+                          {subTab === 'verified' ? '관람완료' : getStatusLabel(user.status)}
                         </span>
+                      </td>
+                    )}
+                    {(subTab === 'reservation' || subTab === 'verified') && (
+                      <td className={styles.tableCell}>
+                        {user.status === 'verified' ? '현장방문' : user.id}
                       </td>
                     )}
                     <td className={styles.dateCell}>{user.date}</td>
