@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './SectionCard.module.css';
 import Img from '../../../../../components/Img/Img';
+import { userInstance } from '../../../../../apis/instance';
+import { useAlert } from '../../../../../store/AlertProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function SectionCard({
   item,
@@ -10,8 +13,42 @@ export default function SectionCard({
   onReservation,
   type,
 }) {
+  const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
   if (!item) return null;
 
+  const handleQRClick = async (e, exhibitionId) => {
+    e.stopPropagation();
+    
+    // 예약일 체크
+    const reservationDate = item.reservation_datetime?.split(' ')[0];
+    if (reservationDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const resDate = new Date(reservationDate.replace(/\./g, '-'));
+      resDate.setHours(0, 0, 0, 0);
+      
+      if (resDate > today) {
+        showAlert(`예약일(${reservationDate})에 인증할 수 있어요!`);
+        return;
+      }
+    }
+    
+    try {
+      const response = await userInstance.get(
+        `/api/users/console/exhibitions/${exhibitionId}/verify-status`
+      );
+      
+      if (response.data.verified) {
+        showAlert('오늘은 이미 인증했어요! 내일 다시 방문해주세요 😊');
+      } else {
+        onQR(exhibitionId); // QR 리더기로 이동
+      }
+    } catch {
+      onQR(exhibitionId);
+    }
+  };
   const renderLike = () => {
     const { likeType } = item;
 
@@ -127,10 +164,7 @@ export default function SectionCard({
                 <>
                   <button
                     className={styles.btn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onQR(item.exhibition_id);
-                    }}
+                    onClick={(e) => handleQRClick(e, item.exhibition_id)}
                   >
                     관람인증
                   </button>

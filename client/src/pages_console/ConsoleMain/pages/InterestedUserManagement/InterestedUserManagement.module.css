@@ -12,6 +12,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  margin-top: 1.2rem;
 }
 
 /* 탭 컨테이너 */
@@ -270,5 +271,39 @@
   cursor: not-allowed;
 }
 
+.sendAlarmButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: white;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.sendAlarmButton:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
 
+/* countAndButtonContainer도 flex로 */
+.countAndButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0rem;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tabButtons {
+  display: flex;
+  gap: 0.5rem;
+}

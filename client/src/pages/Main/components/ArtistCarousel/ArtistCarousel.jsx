@@ -76,7 +76,7 @@ export default function ArtistCarousel({ title }) {
               <Link to={`/artists/${item?.id}`} className={styles.carouselLink}>
                 <div className={styles.imageContainer}>
                   <Img
-                    src={item?.artist_image || '/default.jpg'}
+                    src={item?.artist_image}
                     alt={item?.artist_name || '작가 이미지'}
                     className={styles.artistImage}
                   />
